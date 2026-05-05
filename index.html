@@ -516,27 +516,33 @@
     <!-- TERMINAL -->
     <section class="terminal-wrap" aria-label="Live AI-agent-demo">
       <div class="container">
-        <div class="terminal" role="region" aria-label="Terminal — Navi v7">
+        <div class="terminal" role="region" aria-label="Terminal — Ted-server">
           <div class="terminal__bar">
             <div class="terminal__dots">
               <span class="terminal__dot terminal__dot--red"></span>
               <span class="terminal__dot terminal__dot--yellow"></span>
               <span class="terminal__dot terminal__dot--green"></span>
             </div>
-            <span class="terminal__title">navi — AI-agent v7.2</span>
+            <span class="terminal__title">ted-server — health & agent monitor</span>
           </div>
           <div class="terminal__body" id="terminal-body" aria-live="polite">
-            <div class="t-line"><span class="t-prompt">navi&nbsp;›</span><span class="t-cmd">analysera repo: ikarus/main</span></div>
-            <div class="t-out">└─ Hämtar filträd…</div>
-            <div class="t-out">└─ Identifierar beroenden…</div>
-            <div class="t-ok">✔ 34 filer analyserade — inga konflikter</div>
+            <div class="t-line"><span class="t-prompt">server&nbsp;›</span><span class="t-cmd">health-check: CPU 12% · MEM 2.1 GB · DISK 34%</span></div>
+            <div class="t-ok">✔ Alla tjänster aktiva — uptime 14d 7h 23m</div>
             <br>
-            <div class="t-line"><span class="t-prompt">navi&nbsp;›</span><span class="t-cmd">generera: SwiftUI-vy för ChatView</span></div>
-            <div class="t-out">└─ Planerar arkitektur…</div>
-            <div class="t-out">└─ Skriver kod…</div>
-            <div class="t-ok">✔ ChatView.swift skapad — 312 rader</div>
+            <div class="t-line"><span class="t-prompt">github&nbsp;›</span><span class="t-cmd">synkroniserar 10 repos…</span></div>
+            <div class="t-out">└─ Hemsida ✅ · Navi-v7 ✅ · BabyCare ✅</div>
+            <div class="t-out">└─ Lilla-jag-3 ✅ · Lumvra ✅ · Lifetoken ✅</div>
+            <div class="t-ok">✔ 10/10 repos synkroniserade</div>
             <br>
-            <div class="t-line"><span class="t-prompt">navi&nbsp;›</span><span id="live-cmd" class="t-cmd"></span><span class="t-cursor" aria-hidden="true"></span></div>
+            <div class="t-line"><span class="t-prompt">ikarus&nbsp;›</span><span class="t-cmd">jobb mottaget: bygg ny SwiftUI-vy</span></div>
+            <div class="t-out">└─ Repo: BabyCare · Branch: feature/growth-chart</div>
+            <div class="t-out">└─ Genererar kod…</div>
+            <div class="t-ok">✔ GrowthChartView.swift — 287 rader, pushad</div>
+            <br>
+            <div class="t-line"><span class="t-prompt">agent&nbsp;›</span><span class="t-cmd">AI-hälsa: modell laddad, svarstid 1.2s</span></div>
+            <div class="t-ok">✔ Multi-provider routing aktiv (Claude, Grok, OpenRouter)</div>
+            <br>
+            <div class="t-line"><span class="t-prompt">server&nbsp;›</span><span id="live-cmd" class="t-cmd"></span><span class="t-cursor" aria-hidden="true"></span></div>
           </div>
         </div>
       </div>
@@ -692,12 +698,21 @@
     // Terminal-animation
     (function () {
       var cmds = [
-        'pusha commit: ChatView.swift',
-        'kör tester på main-grenen…',
-        'analysera: minne från senaste sessionen',
-        'generera: release-anteckningar v7.2',
-        'synkronisera: kunskapsbas → disk',
-        'planera: sprint för nästa vecka'
+        'health-check: CPU 8% · MEM 1.9 GB · DISK 34%',
+        'synkroniserar repo: Lunaflix-v2…',
+        'ikarus-jobb: uppdatera README för Eon-Y-V5',
+        'AI-agent: Claude-svar OK — latens 0.9s',
+        'pusha commit: Lumvra/sleep-analysis fix',
+        'bygg-test: BabyCare — 42 tester passerade',
+        'github: 3 nya issues auto-tilldelade',
+        'agent-minne: 12 sessioner sparade till disk',
+        'health-check: alla tjänster gröna ✅',
+        'ikarus-jobb: generera SwiftUI-komponent',
+        'synkroniserar repo: Lilla-jag-3…',
+        'AI-routing: failover till OpenRouter aktiv',
+        'server: WebSocket-klienter anslutna: 2',
+        'pusha commit: Lifetoken/zone-balance patch',
+        'health-check: nätverk OK · API-svar 0.3s'
       ];
       var el = document.getElementById('live-cmd');
       if (!el) return;
