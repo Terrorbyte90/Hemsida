@@ -282,6 +282,95 @@
     .tag--purple { background: var(--purple-dim); color: var(--purple); border-color: transparent; }
     .tag--amber  { background: var(--amber-dim);  color: var(--amber);  border-color: transparent; }
 
+    /* === PIPELINE === */
+    .pipeline {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      margin-bottom: var(--space-10);
+      max-width: 640px;
+      margin-inline: auto;
+    }
+    .pipeline__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-4);
+    }
+    .pipeline__title {
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+    .pipeline__badge {
+      font-size: 0.65rem;
+      font-weight: 500;
+      padding: 2px 10px;
+      border-radius: var(--radius-full);
+      background: var(--green-dim);
+      color: var(--green);
+      letter-spacing: 0.03em;
+    }
+    .pipeline__steps {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .pipeline__step {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+    }
+    .pipeline__step-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 0.55rem;
+      flex-shrink: 0;
+    }
+    .pipeline__step--done .pipeline__step-icon {
+      background: var(--green-dim);
+      color: var(--green);
+    }
+    .pipeline__step--active .pipeline__step-icon {
+      background: var(--accent-dim);
+      color: var(--accent);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    .pipeline__step--pending .pipeline__step-icon {
+      background: var(--surface-3);
+      color: var(--text-faint);
+    }
+    .pipeline__step--done { color: var(--text-muted); }
+    .pipeline__step--active { color: var(--text); font-weight: 500; }
+    .pipeline__step--pending { color: var(--text-faint); }
+    .pipeline__log {
+      margin-top: var(--space-4);
+      padding: var(--space-3);
+      background: var(--bg-subtle);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-faint);
+      line-height: 1.7;
+      min-height: 60px;
+    }
+    .pipeline__log-line { opacity: 0.7; }
+    .pipeline__log-line:last-child { opacity: 1; color: var(--text-muted); }
+    .pipeline__log-ok { color: var(--green); }
+    .pipeline__log-warn { color: var(--amber); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
     /* === PLACEHOLDER === */
     .placeholder {
       text-align: center;
@@ -361,10 +450,75 @@
   <!-- CONTENT -->
   <section class="section" style="padding-top: 0;">
     <div class="container">
-      <div class="placeholder">
-        <div class="placeholder__icon">🎙️</div>
-        <div class="placeholder__title">Kommer snart</div>
-        <p class="placeholder__desc">Podcasts är under produktion. Här kommer avsnitt om AI-utveckling, SwiftUI, agentarkitekturer och teknikens framtid att publiceras.</p>
+
+      <!-- PIPELINE -->
+      <div class="pipeline" role="region" aria-label="Podcast-pipeline">
+        <div class="pipeline__header">
+          <span class="pipeline__title">🎙️ Podd-pipeline — Auto-generering</span>
+          <span class="pipeline__badge" id="pipeline-status">AKTIV</span>
+        </div>
+        <div class="pipeline__steps">
+          <div class="pipeline__step pipeline__step--done" id="step-research">
+            <span class="pipeline__step-icon">✓</span>
+            <span>AI-research: ämnesanalys & källor</span>
+          </div>
+          <div class="pipeline__step pipeline__step--done" id="step-outline">
+            <span class="pipeline__step-icon">✓</span>
+            <span>Manusstruktur & disposition</span>
+          </div>
+          <div class="pipeline__step pipeline__step--active" id="step-script">
+            <span class="pipeline__step-icon">◉</span>
+            <span>Genererar manus med Qwen3…</span>
+          </div>
+          <div class="pipeline__step pipeline__step--pending" id="step-voice">
+            <span class="pipeline__step-icon">○</span>
+            <span>AI-röstsyntes & ljudproduktion</span>
+          </div>
+          <div class="pipeline__step pipeline__step--pending" id="step-publish">
+            <span class="pipeline__step-icon">○</span>
+            <span>Publicering & distribution</span>
+          </div>
+        </div>
+        <div class="pipeline__log" id="pipeline-log">
+          <div class="pipeline__log-line">[14:23] Research: 47 källor analyserade om on-device AI</div>
+          <div class="pipeline__log-line">[14:24] Outline: 5-sektions manus genererat</div>
+          <div class="pipeline__log-line pipeline__log-ok">[14:25] ✓ Manus klar — 2 340 ord, ton: teknisk-accessibel</div>
+          <div class="pipeline__log-line">[14:26] Väntar på röstsyntes-kö…</div>
+        </div>
+      </div>
+
+      <!-- PODCAST CARDS -->
+      <div class="podcast-list">
+
+        <article class="podcast-card">
+          <div class="podcast-card__artwork">🧠</div>
+          <div class="podcast-card__content">
+            <div class="podcast-card__meta">Avsnitt 1 — Kommer snart</div>
+            <div class="podcast-card__title">On-device AI: Framtiden för integritet</div>
+            <p class="podcast-card__desc">Om hur CoreML, llama.cpp och lokala språkmodeller förändrar spelreglerna. Ingen data lämnar enheten — men AI:n är lika kraftfull.</p>
+            <div class="podcast-card__tags">
+              <span class="tag tag--accent">AI</span>
+              <span class="tag">CoreML</span>
+              <span class="tag">Integritet</span>
+              <span class="tag">llama.cpp</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="podcast-card">
+          <div class="podcast-card__artwork">⚡</div>
+          <div class="podcast-card__content">
+            <div class="podcast-card__meta">Avsnitt 2 — Kommer snart</div>
+            <div class="podcast-card__title">Agentarkitekturer: Från verktyg till kollegor</div>
+            <p class="podcast-card__desc">När AI-agenter inte bara utför order utan fattar egna beslut. Om orchestrator-mönster, minneshantering och när agenten säger "jag behöver tänka längre".</p>
+            <div class="podcast-card__tags">
+              <span class="tag tag--amber">Agenter</span>
+              <span class="tag">Arkitektur</span>
+              <span class="tag">Autonom AI</span>
+            </div>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
