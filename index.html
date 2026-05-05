@@ -11,52 +11,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-
-  <!-- Particle canvas background -->
   <canvas id="particleCanvas"></canvas>
 
-  <!-- Navigation -->
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
-      <a href="#hero" class="nav-logo">TS<span class="dot">.</span></a>
+      <a href="index.html" class="nav-logo">TS<span class="dot">.</span></a>
       <ul class="nav-links">
-        <li><a href="#about">Om mig</a></li>
-        <li><a href="#expertise">Expertis</a></li>
-        <li><a href="#projects">Projekt</a></li>
-        <li><a href="#contact">Kontakt</a></li>
+        <li><a href="index.html" class="active">Hem</a></li>
+        <li><a href="om-mig.html">Om mig</a></li>
+        <li><a href="expertis.html">Expertis</a></li>
+        <li><a href="projekt.html">Projekt</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
       </ul>
-      <a href="#contact" class="nav-cta">Samarbeta</a>
+      <a href="samarbeta.html" class="nav-cta">Samarbeta</a>
       <button class="hamburger" id="hamburger" aria-label="Meny">
         <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
 
-  <!-- Hero -->
   <section class="hero" id="hero">
     <div class="hero-content">
       <p class="hero-eyebrow"><span class="status-dot"></span> Tillgänglig för nya projekt</p>
-      <h1 class="hero-title">
-        Jag är <span class="gradient-text" id="typewriter"></span>
-      </h1>
+      <h1 class="hero-title">Jag är <span class="gradient-text" id="typewriter"></span></h1>
       <p class="hero-sub">AI Architect &amp; Innovatör — Jag designar och bygger intelligenta system som förändrar hur världen fungerar.</p>
       <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary">Se mina projekt</a>
-        <a href="#contact" class="btn btn-ghost">Kontakta mig</a>
+        <a href="projekt.html" class="btn btn-primary">Se mina projekt</a>
+        <a href="kontakt.html" class="btn btn-ghost">Kontakta mig</a>
       </div>
       <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-number" data-target="47">0</span>
-          <span class="stat-label">AI-system byggda</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number" data-target="12">0</span>
-          <span class="stat-label">Länder påverkade</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number" data-target="99">0</span>
-          <span class="stat-label">Nöjda klienter %</span>
-        </div>
+        <div class="stat"><span class="stat-number" data-target="47">0</span><span class="stat-label">AI-system byggda</span></div>
+        <div class="stat"><span class="stat-number" data-target="12">0</span><span class="stat-label">Länder påverkade</span></div>
+        <div class="stat"><span class="stat-number" data-target="99">0</span><span class="stat-label">Nöjda klienter %</span></div>
       </div>
     </div>
     <div class="hero-visual">
@@ -65,18 +51,7 @@
       <div class="orb orb-3"></div>
       <div class="avatar-ring">
         <div class="avatar-inner">
-          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="avatar-svg">
-            <defs>
-              <linearGradient id="avatarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#a855f7"/>
-                <stop offset="100%" style="stop-color:#06b6d4"/>
-              </linearGradient>
-            </defs>
-            <circle cx="100" cy="100" r="100" fill="url(#avatarGrad)" opacity="0.15"/>
-            <circle cx="100" cy="80" r="35" fill="url(#avatarGrad)" opacity="0.9"/>
-            <ellipse cx="100" cy="160" rx="55" ry="40" fill="url(#avatarGrad)" opacity="0.9"/>
-            <text x="100" y="90" text-anchor="middle" font-size="32" font-weight="700" fill="white" font-family="Inter">TS</text>
-          </svg>
+          <img src="ted.jpg" alt="Ted Svärd" class="avatar-photo" />
         </div>
         <div class="ring-label ring-label-1">🧠 LLM Design</div>
         <div class="ring-label ring-label-2">⚡ Automation</div>
@@ -84,270 +59,40 @@
         <div class="ring-label ring-label-4">🛡️ AI Ethics</div>
       </div>
     </div>
-    <div class="scroll-hint">
-      <span>Scrolla</span>
-      <div class="scroll-arrow"></div>
-    </div>
+    <div class="scroll-hint"><span>Scrolla</span><div class="scroll-arrow"></div></div>
   </section>
 
-  <!-- About -->
-  <section class="section about" id="about">
+  <section class="section about-preview">
     <div class="container">
-      <div class="section-header">
-        <p class="section-tag">// Om mig</p>
-        <h2 class="section-title">Arkitekten bakom <span class="gradient-text">intelligensen</span></h2>
-      </div>
-      <div class="about-grid">
-        <div class="about-text">
-          <p class="about-lead">Jag är Ted Svärd — AI Architect med en passion för att lösa komplexa problem med banbrytande artificiell intelligens.</p>
-          <p>Jag specialiserar mig på att designa heltäckande AI-system från grunden: från arkitektur och dataflöden till deployment och skalbarhet. Varje lösning jag bygger är skräddarsydd, robust och framtidssäker.</p>
-          <p>Med ett djupt tekniskt kunnande kombinerar jag storspråksmodeller, agentiska system och automation för att skapa mervärde som faktiskt syns i resultaten.</p>
-          <div class="about-tags">
-            <span class="tag">LLM Arkitektur</span>
-            <span class="tag">Agentiska System</span>
-            <span class="tag">RAG Pipelines</span>
-            <span class="tag">MLOps</span>
-            <span class="tag">AI Strategy</span>
-            <span class="tag">Prompt Engineering</span>
-            <span class="tag">Vector Databases</span>
-            <span class="tag">Fine-tuning</span>
-          </div>
-        </div>
-        <div class="about-card">
-          <div class="glass-card">
-            <div class="card-header">
-              <div class="terminal-dots">
-                <span></span><span></span><span></span>
-              </div>
-              <span class="card-title-small">ted_svard.ai</span>
-            </div>
-            <div class="card-body">
-              <div class="code-line"><span class="code-key">namn</span><span class="code-sep">:</span> <span class="code-val">"Ted Svärd"</span></div>
-              <div class="code-line"><span class="code-key">roll</span><span class="code-sep">:</span> <span class="code-val">"AI Architect"</span></div>
-              <div class="code-line"><span class="code-key">plats</span><span class="code-sep">:</span> <span class="code-val">"Sverige"</span></div>
-              <div class="code-line"><span class="code-key">erfarenhet</span><span class="code-sep">:</span> <span class="code-val">"Senior"</span></div>
-              <div class="code-line"><span class="code-key">fokus</span><span class="code-sep">:</span> <span class="code-val">["LLMs", "Agents",</span></div>
-              <div class="code-line code-indent"><span class="code-val">"Automation", "RAG"]</span></div>
-              <div class="code-line"><span class="code-key">status</span><span class="code-sep">:</span> <span class="code-val code-green">"Tillgänglig"</span></div>
-            </div>
-          </div>
-        </div>
+      <div class="preview-grid">
+        <a href="om-mig.html" class="preview-card">
+          <div class="preview-icon">👤</div>
+          <h3>Om mig</h3>
+          <p>Lär känna mannen bakom AI-arkitekturen</p>
+          <span class="preview-arrow">→</span>
+        </a>
+        <a href="expertis.html" class="preview-card">
+          <div class="preview-icon">⚡</div>
+          <h3>Expertis</h3>
+          <p>LLMs, agenter, RAG och mycket mer</p>
+          <span class="preview-arrow">→</span>
+        </a>
+        <a href="projekt.html" class="preview-card">
+          <div class="preview-icon">🚀</div>
+          <h3>Projekt</h3>
+          <p>Utvalda AI-system jag byggt</p>
+          <span class="preview-arrow">→</span>
+        </a>
+        <a href="samarbeta.html" class="preview-card preview-card-featured">
+          <div class="preview-icon">🤝</div>
+          <h3>Samarbeta</h3>
+          <p>Redo att bygga framtiden tillsammans?</p>
+          <span class="preview-arrow">→</span>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- Expertise -->
-  <section class="section expertise" id="expertise">
-    <div class="container">
-      <div class="section-header">
-        <p class="section-tag">// Expertis</p>
-        <h2 class="section-title">Vad jag <span class="gradient-text">bemästrar</span></h2>
-      </div>
-      <div class="expertise-grid">
-        <div class="expertise-card" data-delay="0">
-          <div class="expertise-icon">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="24" cy="24" r="20" stroke="url(#g1)" stroke-width="2"/>
-              <circle cx="24" cy="24" r="6" fill="url(#g1)"/>
-              <line x1="24" y1="4" x2="24" y2="14" stroke="url(#g1)" stroke-width="2"/>
-              <line x1="24" y1="34" x2="24" y2="44" stroke="url(#g1)" stroke-width="2"/>
-              <line x1="4" y1="24" x2="14" y2="24" stroke="url(#g1)" stroke-width="2"/>
-              <line x1="34" y1="24" x2="44" y2="24" stroke="url(#g1)" stroke-width="2"/>
-              <defs><linearGradient id="g1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
-            </svg>
-          </div>
-          <h3>LLM Arkitektur</h3>
-          <p>Design av storskaliga språkmodellssystem, fine-tuning, RAG-pipelines och optimering för produktion.</p>
-          <div class="expertise-bar"><div class="bar-fill" data-width="95"></div></div>
-        </div>
-        <div class="expertise-card" data-delay="100">
-          <div class="expertise-icon">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="6" y="6" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/>
-              <rect x="28" y="6" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/>
-              <rect x="6" y="28" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/>
-              <rect x="28" y="28" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/>
-              <line x1="20" y1="13" x2="28" y2="13" stroke="url(#g2)" stroke-width="2"/>
-              <line x1="20" y1="35" x2="28" y2="35" stroke="url(#g2)" stroke-width="2"/>
-              <line x1="13" y1="20" x2="13" y2="28" stroke="url(#g2)" stroke-width="2"/>
-              <line x1="35" y1="20" x2="35" y2="28" stroke="url(#g2)" stroke-width="2"/>
-              <defs><linearGradient id="g2" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
-            </svg>
-          </div>
-          <h3>Agentiska System</h3>
-          <p>Bygger autonoma AI-agenter och multi-agent-system som löser komplexa uppgifter utan mänsklig intervention.</p>
-          <div class="expertise-bar"><div class="bar-fill" data-width="92"></div></div>
-        </div>
-        <div class="expertise-card" data-delay="200">
-          <div class="expertise-icon">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 40 L24 8 L40 40" stroke="url(#g3)" stroke-width="2" stroke-linejoin="round"/>
-              <path d="M14 28 L34 28" stroke="url(#g3)" stroke-width="2"/>
-              <circle cx="24" cy="8" r="3" fill="url(#g3)"/>
-              <defs><linearGradient id="g3" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
-            </svg>
-          </div>
-          <h3>AI Strategy</h3>
-          <p>Strategisk rådgivning om hur organisationer kan integrera AI effektivt, etiskt och lönsamt i sin verksamhet.</p>
-          <div class="expertise-bar"><div class="bar-fill" data-width="90"></div></div>
-        </div>
-        <div class="expertise-card" data-delay="300">
-          <div class="expertise-icon">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="8" y="16" width="32" height="22" rx="3" stroke="url(#g4)" stroke-width="2"/>
-              <path d="M16 16 V12 Q24 6 32 12 V16" stroke="url(#g4)" stroke-width="2"/>
-              <circle cx="24" cy="27" r="4" stroke="url(#g4)" stroke-width="2"/>
-              <line x1="24" y1="31" x2="24" y2="35" stroke="url(#g4)" stroke-width="2"/>
-              <defs><linearGradient id="g4" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
-            </svg>
-          </div>
-          <h3>MLOps &amp; Deployment</h3>
-          <p>End-to-end deployment av ML-modeller i produktionsmiljöer med CI/CD, monitoring och automatisk skalning.</p>
-          <div class="expertise-bar"><div class="bar-fill" data-width="88"></div></div>
-        </div>
-        <div class="expertise-card" data-delay="400">
-          <div class="expertise-icon">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="24" cy="18" rx="16" ry="8" stroke="url(#g5)" stroke-width="2"/>
-              <path d="M8 18 Q8 36 24 36 Q40 36 40 18" stroke="url(#g5)" stroke-width="2"/>
-              <line x1="24" y1="10" x2="24" y2="36" stroke="url(#g5)" stroke-width="2" stroke-dasharray="3 3"/>
-              <defs><linearGradient id="g5" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
-            </svg>
-          </div>
-          <h3>Vector Databases</h3>
-          <p>Implementation av vektordatabaser (Pinecone, Weaviate, Qdrant) för semantisk sökning och minneshantering.</p>
-          <div class="expertise-bar"><div class="bar-fill" data-width="93"></div></div>
-        </div>
-        <div class="expertise-card" data-delay="500">
-          <div class="expertise-icon">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 24 Q10 10 24 10 Q38 10 38 24" stroke="url(#g6)" stroke-width="2"/>
-              <path d="M10 24 Q10 38 24 38 Q38 38 38 24" stroke="url(#g6)" stroke-width="2" stroke-dasharray="4 3"/>
-              <circle cx="24" cy="24" r="4" fill="url(#g6)"/>
-              <circle cx="10" cy="24" r="3" fill="url(#g6)"/>
-              <circle cx="38" cy="24" r="3" fill="url(#g6)"/>
-              <defs><linearGradient id="g6" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
-            </svg>
-          </div>
-          <h3>Automation &amp; Workflows</h3>
-          <p>Bygger intelligenta automatiserade arbetsflöden som sparar tid, eliminerar fel och frigör mänsklig kapacitet.</p>
-          <div class="expertise-bar"><div class="bar-fill" data-width="96"></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects -->
-  <section class="section projects" id="projects">
-    <div class="container">
-      <div class="section-header">
-        <p class="section-tag">// Projekt</p>
-        <h2 class="section-title">Utvalda <span class="gradient-text">arbeten</span></h2>
-      </div>
-      <div class="projects-grid">
-        <article class="project-card project-featured">
-          <div class="project-glow"></div>
-          <div class="project-header">
-            <span class="project-badge">Flaggskepp</span>
-            <div class="project-links">
-              <a href="#" class="project-link" title="Källkod">&#x3c;/&#x3e;</a>
-              <a href="#" class="project-link" title="Live demo">↗</a>
-            </div>
-          </div>
-          <h3 class="project-title">NeuroFlow AI</h3>
-          <p class="project-desc">En autonom multi-agent-plattform som orkesterar hundratals AI-agenter för att lösa komplexa affärsproblem i realtid. Integrerar GPT-4, Claude och lokala modeller i en sömlös pipeline.</p>
-          <div class="project-tech">
-            <span>LangGraph</span><span>OpenAI</span><span>FastAPI</span><span>Kubernetes</span>
-          </div>
-          <div class="project-metrics">
-            <div class="metric"><span class="metric-val">10x</span><span class="metric-label">snabbare</span></div>
-            <div class="metric"><span class="metric-val">98%</span><span class="metric-label">precision</span></div>
-            <div class="metric"><span class="metric-val">∞</span><span class="metric-label">skalbar</span></div>
-          </div>
-        </article>
-        <article class="project-card">
-          <div class="project-glow"></div>
-          <div class="project-header">
-            <span class="project-badge project-badge-cyan">Enterprise</span>
-            <div class="project-links">
-              <a href="#" class="project-link">↗</a>
-            </div>
-          </div>
-          <h3 class="project-title">SynthRAG</h3>
-          <p class="project-desc">Enterprise RAG-system med hybrid sökning, dynamisk kontextfönsterhantering och hallucineringsdetektering. Betjänar 50 000+ användare dagligen.</p>
-          <div class="project-tech">
-            <span>Qdrant</span><span>LlamaIndex</span><span>Azure</span>
-          </div>
-        </article>
-        <article class="project-card">
-          <div class="project-glow"></div>
-          <div class="project-header">
-            <span class="project-badge project-badge-green">Open Source</span>
-            <div class="project-links">
-              <a href="#" class="project-link">↗</a>
-            </div>
-          </div>
-          <h3 class="project-title">PromptForge</h3>
-          <p class="project-desc">Verktyg för systematisk prompt-optimering med automatisk testning, versionering och A/B-testning av promptar i produktionsmiljöer.</p>
-          <div class="project-tech">
-            <span>Python</span><span>Pydantic</span><span>Redis</span>
-          </div>
-        </article>
-        <article class="project-card">
-          <div class="project-glow"></div>
-          <div class="project-header">
-            <span class="project-badge project-badge-orange">R&amp;D</span>
-            <div class="project-links">
-              <a href="#" class="project-link">↗</a>
-            </div>
-          </div>
-          <h3 class="project-title">EthosAI Monitor</h3>
-          <p class="project-desc">Realtidsövervakningssystem för AI-etik och bias-detektion. Analyserar modellbeslut och flaggar potentiellt skadliga mönster automatiskt.</p>
-          <div class="project-tech">
-            <span>PyTorch</span><span>SHAP</span><span>Grafana</span>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section class="section contact" id="contact">
-    <div class="container">
-      <div class="contact-inner">
-        <div class="contact-text">
-          <p class="section-tag">// Kontakt</p>
-          <h2 class="section-title">Redo att bygga <span class="gradient-text">framtiden?</span></h2>
-          <p>Har du ett AI-projekt som behöver en erfaren arkitekt? Jag tar emot ett begränsat antal uppdrag per kvartal — hör av dig tidigt.</p>
-          <div class="contact-info">
-            <a href="mailto:ted@tedsvard.ai" class="contact-link">
-              <span class="contact-icon">✉</span> ted@tedsvard.ai
-            </a>
-            <a href="https://linkedin.com/in/tedsvard" class="contact-link" target="_blank">
-              <span class="contact-icon">in</span> linkedin.com/in/tedsvard
-            </a>
-          </div>
-        </div>
-        <form class="contact-form" id="contactForm">
-          <div class="form-group">
-            <label for="name">Namn</label>
-            <input type="text" id="name" placeholder="Ditt namn" required />
-          </div>
-          <div class="form-group">
-            <label for="email">E-post</label>
-            <input type="email" id="email" placeholder="din@email.com" required />
-          </div>
-          <div class="form-group">
-            <label for="message">Meddelande</label>
-            <textarea id="message" rows="4" placeholder="Berätta om ditt projekt..." required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary btn-full">Skicka meddelande ✦</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
@@ -360,7 +105,6 @@
       </div>
     </div>
   </footer>
-
   <script src="script.js"></script>
 </body>
 </html>

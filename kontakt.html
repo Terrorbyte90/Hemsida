@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontakt – Ted Svärd</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <canvas id="particleCanvas"></canvas>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">TS<span class="dot">.</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Hem</a></li>
+        <li><a href="om-mig.html">Om mig</a></li>
+        <li><a href="expertis.html">Expertis</a></li>
+        <li><a href="projekt.html">Projekt</a></li>
+        <li><a href="kontakt.html" class="active">Kontakt</a></li>
+      </ul>
+      <a href="samarbeta.html" class="nav-cta">Samarbeta</a>
+      <button class="hamburger" id="hamburger" aria-label="Meny"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <p class="section-tag">// Kontakt</p>
+      <h1 class="page-title">Hör av <span class="gradient-text">dig</span></h1>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-text">
+          <p class="about-lead">Har du ett AI-projekt som behöver en erfaren arkitekt?</p>
+          <p style="color:var(--text-muted);line-height:1.8;margin-bottom:32px">Jag tar emot ett begränsat antal uppdrag per kvartal — hör av dig tidigt. Svarar normalt inom 24 timmar.</p>
+          <div class="contact-info">
+            <a href="mailto:Ted@Tuvaluna.com" class="contact-link">
+              <span class="contact-icon">✉</span> Ted@Tuvaluna.com
+            </a>
+            <a href="https://linkedin.com/in/tedsvard" class="contact-link" target="_blank">
+              <span class="contact-icon">in</span> linkedin.com/in/tedsvard
+            </a>
+            <a href="https://github.com/Terrorbyte90" class="contact-link" target="_blank">
+              <span class="contact-icon">gh</span> github.com/Terrorbyte90
+            </a>
+          </div>
+          <div class="availability-box">
+            <div class="avail-dot"></div>
+            <div>
+              <strong>Tillgänglig Q2 2026</strong>
+              <p>Tar just nu emot nya uppdrag och konsultationer.</p>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form" id="contactForm">
+          <div class="form-group"><label for="name">Namn</label><input type="text" id="name" placeholder="Ditt namn" required /></div>
+          <div class="form-group"><label for="company">Företag (valfritt)</label><input type="text" id="company" placeholder="Ditt företag" /></div>
+          <div class="form-group"><label for="email">E-post</label><input type="email" id="email" placeholder="din@email.com" required /></div>
+          <div class="form-group">
+            <label for="type">Typ av projekt</label>
+            <select id="type">
+              <option value="">Välj kategori...</option>
+              <option>LLM / RAG-system</option>
+              <option>Agentiskt system</option>
+              <option>AI Strategy</option>
+              <option>MLOps / Deployment</option>
+              <option>Workshop / Utbildning</option>
+              <option>Annat</option>
+            </select>
+          </div>
+          <div class="form-group"><label for="message">Beskriv projektet</label><textarea id="message" rows="5" placeholder="Berätta om ditt projekt, mål och tidsram..." required></textarea></div>
+          <button type="submit" class="btn btn-primary btn-full">Skicka meddelande ✦</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <p class="footer-logo">Ted Svärd<span class="dot">.</span></p>
+        <p class="footer-copy">© 2026 Ted Svärd.</p>
+        <div class="footer-links"><a href="https://github.com/Terrorbyte90" target="_blank">GitHub</a><a href="https://linkedin.com/in/tedsvard" target="_blank">LinkedIn</a></div>
+      </div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
