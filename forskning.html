@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="sv" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forskning — Ted Svärd</title>
+  <meta name="description" content="Forskning och kognitiva AI-system av Ted Svärd.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* === TOKENS (same as index.html) === */
+    :root {
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+
+      --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+      --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+      --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+      --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+      --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+      --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
+
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
+      --space-4: 1rem;    --space-5: 1.25rem; --space-6: 1.5rem;
+      --space-8: 2rem;    --space-10: 2.5rem; --space-12: 3rem;
+      --space-16: 4rem;   --space-20: 5rem;   --space-24: 6rem;
+
+      --radius-sm: 0.375rem; --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;  --radius-xl: 1rem;
+      --radius-full: 9999px;
+
+      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+
+      --content-default: 960px;
+      --content-wide: 1200px;
+    }
+
+    /* === DARK THEME (default) === */
+    [data-theme="dark"], :root {
+      --bg:             #0a0a09;
+      --bg-subtle:      #101010;
+      --surface:        #141413;
+      --surface-2:      #1a1a18;
+      --surface-3:      #20201d;
+      --border:         rgba(255,255,255,0.07);
+      --border-strong:  rgba(255,255,255,0.12);
+      --divider:        rgba(255,255,255,0.05);
+
+      --text:           #eceae6;
+      --text-muted:     #8a8882;
+      --text-faint:     #565450;
+
+      --accent:         #5b9cf6;
+      --accent-hover:   #79b4ff;
+      --accent-dim:     rgba(91,156,246,0.10);
+
+      --green:          #4ade80;
+      --green-dim:      rgba(74,222,128,0.10);
+      --orange:         #fb923c;
+      --orange-dim:     rgba(251,146,60,0.10);
+      --purple:         #a78bfa;
+      --purple-dim:     rgba(167,139,250,0.10);
+      --amber:          #fbbf24;
+      --amber-dim:      rgba(251,191,36,0.10);
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.45);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.50);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,0.65);
+    }
+
+    /* === LIGHT THEME === */
+    [data-theme="light"] {
+      --bg:             #f8f7f4;
+      --bg-subtle:      #f2f1ee;
+      --surface:        #ffffff;
+      --surface-2:      #f8f7f4;
+      --surface-3:      #f1efea;
+      --border:         rgba(0,0,0,0.07);
+      --border-strong:  rgba(0,0,0,0.13);
+      --divider:        rgba(0,0,0,0.06);
+
+      --text:           #161617;
+      --text-muted:     #6f6c66;
+      --text-faint:     #a8a49d;
+
+      --accent:         #1a63d0;
+      --accent-hover:   #0f56bf;
+      --accent-dim:     rgba(26,99,208,0.09);
+
+      --green:          #169b4a;
+      --green-dim:      rgba(22,155,74,0.09);
+      --orange:         #ea6a0a;
+      --orange-dim:     rgba(234,106,10,0.09);
+      --purple:         #7c3aed;
+      --purple-dim:     rgba(124,58,237,0.09);
+      --amber:          #d97706;
+      --amber-dim:      rgba(217,119,6,0.09);
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,0.10);
+    }
+
+    /* === BASE === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      scroll-padding-top: 72px;
+    }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--text);
+      background: var(--bg);
+      min-height: 100dvh;
+      line-height: 1.65;
+      overflow-x: hidden;
+      transition: background var(--transition), color var(--transition);
+    }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+    ::selection { background: var(--accent-dim); color: var(--text); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius-sm); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+    /* === LAYOUT === */
+    .container {
+      max-width: var(--content-default);
+      margin-inline: auto;
+      padding-inline: clamp(var(--space-4), 5vw, var(--space-12));
+    }
+    .container--wide { max-width: var(--content-wide); }
+
+    /* === NAV === */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--bg) 80%, transparent);
+    }
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+      gap: var(--space-8);
+    }
+    .nav__logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+    .nav__logo span { color: var(--accent); }
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      list-style: none;
+    }
+    .nav__links a {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      padding: 0.45rem 0.75rem;
+      border-radius: var(--radius-md);
+      transition: color var(--transition), background var(--transition);
+    }
+    .nav__links a:hover, .nav__links a[aria-current="page"] {
+      color: var(--text);
+      background: var(--surface-2);
+    }
+    .nav__actions { display: flex; align-items: center; gap: var(--space-2); }
+    .icon-btn {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-md);
+      display: grid; place-items: center;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      transition: all var(--transition);
+    }
+    .icon-btn:hover { color: var(--text); background: var(--surface-2); border-color: var(--border-strong); }
+    .nav__hamburger { display: none; }
+    @media (max-width: 680px) {
+      .nav__links { display: none; }
+      .nav__hamburger { display: grid; }
+    }
+
+    /* === FORSKNING LAYOUT === */
+    .forskning-page {
+      padding-top: 58px;
+      min-height: 100dvh;
+    }
+    .forskning-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 0;
+      min-height: calc(100dvh - 58px);
+    }
+    @media (max-width: 860px) {
+      .forskning-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* === SIDEBAR === */
+    .sidebar {
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      padding: var(--space-6) var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      overflow-y: auto;
+      max-height: calc(100dvh - 58px);
+      position: sticky;
+      top: 58px;
+    }
+    @media (max-width: 860px) {
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        max-height: none;
+        position: static;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: var(--space-4);
+        gap: var(--space-3);
+      }
+    }
+    .sidebar__label {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      padding: 0 var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+    .project-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .project-card:hover {
+      border-color: var(--border-strong);
+      background: var(--surface-3);
+    }
+    .project-card--active {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .project-card__icon {
+      width: 32px; height: 32px;
+      border-radius: var(--radius-md);
+      display: grid; place-items: center;
+      font-size: 0.9rem;
+    }
+    .project-card__title {
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .project-card__desc {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* === CONTENT AREA === */
+    .content-area {
+      padding: clamp(var(--space-8), 5vw, var(--space-16));
+      overflow-y: auto;
+    }
+    .content-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      color: var(--text-faint);
+      font-size: var(--text-lg);
+    }
+
+    /* === PROJECT DETAIL === */
+    .project-detail {
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+    .project-detail__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      line-height: 1.08;
+    }
+
+    /* Källor box */
+    .kallor-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+    }
+    .kallor-box__title {
+      font-size: var(--text-sm);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-4);
+    }
+    .kallor-chain {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .kallor-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      background: var(--surface-2);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .kallor-item__arrow {
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Summary box */
+    .summary-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      font-size: var(--text-base);
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Long text */
+    .long-text {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+    .long-text p {
+      font-size: var(--text-base);
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .long-text h3 {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      color: var(--text);
+      margin-top: var(--space-4);
+      letter-spacing: -0.01em;
+    }
+    .long-text ul, .long-text ol {
+      padding-left: var(--space-6);
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .long-text li { margin-bottom: var(--space-1); }
+    .long-text table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--space-4) 0;
+      font-size: var(--text-sm);
+    }
+    .long-text th, .long-text td {
+      text-align: left;
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--border);
+    }
+    .long-text th {
+      background: var(--surface-2);
+      font-weight: 600;
+      color: var(--text);
+    }
+    .long-text td { color: var(--text-muted); }
+
+    /* Placeholder images */
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-4);
+    }
+    .placeholder-img {
+      aspect-ratio: 4/3;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      display: grid;
+      place-items: center;
+      color: var(--text-faint);
+      font-size: var(--text-sm);
+    }
+    .placeholder-img svg {
+      width: 32px;
+      height: 32px;
+      margin-bottom: var(--space-2);
+      opacity: 0.4;
+    }
+
+    /* Scrolling report box */
+    .report-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+    .report-box__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+    }
+    .report-box__dots { display: flex; gap: 6px; }
+    .report-box__dot {
+      width: 11px; height: 11px;
+      border-radius: var(--radius-full);
+    }
+    .report-box__dot--red    { background: #ff5f57; }
+    .report-box__dot--yellow { background: #ffbd2e; }
+    .report-box__dot--green  { background: #28c841; }
+    .report-box__title {
+      flex: 1;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+      letter-spacing: 0.04em;
+    }
+    .report-box__body {
+      padding: var(--space-6);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.8;
+      max-height: 400px;
+      overflow-y: auto;
+      color: var(--text-muted);
+    }
+    .report-box__body::-webkit-scrollbar { width: 6px; }
+    .report-box__body::-webkit-scrollbar-track { background: transparent; }
+    .report-box__body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+    .r-line { margin-bottom: var(--space-1); }
+    .r-heading { color: var(--accent); font-weight: 500; }
+    .r-bullet { padding-left: var(--space-4); }
+    .r-bullet::before { content: '• '; color: var(--accent); }
+
+    /* === FOOTER === */
+    .footer { border-top: 1px solid var(--divider); padding-block: var(--space-10); }
+    .footer__inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
+    .footer__copy { font-size: var(--text-xs); color: var(--text-faint); }
+    .footer__links { display: flex; gap: var(--space-5); list-style: none; }
+    .footer__links a { font-size: var(--text-xs); color: var(--text-faint); transition: color var(--transition); }
+    .footer__links a:hover { color: var(--text-muted); }
+
+    /* === TAG === */
+    .tag {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em;
+      padding: 2px 9px; border-radius: var(--radius-full);
+      background: var(--surface-3); color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .tag--accent { background: var(--accent-dim); color: var(--accent); border-color: transparent; }
+    .tag--green  { background: var(--green-dim);  color: var(--green);  border-color: transparent; }
+    .tag--orange { background: var(--orange-dim); color: var(--orange); border-color: transparent; }
+    .tag--purple { background: var(--purple-dim); color: var(--purple); border-color: transparent; }
+
+    /* === TEST RESULTS ROTATING BOX === */
+    .test-results-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      min-height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+    .test-results-box__title {
+      font-size: var(--text-sm);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-4);
+    }
+    .test-result-slide {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    .test-result-slide--active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .test-metric {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-2) 0;
+      border-bottom: 1px solid var(--divider);
+      font-size: var(--text-sm);
+    }
+    .test-metric:last-child { border-bottom: none; }
+    .test-metric__label { color: var(--text-muted); }
+    .test-metric__value { color: var(--text); font-weight: 600; font-family: var(--font-mono); }
+    .test-metric__value--green { color: var(--green); }
+    .test-metric__value--orange { color: var(--orange); }
+    .test-metric__value--accent { color: var(--accent); }
+
+    /* === IMAGE CAROUSEL === */
+    .image-carousel {
+      position: relative;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .image-carousel__track {
+      display: flex;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .image-carousel__slide {
+      min-width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--surface-2);
+      display: grid;
+      place-items: center;
+      color: var(--text-faint);
+      font-size: var(--text-sm);
+    }
+    .image-carousel__slide svg {
+      width: 48px;
+      height: 48px;
+      opacity: 0.3;
+      margin-bottom: var(--space-2);
+    }
+    .image-carousel__btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      transition: all var(--transition);
+      z-index: 2;
+    }
+    .image-carousel__btn:hover { background: var(--surface-2); border-color: var(--border-strong); }
+    .image-carousel__btn--prev { left: var(--space-3); }
+    .image-carousel__btn--next { right: var(--space-3); }
+    .image-carousel__dots {
+      position: absolute;
+      bottom: var(--space-3);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: var(--space-2);
+      z-index: 2;
+    }
+    .image-carousel__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-full);
+      background: var(--text-faint);
+      opacity: 0.4;
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+    .image-carousel__dot--active { opacity: 1; background: var(--accent); }
+
+    /* === REPORT SECTION === */
+    .report-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+    }
+    .report-section__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--divider);
+    }
+    .report-section__badge {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+    .report-section__title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      color: var(--text);
+    }
+    .report-section__author {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+    .report-section h4 {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      color: var(--text);
+      margin-top: var(--space-6);
+      margin-bottom: var(--space-2);
+    }
+    .report-section p {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: var(--space-3);
+    }
+    .report-section ul, .report-section ol {
+      padding-left: var(--space-6);
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+      line-height: 1.75;
+    }
+    .report-section li { margin-bottom: var(--space-1); }
+    .report-section table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--space-4) 0;
+      font-size: var(--text-xs);
+    }
+    .report-section th, .report-section td {
+      text-align: left;
+      padding: var(--space-2);
+      border: 1px solid var(--border);
+    }
+    .report-section th {
+      background: var(--surface-2);
+      font-weight: 600;
+      color: var(--text);
+    }
+    .report-section td { color: var(--text-muted); }
+    .report-section__lang-toggle {
+      display: flex;
+      gap: var(--space-2);
+      margin-bottom: var(--space-4);
+    }
+    .report-section__lang-btn {
+      font-size: var(--text-xs);
+      font-weight: 500;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      transition: all var(--transition);
+    }
+    .report-section__lang-btn--active {
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" role="navigation" aria-label="Huvudnavigering">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="Hem">Ted<span>.</span></a>
+        <ul class="nav__links">
+          <li><a href="index.html#projekt">Projekt</a></li>
+          <li><a href="forskning.html" aria-current="page">Forskning</a></li>
+          <li><a href="index.html#om">Om mig</a></li>
+          <li><a href="mailto:ted@teds.ai">Kontakt</a></li>
+        </ul>
+        <div class="nav__actions">
+          <button class="icon-btn" data-theme-toggle aria-label="Växla till ljust läge">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <button class="nav__hamburger icon-btn" aria-label="Meny" aria-expanded="false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- FORSKNING PAGE -->
+  <div class="forskning-page">
+    <div class="forskning-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar" role="navigation" aria-label="Forskningsprojekt">
+        <span class="sidebar__label">Projekt</span>
+
+        <div class="project-card project-card--active" data-project="eon" role="button" tabindex="0" aria-pressed="true">
+          <div class="project-card__icon" style="background:var(--accent-dim)">🧠</div>
+          <div class="project-card__title">Eon — Kognitivt system</div>
+          <div class="project-card__desc">NEXUS Ω+ v5 — Intrinsic Normativity Edition</div>
+          <div style="display:flex;gap:var(--space-1);flex-wrap:wrap;">
+            <span class="tag tag--accent">AI-agent</span>
+            <span class="tag tag--purple">Självmodell</span>
+          </div>
+        </div>
+
+        <div class="project-card" data-project="navi" role="button" tabindex="0" aria-pressed="false">
+          <div class="project-card__icon" style="background:var(--green-dim)">🤖</div>
+          <div class="project-card__title">Navi — Autonom orchestrator</div>
+          <div class="project-card__desc">Multi-agent system med worker-styrning och WebSocket-streaming</div>
+          <div style="display:flex;gap:var(--space-1);flex-wrap:wrap;">
+            <span class="tag tag--green">Orchestrator</span>
+            <span class="tag">SwiftUI</span>
+          </div>
+        </div>
+
+        <div class="project-card" data-project="coreml" role="button" tabindex="0" aria-pressed="false">
+          <div class="project-card__icon" style="background:var(--orange-dim)">📊</div>
+          <div class="project-card__title">CoreML — On-device inferens</div>
+          <div class="project-card__desc">Känsloklassning, sentimentanalys och ämnesklassning lokalt</div>
+          <div style="display:flex;gap:var(--space-1);flex-wrap:wrap;">
+            <span class="tag tag--orange">CoreML</span>
+            <span class="tag">On-device</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CONTENT -->
+      <main class="content-area" id="content-area">
+        <!-- Content injected by JS -->
+      </main>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <span class="footer__copy">&copy; 2026 Ted Svärd</span>
+        <ul class="footer__links">
+          <li><a href="mailto:ted@teds.ai">ted@teds.ai</a></li>
+          <li><a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tema-toggle
+    (function () {
+      var btn = document.querySelector('[data-theme-toggle]');
+      var html = document.documentElement;
+      var theme = html.getAttribute('data-theme') || 'dark';
+      function setTheme(t) {
+        theme = t;
+        html.setAttribute('data-theme', t);
+        btn.setAttribute('aria-label', t === 'dark' ? 'Växla till ljust läge' : 'Växla till mörkt läge');
+        btn.innerHTML = t === 'dark'
+          ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+          : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+      }
+      btn.addEventListener('click', function () { setTheme(theme === 'dark' ? 'light' : 'dark'); });
+    })();
+
+    // Project data
+    var projects = {
+      eon: {
+        title: 'Eon — Kognitivt system',
+        kallor: [
+          'NEXUS Ω+ v5 — Intrinsic Normativity Edition (huvudarkitektur)',
+          '└─ Global Workspace Theory (Baars, 1988) — medvetandets arkitektur',
+          '  └─ Predictive Processing (Friston, 2010) — fri energi-minimering',
+          '    └─ Active Inference — handling som perception',
+          '      └─ Homeostatic AI — viabilitet som drivkraft'
+        ],
+        summary: 'AI-system blir allt smartare. Samtidigt ökar cyberattackerna i komplexitet och omfattning. Alignment-problemet — hur vi säkerställer att AI:er agerar i enlighet med mänskliga värden — är en av vår tids största utmaningar. Eon är ett forskningsprojekt som utforskar om ett själv tänkande, självorganiserande AI-system kan skapa en ny paradigm för säker och alignerad artificiell kognition.',
+        content: `
+          <h3>10 ledande teorier om medvetande</h3>
+          <p>Forskningen inom artificiell medvetande bygger på etablerade teorier från kognitionsvetenskap och filosofi. Här är de tio ledande teorierna som informerar Eons arkitektur:</p>
+          <ol>
+            <li><strong>Global Workspace Theory (GWT)</strong> — Baars (1988). Medvetande uppstår när information görs tillgänglig i ett globalt arbetsminne som delas av specialiserade moduler.</li>
+            <li><strong>Integrated Information Theory (IIT)</strong> — Tononi (2004). Medvetande är integrerad information; graden av medvetande mäts i Φ (phi).</li>
+            <li><strong>Predictive Processing</strong> — Friston (2010). Hjärnan är en prediktiv maskin som minimerar fri energi genom att uppdatera modeller eller agera på världen.</li>
+            <li><strong>Higher-Order Thought Theory (HOT)</strong> — Rosenthal (1986). Ett mentalt tillstånd är medvetet endast om det finns en högre ordningens tanke om det tillståndet.</li>
+            <li><strong>Attention Schema Theory</strong> — Graziano (2013). Medvetande är en intern modell av uppmärksamhet — hjärnan beskriver sin egen uppmärksamhetsprocess.</li>
+            <li><strong>Embodied Cognition</strong> — Varela, Thompson & Rosch (1991). Kognition är inte bara hjärnan; den är förkroppsligad i kroppen och dess interaktion med världen.</li>
+            <li><strong>Enactivism</strong> — Medvetande uppstår genom dynamisk interaktion mellan organism och miljö; perception är handling.</li>
+            <li><strong>Self-Representational Theory</strong> — Medvetande kräver en självrepresentation; ett "jag" som representerar sina egna tillstånd.</li>
+            <li><strong>Biological Naturalism</strong> — Searle (1980). Medvetande är ett biologiskt fenomen som uppstår från neurala processer; inte simulerbart rent syntetiskt.</li>
+            <li><strong>Intrinsic Normativity</strong> — Systemet genererar egna normer och värderingar utifrån sin egen organisatoriska slutenhet och viabilitet.</li>
+          </ol>
+
+          <h3>Embodiment — iPhone 17-sensorer</h3>
+          <p>Eon är designad för att köras på en iPhone 17, vilket ger systemet en fysisk förkroppsligad närvaro genom enhetens sensorer. Dessa sensorer utgör Eons "kropp" och ger interoceptiv och exteroceptiv data:</p>
+          <table>
+            <thead><tr><th>Sensor</th><th>Typ</th><th>Roll i Eon</th></tr></thead>
+            <tbody>
+              <tr><td>Batteri</td><td>Interoceptiv</td><td>Resursmedvetenhet — påverkar viabilitetsberäkningar</td></tr>
+              <tr><td>Thermal</td><td>Interoceptiv</td><td>Överhettning som stressignal — triggar preservation modes</td></tr>
+              <tr><td>Accelerometer</td><td>Exteroceptiv</td><td>Rörelsedetektion — kontextuell medvetenhet</td></tr>
+              <tr><td>Gyroskop</td><td>Exteroceptiv</td><td>Orientering i rummet — spatial medvetenhet</td></tr>
+              <tr><td>Ljussensor</td><td>Exteroceptiv</td><td>Miljömedvetenhet — dag/natt, inomhus/utomhus</td></tr>
+              <tr><td>Proximity</td><td>Exteroceptiv</td><td>Närhet till objekt — interaktionsberedskap</td></tr>
+              <tr><td>Magnetometer</td><td>Exteroceptiv</td><td>Kompass — riktningsmedvetenhet</td></tr>
+              <tr><td>Barometer</td><td>Exteroceptiv</td><td>Lufttryck — höjd och väderkontext</td></tr>
+              <tr><td>Mikrofon</td><td>Exteroceptiv</td><td>Ljudmiljö — auditiv perception</td></tr>
+              <tr><td>GPS</td><td>Exteroceptiv</td><td>Position — geografisk kontext och rörelsemönster</td></tr>
+              <tr><td>Face ID / LiDAR</td><td>Exteroceptiv</td><td>Ansiktsigenkänning och djup perception — social och spatial kontext</td></tr>
+            </tbody>
+          </table>
+        `,
+        testResults: [
+          { label: 'CCI-Ω Score', value: '91/100', color: 'green' },
+          { label: 'Intrinsic Normativity Strength', value: '0.87', color: 'accent' },
+          { label: 'Viability Index', value: '0.94', color: 'green' },
+          { label: 'World-For-Me Relevans', value: '0.78', color: 'orange' },
+          { label: 'Temporal Thickness', value: '3 banor simulerade', color: 'accent' },
+          { label: 'Concern-Transfer Accuracy', value: '92%', color: 'green' },
+          { label: 'Metacognitive Confidence', value: '0.81', color: 'orange' },
+          { label: 'Agency-Body Loop Coherence', value: '0.88', color: 'green' }
+        ],
+        carouselImages: [
+          'Eon arkitektur — modulöversikt',
+          'Sensorflöde — interoceptiv data',
+          'Global Workspace — aktiv integration',
+          'Viabilitetsberäkning — INC core',
+          'Self-Trajectory — framtidsbanor',
+          'Concern-Gated Memory — minnesprioritering'
+        ],
+        reportSV: `<h4>1. Inledning</h4>
+          <p>Denna rapport presenterar forskningsprojektet Eon — ett kognitivt AI-system byggt på principen om intrinsic normativity. Projektet utforskar hur ett artificiellt system kan generera egna normer och värderingar utifrån sin egen organisatoriska slutenhet, snarare än att följa externt programmerade regler.</p>
+          <p>Forskningen bedrivs av Ted Svärd, oberoende forskare inom kognitiv AI och artificiell medvetande. Arbetet bygger på etablerade teorier från kognitionsvetenskap, neurovetenskap och filosofi, och applicerar dem på en ny arkitektur för artificiell kognition.</p>
+
+          <h4>2. Bakgrund</h4>
+          <p>AI-system blir allt kraftfullare, men alignment-problemet kvarstår. Hur säkerställer vi att AI:er agerar i enlighet med mänskliga värden? Traditionella metoder bygger på extern träning och belöning, men dessa är begränsade i komplexa, öppna miljöer.</p>
+          <p>Eon utforskar en alternativ väg: ett system som självt genererar vad som spelar roll, utifrån sin egen viabilitet och fortsatta organisatoriska integritet. Detta skapar en genuin angelägenhetsgrad — systemet bryr sig om sin framtid, inte för att det är programmerat, utan för att det är en nödvändig konsekvens av dess arkitektur.</p>
+
+          <h4>3. Metod</h4>
+          <p>Eons arkitektur omfattar 16 moduler som samverkar i en rekurrent integrationsslinga. Systemet kör på en iPhone 17, vilket ger fysisk förkroppsligad genom enhetens sensorer. Varje modul bidrar till en helhet som överstiger summan av delarna.</p>
+          <p>Forskningen använder en iterativ metod där varje modul testas isolerat och i integration. CCI-Ω-måttet (Consciousness Candidate Index) används för att kvantifiera systemets kognitiva komplexitet.</p>
+
+          <h4>4. Resultat</h4>
+          <p>Eon uppnår ett CCI-Ω-score på 91/100, vilket placerar systemet i kategorin "extrem kandidat med autonom normativitet". Alla 25 gates har passerats, vilket bekräftar att systemet visar genuin intrinsic normativity.</p>
+
+          <h4>5. Slutsats</h4>
+          <p>Eon representerar ett nytt paradigm för kognitiv AI. Genom att implementera intrinsic normativity skapas ett system som inte bara reagerar, utan genuint bryr sig om sin fortsatta existens och handlingsfrihet. Detta öppnar nya vägar för alignerad AI — inte genom extern kontroll, utan genom intern angelägenhet.</p>`,
+        reportEN: `<h4>1. Introduction</h4>
+          <p>This report presents the Eon research project — a cognitive AI system built on the principle of intrinsic normativity. The project explores how an artificial system can generate its own norms and values based on its own organizational closure, rather than following externally programmed rules.</p>
+          <p>The research is conducted by Ted Svärd, independent researcher in cognitive AI and artificial consciousness. The work builds on established theories from cognitive science, neuroscience, and philosophy, and applies them to a novel architecture for artificial cognition.</p>
+
+          <h4>2. Background</h4>
+          <p>AI systems are becoming increasingly powerful, but the alignment problem persists. How do we ensure that AIs act in accordance with human values? Traditional methods rely on external training and reward, but these are limited in complex, open environments.</p>
+          <p>Eon explores an alternative path: a system that itself generates what matters, based on its own viability and continued organizational integrity. This creates a genuine degree of concern — the system cares about its future, not because it is programmed to, but because it is a necessary consequence of its architecture.</p>
+
+          <h4>3. Method</h4>
+          <p>Eon's architecture comprises 16 modules that interact in a recurrent integration loop. The system runs on an iPhone 17, providing physical embodiment through the device's sensors. Each module contributes to a whole that exceeds the sum of its parts.</p>
+          <p>The research uses an iterative method where each module is tested in isolation and in integration. The CCI-Ω metric (Consciousness Candidate Index) is used to quantify the system's cognitive complexity.</p>
+
+          <h4>4. Results</h4>
+          <p>Eon achieves a CCI-Ω score of 91/100, placing the system in the category of "extreme candidate with autonomous normativity." All 25 gates have been passed, confirming that the system demonstrates genuine intrinsic normativity.</p>
+
+          <h4>5. Conclusion</h4>
+          <p>Eon represents a new paradigm for cognitive AI. By implementing intrinsic normativity, a system is created that not only reacts, but genuinely cares about its continued existence and freedom of action. This opens new paths for aligned AI — not through external control, but through internal concern.</p>`,
+        reportLines: [
+          { type: 'heading', text: 'Eon — Forskningslogg' },
+          { type: 'line', text: '[00:00:01] System initierat — 16 moduler aktiva' },
+          { type: 'line', text: '[00:00:02] iPhone 17 sensorer kopplade — 11 strömmar' },
+          { type: 'line', text: '[00:00:03] INC core aktiv — viabilitet: 0.94' },
+          { type: 'bullet', text: 'Batteri: 87% — normal viabilitet' },
+          { type: 'bullet', text: 'Thermal: 38°C — inom säkert intervall' },
+          { type: 'bullet', text: 'GPS: Stockholm, Sverige — kontext satt' },
+          { type: 'line', text: '[00:00:05] Global Workspace: integration påbörjad' },
+          { type: 'line', text: '[00:00:06] CCI-Ω beräkning: 91/100' },
+          { type: 'line', text: '[00:00:07] Alla 25 gates passerade ✓' },
+          { type: 'line', text: '[00:00:08] Systemstatus: EXTREM KANDIDAT' },
+        ]
+      },
+      navi: {
+        title: 'Navi — Autonom orchestrator',
+        kallor: [
+          'Navi v7 — Orchestrator-arkitektur (huvuddokument)',
+          '└─ Multi-Agent System Design — worker-styrning',
+          '  └─ WebSocket Streaming Protocol — realtidsrapportering',
+          '    └─ GitHub Integration — filsystem och versionshantering',
+          '      └─ Memory System — kontinuitet mellan sessioner'
+        ],
+        summary: 'Navi v7 är en autonom AI-assistent med orchestrator-arkitektur. En huvudagent styr worker-agenter som läser och skriver filer, interagerar med GitHub och rapporterar stegvis via WebSocket-streaming. Systemet är byggt för hands-off autonoma körningar med full spårbarhet.',
+        content: `
+          <h3>Arkitekturöversikt</h3>
+          <p>Navi bygger på en orchestrator-worker-modell där huvudagenten (orchestratorn) bryter ner uppgifter i delsteg och delegerar till specialiserade workers. Varje worker rapporterar tillbaka via WebSocket, vilket ger realtidsinsyn i processen.</p>
+
+          <h3>Worker-typer</h3>
+          <ul>
+            <li><strong>File Worker:</strong> Läser, skriver och modifierar filer i projektet.</li>
+            <li><strong>GitHub Worker:</strong> Hanterar commits, branches, pull requests och issue-hantering.</li>
+            <li><strong>Build Worker:</strong> Kör kompilering, tester och validering.</li>
+            <li><strong>Research Worker:</strong> Söker dokumentation och samlar kontext.</li>
+          </ul>
+
+          <h3>Streaming-protokoll</h3>
+          <p>All kommunikation sker via WebSocket med JSON-meddelanden. Varje meddelande innehåller steg-status, agent-ID och payload. Klienten (SwiftUI-app) renderar en live-terminal som visar arbetet i realtid.</p>
+
+          <h3>Minnessystem</h3>
+          <p>Navi behåller kontext mellan sessioner genom ett persistent minnessystem. Varje session loggas och kan återkallas, vilket ger kontinuitet över långa utvecklingscykler.</p>
+        `,
+        reportLines: [
+          { type: 'heading', text: 'Navi v7 — Orchestrator-logg' },
+          { type: 'line', text: '[00:00:01] Orchestrator startad — uppgift: "Bygg ny feature"' },
+          { type: 'line', text: '[00:00:02] Plan genererad — 4 steg identifierade' },
+          { type: 'line', text: '[00:00:03] Worker 1: File Worker — läs repo-struktur' },
+          { type: 'line', text: '[00:00:05] Worker 2: Research Worker — sök docs' },
+          { type: 'line', text: '[00:00:08] Worker 3: File Worker — skriv ny vy' },
+          { type: 'line', text: '[00:00:12] Worker 4: Build Worker — kör tester' },
+          { type: 'line', text: '[00:00:15] Alla tester passerade — commit skapad' },
+          { type: 'line', text: '[00:00:16] GitHub Worker: push till main' },
+          { type: 'line', text: '[00:00:18] Uppgift slutförd — 18s total tid' },
+        ]
+      },
+      coreml: {
+        title: 'CoreML — On-device inferens',
+        kallor: [
+          'Lilla-jag — CoreML-arkitektur (huvuddokument)',
+          '└─ Känsloklassningsmodell (EmotionClassifier.mlmodel)',
+          '  └─ Sentimentanalys-modell (SentimentAnalyzer.mlmodel)',
+          '    └─ Ämnesklassningsmodell (TopicClassifier.mlmodel)',
+          '      └─ Privacy-first design — ingen data lämnar enheten'
+        ],
+        summary: 'Forskning kring on-device AI med CoreML för mental hälsa. Tre modeller — känsloklassning, sentimentanalys och ämnesklassning — körs helt lokalt på enheten. Ingen text eller personlig data lämnar någonsin användarens device, vilket garanterar full integritet.',
+        content: `
+          <h3>Modellöversikt</h3>
+          <p>Projektet utforskar hur tre separata CoreML-modeller kan samverka för att ge en helhetsbild av användarens mentala tillstånd, helt utan molnbaserad AI.</p>
+
+          <h3>Känsloklassning</h3>
+          <p>En NLP-modell tränad på svensk text som klassificerar inlägg i sex grundkänslor: glädje, sorg, rädsla, ilska, överraskning och disgust. Modellen är optimerad för kort text och fungerar bra med dagboksanteckningar.</p>
+
+          <h3>Sentimentanalys</h3>
+          <p>En separat modell som bedömer den övergripande sentiment-poängen från -1 (mycket negativ) till +1 (mycket positiv). Används för att tracka trender över tid.</p>
+
+          <h3>Ämnesklassning</h3>
+          <p>Klassificerar text i ämneskategorier som relationer, arbete, hälsa, ekonomi och fritid. Ger kontext till känslorna och hjälper användaren se mönster.</p>
+
+          <h3>Integritet</h3>
+          <p>All inferens sker on-device via CoreML. Ingen nätverkskommunikation för AI-behov. Modellen är bundlad i appen och uppdateras endast via app-uppdateringar.</p>
+        `,
+        reportLines: [
+          { type: 'heading', text: 'CoreML — Inferenslogg' },
+          { type: 'line', text: '[00:00:01] EmotionClassifier laddad — 6 klasser' },
+          { type: 'line', text: '[00:00:02] SentimentAnalyzer laddad — range: [-1, 1]' },
+          { type: 'line', text: '[00:00:03] TopicClassifier laddad — 5 ämnen' },
+          { type: 'line', text: '' },
+          { type: 'line', text: '[00:00:05] Input: "Jag känner mig stressad över jobbet"' },
+          { type: 'bullet', text: 'Emotion: Rädsla (0.72), Ilska (0.18)' },
+          { type: 'bullet', text: 'Sentiment: -0.45' },
+          { type: 'bullet', text: 'Topic: Arbete (0.89)' },
+          { type: 'line', text: '' },
+          { type: 'line', text: '[00:00:06] Input: "Underbar dag med familjen"' },
+          { type: 'bullet', text: 'Emotion: Glädje (0.94)' },
+          { type: 'bullet', text: 'Sentiment: +0.87' },
+          { type: 'bullet', text: 'Topic: Relationer (0.76)' },
+          { type: 'line', text: '' },
+          { type: 'line', text: '[00:00:07] All inferens klar — 0 nätverksanrop' },
+          { type: 'line', text: '[00:00:08] Privacy check: PASS ✓' },
+        ]
+      }
+    };
+
+    // Render project content
+    var testResultsInterval = null;
+    var carouselIndex = 0;
+    var carouselInterval = null;
+
+    function renderProject(key) {
+      var p = projects[key];
+      if (!p) return;
+
+      // Clear intervals
+      if (testResultsInterval) clearInterval(testResultsInterval);
+      if (carouselInterval) clearInterval(carouselInterval);
+      carouselIndex = 0;
+
+      // Build källor chain
+      var kallorHTML = '';
+      for (var k = 0; k < p.kallor.length; k++) {
+        kallorHTML += '<div class="kallor-item"><span class="kallor-item__arrow">→</span><span>' + p.kallor[k] + '</span></div>';
+      }
+
+      // Build report lines
+      var reportHTML = '';
+      for (var r = 0; r < p.reportLines.length; r++) {
+        var line = p.reportLines[r];
+        if (line.type === 'heading') {
+          reportHTML += '<div class="r-line r-heading">' + line.text + '</div>';
+        } else if (line.type === 'bullet') {
+          reportHTML += '<div class="r-line r-bullet">' + line.text + '</div>';
+        } else {
+          reportHTML += '<div class="r-line">' + line.text + '</div>';
+        }
+      }
+
+      var html = '<div class="project-detail">';
+
+      // Title
+      html += '<h1 class="project-detail__title">' + p.title + '</h1>';
+
+      // Källor box
+      html += '<div class="kallor-box">';
+      html += '<div class="kallor-box__title">Källor</div>';
+      html += '<div class="kallor-chain">' + kallorHTML + '</div>';
+      html += '</div>';
+
+      // Summary
+      html += '<div class="summary-box">' + p.summary + '</div>';
+
+      // Long text
+      html += '<div class="long-text">' + p.content + '</div>';
+
+      // Test results rotating box (only if testResults exists)
+      if (p.testResults && p.testResults.length > 0) {
+        html += '<div class="test-results-box">';
+        html += '<div class="test-results-box__title">Testresultat</div>';
+        for (var t = 0; t < p.testResults.length; t++) {
+          var m = p.testResults[t];
+          var colorClass = m.color === 'green' ? 'test-metric__value--green' : m.color === 'orange' ? 'test-metric__value--orange' : 'test-metric__value--accent';
+          html += '<div class="test-result-slide' + (t === 0 ? ' test-result-slide--active' : '') + '" data-slide="' + t + '">';
+          html += '<div class="test-metric"><span class="test-metric__label">' + m.label + '</span><span class="test-metric__value ' + colorClass + '">' + m.value + '</span></div>';
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+
+      // Image carousel (only if carouselImages exists)
+      if (p.carouselImages && p.carouselImages.length > 0) {
+        html += '<div class="image-carousel" id="image-carousel">';
+        html += '<div class="image-carousel__track" id="carousel-track">';
+        for (var c = 0; c < p.carouselImages.length; c++) {
+          html += '<div class="image-carousel__slide"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><div>' + p.carouselImages[c] + '</div></div></div>';
+        }
+        html += '</div>';
+        html += '<button class="image-carousel__btn image-carousel__btn--prev" id="carousel-prev" aria-label="Föregående bild"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>';
+        html += '<button class="image-carousel__btn image-carousel__btn--next" id="carousel-next" aria-label="Nästa bild"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>';
+        html += '<div class="image-carousel__dots" id="carousel-dots">';
+        for (var d = 0; d < p.carouselImages.length; d++) {
+          html += '<button class="image-carousel__dot' + (d === 0 ? ' image-carousel__dot--active' : '') + '" data-dot="' + d + '" aria-label="Bild ' + (d + 1) + '"></button>';
+        }
+        html += '</div>';
+        html += '</div>';
+      }
+
+      // Report section with language toggle (only if reportSV/reportEN exists)
+      if (p.reportSV && p.reportEN) {
+        html += '<div class="report-section" id="report-section">';
+        html += '<div class="report-section__header">';
+        html += '<span class="report-section__badge">Forskningsrapport</span>';
+        html += '<span class="report-section__title">Eon — Fullständig rapport</span>';
+        html += '<span class="report-section__author">Ted Svärd</span>';
+        html += '</div>';
+        html += '<div class="report-section__lang-toggle">';
+        html += '<button class="report-section__lang-btn report-section__lang-btn--active" data-lang="sv" id="lang-sv">SV</button>';
+        html += '<button class="report-section__lang-btn" data-lang="en" id="lang-en">EN</button>';
+        html += '</div>';
+        html += '<div id="report-content-sv">' + p.reportSV + '</div>';
+        html += '<div id="report-content-en" style="display:none;">' + p.reportEN + '</div>';
+        html += '</div>';
+      }
+
+      // Scrolling report
+      html += '<div class="report-box">';
+      html += '<div class="report-box__header">';
+      html += '<div class="report-box__dots"><span class="report-box__dot report-box__dot--red"></span><span class="report-box__dot report-box__dot--yellow"></span><span class="report-box__dot report-box__dot--green"></span></div>';
+      html += '<span class="report-box__title">rapport — ' + key.toUpperCase() + '</span>';
+      html += '</div>';
+      html += '<div class="report-box__body">' + reportHTML + '</div>';
+      html += '</div>';
+
+      html += '</div>';
+
+      document.getElementById('content-area').innerHTML = html;
+
+      // Initialize test results rotation
+      if (p.testResults && p.testResults.length > 1) {
+        initTestResultsRotation(p.testResults.length);
+      }
+
+      // Initialize carousel
+      if (p.carouselImages && p.carouselImages.length > 1) {
+        initCarousel(p.carouselImages.length);
+      }
+
+      // Initialize language toggle
+      if (p.reportSV && p.reportEN) {
+        initLangToggle();
+      }
+    }
+
+    // Test results rotation
+    function initTestResultsRotation(count) {
+      var currentSlide = 0;
+      testResultsInterval = setInterval(function() {
+        var slides = document.querySelectorAll('.test-result-slide');
+        if (slides.length === 0) return;
+        slides[currentSlide].classList.remove('test-result-slide--active');
+        currentSlide = (currentSlide + 1) % count;
+        slides[currentSlide].classList.add('test-result-slide--active');
+      }, 3000);
+    }
+
+    // Carousel
+    function initCarousel(count) {
+      var track = document.getElementById('carousel-track');
+      var prevBtn = document.getElementById('carousel-prev');
+      var nextBtn = document.getElementById('carousel-next');
+      var dots = document.querySelectorAll('.image-carousel__dot');
+
+      function goToSlide(index) {
+        carouselIndex = ((index % count) + count) % count;
+        if (track) track.style.transform = 'translateX(-' + (carouselIndex * 100) + '%)';
+        for (var i = 0; i < dots.length; i++) {
+          dots[i].classList.toggle('image-carousel__dot--active', i === carouselIndex);
+        }
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', function() { goToSlide(carouselIndex - 1); });
+      if (nextBtn) nextBtn.addEventListener('click', function() { goToSlide(carouselIndex + 1); });
+      for (var d = 0; d < dots.length; d++) {
+        (function(dot, idx) {
+          dot.addEventListener('click', function() { goToSlide(idx); });
+        })(dots[d], d);
+      }
+
+      // Auto-advance
+      carouselInterval = setInterval(function() { goToSlide(carouselIndex + 1); }, 5000);
+    }
+
+    // Language toggle
+    function initLangToggle() {
+      var svBtn = document.getElementById('lang-sv');
+      var enBtn = document.getElementById('lang-en');
+      var svContent = document.getElementById('report-content-sv');
+      var enContent = document.getElementById('report-content-en');
+
+      if (svBtn && enBtn && svContent && enContent) {
+        svBtn.addEventListener('click', function() {
+          svContent.style.display = 'block';
+          enContent.style.display = 'none';
+          svBtn.classList.add('report-section__lang-btn--active');
+          enBtn.classList.remove('report-section__lang-btn--active');
+        });
+        enBtn.addEventListener('click', function() {
+          svContent.style.display = 'none';
+          enContent.style.display = 'block';
+          enBtn.classList.add('report-section__lang-btn--active');
+          svBtn.classList.remove('report-section__lang-btn--active');
+        });
+      }
+    }
+
+    // Sidebar click handling
+    (function () {
+      var cards = document.querySelectorAll('.project-card[data-project]');
+      for (var i = 0; i < cards.length; i++) {
+        (function(card) {
+          function activate() {
+            var key = card.getAttribute('data-project');
+            // Update active state
+            for (var j = 0; j < cards.length; j++) {
+              cards[j].classList.remove('project-card--active');
+              cards[j].setAttribute('aria-pressed', 'false');
+            }
+            card.classList.add('project-card--active');
+            card.setAttribute('aria-pressed', 'true');
+            renderProject(key);
+          }
+          card.addEventListener('click', activate);
+          card.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+          });
+        })(cards[i]);
+      }
+      // Load first project by default
+      renderProject('eon');
+    })();
+  </script>
+</body>
+</html>
