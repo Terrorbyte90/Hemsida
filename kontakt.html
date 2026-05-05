@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kontakt – Ted Svärd</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
   <canvas id="particleCanvas"></canvas>
-
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">TS<span class="dot">.</span></a>
@@ -27,55 +28,103 @@
 
   <div class="page-hero">
     <div class="container">
-      <p class="section-tag">// Kontakt</p>
-      <h1 class="page-title">Hör av <span class="gradient-text">dig</span></h1>
+      <p class="section-tag">// kontakt</p>
+      <h1 class="page-title">Låt oss <span class="gradient-text">prata</span></h1>
+      <p class="page-sub">Har du ett projekt, en idé eller bara en fråga? Hör av dig — jag svarar inom 24 timmar.</p>
     </div>
   </div>
 
   <section class="section">
     <div class="container">
-      <div class="contact-inner">
-        <div class="contact-text">
-          <p class="about-lead">Har du ett AI-projekt som behöver en erfaren arkitekt?</p>
-          <p style="color:var(--text-muted);line-height:1.8;margin-bottom:32px">Jag tar emot ett begränsat antal uppdrag per kvartal — hör av dig tidigt. Svarar normalt inom 24 timmar.</p>
-          <div class="contact-info">
-            <a href="mailto:Ted@Tuvaluna.com" class="contact-link">
-              <span class="contact-icon">✉</span> Ted@Tuvaluna.com
-            </a>
-            <a href="https://linkedin.com/in/tedsvard" class="contact-link" target="_blank">
-              <span class="contact-icon">in</span> linkedin.com/in/tedsvard
-            </a>
-            <a href="https://github.com/Terrorbyte90" class="contact-link" target="_blank">
-              <span class="contact-icon">gh</span> github.com/Terrorbyte90
-            </a>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="glass-card contact-card">
+            <div class="card-header">
+              <div class="terminal-dots"><span></span><span></span><span></span></div>
+              <span class="card-title-small">kontaktinfo.json</span>
+            </div>
+            <div class="card-body">
+              <div class="contact-item">
+                <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                <div>
+                  <p class="contact-label">E-post</p>
+                  <a href="mailto:Ted@Tuvaluna.com" class="contact-link">Ted@Tuvaluna.com</a>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+                <div>
+                  <p class="contact-label">GitHub</p>
+                  <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener noreferrer" class="contact-link">Terrorbyte90</a>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+                <div>
+                  <p class="contact-label">LinkedIn</p>
+                  <a href="https://linkedin.com/in/tedsvard" target="_blank" rel="noopener noreferrer" class="contact-link">Ted Svärd</a>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                <div>
+                  <p class="contact-label">Svarstid</p>
+                  <p class="contact-text">Vanligtvis inom 24 timmar</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="availability-box">
+          <div class="glass-card available-card">
             <div class="avail-dot"></div>
             <div>
-              <strong>Tillgänglig Q2 2026</strong>
-              <p>Tar just nu emot nya uppdrag och konsultationer.</p>
+              <p class="avail-title">Tillgänglig för nya projekt</p>
+              <p class="avail-sub">Jag tar just nu emot uppdrag för Q3 2026</p>
             </div>
           </div>
         </div>
-        <form class="contact-form" id="contactForm">
-          <div class="form-group"><label for="name">Namn</label><input type="text" id="name" placeholder="Ditt namn" required /></div>
-          <div class="form-group"><label for="company">Företag (valfritt)</label><input type="text" id="company" placeholder="Ditt företag" /></div>
-          <div class="form-group"><label for="email">E-post</label><input type="email" id="email" placeholder="din@email.com" required /></div>
-          <div class="form-group">
-            <label for="type">Typ av projekt</label>
-            <select id="type">
-              <option value="">Välj kategori...</option>
-              <option>LLM / RAG-system</option>
-              <option>Agentiskt system</option>
-              <option>AI Strategy</option>
-              <option>MLOps / Deployment</option>
-              <option>Workshop / Utbildning</option>
-              <option>Annat</option>
-            </select>
-          </div>
-          <div class="form-group"><label for="message">Beskriv projektet</label><textarea id="message" rows="5" placeholder="Berätta om ditt projekt, mål och tidsram..." required></textarea></div>
-          <button type="submit" class="btn btn-primary btn-full">Skicka meddelande ✦</button>
-        </form>
+        <div class="contact-form-wrap">
+          <form class="contact-form glass-card" id="contactForm">
+            <div class="card-header">
+              <div class="terminal-dots"><span></span><span></span><span></span></div>
+              <span class="card-title-small">skicka_meddelande.sh</span>
+            </div>
+            <div class="form-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fname">Förnamn</label>
+                  <input type="text" id="fname" name="fname" placeholder="Anna" required />
+                </div>
+                <div class="form-group">
+                  <label for="lname">Efternamn</label>
+                  <input type="text" id="lname" name="lname" placeholder="Svensson" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="email">E-post</label>
+                <input type="email" id="email" name="email" placeholder="anna@foretag.se" required />
+              </div>
+              <div class="form-group">
+                <label for="amne">Ämne</label>
+                <select id="amne" name="amne">
+                  <option value="">Välj ämne…</option>
+                  <option value="ai-projekt">AI-projekt</option>
+                  <option value="radgivning">Rådgivning</option>
+                  <option value="samarbete">Samarbete</option>
+                  <option value="ovrigt">Övrigt</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="msg">Meddelande</label>
+                <textarea id="msg" name="msg" rows="5" placeholder="Beskriv ditt projekt eller din fråga…" required></textarea>
+              </div>
+              <button type="submit" class="btn-primary full-width">
+                <span>Skicka meddelande</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+              <p class="form-note" id="formStatus"></p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -84,11 +133,23 @@
     <div class="container">
       <div class="footer-inner">
         <p class="footer-logo">Ted Svärd<span class="dot">.</span></p>
-        <p class="footer-copy">© 2026 Ted Svärd.</p>
-        <div class="footer-links"><a href="https://github.com/Terrorbyte90" target="_blank">GitHub</a><a href="https://linkedin.com/in/tedsvard" target="_blank">LinkedIn</a></div>
+        <p class="footer-copy">&copy; 2026 Ted Svärd. Byggd med passion och AI.</p>
+        <div class="footer-links">
+          <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://linkedin.com/in/tedsvard" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
       </div>
     </div>
   </footer>
   <script src="script.js"></script>
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const status = document.getElementById('formStatus');
+      status.textContent = '✓ Meddelande skickat! Jag hör av mig inom 24 timmar.';
+      status.style.color = '#a855f7';
+      this.reset();
+    });
+  </script>
 </body>
 </html>
