@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="sv" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Om mig — Ted Svärd</title>
+  <meta name="description" content="Om Ted Svärd — AI-arkitekt, iOS-utvecklare och forskare.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* === TOKENS (same as index.html) === */
+    :root {
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+
+      --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+      --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+      --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+      --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+      --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+      --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
+
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
+      --space-4: 1rem;    --space-5: 1.25rem; --space-6: 1.5rem;
+      --space-8: 2rem;    --space-10: 2.5rem; --space-12: 3rem;
+      --space-16: 4rem;   --space-20: 5rem;   --space-24: 6rem;
+
+      --radius-sm: 0.375rem; --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;  --radius-xl: 1rem;
+      --radius-full: 9999px;
+
+      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+
+      --content-default: 960px;
+      --content-wide: 1200px;
+    }
+
+    /* === DARK THEME (default) === */
+    [data-theme="dark"], :root {
+      --bg:             #0a0a09;
+      --bg-subtle:      #101010;
+      --surface:        #141413;
+      --surface-2:      #1a1a18;
+      --surface-3:      #20201d;
+      --border:         rgba(255,255,255,0.07);
+      --border-strong:  rgba(255,255,255,0.12);
+      --divider:        rgba(255,255,255,0.05);
+
+      --text:           #eceae6;
+      --text-muted:     #8a8882;
+      --text-faint:     #565450;
+
+      --accent:         #5b9cf6;
+      --accent-hover:   #79b4ff;
+      --accent-dim:     rgba(91,156,246,0.10);
+
+      --green:          #4ade80;
+      --green-dim:      rgba(74,222,128,0.10);
+      --orange:         #fb923c;
+      --orange-dim:     rgba(251,146,60,0.10);
+      --purple:         #a78bfa;
+      --purple-dim:     rgba(167,139,250,0.10);
+      --amber:          #fbbf24;
+      --amber-dim:      rgba(251,191,36,0.10);
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.45);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.50);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,0.65);
+    }
+
+    /* === LIGHT THEME === */
+    [data-theme="light"] {
+      --bg:             #f8f7f4;
+      --bg-subtle:      #f2f1ee;
+      --surface:        #ffffff;
+      --surface-2:      #f8f7f4;
+      --surface-3:      #f1efea;
+      --border:         rgba(0,0,0,0.07);
+      --border-strong:  rgba(0,0,0,0.13);
+      --divider:        rgba(0,0,0,0.06);
+
+      --text:           #161617;
+      --text-muted:     #6f6c66;
+      --text-faint:     #a8a49d;
+
+      --accent:         #1a63d0;
+      --accent-hover:   #0f56bf;
+      --accent-dim:     rgba(26,99,208,0.09);
+
+      --green:          #169b4a;
+      --green-dim:      rgba(22,155,74,0.09);
+      --orange:         #ea6a0a;
+      --orange-dim:     rgba(234,106,10,0.09);
+      --purple:         #7c3aed;
+      --purple-dim:     rgba(124,58,237,0.09);
+      --amber:          #d97706;
+      --amber-dim:      rgba(217,119,6,0.09);
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.10);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+    }
+
+    /* === RESET === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* === LAYOUT === */
+    .container {
+      max-width: var(--content-wide);
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+    }
+
+    /* === NAV === */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      gap: var(--space-6);
+    }
+    .nav__logo {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      letter-spacing: -0.02em;
+    }
+    .nav__logo span { color: var(--accent); }
+    .nav__links {
+      display: flex;
+      gap: var(--space-8);
+      font-size: var(--text-sm);
+      font-weight: 500;
+    }
+    .nav__links a {
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+    .nav__links a:hover { color: var(--text); }
+    .nav__links a[aria-current="page"] {
+      color: var(--text);
+    }
+    .nav__actions { display: flex; align-items: center; gap: var(--space-3); }
+    .icon-btn {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      transition: background var(--transition);
+    }
+    .icon-btn:hover { background: var(--border); }
+    .nav__hamburger { display: none; }
+
+    @media (max-width: 768px) {
+      .nav__links { display: none; }
+      .nav__hamburger { display: grid; }
+      .nav__links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: var(--space-6);
+        gap: var(--space-4);
+      }
+    }
+
+    /* === PAGE HEADER === */
+    .page-header {
+      padding: var(--space-20) 0 var(--space-12);
+      text-align: center;
+    }
+    .page-header__eyebrow {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-4);
+    }
+    .page-header__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: var(--space-6);
+    }
+    .page-header__desc {
+      max-width: 600px;
+      margin: 0 auto;
+      color: var(--text-muted);
+      font-size: var(--text-lg);
+      line-height: 1.5;
+    }
+
+    /* === ABOUT CONTENT === */
+    .about-content {
+      max-width: var(--content-default);
+      margin: 0 auto;
+      padding: 0 var(--space-6) var(--space-20);
+    }
+    .about-section {
+      margin-bottom: var(--space-16);
+    }
+    .about-section:last-child { margin-bottom: 0; }
+    .about-section__title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-6);
+      letter-spacing: -0.02em;
+    }
+    .about-section__text {
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-size: var(--text-base);
+    }
+    .about-section__text p + p { margin-top: var(--space-4); }
+
+    /* === SKILLS GRID === */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-4);
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .skill-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+    .skill-card__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      display: grid;
+      place-items: center;
+      margin-bottom: var(--space-4);
+      font-size: var(--text-lg);
+    }
+    .skill-card__icon--blue { background: var(--accent-dim); color: var(--accent); }
+    .skill-card__icon--green { background: var(--green-dim); color: var(--green); }
+    .skill-card__icon--orange { background: var(--orange-dim); color: var(--orange); }
+    .skill-card__icon--purple { background: var(--purple-dim); color: var(--purple); }
+    .skill-card__title {
+      font-weight: 600;
+      font-size: var(--text-base);
+      margin-bottom: var(--space-2);
+    }
+    .skill-card__desc {
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+      line-height: 1.5;
+    }
+
+    /* === TIMELINE === */
+    .timeline {
+      position: relative;
+      padding-left: var(--space-8);
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 8px;
+      bottom: 8px;
+      width: 1px;
+      background: var(--border-strong);
+    }
+    .timeline__item {
+      position: relative;
+      margin-bottom: var(--space-8);
+    }
+    .timeline__item:last-child { margin-bottom: 0; }
+    .timeline__dot {
+      position: absolute;
+      left: calc(-1 * var(--space-8) + 2px);
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: var(--radius-full);
+      background: var(--accent);
+    }
+    .timeline__year {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--accent);
+      margin-bottom: var(--space-2);
+    }
+    .timeline__title {
+      font-weight: 600;
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-2);
+    }
+    .timeline__desc {
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+      line-height: 1.6;
+    }
+
+    /* === FOOTER === */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: var(--space-12) 0;
+      text-align: center;
+      color: var(--text-faint);
+      font-size: var(--text-sm);
+    }
+    .footer a { color: var(--text-muted); transition: color var(--transition); }
+    .footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" role="navigation" aria-label="Huvudnavigering">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__logo" aria-label="Hem">Ted<span>.</span></a>
+        <ul class="nav__links">
+          <li><a href="index.html">Hem</a></li>
+          <li><a href="projekt.html">Projekt</a></li>
+          <li><a href="forskning.html">Forskning</a></li>
+          <li><a href="om-mig.html" aria-current="page">Om mig</a></li>
+          <li><a href="mailto:ted@teds.ai">Kontakt</a></li>
+        </ul>
+        <div class="nav__actions">
+          <button class="icon-btn" data-theme-toggle aria-label="Växla till ljust läge">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <button class="nav__hamburger icon-btn" aria-label="Meny" aria-expanded="false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- OM MIG PAGE -->
+  <main>
+    <div class="page-header">
+      <div class="container">
+        <p class="page-header__eyebrow">Om mig</p>
+        <h1 class="page-header__title">Ted Svärd</h1>
+        <p class="page-header__desc">AI-arkitekt, iOS-utvecklare och forskare med passion för intelligenta system och elegant kod.</p>
+      </div>
+    </div>
+
+    <div class="about-content">
+
+      <!-- Bakgrund -->
+      <section class="about-section">
+        <h2 class="about-section__title">Bakgrund</h2>
+        <div class="about-section__text">
+          <p>Jag är en utvecklare och forskare som arbetar i skärningspunkten mellan artificiell intelligens, kognitiv vetenskap och mjukvaruutveckling. Mitt arbete fokuserar på att bygga system som inte bara är funktionella, utan också intelligenta och adaptiva.</p>
+          <p>Genom åren har jag utvecklat ett brett spektrum av projekt — från iOS-appar och webbplattformar till avancerade AI-agenter och kognitiva arkitekturer. Jag drivs av nyfikenhet och en övertygelse om att teknik kan göra världen bättre.</p>
+        </div>
+      </section>
+
+      <!-- Kompetenser -->
+      <section class="about-section">
+        <h2 class="about-section__title">Kompetenser</h2>
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="skill-card__icon skill-card__icon--blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <h3 class="skill-card__title">AI & Maskininlärning</h3>
+            <p class="skill-card__desc">Kognitiva arkitekturer, agentic AI, alignment-forskning och neurala nätverk.</p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-card__icon skill-card__icon--green">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            </div>
+            <h3 class="skill-card__title">iOS-utveckling</h3>
+            <p class="skill-card__desc">Swift, SwiftUI, UIKit och hela Apple-ekosystemet.</p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-card__icon skill-card__icon--orange">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <h3 class="skill-card__title">Webbutveckling</h3>
+            <p class="skill-card__desc">HTML, CSS, JavaScript, moderna ramverk och responsiv design.</p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-card__icon skill-card__icon--purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
+            <h3 class="skill-card__title">Systemarkitektur</h3>
+            <p class="skill-card__desc">Skalbara system, molntjänster, API-design och databaser.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tidslinje -->
+      <section class="about-section">
+        <h2 class="about-section__title">Resa</h2>
+        <div class="timeline">
+          <div class="timeline__item">
+            <div class="timeline__dot"></div>
+            <p class="timeline__year">2025–nu</p>
+            <h3 class="timeline__title">Navi v7 & kognitiv AI-forskning</h3>
+            <p class="timeline__desc">Utveckling av Navi v7 — en kognitiv AI-arkitektur med fokus på alignment, embodiment och medvetandeteorier. Parallellt pågår forskning om AI-säkerhet och cyberförsvar.</p>
+          </div>
+          <div class="timeline__item">
+            <div class="timeline__dot"></div>
+            <p class="timeline__year">2024</p>
+            <h3 class="timeline__title">Lunaflix v2 & Lumvra</h3>
+            <p class="timeline__desc">Byggde Lunaflix v2 — en streamingplattform med fokus på användarupplevelse. Lanserade även Lumvra, ett projekt inom smart belysning och IoT.</p>
+          </div>
+          <div class="timeline__item">
+            <div class="timeline__dot"></div>
+            <p class="timeline__year">2023</p>
+            <h3 class="timeline__title">BabyCare & Lilla-jag</h3>
+            <p class="timeline__desc">Utvecklade BabyCare — en iOS-app för föräldrar. Skapade även Lilla-jag, en personlig app för barn och familj.</p>
+          </div>
+          <div class="timeline__item">
+            <div class="timeline__dot"></div>
+            <p class="timeline__year">2022</p>
+            <h3 class="timeline__title">Tidiga AI-experiment</h3>
+            <p class="timeline__desc">Började experimentera med maskininlärning, neurala nätverk och agentic AI-system. La grunden för dagens forskningsarbete.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kontakt -->
+      <section class="about-section">
+        <h2 class="about-section__title">Kontakt</h2>
+        <div class="about-section__text">
+          <p>Är du intresserad av samarbete, forskning eller bara vill prata AI? Hör av dig!</p>
+          <p><a href="mailto:ted@teds.ai" style="color: var(--accent);">ted@teds.ai</a></p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Ted Svärd. Alla rättigheter förbehållna.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle
+    const html = document.documentElement;
+    const toggleBtn = document.querySelector('[data-theme-toggle]');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) html.setAttribute('data-theme', savedTheme);
+
+    function updateToggleLabel() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      toggleBtn.setAttribute('aria-label', isDark ? 'Växla till ljust läge' : 'Växla till mörkt läge');
+    }
+    updateToggleLabel();
+
+    toggleBtn.addEventListener('click', () => {
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateToggleLabel();
+    });
+
+    // Mobile menu
+    const hamburger = document.querySelector('.nav__hamburger');
+    const navLinks = document.querySelector('.nav__links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', isOpen);
+      });
+    }
+  </script>
+
+</body>
+</html>
