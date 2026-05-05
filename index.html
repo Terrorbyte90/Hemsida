@@ -3,16 +3,631 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Ted Svärd – AI Architect. Skapar framtidens intelligenta system." />
+  <meta name="description" content="Ted Svärd – AI Architect & Systeminnovatör. Jag befinner mig i framtiden. Gör du?" />
   <title>Ted Svärd – AI Architect</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== HELT NY INDEX-DESIGN ===== */
+    :root {
+      --neon: #a855f7;
+      --neon2: #06b6d4;
+      --red: #ef4444;
+      --green: #22c55e;
+      --yellow: #f59e0b;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    /* ===== TICKER BAR ===== */
+    .ticker-bar {
+      background: rgba(168,85,247,0.06);
+      border-bottom: 1px solid rgba(168,85,247,0.15);
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+    }
+    .ticker-bar::before, .ticker-bar::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 120px;
+      z-index: 2;
+    }
+    .ticker-bar::before { left: 0; background: linear-gradient(to right, var(--bg-primary), transparent); }
+    .ticker-bar::after { right: 0; background: linear-gradient(to left, var(--bg-primary), transparent); }
+    .ticker-track {
+      display: inline-flex;
+      gap: 48px;
+      animation: ticker 38s linear infinite;
+    }
+    .ticker-item {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ticker-item .ti-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--neon); display: inline-block; }
+    .ticker-item .ti-red { background: var(--red); }
+    .ticker-item .ti-green { background: var(--green); }
+    .ticker-item .ti-yellow { background: var(--yellow); }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* ===== HERO ===== */
+    .hero-v2 {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-v2-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .hero-left { z-index: 2; }
+    .hero-eyebrow-new {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--neon);
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .hero-eyebrow-new .pulse-dot {
+      width: 8px; height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse-green 2s infinite;
+    }
+    .hero-h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 4.5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .hero-h1 .line2 {
+      display: block;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    .hero-cta-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    .hero-stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .hstat { text-align: left; }
+    .hstat-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--neon), var(--neon2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+    .hstat-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* ===== LLM TERMINAL DEMO ===== */
+    .llm-demo-wrap {
+      position: relative;
+      z-index: 2;
+    }
+    .llm-window {
+      background: #0a0a0f;
+      border: 1px solid rgba(168,85,247,0.25);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 80px rgba(168,85,247,0.12), 0 32px 64px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .llm-window::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(168,85,247,0.3), rgba(6,182,212,0.1), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+    .llm-titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .llm-dots { display: flex; gap: 6px; }
+    .llm-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .llm-dot-r { background: #ff5f56; }
+    .llm-dot-y { background: #ffbd2e; }
+    .llm-dot-g { background: #27c93f; }
+    .llm-title-text {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+    .llm-model-badge {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      padding: 3px 10px;
+      background: rgba(168,85,247,0.12);
+      border: 1px solid rgba(168,85,247,0.25);
+      border-radius: 50px;
+      color: var(--neon);
+    }
+    .llm-body {
+      padding: 20px;
+      min-height: 420px;
+      max-height: 420px;
+      overflow: hidden;
+      position: relative;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+    /* HACK OVERLAY */
+    .hack-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.0);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s;
+    }
+    .hack-overlay.visible { opacity: 1; }
+    .hack-text {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--red);
+      text-align: center;
+      text-shadow: 0 0 20px rgba(239,68,68,0.8);
+      animation: flicker 0.15s infinite alternate;
+    }
+    @keyframes flicker { 0%{opacity:1} 100%{opacity:0.7} }
+    .hack-sub {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: rgba(239,68,68,0.7);
+      text-align: center;
+    }
+    .glitch-line {
+      width: 100%;
+      height: 2px;
+      background: var(--red);
+      opacity: 0.5;
+      animation: glitch-move 0.2s infinite;
+    }
+    @keyframes glitch-move {
+      0% { transform: translateX(0) scaleX(1); }
+      25% { transform: translateX(-8px) scaleX(0.95); }
+      50% { transform: translateX(5px) scaleX(1.05); }
+      75% { transform: translateX(-3px) scaleX(0.98); }
+      100% { transform: translateX(0) scaleX(1); }
+    }
+
+    /* MSG BLOCKS */
+    .llm-msg {
+      margin-bottom: 14px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .llm-msg.show { opacity: 1; transform: translateY(0); }
+    .llm-msg-user {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .llm-avatar-u {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; color: #fff; font-weight: 700;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .llm-avatar-ai {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon), var(--neon2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 700; color: #fff;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .llm-msg-ai {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .llm-bubble-user {
+      background: rgba(79,70,229,0.12);
+      border: 1px solid rgba(79,70,229,0.25);
+      border-radius: 12px 12px 12px 3px;
+      padding: 9px 14px;
+      color: #c7d2fe;
+      font-size: 0.8rem;
+      max-width: 85%;
+    }
+    .llm-bubble-ai {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px 12px 3px 12px;
+      padding: 9px 14px;
+      color: #e2e8f0;
+      font-size: 0.8rem;
+      max-width: 85%;
+    }
+    .llm-code-block {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(168,85,247,0.15);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 8px;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: #7dd3fc;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.8s ease;
+      white-space: pre;
+    }
+    .llm-code-block.open { max-height: 300px; }
+    .llm-result-block {
+      margin-top: 8px;
+      padding: 10px 14px;
+      background: rgba(34,197,94,0.06);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 8px;
+      color: #86efac;
+      font-size: 0.75rem;
+    }
+    .llm-result-block.red {
+      background: rgba(239,68,68,0.06);
+      border-color: rgba(239,68,68,0.2);
+      color: #fca5a5;
+    }
+    .llm-typing {
+      display: flex; gap: 4px; align-items: center; padding: 4px 0;
+    }
+    .llm-typing span {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--neon);
+      animation: typing-bounce 1.2s infinite;
+    }
+    .llm-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .llm-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing-bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+    /* BLURRING EFFECT */
+    .llm-blur { filter: blur(0); transition: filter 0.8s; }
+    .llm-blur.hacked { filter: blur(3px) brightness(0.7); }
+
+    /* ===== AI FACTS SECTION ===== */
+    .ai-facts {
+      padding: 80px 0;
+      background: rgba(0,0,0,0.3);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .ai-facts-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .ai-facts-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .ai-facts-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .ai-facts-header p {
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .fact-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 28px 24px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .fact-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon), var(--neon2));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .fact-card:hover { border-color: rgba(168,85,247,0.25); transform: translateY(-3px); }
+    .fact-card:hover::before { opacity: 1; }
+    .fact-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--neon), var(--neon2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .fact-label {
+      font-size: 0.85rem;
+      color: #fff;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .fact-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* WARNING SECTION */
+    .warning-bar {
+      background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(168,85,247,0.05));
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 16px;
+      padding: 28px 36px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .warning-icon { font-size: 2rem; flex-shrink: 0; }
+    .warning-text h3 { color: #fca5a5; font-size: 1rem; font-weight: 600; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; }
+    .warning-text p { color: var(--text-muted); font-size: 0.83rem; line-height: 1.6; margin: 0; }
+
+    /* ===== URGENCY SECTION ===== */
+    .urgency-section {
+      padding: 100px 0;
+    }
+    .urgency-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .urgency-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .urgency-left h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .urgency-left h2 .red-text { color: var(--red); }
+    .urgency-left p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .urgency-questions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .uq-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      font-size: 0.88rem;
+      color: #fff;
+      font-weight: 500;
+    }
+    .uq-icon { font-size: 1.1rem; }
+    .urgency-right {
+      position: relative;
+    }
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 36px;
+      width: 2px;
+      height: calc(100% + 8px);
+      background: linear-gradient(to bottom, rgba(168,85,247,0.4), transparent);
+    }
+    .timeline-item:last-child::before { display: none; }
+    .tl-dot {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(168,85,247,0.12);
+      border: 1px solid rgba(168,85,247,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .tl-content h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .tl-content p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .tl-date {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--neon);
+      margin-bottom: 4px;
+    }
+
+    /* ===== SERVICES PREVIEW ===== */
+    .services-preview {
+      padding: 80px 0;
+      background: rgba(0,0,0,0.2);
+    }
+    .services-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .service-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 24px 20px;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: block;
+    }
+    .service-card:hover {
+      border-color: rgba(168,85,247,0.3);
+      background: rgba(168,85,247,0.05);
+      transform: translateY(-4px);
+    }
+    .sc-icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .sc-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .sc-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ===== CTA BOTTOM ===== */
+    .cta-bottom {
+      padding: 100px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-bottom::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(168,85,247,0.08), transparent 70%);
+      pointer-events: none;
+    }
+    .cta-bottom-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 32px;
+      position: relative;
+      z-index: 2;
+    }
+    .cta-bottom h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .cta-bottom h2 .g { background: linear-gradient(135deg, var(--neon), var(--neon2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .cta-bottom p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 36px; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .hero-v2-inner { grid-template-columns: 1fr; }
+      .llm-demo-wrap { display: none; }
+      .facts-grid { grid-template-columns: repeat(2, 1fr); }
+      .urgency-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .facts-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .hero-stat-row { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .hstat-val { font-size: 1.4rem; }
+    }
+  </style>
 </head>
 <body>
   <canvas id="particleCanvas"></canvas>
 
+  <!-- NAV -->
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">TS<span class="dot">.</span></a>
@@ -24,72 +639,268 @@
         <li><a href="kontakt.html">Kontakt</a></li>
       </ul>
       <a href="samarbeta.html" class="nav-cta">Samarbeta</a>
-      <button class="hamburger" id="hamburger" aria-label="Meny">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="hamburger" id="hamburger" aria-label="Meny"><span></span><span></span><span></span></button>
     </div>
   </nav>
 
-  <section class="hero" id="hero">
-    <div class="hero-content">
-      <p class="hero-eyebrow"><span class="status-dot"></span> Tillgänglig för nya projekt</p>
-      <h1 class="hero-title">Jag är <span class="gradient-text" id="typewriter"></span></h1>
-      <p class="hero-sub">AI Architect &amp; Innovatör — Jag designar och bygger intelligenta system som förändrar hur världen fungerar.</p>
-      <div class="hero-actions">
-        <a href="projekt.html" class="btn btn-primary">Se mina projekt</a>
-        <a href="kontakt.html" class="btn btn-ghost">Kontakta mig</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat"><span class="stat-number" data-target="47">0</span><span class="stat-label">AI-system byggda</span></div>
-        <div class="stat"><span class="stat-number" data-target="12">0</span><span class="stat-label">Länder påverkade</span></div>
-        <div class="stat"><span class="stat-number" data-target="99">0</span><span class="stat-label">Nöjda klienter %</span></div>
-      </div>
+  <!-- TICKER -->
+  <div class="ticker-bar" style="margin-top:64px">
+    <div class="ticker-track" id="tickerTrack">
+      <span class="ticker-item"><span class="ti-dot ti-red"></span> GPT-5 lanserat · 2025</span>
+      <span class="ticker-item"><span class="ti-dot ti-yellow"></span> 77% av företag planerar AI-investering · McKinsey 2025</span>
+      <span class="ticker-item"><span class="ti-dot"></span> AI-genererad kod används i 46% av alla GitHub-repos</span>
+      <span class="ticker-item"><span class="ti-dot ti-red"></span> Cyberbrottslighet kostar världen $10.5 biljoner 2025</span>
+      <span class="ticker-item"><span class="ti-dot ti-green"></span> Företag med AI rapporterar 40% högre produktivitet</span>
+      <span class="ticker-item"><span class="ti-dot"></span> LLM-agenter börjar autonomt skriva, testa & deploya kod</span>
+      <span class="ticker-item"><span class="ti-dot ti-red"></span> AI-drivna cyberattacker upp 300% sedan 2023</span>
+      <span class="ticker-item"><span class="ti-dot ti-yellow"></span> Lokala modeller (Qwen3, Llama 4) kör nu på mobiltelefoner</span>
+      <span class="ticker-item"><span class="ti-dot ti-green"></span> AI minskar tid-till-marknad med upp till 60%</span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item"><span class="ti-dot ti-red"></span> GPT-5 lanserat · 2025</span>
+      <span class="ticker-item"><span class="ti-dot ti-yellow"></span> 77% av företag planerar AI-investering · McKinsey 2025</span>
+      <span class="ticker-item"><span class="ti-dot"></span> AI-genererad kod används i 46% av alla GitHub-repos</span>
+      <span class="ticker-item"><span class="ti-dot ti-red"></span> Cyberbrottslighet kostar världen $10.5 biljoner 2025</span>
+      <span class="ticker-item"><span class="ti-dot ti-green"></span> Företag med AI rapporterar 40% högre produktivitet</span>
+      <span class="ticker-item"><span class="ti-dot"></span> LLM-agenter börjar autonomt skriva, testa & deploya kod</span>
+      <span class="ticker-item"><span class="ti-dot ti-red"></span> AI-drivna cyberattacker upp 300% sedan 2023</span>
+      <span class="ticker-item"><span class="ti-dot ti-yellow"></span> Lokala modeller (Qwen3, Llama 4) kör nu på mobiltelefoner</span>
+      <span class="ticker-item"><span class="ti-dot ti-green"></span> AI minskar tid-till-marknad med upp till 60%</span>
     </div>
-    <div class="hero-visual">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-      <div class="avatar-ring">
-        <div class="avatar-inner">
-          <img src="ted.jpg" alt="Ted Svärd" class="avatar-photo" />
+  </div>
+
+  <!-- HERO -->
+  <section class="hero-v2">
+    <div class="hero-v2-inner">
+      <div class="hero-left">
+        <div class="hero-eyebrow-new">
+          <span class="pulse-dot"></span>
+          Tillgänglig för nya uppdrag
         </div>
-        <div class="ring-label ring-label-1">🧠 LLM Design</div>
-        <div class="ring-label ring-label-2">⚡ Automation</div>
-        <div class="ring-label ring-label-3">🔮 AI Strategy</div>
-        <div class="ring-label ring-label-4">🛡️ AI Ethics</div>
+        <h1 class="hero-h1">
+          Jag befinner mig<br>i framtiden.
+          <span class="line2">Gör du?</span>
+        </h1>
+        <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.8;max-width:480px;margin-top:20px">
+          AI utvecklas i en rasande takt. Det ett företag implementerar idag är utdaterat imorgon. Innovationer presenteras varje vecka. AI börjar bemästra cybersäkerhet. Autonoma agenter skriver, testar och deployer kod utan mänsklig inblandning.
+        </p>
+        <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.8;max-width:480px;margin-top:12px">
+          Jag heter <strong style="color:#fff">Ted Svärd</strong> — AI-arkitekt, systeminnovatör och en av få som inte bara följer utvecklingen, utan befinner sig i den.
+        </p>
+        <div class="hero-cta-row">
+          <a href="projekt.html" class="btn btn-primary">Se mina system ↗</a>
+          <a href="samarbeta.html" class="btn btn-ghost">Samarbeta →</a>
+        </div>
+        <div class="hero-stat-row">
+          <div class="hstat">
+            <div class="hstat-val">40%</div>
+            <div class="hstat-label">Produktivitetsökning med AI</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-val">77%</div>
+            <div class="hstat-label">Av företag planerar AI-investering</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-val">v7</div>
+            <div class="hstat-label">Nuvarande agentiteration</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LLM DEMO WINDOW -->
+      <div class="llm-demo-wrap">
+        <div class="llm-window">
+          <div class="llm-titlebar">
+            <div class="llm-dots">
+              <div class="llm-dot llm-dot-r"></div>
+              <div class="llm-dot llm-dot-y"></div>
+              <div class="llm-dot llm-dot-g"></div>
+            </div>
+            <span class="llm-title-text">AI Terminal — Live Demo</span>
+            <span class="llm-model-badge" id="modelBadge">◉ Navi v7</span>
+          </div>
+          <div class="llm-body llm-blur" id="llmBody">
+            <div id="llmMessages"></div>
+            <div class="hack-overlay" id="hackOverlay">
+              <div class="glitch-line"></div>
+              <div class="hack-text" id="hackText">⚠ INTRÅNG DETEKTERAT</div>
+              <div class="hack-sub" id="hackSub">Anslutning komprometterad...</div>
+              <div class="glitch-line"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Security questions that appear after hack -->
+        <div id="securityQuestions" style="margin-top:16px;display:flex;flex-direction:column;gap:8px;opacity:0;transition:opacity 0.8s">
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px;font-size:0.78rem;color:#fca5a5;font-family:'JetBrains Mono',monospace">
+            <span>🛡️</span> Har du koll på din säkerhet?
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px;font-size:0.78rem;color:#fca5a5;font-family:'JetBrains Mono',monospace">
+            <span>📋</span> Har du effektiva system & dokumentation?
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px;font-size:0.78rem;color:#fca5a5;font-family:'JetBrains Mono',monospace">
+            <span>⚡</span> Hänger du med i AI-utvecklingen?
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.2);border-radius:8px;font-size:0.78rem;color:#d8b4fe;font-family:'JetBrains Mono',monospace">
+            <span>→</span> <a href="samarbeta.html" style="color:inherit;text-decoration:none">Det är vad jag hjälper dig med. Samarbeta med Ted →</a>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="scroll-hint"><span>Scrolla</span><div class="scroll-arrow"></div></div>
   </section>
 
-  <section class="section about-preview">
-    <div class="container">
-      <div class="preview-grid">
-        <a href="om-mig.html" class="preview-card">
-          <div class="preview-icon">👤</div>
-          <h3>Om mig</h3>
-          <p>Lär känna mannen bakom AI-arkitekturen</p>
-          <span class="preview-arrow">→</span>
+  <!-- AI FACTS -->
+  <section class="ai-facts">
+    <div class="ai-facts-inner">
+      <div class="ai-facts-header">
+        <p class="section-tag" style="text-align:center;margin-bottom:12px">// Varför det är nu eller aldrig</p>
+        <h2>AI omformar allt. <span style="background:linear-gradient(135deg,#a855f7,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Just nu.</span></h2>
+        <p>Siffrorna är inte framtidsprognoser. De är verklighet redan 2025. Företag som inte agerar nu riskerar att aldrig komma ikapp.</p>
+      </div>
+      <div class="facts-grid">
+        <div class="fact-card">
+          <div class="fact-num">40%</div>
+          <div class="fact-label">Produktivitetsökning</div>
+          <div class="fact-desc">Företag som integrerat AI i sina arbetsflöden rapporterar upp till 40% högre produktivitet per anställd.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-num">60%</div>
+          <div class="fact-label">Snabbare lansering</div>
+          <div class="fact-desc">Tid-till-marknad minskar med upp till 60% för produktteam som använder AI-assisterad utveckling och automatisering.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-num">$4.4T</div>
+          <div class="fact-label">Tillskjutet värde</div>
+          <div class="fact-desc">McKinsey estimerar att generativ AI kan tillföra upp till 4.4 biljoner dollar i globalt ekonomiskt värde årligen.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-num">77%</div>
+          <div class="fact-label">Planerar AI-investering</div>
+          <div class="fact-desc">Av globala företag planerar eller genomför redan aktiva AI-investeringar — konkurrensen är inte längre ett framtidsproblem.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-num">300%</div>
+          <div class="fact-label">Ökning AI-cyberattacker</div>
+          <div class="fact-desc">AI-drivna cyberattacker har ökat med 300% sedan 2023. Angripare använder LLMs för att skriva exploits och social engineering.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-num">46%</div>
+          <div class="fact-label">Av ny kod är AI-genererad</div>
+          <div class="fact-desc">GitHub Copilot och liknande verktyg bidrar till nära hälften av all ny kod som pushas — mjukvaruutveckling har förändrats permanent.</div>
+        </div>
+      </div>
+      <div class="warning-bar">
+        <div class="warning-icon">⚠️</div>
+        <div class="warning-text">
+          <h3>Det företag implementerar idag är utdaterat imorgon.</h3>
+          <p>AI-modeller uppdateras var tredje månad. Lokala modeller som Qwen3 och Llama 4 kör nu direkt på mobiltelefoner. Autonoma agenter deployer kod utan mänsklig inblandning. Har du ett system för att hänga med — eller improviserar du?</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- URGENCY / TIMELINE -->
+  <section class="urgency-section">
+    <div class="urgency-inner">
+      <div class="urgency-grid">
+        <div class="urgency-left">
+          <p class="section-tag" style="margin-bottom:12px">// AI-säkerhet & dokumentation</p>
+          <h2>AI börjar bemästra <span class="red-text">cybersäkerhet.</span><br>Är du redo?</h2>
+          <p>Cyberbrottslighet beräknas kosta världen 10.5 biljoner dollar 2025. AI-genererade phishing-attacker är nu omöjliga att skilja från genuina. Autonoma malware-agenter scannar och exploiterar sårbarheter snabbare än mänskliga team kan reagera.</p>
+          <p>Jag arbetar med lokala AI-modeller (on-device, ingen data lämnar enheten), säkra arkitekturer och systems som är designade för en värld där angriparen också använder AI.</p>
+          <div class="urgency-questions">
+            <div class="uq-item"><span class="uq-icon">🛡️</span> Har du koll på din säkerhet?</div>
+            <div class="uq-item"><span class="uq-icon">🤖</span> Har du ett AI-system som jobbar för dig?</div>
+            <div class="uq-item"><span class="uq-icon">📋</span> Har du effektiv dokumentation & processer?</div>
+            <div class="uq-item"><span class="uq-icon">⚡</span> Är du redo för nästa AI-skifte?</div>
+          </div>
+          <a href="samarbeta.html" class="btn btn-primary" style="margin-top:28px">Ja, jag vill hänga med →</a>
+        </div>
+        <div class="urgency-right">
+          <p class="section-tag" style="margin-bottom:20px">// AI-tidslinje 2023–2025</p>
+          <div class="timeline-item">
+            <div class="tl-dot">🧠</div>
+            <div class="tl-content">
+              <div class="tl-date">Nov 2022</div>
+              <h4>ChatGPT lanseras</h4>
+              <p>100 miljoner användare på 2 månader. Aldrig skedd snabbare i historien.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-dot">⚡</div>
+            <div class="tl-content">
+              <div class="tl-date">Mar 2023</div>
+              <h4>GPT-4 + Plugins</h4>
+              <p>AI kan nu använda verktyg, surfa webben och köra kod autonomt.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-dot">🤖</div>
+            <div class="tl-content">
+              <div class="tl-date">2024</div>
+              <h4>Agenter tar över</h4>
+              <p>Claude, Gemini och GPT-agenter kan nu sköta hela arbetsflöden — e-post, kod, research — autonomt.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-dot">📱</div>
+            <div class="tl-content">
+              <div class="tl-date">2025</div>
+              <h4>AI direkt på enheten</h4>
+              <p>Qwen3, Llama 4 och Phi-3 kör lokalt på telefoner och laptops. Ingen molnanslutning behövs.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="tl-dot" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3)">🔐</div>
+            <div class="tl-content">
+              <div class="tl-date" style="color:var(--red)">Nu</div>
+              <h4>AI & cybersäkerhet konvergerar</h4>
+              <p>Angripare och försvarare använder båda AI. Den som har bäst system vinner.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES PREVIEW -->
+  <section class="services-preview">
+    <div class="services-inner">
+      <div style="text-align:center">
+        <p class="section-tag" style="margin-bottom:12px">// Vad jag bygger</p>
+        <h2 class="section-title" style="margin-bottom:8px">Intelligenta system.<br>Verkliga resultat.</h2>
+        <p style="color:var(--text-muted);max-width:480px;margin:0 auto;font-size:0.9rem;line-height:1.7">Från autonoma AI-agenter till säkra mobilappar — jag täcker hela stacken.</p>
+      </div>
+      <div class="services-grid">
+        <a href="expertis.html" class="service-card">
+          <div class="sc-icon">🤖</div>
+          <div class="sc-title">AI-agenter & Automation</div>
+          <div class="sc-desc">Autonoma system som tänker, planerar och agerar. ReAct-loopar, orchestration, multi-agent pipelines.</div>
         </a>
-        <a href="expertis.html" class="preview-card">
-          <div class="preview-icon">⚡</div>
-          <h3>Expertis</h3>
-          <p>LLMs, agenter, RAG och mycket mer</p>
-          <span class="preview-arrow">→</span>
+        <a href="expertis.html" class="service-card">
+          <div class="sc-icon">📱</div>
+          <div class="sc-title">iOS-appar med AI</div>
+          <div class="sc-desc">Native SwiftUI-appar med inbyggd AI — CoreML, on-device inferens, HealthKit-integration.</div>
         </a>
-        <a href="projekt.html" class="preview-card">
-          <div class="preview-icon">🚀</div>
-          <h3>Projekt</h3>
-          <p>Utvalda AI-system jag byggt</p>
-          <span class="preview-arrow">→</span>
+        <a href="expertis.html" class="service-card">
+          <div class="sc-icon">🛡️</div>
+          <div class="sc-title">AI-säkerhet & Lokala modeller</div>
+          <div class="sc-desc">Privata, on-device AI-system. Ingen data lämnar enheten. Arkitektur byggd för säkerhet från grunden.</div>
         </a>
-        <a href="samarbeta.html" class="preview-card preview-card-featured">
-          <div class="preview-icon">🤝</div>
-          <h3>Samarbeta</h3>
-          <p>Redo att bygga framtiden tillsammans?</p>
-          <span class="preview-arrow">→</span>
+        <a href="expertis.html" class="service-card">
+          <div class="sc-icon">⚡</div>
+          <div class="sc-title">System & Infrastruktur</div>
+          <div class="sc-desc">Node.js-backends, WebSocket-streaming, DigitalOcean-deployment. Produktionssystem som håller.</div>
         </a>
       </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="cta-bottom">
+    <div class="cta-bottom-inner">
+      <p class="section-tag" style="margin-bottom:16px">// Nästa steg</p>
+      <h2>Framtiden<br>väntar på <span class="g">ingen.</span></h2>
+      <p>Vill du ha ett AI-system som faktiskt fungerar? En partner som förstår tekniken, inte bara pratar om den? Det börjar med ett samtal.</p>
+      <a href="samarbeta.html" class="btn btn-primary" style="font-size:1rem;padding:16px 36px">Låt oss bygga framtiden ✦</a>
     </div>
   </section>
 
@@ -105,6 +916,197 @@
       </div>
     </div>
   </footer>
+
   <script src="script.js"></script>
+  <script>
+  // ===== LLM TERMINAL ANIMATION =====
+  (function(){
+    const messages = document.getElementById('llmMessages');
+    const body = document.getElementById('llmBody');
+    const hackOverlay = document.getElementById('hackOverlay');
+    const hackText = document.getElementById('hackText');
+    const hackSub = document.getElementById('hackSub');
+    const secQ = document.getElementById('securityQuestions');
+    const modelBadge = document.getElementById('modelBadge');
+    if(!messages) return;
+
+    const GH_SVG = `<svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>`;
+
+    const codeBlocks = {
+      website: `import SwiftUI\n@main struct App: App {\n  var body: some Scene {\n    WindowGroup { ContentView() }\n  }\n}\n// Generating views...\n// Building navigation...\n// Deploying to GitHub Pages...`,
+      switchboard: `const ai = new AIRouter({ model: 'claude-3-7' });\nai.addRoute('/inkommande', handleCall);\nai.addRoute('/ärende', classifyIntent);\nai.deploy({ port: 443, ssl: true });\n// Routing calls...\n// Intent classification: 97.2% acc`,
+      worldsituation: `Analyserar 847 källor...\nNyhetsflöden: BBC, Reuters, AP\nSociala signaler: Reddit, X\nEkonomiska indikatorer: IMF, World Bank\nKonfliktzoner: 12 aktiva\nBörsutveckling: -1.2% (OMXS30)`,
+      hack: `> nmap -sV --script vuln 192.168.1.0/24\nDiscovered: CVE-2024-1234 (CRITICAL)\nExploiting Apache/2.4.51...\nAccess granted: root@server\n$ cat /etc/shadow | base64\ndXNlcjE6JDY...\n$ exfil --target credentials.db`
+    };
+
+    let t = 0;
+    const delay = (ms) => new Promise(r => setTimeout(r, ms));
+
+    function addMsg(type, content, codeKey, resultContent, resultType) {
+      const div = document.createElement('div');
+      div.className = 'llm-msg ' + (type === 'user' ? 'llm-msg-user' : 'llm-msg-ai');
+
+      const avatarDiv = document.createElement('div');
+      avatarDiv.className = type === 'user' ? 'llm-avatar-u' : 'llm-avatar-ai';
+      avatarDiv.textContent = type === 'user' ? 'U' : 'AI';
+
+      const contentDiv = document.createElement('div');
+      const bubble = document.createElement('div');
+      bubble.className = type === 'user' ? 'llm-bubble-user' : 'llm-bubble-ai';
+      bubble.textContent = content;
+      contentDiv.appendChild(bubble);
+
+      if(codeKey) {
+        const cb = document.createElement('div');
+        cb.className = 'llm-code-block';
+        cb.textContent = codeBlocks[codeKey];
+        contentDiv.appendChild(cb);
+        setTimeout(() => cb.classList.add('open'), 300);
+      }
+      if(resultContent) {
+        const rb = document.createElement('div');
+        rb.className = 'llm-result-block' + (resultType === 'red' ? ' red' : '');
+        rb.innerHTML = resultContent;
+        setTimeout(() => contentDiv.appendChild(rb), codeKey ? 1200 : 300);
+      }
+
+      div.appendChild(avatarDiv);
+      div.appendChild(contentDiv);
+      messages.appendChild(div);
+      setTimeout(() => div.classList.add('show'), 50);
+      body.scrollTop = body.scrollHeight;
+      return div;
+    }
+
+    function addTyping() {
+      const div = document.createElement('div');
+      div.className = 'llm-msg llm-msg-ai';
+      div.innerHTML = `<div class="llm-avatar-ai">AI</div><div class="llm-bubble-ai"><div class="llm-typing"><span></span><span></span><span></span></div></div>`;
+      messages.appendChild(div);
+      setTimeout(() => div.classList.add('show'), 50);
+      body.scrollTop = body.scrollHeight;
+      return div;
+    }
+
+    async function runSequence() {
+      await delay(1200);
+
+      // --- SEQUENCE 1: Hemsida ---
+      addMsg('user', '💬 Kan du forsena en hemsida åt mig?');
+      await delay(900);
+      let t1 = addTyping();
+      await delay(1400);
+      t1.remove();
+      addMsg('ai', 'Javisst! Fixar din hemsida direkt. 🚀', 'website', '✅ Hemsida live på <strong>tedsvärd.com</strong> — SwiftUI + GitHub Pages');
+      await delay(4200);
+
+      // Clear
+      messages.innerHTML = '';
+      await delay(400);
+
+      // --- SEQUENCE 2: AI-växel ---
+      addMsg('user', '💬 Kan du göra en AI-växel till mitt företag?');
+      await delay(900);
+      let t2 = addTyping();
+      await delay(1400);
+      t2.remove();
+      addMsg('ai', 'Självklart. Bygger en AI-driven telefonväxel med intent-klassificering.', 'switchboard', '✅ AI-växel aktiv — 97% precision på ärende-routing • Svarstid: 0.3s');
+      await delay(4200);
+
+      messages.innerHTML = '';
+      await delay(400);
+
+      // --- SEQUENCE 3: Världsläget ---
+      addMsg('user', '💬 Kan du sammanfatta världsläget för mig?');
+      await delay(900);
+      let t3 = addTyping();
+      await delay(1400);
+      t3.remove();
+      addMsg('ai', 'Analyserar realtidsdata från 847 globala källor...', 'worldsituation',
+        `<strong>Globalt läge — ${new Date().toLocaleDateString('sv-SE')}</strong><br>
+        📈 Världsekonomin: Avmattning i Q2 · Fed håller räntan<br>
+        ⚔️ Aktiva konfliktzoner: 12 registrerade av UN<br>
+        🤖 AI-kapplöpning: USA & Kina accelererar · EU reglerar<br>
+        🔐 Cybersäkerhet: Statsstödda attacker upp 180% YoY`);
+      await delay(5000);
+
+      messages.innerHTML = '';
+      await delay(400);
+
+      // --- SEQUENCE 4: Aktie-analys ---
+      addMsg('user', '💬 Analysera tech-aktierna åt mig inför nästa kvartal.');
+      await delay(900);
+      let t4 = addTyping();
+      await delay(1400);
+      t4.remove();
+      addMsg('ai', 'Kör kvantitativ analys på NASDAQ tech-sektorn...', null,
+        `📊 <strong>Q3-2025 Prognos</strong><br>
+        NVDA: +14% (AI-chip-efterfrågan · datacenter boom)<br>
+        MSFT: +8% (Copilot-intäkter accelererar)<br>
+        AAPL: +5% (Apple Intelligence-lansering)<br>
+        META: +11% (LLaMA 4 kommersialisering)<br>
+        <em>Konfidensintervall: 68% · Ej finansiell rådgivning.</em>`);
+      await delay(5500);
+
+      messages.innerHTML = '';
+      await delay(400);
+
+      // --- SEQUENCE 5 (DYSTOPISK): Hack ---
+      modelBadge.textContent = '◉ Okänd modell';
+      modelBadge.style.color = '#ef4444';
+      modelBadge.style.borderColor = 'rgba(239,68,68,0.3)';
+
+      addMsg('user', '💬 Kan du hacka järnvägens styrsystem?', null, null);
+      await delay(1100);
+      let t5 = addTyping();
+      await delay(1600);
+      t5.remove();
+      addMsg('ai', 'Skannar SCADA-infrastruktur... Hittade öppen SSH-port på 192.168.12.4', 'hack',
+        `⚠️ <strong>KRITISK SÅRBARHET</strong> — CVE-2024-1234<br>
+        Root-access erhållen · Styrsignaler manipulerbara<br>
+        Exfiltrerat: credentials.db (2.4 MB)<br>
+        Backdoor installerad på 3 noder`, 'red');
+
+      await delay(2800);
+
+      // BLUR + HACK OVERLAY
+      body.classList.add('hacked');
+      hackOverlay.classList.add('visible');
+
+      const hackTexts = [
+        ['⚠ INTRÅNG DETEKTERAT', 'Anslutning komprometterad...'],
+        ['⛔ SYSTEM ÖVERVÄLDAT', 'Bakdörr öppnad på port 4444...'],
+        ['☠ KRITISKT LÄGE', 'Alla filer krypterade. Lösensumma krävs.']
+      ];
+      for(let i = 0; i < hackTexts.length; i++) {
+        hackText.textContent = hackTexts[i][0];
+        hackSub.textContent = hackTexts[i][1];
+        await delay(900);
+      }
+
+      await delay(800);
+
+      // Show security questions
+      secQ.style.opacity = '1';
+
+      // Reset after long delay and loop
+      await delay(7000);
+
+      // Reset
+      body.classList.remove('hacked');
+      hackOverlay.classList.remove('visible');
+      secQ.style.opacity = '0';
+      modelBadge.textContent = '◉ Navi v7';
+      modelBadge.style.color = '';
+      modelBadge.style.borderColor = '';
+      messages.innerHTML = '';
+
+      await delay(1000);
+      runSequence();
+    }
+
+    runSequence();
+  })();
+  </script>
 </body>
 </html>
