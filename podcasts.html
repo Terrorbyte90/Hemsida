@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projekt — Ted Svärd</title>
-  <meta name="description" content="Projekt av Ted Svärd — AI-agenter, iOS-appar och streaminglösningar.">
+  <title>Podcasts — Ted Svärd</title>
+  <meta name="description" content="Podcasts av Ted Svärd — samtal om teknik, AI, utveckling och framtidens idéer.">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -196,6 +196,18 @@
     @media (max-width: 680px) {
       .nav__links { display: none; }
       .nav__hamburger { display: grid; }
+      .nav__links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 58px;
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: var(--space-6);
+        gap: var(--space-4);
+      }
     }
 
     /* === PAGE HEADER === */
@@ -225,38 +237,39 @@
       line-height: 1.6;
     }
 
-    /* === PROJECT CARDS === */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    /* === PODCAST CARDS === */
+    .podcast-list {
+      display: flex;
+      flex-direction: column;
       gap: var(--space-6);
     }
-    .project-card {
+    .podcast-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
       padding: var(--space-6);
       display: flex;
-      flex-direction: column;
-      gap: var(--space-3);
+      gap: var(--space-5);
       transition: all var(--transition);
     }
-    .project-card:hover {
+    .podcast-card:hover {
       border-color: var(--border-strong);
       box-shadow: var(--shadow-md);
       transform: translateY(-2px);
     }
-    .project-card__header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
-    .project-card__icon {
-      width: 36px; height: 36px;
-      border-radius: var(--radius-md);
+    .podcast-card__artwork {
+      width: 96px; height: 96px;
+      border-radius: var(--radius-lg);
+      background: var(--accent-dim);
       display: grid; place-items: center;
-      font-size: 1rem; flex-shrink: 0;
+      font-size: 2rem;
+      flex-shrink: 0;
     }
-    .project-card__title { font-size: var(--text-base); font-weight: 600; color: var(--text); line-height: 1.3; }
-    .project-card__subtitle { font-size: var(--text-xs); color: var(--accent); font-weight: 500; margin-top: 2px; letter-spacing: 0.02em; }
-    .project-card__desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.65; flex: 1; }
-    .project-card__tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: auto; padding-top: var(--space-2); }
+    .podcast-card__content { flex: 1; display: flex; flex-direction: column; gap: var(--space-2); }
+    .podcast-card__title { font-size: var(--text-lg); font-weight: 600; color: var(--text); line-height: 1.3; }
+    .podcast-card__meta { font-size: var(--text-xs); color: var(--accent); font-weight: 500; letter-spacing: 0.02em; }
+    .podcast-card__desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.65; }
+    .podcast-card__tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: auto; padding-top: var(--space-2); }
     .tag {
       font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em;
       padding: 2px 9px; border-radius: var(--radius-full);
@@ -269,6 +282,30 @@
     .tag--purple { background: var(--purple-dim); color: var(--purple); border-color: transparent; }
     .tag--amber  { background: var(--amber-dim);  color: var(--amber);  border-color: transparent; }
 
+    /* === PLACEHOLDER === */
+    .placeholder {
+      text-align: center;
+      padding: var(--space-16) var(--space-4);
+      color: var(--text-faint);
+    }
+    .placeholder__icon {
+      font-size: 3rem;
+      margin-bottom: var(--space-4);
+      opacity: 0.4;
+    }
+    .placeholder__title {
+      font-size: var(--text-lg);
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: var(--space-2);
+    }
+    .placeholder__desc {
+      font-size: var(--text-sm);
+      max-width: 400px;
+      margin-inline: auto;
+      line-height: 1.6;
+    }
+
     /* === FOOTER === */
     .footer { border-top: 1px solid var(--divider); padding-block: var(--space-10); }
     .footer__inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
@@ -279,9 +316,11 @@
 
     /* === SECTION === */
     .section { padding-block: var(--space-16); }
-    .section__label { font-size: var(--text-sm); font-weight: 500; color: var(--accent); letter-spacing: 0.04em; margin-bottom: var(--space-2); }
-    .section__title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; margin-bottom: var(--space-3); }
-    .section__desc { font-size: var(--text-base); color: var(--text-muted); max-width: 600px; line-height: 1.6; }
+
+    @media (max-width: 600px) {
+      .podcast-card { flex-direction: column; }
+      .podcast-card__artwork { width: 100%; height: 120px; }
+    }
   </style>
 </head>
 <body>
@@ -293,11 +332,10 @@
         <a href="index.html" class="nav__logo" aria-label="Hem">Ted Svärd</a>
         <ul class="nav__links">
           <li><a href="index.html">Hem</a></li>
-          <li><a href="projekt.html" aria-current="page">Projekt</a></li>
+          <li><a href="projekt.html">Projekt</a></li>
           <li><a href="forskning.html">Forskning</a></li>
-          <li><a href="podcasts.html">Podcasts</a></li>
+          <li><a href="podcasts.html" aria-current="page">Podcasts</a></li>
           <li><a href="om-mig.html">Om mig</a></li>
-          <li><a href="mailto:Ted@Tuvaluna.com">Kontakt</a></li>
         </ul>
         <div class="nav__actions">
           <button class="icon-btn" data-theme-toggle aria-label="Växla till ljust läge">
@@ -314,160 +352,19 @@
   <!-- PAGE HEADER -->
   <header class="page-header">
     <div class="container">
-      <p class="page-header__eyebrow">Utvalda projekt</p>
-      <h1 class="page-header__title">Det jag byggt</h1>
-      <p class="page-header__desc">Från autonoma AI-agenter och on-device ML till personliga streamingtjänster och hälsoverktyg — allt byggt i SwiftUI med fokus på prestanda, integritet och design.</p>
+      <div class="page-header__eyebrow">Podcasts</div>
+      <h1 class="page-header__title">Samtal om teknik & framtid</h1>
+      <p class="page-header__desc">Här kommer mina poddar att finnas — samtal om AI, utveckling, design och de idéer som formar morgondagen.</p>
     </div>
   </header>
 
-  <!-- PROJECTS -->
+  <!-- CONTENT -->
   <section class="section" style="padding-top: 0;">
     <div class="container">
-      <div class="projects-grid">
-
-        <!-- Navi v7 -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--accent-dim)">🤖</div>
-            <div><div class="project-card__title">Navi v7</div>
-            <div class="project-card__subtitle">AI-utvecklingsmiljö & agentplattform</div></div>
-          </div>
-          <p class="project-card__desc">Kognitiv AI-agentplattform med orchestrator-arkitektur. Server-side Node.js-backend på DigitalOcean kör persistenta agenter som läser/skriver filer, interagerar med GitHub via REST API och rapporterar stegvis via WebSocket-streaming till iOS/macOS-klienten. Multi-provider AI-routing (Anthropic Claude, xAI Grok, OpenRouter) med automatisk failover. Terra Cotta-designsystem med glasmorfistisk SwiftUI, adaptiv layout och realtidsuppdateringar. Byggd för iterativ AI-assisterad utveckling med fullständig projektöversikt och agentminne.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--accent">AI-agent</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Node.js</span>
-            <span class="tag">WebSocket</span>
-            <span class="tag">DigitalOcean</span>
-            <span class="tag">GitHub API</span>
-            <span class="tag">Anthropic</span>
-            <span class="tag">xAI Grok</span>
-          </div>
-        </article>
-
-        <!-- Eon-Y -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--amber-dim)">⚡</div>
-            <div><div class="project-card__title">Eon-Y V5</div>
-            <div class="project-card__subtitle">Autonom kognitiv AI</div></div>
-          </div>
-          <p class="project-card__desc">Autonom kognitiv AI-arkitektur med Qwen3-integration, autonom webbläsare och SuperView-gränssnitt. Fullständig kognitiv arkitektur med långtidsminne, arbetsminne, beslutsfattande och självständig verktygsanvändning. Implementerar Eon-forskningens teorier om emergens och embodiment — AI:n observerar, resonerar och agerar i loopar med självkorrigering. Designat för att utforska gränserna mellan artificiell och emergent intelligens.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--amber">AI-arkitektur</span>
-            <span class="tag">Qwen3</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Autonom agent</span>
-            <span class="tag">Emergens</span>
-          </div>
-        </article>
-
-        <!-- Lilla Jag -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--green-dim)">🧠</div>
-            <div><div class="project-card__title">Lilla Jag 3</div>
-            <div class="project-card__subtitle">On-device mental hälsa</div></div>
-          </div>
-          <p class="project-card__desc">Svensk mental hälsoapp med KBT-baserat innehåll — 100 % on-device för maximal integritet. Qwen3-1.7B via llama.cpp för terapeutiska konversationer. Tre CoreML-modeller: EmotionMultiLabel (8 Plutchik-emotioner), SentimentScorer och TopicClassifier. Video-bibliotek med terapeutiska interventioner för ångest, depression, PTSD och OCD. Glasformism-design med alltid-synlig kris-knapp. Ingen data, ingen text, ingen metadata lämnar någonsin enheten.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--green">Mental hälsa</span>
-            <span class="tag">CoreML</span>
-            <span class="tag">llama.cpp</span>
-            <span class="tag">Qwen3-1.7B</span>
-            <span class="tag">KBT</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">On-device AI</span>
-          </div>
-        </article>
-
-        <!-- Lunaflix -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--orange-dim)">📺</div>
-            <div><div class="project-card__title">Lunaflix v2</div>
-            <div class="project-card__subtitle">Personlig streamingplattform</div></div>
-          </div>
-          <p class="project-card__desc">Personlig streamingtjänst i Netflix-kvalitet. Mux HLS-strömning med AVPlayer i SwiftUI, hero-karusell med parallax-scrollning, automatisk åldersberäkning per video baserat på födelsedatum. Download manager för offline-visning med progress-spårning. Lila/cyan design med glasmorfism, animerade övergångar och Netflix-grade UI-komponenter. ContentStore-arkitektur med kategorier, sök och profilhantering.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--orange">Streaming</span>
-            <span class="tag">Mux HLS</span>
-            <span class="tag">AVPlayer</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Offline</span>
-            <span class="tag">MVVM</span>
-          </div>
-        </article>
-
-        <!-- BabyCare -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--purple-dim)">👶</div>
-            <div><div class="project-card__title">BabyCare</div>
-            <div class="project-card__subtitle">Fertilitet → Graviditet → Föräldraskap</div></div>
-          </div>
-          <p class="project-card__desc">Svensk föräldraskapssvit som följer hela resan: fertilitetsspårning → graviditetsvecka → barnets 5 första år. SwiftData för fullständig lokal lagring, Swift Charts för tillväxtkurvor baserade på svenska BVC-percentiler och Livsmedelsverkets riktlinjer. Fas-anpassad design som transformerar automatiskt: korall/ros för fertilitet, lavendel för graviditet, blått för baby. Amnings- och sömnloggar, vaccinationspåminnelser och utvecklingsmilstolpar.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--purple">Föräldraskap</span>
-            <span class="tag">SwiftData</span>
-            <span class="tag">Swift Charts</span>
-            <span class="tag">BVC</span>
-            <span class="tag">iOS</span>
-            <span class="tag">SwiftUI</span>
-          </div>
-        </article>
-
-        <!-- Lifetoken -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--green-dim)">⏳</div>
-            <div><div class="project-card__title">Lifetoken</div>
-            <div class="project-card__subtitle">Dystopiskt livs-RPG</div></div>
-          </div>
-          <p class="project-card__desc">Dystopiskt livshanterings-RPG där varje sekund som tickar är valuta du spenderar. HealthKit-integration konverterar aktivitet, sömn och träning till spelvaluta. 14 zoner med unika utmaningar och berättelser. The Gazette — en AI-driven nyhetstidning som genererar personligt innehåll baserat på spelarens verkliga liv. Neon-grön terminal-estetik med permadeath: när tiden tar slut, börjar du om från noll.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--green">Gamification</span>
-            <span class="tag">HealthKit</span>
-            <span class="tag">AI-generated content</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Permadeath</span>
-          </div>
-        </article>
-
-        <!-- Lumvra -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--accent-dim)">🌙</div>
-            <div><div class="project-card__title">Lumvra</div>
-            <div class="project-card__subtitle">AI-sömncoach</div></div>
-          </div>
-          <p class="project-card__desc">AI-driven sömncoach som hämtar HealthKit-data (sömnfaser, aktivitet, koffeinintag, hjärtfrekvens) och genererar personliga sömnrekommendationer via AI. Supabase-backend för molnsynkronisering mellan enheter. Dagliga briefingar med handlingsbara förslag baserade på sömnkvalitet och livsstilsdata. Managers-arkitektur: AIManager, HealthKitManager, SupabaseManager. Mörk, lugn design optimerad för nattlig användning med minimal blåljuspåverkan.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--accent">Sömn</span>
-            <span class="tag">HealthKit</span>
-            <span class="tag">Supabase</span>
-            <span class="tag">AI</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Cloud sync</span>
-          </div>
-        </article>
-
-        <!-- MindfulTogether -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--purple-dim)">🤝</div>
-            <div><div class="project-card__title">MindfulTogether</div>
-            <div class="project-card__subtitle">Delad mindfulness</div></div>
-          </div>
-          <p class="project-card__desc">Delad mindfulness-plattform för par och familjer. Gemensamma meditationsmål, synkroniserade sessioner och aktivitets-spårning via HealthKit. Byggt i SwiftUI med fokus på relationell hälsa — dela framsteg, utmana varandra och bygg gemensamma rutiner. Designat för att stärka band genom medveten närvaro.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--purple">Mindfulness</span>
-            <span class="tag">HealthKit</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Social</span>
-          </div>
-        </article>
-
+      <div class="placeholder">
+        <div class="placeholder__icon">🎙️</div>
+        <div class="placeholder__title">Kommer snart</div>
+        <p class="placeholder__desc">Podcasts är under produktion. Här kommer avsnitt om AI-utveckling, SwiftUI, agentarkitekturer och teknikens framtid att publiceras.</p>
       </div>
     </div>
   </section>
@@ -500,6 +397,17 @@
           : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
       }
       btn.addEventListener('click', function () { setTheme(theme === 'dark' ? 'light' : 'dark'); });
+    })();
+
+    // Mobilmeny
+    (function () {
+      var hamburger = document.querySelector('.nav__hamburger');
+      var navLinks = document.querySelector('.nav__links');
+      if (!hamburger || !navLinks) return;
+      hamburger.addEventListener('click', function () {
+        var isOpen = navLinks.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', isOpen);
+      });
     })();
   </script>
 </body>
