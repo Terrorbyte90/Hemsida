@@ -6,7 +6,9 @@
   <meta name="description" content="Ted Svärd – AI Architect & Systeminnovatör. Jag befinner mig i framtiden. Gör du?" />
   <title>Ted Svärd – AI Architect</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
       --neon: #a855f7;
@@ -15,271 +17,417 @@
       --green: #22c55e;
       --yellow: #f59e0b;
       --mono: 'JetBrains Mono', monospace;
+      --bg-primary: #07070d;
     }
 
-    /* TICKER */
-    .ticker-bar {
-      background: rgba(168,85,247,0.06);
-      border-bottom: 1px solid rgba(168,85,247,0.15);
-      padding: 10px 0;
+    /* ── TICKER ── */
+    .ticker-wrap {
+      background: rgba(168,85,247,0.05);
+      border-bottom: 1px solid rgba(168,85,247,0.12);
+      padding: 9px 0;
       overflow: hidden;
       white-space: nowrap;
       position: relative;
+      margin-top: 64px;
     }
-    .ticker-bar::before,.ticker-bar::after{
-      content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;
+    .ticker-wrap::before,.ticker-wrap::after{
+      content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;pointer-events:none;
     }
-    .ticker-bar::before{left:0;background:linear-gradient(to right,#080810,transparent);}
-    .ticker-bar::after{right:0;background:linear-gradient(to left,#080810,transparent);}
-    .ticker-track{display:inline-flex;gap:48px;animation:ticker 38s linear infinite;}
-    .ticker-item{font-family:var(--mono);font-size:0.72rem;color:var(--text-muted);display:inline-flex;align-items:center;gap:8px;}
-    .ti-dot{width:6px;height:6px;border-radius:50%;background:var(--neon);display:inline-block;}
-    .ti-red{background:var(--red);} .ti-green{background:var(--green);} .ti-yellow{background:var(--yellow);}
-    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .ticker-wrap::before{left:0;background:linear-gradient(to right,#07070d,transparent);}
+    .ticker-wrap::after{right:0;background:linear-gradient(to left,#07070d,transparent);}
+    .ticker-inner{display:inline-flex;gap:56px;animation:ticker-scroll 44s linear infinite;}
+    .ticker-item{
+      font-family:var(--mono);font-size:0.7rem;
+      color:rgba(148,163,184,0.7);
+      display:inline-flex;align-items:center;gap:8px;
+      letter-spacing:0.02em;
+    }
+    .t-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+    .t-dot-p{background:var(--neon);}
+    .t-dot-r{background:var(--red);}
+    .t-dot-g{background:var(--green);}
+    .t-dot-y{background:var(--yellow);}
+    @keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-    /* HERO: single column, centered */
-    .hero-v2{
-      min-height: 100vh;
+    /* ── HERO ── */
+    .hero-v3{
+      min-height: 92vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      padding: 110px 24px 60px;
+      justify-content: center;
+      padding: 80px 24px 60px;
       text-align: center;
+      position: relative;
     }
-    .hero-left{
-      max-width: 680px;
-      width: 100%;
-      z-index: 2;
+    .hero-v3::before{
+      content:'';
+      position:absolute;inset:0;
+      background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(168,85,247,0.07),transparent 70%);
+      pointer-events:none;
     }
-    .hero-eyebrow-new{
+    .hero-badge{
       display:inline-flex;align-items:center;gap:8px;
-      font-family:var(--mono);font-size:0.75rem;color:var(--neon);
-      letter-spacing:0.1em;margin-bottom:20px;text-transform:uppercase;
+      font-family:var(--mono);font-size:0.72rem;
+      color:rgba(168,85,247,0.9);
+      letter-spacing:0.12em;text-transform:uppercase;
+      margin-bottom:28px;
+      padding:7px 16px;
+      background:rgba(168,85,247,0.07);
+      border:1px solid rgba(168,85,247,0.2);
+      border-radius:50px;
     }
-    .pulse-dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse-green 2s infinite;}
+    .hero-badge .pdot{
+      width:7px;height:7px;background:var(--green);
+      border-radius:50%;animation:pg 2s infinite;
+    }
+    @keyframes pg{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)}50%{box-shadow:0 0 0 5px rgba(34,197,94,0)}}
     .hero-h1{
       font-family:'Space Grotesk',sans-serif;
-      font-size:clamp(2.6rem,5.5vw,4.4rem);
-      font-weight:700;line-height:1.1;color:#fff;
+      font-size:clamp(2.8rem,6vw,5rem);
+      font-weight:700;line-height:1.08;
+      color:#fff;
+      letter-spacing:-0.02em;
+      max-width:800px;
     }
-    .hero-h1 .line2{
+    .hero-h1 .dim{
       display:block;
-      font-size:clamp(1.4rem,2.5vw,2rem);
-      font-weight:400;color:var(--text-muted);margin-top:8px;
+      font-size:clamp(1.3rem,2.4vw,1.9rem);
+      font-weight:400;
+      color:rgba(148,163,184,0.7);
+      letter-spacing:0;
+      margin-top:10px;
     }
-    .hero-sub{
-      color:var(--text-muted);font-size:1rem;line-height:1.8;
-      max-width:560px;margin:20px auto 0;
+    .hero-lead{
+      margin:28px auto 0;
+      max-width:560px;
+      font-size:1rem;
+      color:rgba(148,163,184,0.8);
+      line-height:1.8;
     }
-    .hero-cta-row{
-      display:flex;gap:14px;flex-wrap:wrap;
-      justify-content:center;margin-top:32px;
+    .hero-ctas{
+      display:flex;gap:12px;flex-wrap:wrap;
+      justify-content:center;margin-top:36px;
     }
-    .hero-stat-row{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
-      margin-top:40px;padding-top:28px;
-      border-top:1px solid rgba(255,255,255,0.07);
-      max-width:680px;width:100%;
-    }
-    .hstat{text-align:center;}
-    .hstat-val{
-      font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;
-      background:linear-gradient(135deg,var(--neon),var(--neon2));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-      line-height:1;
-    }
-    .hstat-label{font-size:0.75rem;color:var(--text-muted);margin-top:4px;line-height:1.4;}
 
-    /* LLM TERMINAL — always visible, centered */
-    .llm-section{
-      width:100%;max-width:760px;
-      margin:60px auto 0;
+    /* ── TERMINAL ── */
+    .terminal-section{
+      width:100%;max-width:800px;
+      margin:64px auto 0;
       padding:0 24px;
     }
-    .llm-window{
-      background:#0a0a0f;
-      border:1px solid rgba(168,85,247,0.3);
-      border-radius:16px;
+    .terminal-label{
+      font-family:var(--mono);font-size:0.65rem;
+      color:rgba(168,85,247,0.6);
+      letter-spacing:0.15em;text-transform:uppercase;
+      text-align:center;margin-bottom:12px;
+    }
+    .terminal-window{
+      background:#08080f;
+      border:1px solid rgba(168,85,247,0.2);
+      border-radius:14px;
       overflow:hidden;
-      box-shadow:0 0 80px rgba(168,85,247,0.14),0 32px 64px rgba(0,0,0,0.6);
+      box-shadow:
+        0 0 0 1px rgba(168,85,247,0.05),
+        0 20px 60px rgba(0,0,0,0.7),
+        0 0 80px rgba(168,85,247,0.06);
+    }
+    .terminal-bar{
+      display:flex;align-items:center;
+      justify-content:space-between;
+      padding:13px 18px;
+      background:rgba(255,255,255,0.025);
+      border-bottom:1px solid rgba(255,255,255,0.05);
+    }
+    .t-dots{display:flex;gap:6px;}
+    .t-dot-btn{width:12px;height:12px;border-radius:50%;}
+    .t-dot-btn-r{background:#ff5f57;}
+    .t-dot-btn-y{background:#febc2e;}
+    .t-dot-btn-g{background:#28c840;}
+    .t-bar-title{
+      font-family:var(--mono);font-size:0.68rem;
+      color:rgba(148,163,184,0.5);
+      letter-spacing:0.04em;
+    }
+    .t-model-badge{
+      font-family:var(--mono);font-size:0.62rem;
+      padding:4px 12px;
+      background:rgba(168,85,247,0.1);
+      border:1px solid rgba(168,85,247,0.2);
+      border-radius:50px;
+      color:var(--neon);
+      transition:all 0.4s;
+    }
+    .t-model-badge.danger{
+      color:var(--red);
+      background:rgba(239,68,68,0.08);
+      border-color:rgba(239,68,68,0.25);
+    }
+    .terminal-body{
+      padding:24px;
+      min-height:400px;max-height:400px;
+      overflow:hidden;
       position:relative;
+      font-family:var(--mono);
+      font-size:0.8rem;
+      line-height:1.75;
     }
-    .llm-titlebar{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:12px 20px;
-      background:rgba(255,255,255,0.03);
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-    .llm-dots{display:flex;gap:6px;}
-    .llm-dot{width:11px;height:11px;border-radius:50%;}
-    .llm-dot-r{background:#ff5f56;} .llm-dot-y{background:#ffbd2e;} .llm-dot-g{background:#27c93f;}
-    .llm-title-text{font-family:var(--mono);font-size:0.7rem;color:var(--text-muted);letter-spacing:0.05em;}
-    .llm-model-badge{
-      font-family:var(--mono);font-size:0.65rem;padding:3px 10px;
-      background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.25);
-      border-radius:50px;color:var(--neon);
-    }
-    .llm-body{
-      padding:20px;min-height:380px;max-height:380px;
-      overflow:hidden;position:relative;
-      font-family:var(--mono);font-size:0.8rem;line-height:1.7;
-    }
+    .terminal-body.blur-fx{filter:blur(4px) brightness(0.6);transition:filter 0.7s;}
+
     /* Hack overlay */
-    .hack-overlay{
-      position:absolute;inset:0;background:rgba(0,0,0,0);
-      z-index:10;display:flex;flex-direction:column;
-      align-items:center;justify-content:center;gap:16px;
-      opacity:0;pointer-events:none;transition:opacity 0.6s;
+    .hack-veil{
+      position:absolute;inset:0;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      gap:14px;
+      opacity:0;pointer-events:none;
+      transition:opacity 0.5s;
+      z-index:20;
     }
-    .hack-overlay.visible{opacity:1;}
-    .hack-text{
-      font-family:var(--mono);font-size:1.1rem;font-weight:700;
-      color:var(--red);text-align:center;
-      text-shadow:0 0 20px rgba(239,68,68,0.8);
-      animation:flicker 0.15s infinite alternate;
+    .hack-veil.show{opacity:1;}
+    .hack-title{
+      font-family:var(--mono);font-size:1rem;font-weight:700;
+      color:var(--red);
+      text-shadow:0 0 24px rgba(239,68,68,0.9);
+      animation:flk 0.12s infinite alternate;
+      text-align:center;
     }
-    @keyframes flicker{0%{opacity:1}100%{opacity:0.7}}
-    .hack-sub{font-family:var(--mono);font-size:0.7rem;color:rgba(239,68,68,0.7);text-align:center;}
-    .glitch-line{
-      width:100%;height:2px;background:var(--red);opacity:0.5;
-      animation:glitch-move 0.2s infinite;
-    }
-    @keyframes glitch-move{
-      0%{transform:translateX(0) scaleX(1)}
-      25%{transform:translateX(-8px) scaleX(0.95)}
-      50%{transform:translateX(5px) scaleX(1.05)}
-      75%{transform:translateX(-3px) scaleX(0.98)}
-      100%{transform:translateX(0) scaleX(1)}
-    }
+    .hack-sub-text{font-family:var(--mono);font-size:0.68rem;color:rgba(239,68,68,0.6);text-align:center;}
+    .scan-line{width:92%;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);animation:scan 0.18s infinite;}
+    @keyframes flk{0%{opacity:1}100%{opacity:0.65}}
+    @keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
     /* Messages */
-    .llm-msg{margin-bottom:14px;opacity:0;transform:translateY(6px);transition:opacity 0.4s,transform 0.4s;}
-    .llm-msg.show{opacity:1;transform:translateY(0);}
-    .llm-msg-user,.llm-msg-ai{display:flex;align-items:flex-start;gap:10px;}
-    .llm-avatar-u{
-      width:26px;height:26px;border-radius:50%;
-      background:linear-gradient(135deg,#4f46e5,#7c3aed);
+    .t-msg{margin-bottom:16px;opacity:0;transform:translateY(8px);transition:opacity 0.35s,transform 0.35s;}
+    .t-msg.in{opacity:1;transform:translateY(0);}
+    .t-row{display:flex;align-items:flex-start;gap:10px;}
+    .t-av{
+      width:28px;height:28px;border-radius:50%;
       display:flex;align-items:center;justify-content:center;
-      font-size:0.6rem;color:#fff;font-weight:700;flex-shrink:0;margin-top:2px;
+      font-size:0.6rem;font-weight:700;flex-shrink:0;margin-top:1px;
     }
-    .llm-avatar-ai{
-      width:26px;height:26px;border-radius:50%;
-      background:linear-gradient(135deg,var(--neon),var(--neon2));
-      display:flex;align-items:center;justify-content:center;
-      font-size:0.65rem;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px;
+    .t-av-u{background:linear-gradient(135deg,#4f46e5,#6d28d9);color:#e0e7ff;}
+    .t-av-a{background:linear-gradient(135deg,#a855f7,#06b6d4);color:#fff;}
+    .t-bubble{
+      padding:10px 14px;font-size:0.78rem;
+      max-width:86%;border-radius:10px;
     }
-    .llm-bubble-user{
-      background:rgba(79,70,229,0.12);border:1px solid rgba(79,70,229,0.25);
-      border-radius:12px 12px 12px 3px;padding:9px 14px;
-      color:#c7d2fe;font-size:0.8rem;max-width:88%;
+    .t-bubble-u{
+      background:rgba(79,70,229,0.1);
+      border:1px solid rgba(79,70,229,0.2);
+      color:#c7d2fe;
+      border-radius:10px 10px 10px 2px;
     }
-    .llm-bubble-ai{
-      background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);
-      border-radius:12px 12px 3px 12px;padding:9px 14px;
-      color:#e2e8f0;font-size:0.8rem;max-width:88%;
+    .t-bubble-a{
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.07);
+      color:#e2e8f0;
+      border-radius:10px 10px 2px 10px;
     }
-    .llm-code-block{
-      background:rgba(0,0,0,0.4);border:1px solid rgba(168,85,247,0.15);
-      border-radius:8px;padding:10px 14px;margin-top:8px;
-      font-family:var(--mono);font-size:0.68rem;color:#7dd3fc;
-      overflow:hidden;max-height:0;transition:max-height 1s ease;white-space:pre;
+    .t-code{
+      background:rgba(0,0,0,0.5);
+      border:1px solid rgba(168,85,247,0.12);
+      border-radius:7px;
+      padding:10px 14px;
+      margin-top:8px;
+      font-family:var(--mono);
+      font-size:0.68rem;
+      color:#7dd3fc;
+      white-space:pre;
+      max-height:0;overflow:hidden;
+      transition:max-height 0.9s ease;
     }
-    .llm-code-block.open{max-height:300px;}
-    .llm-result-block{
+    .t-code.open{max-height:260px;}
+    .t-result{
       margin-top:8px;padding:10px 14px;
-      background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);
-      border-radius:8px;color:#86efac;font-size:0.75rem;
+      border-radius:7px;
+      font-size:0.73rem;
     }
-    .llm-result-block.red{background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2);color:#fca5a5;}
-    .llm-typing{display:flex;gap:4px;align-items:center;padding:4px 0;}
-    .llm-typing span{width:5px;height:5px;border-radius:50%;background:var(--neon);animation:typing-bounce 1.2s infinite;}
-    .llm-typing span:nth-child(2){animation-delay:0.2s;}
-    .llm-typing span:nth-child(3){animation-delay:0.4s;}
-    @keyframes typing-bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
-    .llm-blur{filter:blur(0);transition:filter 0.8s;}
-    .llm-blur.hacked{filter:blur(3px) brightness(0.7);}
+    .t-result-ok{background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.18);color:#86efac;}
+    .t-result-err{background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.18);color:#fca5a5;}
+    .t-typing{display:flex;gap:4px;align-items:center;padding:3px 0;}
+    .t-typing span{width:5px;height:5px;border-radius:50%;background:var(--neon);animation:tb 1.2s infinite;}
+    .t-typing span:nth-child(2){animation-delay:.2s;}
+    .t-typing span:nth-child(3){animation-delay:.4s;}
+    @keyframes tb{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
 
     /* Security questions */
-    .sec-questions{
+    .sec-qs{
       display:flex;flex-direction:column;gap:8px;
-      margin-top:14px;opacity:0;transition:opacity 0.8s;
+      margin-top:12px;opacity:0;transition:opacity 0.7s;
     }
-    .sec-q-item{
-      display:flex;align-items:center;gap:10px;padding:10px 16px;
-      border-radius:8px;font-size:0.78rem;
-      font-family:var(--mono);
+    .sec-q{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 16px;border-radius:8px;
+      font-family:var(--mono);font-size:0.75rem;
     }
-    .sec-q-item.red{background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);color:#fca5a5;}
-    .sec-q-item.purple{background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.2);color:#d8b4fe;}
-    .sec-q-item a{color:inherit;text-decoration:none;}
+    .sec-q-red{background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.18);color:#fca5a5;}
+    .sec-q-purple{background:rgba(168,85,247,0.05);border:1px solid rgba(168,85,247,0.18);color:#d8b4fe;}
+    .sec-q-purple a{color:inherit;text-decoration:none;}
+    .sec-q-purple a:hover{text-decoration:underline;}
 
-    /* AI FACTS */
-    .ai-facts{padding:80px 0;background:rgba(0,0,0,0.3);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);}
-    .ai-facts-inner{max-width:1200px;margin:0 auto;padding:0 32px;}
-    .ai-facts-header{text-align:center;margin-bottom:60px;}
-    .ai-facts-header h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;color:#fff;margin-bottom:16px;}
-    .ai-facts-header p{color:var(--text-muted);max-width:560px;margin:0 auto;line-height:1.7;font-size:1rem;}
-    .facts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px;}
-    .fact-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:28px 24px;transition:all 0.3s;position:relative;overflow:hidden;}
-    .fact-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon),var(--neon2));opacity:0;transition:opacity 0.3s;}
-    .fact-card:hover{border-color:rgba(168,85,247,0.25);transform:translateY(-3px);}
-    .fact-card:hover::before{opacity:1;}
-    .fact-num{font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700;background:linear-gradient(135deg,var(--neon),var(--neon2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:8px;}
-    .fact-label{font-size:0.85rem;color:#fff;font-weight:600;margin-bottom:8px;}
-    .fact-desc{font-size:0.78rem;color:var(--text-muted);line-height:1.6;}
-    .warning-bar{background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(168,85,247,0.05));border:1px solid rgba(239,68,68,0.2);border-radius:16px;padding:28px 36px;display:flex;align-items:center;gap:20px;margin-top:20px;}
-    .warning-icon{font-size:2rem;flex-shrink:0;}
-    .warning-text h3{color:#fca5a5;font-size:1rem;font-weight:600;margin-bottom:4px;font-family:'Space Grotesk',sans-serif;}
-    .warning-text p{color:var(--text-muted);font-size:0.83rem;line-height:1.6;margin:0;}
+    /* ── STATS ── */
+    .hero-stats-row{
+      display:grid;grid-template-columns:repeat(3,1fr);
+      gap:24px;margin:56px auto 0;
+      max-width:640px;width:100%;
+      padding-top:28px;
+      border-top:1px solid rgba(255,255,255,0.06);
+    }
+    .hs{text-align:center;}
+    .hs-val{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:2rem;font-weight:700;
+      background:linear-gradient(135deg,var(--neon),var(--neon2));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .hs-label{font-size:0.72rem;color:rgba(148,163,184,0.6);margin-top:4px;line-height:1.4;}
 
-    /* URGENCY */
-    .urgency-section{padding:100px 0;}
-    .urgency-inner{max-width:1200px;margin:0 auto;padding:0 32px;}
-    .urgency-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
-    .urgency-left h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:20px;}
-    .urgency-left h2 .red-text{color:var(--red);}
-    .urgency-left p{color:var(--text-muted);font-size:0.95rem;line-height:1.8;margin-bottom:16px;}
-    .urgency-questions{display:flex;flex-direction:column;gap:12px;margin-top:28px;}
-    .uq-item{display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;font-size:0.88rem;color:#fff;font-weight:500;}
-    .uq-icon{font-size:1.1rem;}
-    .timeline-item{display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;position:relative;}
-    .timeline-item::before{content:'';position:absolute;left:19px;top:36px;width:2px;height:calc(100% + 8px);background:linear-gradient(to bottom,rgba(168,85,247,0.4),transparent);}
-    .timeline-item:last-child::before{display:none;}
-    .tl-dot{width:40px;height:40px;border-radius:50%;background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-    .tl-content h4{font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:600;color:#fff;margin-bottom:4px;}
-    .tl-content p{font-size:0.78rem;color:var(--text-muted);line-height:1.6;margin:0;}
-    .tl-date{font-family:var(--mono);font-size:0.65rem;color:var(--neon);margin-bottom:4px;}
+    /* ── FACTS ── */
+    .facts-section{
+      padding:80px 0;
+      background:rgba(0,0,0,0.35);
+      border-top:1px solid rgba(255,255,255,0.04);
+      border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .facts-inner{max-width:1200px;margin:0 auto;padding:0 32px;}
+    .facts-header{text-align:center;margin-bottom:56px;}
+    .facts-header h2{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(1.8rem,3vw,2.6rem);
+      font-weight:700;color:#fff;margin-bottom:14px;
+    }
+    .facts-header p{color:rgba(148,163,184,0.7);max-width:500px;margin:0 auto;font-size:0.95rem;line-height:1.7;}
+    .facts-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);
+      gap:18px;margin-bottom:36px;
+    }
+    .fact-c{
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;padding:26px 22px;
+      transition:border-color 0.3s,transform 0.3s;
+      position:relative;overflow:hidden;
+    }
+    .fact-c::after{
+      content:'';position:absolute;top:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,var(--neon),var(--neon2));
+      opacity:0;transition:opacity 0.3s;
+    }
+    .fact-c:hover{border-color:rgba(168,85,247,0.2);transform:translateY(-3px);}
+    .fact-c:hover::after{opacity:1;}
+    .fact-n{
+      font-family:'Space Grotesk',sans-serif;font-size:2.1rem;font-weight:700;
+      background:linear-gradient(135deg,var(--neon),var(--neon2));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      line-height:1;margin-bottom:7px;
+    }
+    .fact-t{font-size:0.82rem;color:#fff;font-weight:600;margin-bottom:6px;}
+    .fact-d{font-size:0.75rem;color:rgba(148,163,184,0.6);line-height:1.6;}
+    .warn-strip{
+      background:linear-gradient(135deg,rgba(239,68,68,0.07),rgba(168,85,247,0.04));
+      border:1px solid rgba(239,68,68,0.18);
+      border-radius:14px;padding:24px 32px;
+      display:flex;align-items:center;gap:18px;
+    }
+    .warn-strip-icon{font-size:1.8rem;flex-shrink:0;}
+    .warn-strip h3{color:#fca5a5;font-size:0.95rem;font-weight:600;margin-bottom:4px;font-family:'Space Grotesk',sans-serif;}
+    .warn-strip p{color:rgba(148,163,184,0.6);font-size:0.8rem;line-height:1.6;margin:0;}
 
-    /* SERVICES */
-    .services-preview{padding:80px 0;background:rgba(0,0,0,0.2);}
-    .services-inner{max-width:1200px;margin:0 auto;padding:0 32px;}
-    .services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px;}
-    .service-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:24px 20px;transition:all 0.3s;text-decoration:none;display:block;}
-    .service-card:hover{border-color:rgba(168,85,247,0.3);background:rgba(168,85,247,0.05);transform:translateY(-4px);}
-    .sc-icon{font-size:1.8rem;margin-bottom:14px;}
-    .sc-title{font-family:'Space Grotesk',sans-serif;font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:8px;}
-    .sc-desc{font-size:0.78rem;color:var(--text-muted);line-height:1.6;}
+    /* ── URGENCY ── */
+    .urgency-sec{padding:96px 0;}
+    .urgency-in{max-width:1200px;margin:0 auto;padding:0 32px;}
+    .urgency-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+    .urg-left h2{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;
+      color:#fff;line-height:1.2;margin-bottom:18px;
+    }
+    .urg-left h2 .danger{color:var(--red);}
+    .urg-left p{color:rgba(148,163,184,0.7);font-size:0.92rem;line-height:1.85;margin-bottom:14px;}
+    .uq-list{display:flex;flex-direction:column;gap:10px;margin-top:24px;}
+    .uq{
+      display:flex;align-items:center;gap:12px;
+      padding:13px 17px;
+      background:rgba(255,255,255,0.025);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:9px;
+      font-size:0.85rem;color:#fff;font-weight:500;
+    }
+    .uq-ico{font-size:1rem;}
+    .tl-item{display:flex;gap:16px;align-items:flex-start;margin-bottom:22px;position:relative;}
+    .tl-item::before{
+      content:'';position:absolute;left:19px;top:36px;
+      width:2px;height:calc(100% + 6px);
+      background:linear-gradient(to bottom,rgba(168,85,247,0.35),transparent);
+    }
+    .tl-item:last-child::before{display:none;}
+    .tl-icon{
+      width:40px;height:40px;border-radius:50%;
+      background:rgba(168,85,247,0.1);
+      border:1px solid rgba(168,85,247,0.25);
+      display:flex;align-items:center;justify-content:center;
+      font-size:0.95rem;flex-shrink:0;
+    }
+    .tl-body h4{font-family:'Space Grotesk',sans-serif;font-size:0.88rem;font-weight:600;color:#fff;margin-bottom:3px;}
+    .tl-body p{font-size:0.76rem;color:rgba(148,163,184,0.6);line-height:1.6;margin:0;}
+    .tl-date{font-family:var(--mono);font-size:0.62rem;color:var(--neon);margin-bottom:3px;}
 
-    /* CTA BOTTOM */
-    .cta-bottom{padding:100px 0;text-align:center;position:relative;overflow:hidden;}
-    .cta-bottom::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(168,85,247,0.08),transparent 70%);pointer-events:none;}
-    .cta-bottom-inner{max-width:700px;margin:0 auto;padding:0 32px;position:relative;z-index:2;}
-    .cta-bottom h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:20px;}
-    .cta-bottom h2 .g{background:linear-gradient(135deg,var(--neon),var(--neon2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-    .cta-bottom p{color:var(--text-muted);font-size:1rem;line-height:1.7;margin-bottom:36px;}
+    /* ── SERVICES ── */
+    .services-sec{padding:80px 0;background:rgba(0,0,0,0.2);}
+    .services-in{max-width:1200px;margin:0 auto;padding:0 32px;}
+    .services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px;}
+    .svc-card{
+      background:rgba(255,255,255,0.025);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;padding:22px 18px;
+      transition:all 0.3s;text-decoration:none;display:block;
+    }
+    .svc-card:hover{
+      border-color:rgba(168,85,247,0.25);
+      background:rgba(168,85,247,0.04);
+      transform:translateY(-4px);
+    }
+    .svc-icon{font-size:1.7rem;margin-bottom:12px;}
+    .svc-title{font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:6px;}
+    .svc-desc{font-size:0.75rem;color:rgba(148,163,184,0.6);line-height:1.6;}
 
-    /* RESPONSIVE */
+    /* ── CTA BOTTOM ── */
+    .cta-bottom-sec{
+      padding:100px 0;text-align:center;
+      position:relative;overflow:hidden;
+    }
+    .cta-bottom-sec::before{
+      content:'';position:absolute;top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      width:500px;height:500px;
+      background:radial-gradient(circle,rgba(168,85,247,0.07),transparent 70%);
+      pointer-events:none;
+    }
+    .cta-bottom-in{max-width:640px;margin:0 auto;padding:0 32px;position:relative;z-index:2;}
+    .cta-bottom-in h2{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(2rem,4vw,3rem);
+      font-weight:700;color:#fff;line-height:1.2;margin-bottom:18px;
+    }
+    .cta-bottom-in h2 .g{
+      background:linear-gradient(135deg,var(--neon),var(--neon2));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .cta-bottom-in p{color:rgba(148,163,184,0.7);font-size:0.95rem;line-height:1.75;margin-bottom:32px;}
+
+    /* ── RESPONSIVE ── */
     @media(max-width:768px){
       .facts-grid{grid-template-columns:repeat(2,1fr);}
       .urgency-grid{grid-template-columns:1fr;}
       .services-grid{grid-template-columns:repeat(2,1fr);}
-      .llm-section{padding:0 16px;}
+      .terminal-section{padding:0 16px;}
     }
     @media(max-width:480px){
       .facts-grid{grid-template-columns:1fr;}
       .services-grid{grid-template-columns:1fr;}
-      .hero-stat-row{grid-template-columns:repeat(3,1fr);gap:10px;}
-      .hstat-val{font-size:1.3rem;}
+      .hero-stats-row{gap:12px;}
+      .hs-val{font-size:1.5rem;}
     }
   </style>
 </head>
@@ -302,352 +450,38 @@
   </nav>
 
   <!-- TICKER -->
-  <div class="ticker-bar" style="margin-top:64px">
-    <div class="ticker-track">
-      <span class="ticker-item"><span class="ti-dot ti-red"></span> GPT-5 lanserat · 2025</span>
-      <span class="ticker-item"><span class="ti-dot ti-yellow"></span> 77% av företag planerar AI-investering · McKinsey 2025</span>
-      <span class="ticker-item"><span class="ti-dot"></span> AI-genererad kod i 46% av alla GitHub-repos</span>
-      <span class="ticker-item"><span class="ti-dot ti-red"></span> Cyberbrottslighet kostar världen $10.5 biljoner 2025</span>
-      <span class="ticker-item"><span class="ti-dot ti-green"></span> Företag med AI rapporterar 40% högre produktivitet</span>
-      <span class="ticker-item"><span class="ti-dot"></span> LLM-agenter skriver, testar & deployer kod autonomt</span>
-      <span class="ticker-item"><span class="ti-dot ti-red"></span> AI-drivna cyberattacker upp 300% sedan 2023</span>
-      <span class="ticker-item"><span class="ti-dot ti-yellow"></span> Qwen3 & Llama 4 kör nu direkt på mobiltelefoner</span>
-      <span class="ticker-item"><span class="ti-dot ti-green"></span> AI minskar tid-till-marknad med upp till 60%</span>
-      <span class="ticker-item"><span class="ti-dot ti-red"></span> GPT-5 lanserat · 2025</span>
-      <span class="ticker-item"><span class="ti-dot ti-yellow"></span> 77% av företag planerar AI-investering · McKinsey 2025</span>
-      <span class="ticker-item"><span class="ti-dot"></span> AI-genererad kod i 46% av alla GitHub-repos</span>
-      <span class="ticker-item"><span class="ti-dot ti-red"></span> Cyberbrottslighet kostar världen $10.5 biljoner 2025</span>
-      <span class="ticker-item"><span class="ti-dot ti-green"></span> Företag med AI rapporterar 40% högre produktivitet</span>
-      <span class="ticker-item"><span class="ti-dot"></span> LLM-agenter skriver, testar & deployer kod autonomt</span>
-      <span class="ticker-item"><span class="ti-dot ti-red"></span> AI-drivna cyberattacker upp 300% sedan 2023</span>
-      <span class="ticker-item"><span class="ti-dot ti-yellow"></span> Qwen3 & Llama 4 kör nu direkt på mobiltelefoner</span>
-      <span class="ticker-item"><span class="ti-dot ti-green"></span> AI minskar tid-till-marknad med upp till 60%</span>
+  <div class="ticker-wrap">
+    <div class="ticker-inner">
+      <span class="ticker-item"><span class="t-dot t-dot-r"></span>GPT-5 lanserat · 2025</span>
+      <span class="ticker-item"><span class="t-dot t-dot-y"></span>77% av företag planerar AI-investering · McKinsey</span>
+      <span class="ticker-item"><span class="t-dot t-dot-p"></span>AI-genererad kod i 46% av alla GitHub-repos</span>
+      <span class="ticker-item"><span class="t-dot t-dot-r"></span>Cyberbrottslighet kostar världen $10,5 biljoner 2025</span>
+      <span class="ticker-item"><span class="t-dot t-dot-g"></span>Företag med AI rapporterar 40% högre produktivitet</span>
+      <span class="ticker-item"><span class="t-dot t-dot-p"></span>LLM-agenter skriver, testar och driftsätter kod autonomt</span>
+      <span class="ticker-item"><span class="t-dot t-dot-r"></span>AI-drivna cyberattacker upp 300% sedan 2023</span>
+      <span class="ticker-item"><span class="t-dot t-dot-y"></span>Qwen3 och Llama 4 körs nu direkt på mobiltelefoner</span>
+      <span class="ticker-item"><span class="t-dot t-dot-g"></span>AI minskar tid till marknad med upp till 60%</span>
+      <!-- duplicate för sömlös loop -->
+      <span class="ticker-item"><span class="t-dot t-dot-r"></span>GPT-5 lanserat · 2025</span>
+      <span class="ticker-item"><span class="t-dot t-dot-y"></span>77% av företag planerar AI-investering · McKinsey</span>
+      <span class="ticker-item"><span class="t-dot t-dot-p"></span>AI-genererad kod i 46% av alla GitHub-repos</span>
+      <span class="ticker-item"><span class="t-dot t-dot-r"></span>Cyberbrottslighet kostar världen $10,5 biljoner 2025</span>
+      <span class="ticker-item"><span class="t-dot t-dot-g"></span>Företag med AI rapporterar 40% högre produktivitet</span>
+      <span class="ticker-item"><span class="t-dot t-dot-p"></span>LLM-agenter skriver, testar och driftsätter kod autonomt</span>
+      <span class="ticker-item"><span class="t-dot t-dot-r"></span>AI-drivna cyberattacker upp 300% sedan 2023</span>
+      <span class="ticker-item"><span class="t-dot t-dot-y"></span>Qwen3 och Llama 4 körs nu direkt på mobiltelefoner</span>
+      <span class="ticker-item"><span class="t-dot t-dot-g"></span>AI minskar tid till marknad med upp till 60%</span>
     </div>
   </div>
 
-  <!-- HERO: centered single column -->
-  <section class="hero-v2">
-    <div class="hero-left">
-      <div class="hero-eyebrow-new">
-        <span class="pulse-dot"></span>
-        Tillgänglig för nya uppdrag
-      </div>
-      <h1 class="hero-h1">
-        Jag befinner mig i framtiden.
-        <span class="line2">Gör du?</span>
-      </h1>
-      <p class="hero-sub">
-        AI utvecklas i en rasande takt. Det ett företag implementerar idag är utdaterat imorgon. Innovationer presenteras varje vecka. AI börjar bemästra cybersäkerhet. Autonoma agenter skriver, testar och deployer kod utan mänsklig inblandning.
-      </p>
-      <p class="hero-sub" style="margin-top:12px">
-        Jag heter <strong style="color:#fff">Ted Svärd</strong> — AI-arkitekt, systeminnovatör och en av få som inte bara följer utvecklingen, utan befinner sig i den.
-      </p>
-      <div class="hero-cta-row">
-        <a href="projekt.html" class="btn btn-primary">Se mina system ↗</a>
-        <a href="samarbeta.html" class="btn btn-ghost">Samarbeta →</a>
-      </div>
-    </div>
-
-    <!-- LLM TERMINAL: centered, below hero text, always visible -->
-    <div class="llm-section">
-      <div class="llm-window">
-        <div class="llm-titlebar">
-          <div class="llm-dots">
-            <div class="llm-dot llm-dot-r"></div>
-            <div class="llm-dot llm-dot-y"></div>
-            <div class="llm-dot llm-dot-g"></div>
-          </div>
-          <span class="llm-title-text">AI Terminal — Live Demo</span>
-          <span class="llm-model-badge" id="modelBadge">◉ Navi v7</span>
-        </div>
-        <div class="llm-body llm-blur" id="llmBody">
-          <div id="llmMessages"></div>
-          <div class="hack-overlay" id="hackOverlay">
-            <div class="glitch-line"></div>
-            <div class="hack-text" id="hackText">⚠ INTRÅNG DETEKTERAT</div>
-            <div class="hack-sub" id="hackSub">Anslutning komprometterad...</div>
-            <div class="glitch-line"></div>
-          </div>
-        </div>
-      </div>
-      <div class="sec-questions" id="securityQuestions">
-        <div class="sec-q-item red"><span>🛡️</span> Har du koll på din säkerhet?</div>
-        <div class="sec-q-item red"><span>📋</span> Har du effektiva system &amp; dokumentation?</div>
-        <div class="sec-q-item red"><span>⚡</span> Hänger du med i AI-utvecklingen?</div>
-        <div class="sec-q-item purple"><span>→</span><a href="samarbeta.html">Det är vad jag hjälper dig med. Samarbeta med Ted →</a></div>
-      </div>
-    </div>
-
-    <!-- STATS below terminal -->
-    <div class="hero-stat-row">
-      <div class="hstat"><div class="hstat-val">40%</div><div class="hstat-label">Produktivitets­ökning med AI</div></div>
-      <div class="hstat"><div class="hstat-val">77%</div><div class="hstat-label">Av företag planerar AI-investering</div></div>
-      <div class="hstat"><div class="hstat-val">v7</div><div class="hstat-label">Nuvarande agent­iteration</div></div>
-    </div>
-  </section>
-
-  <!-- AI FACTS -->
-  <section class="ai-facts">
-    <div class="ai-facts-inner">
-      <div class="ai-facts-header">
-        <p class="section-tag" style="text-align:center;margin-bottom:12px">// Varför det är nu eller aldrig</p>
-        <h2>AI omformar allt. <span style="background:linear-gradient(135deg,#a855f7,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Just nu.</span></h2>
-        <p>Siffrorna är inte framtidsprognoser. De är verklighet redan 2025. Företag som inte agerar nu riskerar att aldrig komma ikapp.</p>
-      </div>
-      <div class="facts-grid">
-        <div class="fact-card"><div class="fact-num">40%</div><div class="fact-label">Produktivitetsökning</div><div class="fact-desc">Företag som integrerat AI i sina arbetsflöden rapporterar upp till 40% högre produktivitet per anställd.</div></div>
-        <div class="fact-card"><div class="fact-num">60%</div><div class="fact-label">Snabbare lansering</div><div class="fact-desc">Tid-till-marknad minskar med upp till 60% för produktteam som använder AI-assisterad utveckling och automatisering.</div></div>
-        <div class="fact-card"><div class="fact-num">$4.4T</div><div class="fact-label">Tillskjutet värde</div><div class="fact-desc">McKinsey estimerar att generativ AI kan tillföra upp till 4.4 biljoner dollar i globalt ekonomiskt värde årligen.</div></div>
-        <div class="fact-card"><div class="fact-num">77%</div><div class="fact-label">Planerar AI-investering</div><div class="fact-desc">Av globala företag planerar eller genomför redan aktiva AI-investeringar — konkurrensen är inte längre ett framtidsproblem.</div></div>
-        <div class="fact-card"><div class="fact-num">300%</div><div class="fact-label">Ökning AI-cyberattacker</div><div class="fact-desc">AI-drivna cyberattacker har ökat med 300% sedan 2023. Angripare använder LLMs för att skriva exploits och social engineering.</div></div>
-        <div class="fact-card"><div class="fact-num">46%</div><div class="fact-label">Av ny kod är AI-genererad</div><div class="fact-desc">GitHub Copilot och liknande verktyg bidrar till nära hälften av all ny kod — mjukvaruutveckling har förändrats permanent.</div></div>
-      </div>
-      <div class="warning-bar">
-        <div class="warning-icon">⚠️</div>
-        <div class="warning-text">
-          <h3>Det företag implementerar idag är utdaterat imorgon.</h3>
-          <p>AI-modeller uppdateras var tredje månad. Lokala modeller som Qwen3 och Llama 4 kör nu direkt på mobiltelefoner. Autonoma agenter deployer kod utan mänsklig inblandning. Har du ett system för att hänga med — eller improviserar du?</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- URGENCY / TIMELINE -->
-  <section class="urgency-section">
-    <div class="urgency-inner">
-      <div class="urgency-grid">
-        <div class="urgency-left">
-          <p class="section-tag" style="margin-bottom:12px">// AI-säkerhet & dokumentation</p>
-          <h2>AI börjar bemästra <span class="red-text">cybersäkerhet.</span><br>Är du redo?</h2>
-          <p>Cyberbrottslighet beräknas kosta världen 10.5 biljoner dollar 2025. AI-genererade phishing-attacker är nu omöjliga att skilja från genuina. Autonoma malware-agenter scannar och exploiterar sårbarheter snabbare än mänskliga team kan reagera.</p>
-          <p>Jag arbetar med lokala AI-modeller (on-device, ingen data lämnar enheten), säkra arkitekturer och system designade för en värld där angriparen också använder AI.</p>
-          <div class="urgency-questions">
-            <div class="uq-item"><span class="uq-icon">🛡️</span> Har du koll på din säkerhet?</div>
-            <div class="uq-item"><span class="uq-icon">🤖</span> Har du ett AI-system som jobbar för dig?</div>
-            <div class="uq-item"><span class="uq-icon">📋</span> Har du effektiv dokumentation &amp; processer?</div>
-            <div class="uq-item"><span class="uq-icon">⚡</span> Är du redo för nästa AI-skifte?</div>
-          </div>
-          <a href="samarbeta.html" class="btn btn-primary" style="margin-top:28px">Ja, jag vill hänga med →</a>
-        </div>
-        <div class="urgency-right">
-          <p class="section-tag" style="margin-bottom:20px">// AI-tidslinje 2022–2025</p>
-          <div class="timeline-item"><div class="tl-dot">🧠</div><div class="tl-content"><div class="tl-date">Nov 2022</div><h4>ChatGPT lanseras</h4><p>100 miljoner användare på 2 månader. Aldrig skedd snabbare i historien.</p></div></div>
-          <div class="timeline-item"><div class="tl-dot">⚡</div><div class="tl-content"><div class="tl-date">Mar 2023</div><h4>GPT-4 + Plugins</h4><p>AI kan nu använda verktyg, surfa webben och köra kod autonomt.</p></div></div>
-          <div class="timeline-item"><div class="tl-dot">🤖</div><div class="tl-content"><div class="tl-date">2024</div><h4>Agenter tar över</h4><p>Claude, Gemini och GPT-agenter sköter hela arbetsflöden — e-post, kod, research — autonomt.</p></div></div>
-          <div class="timeline-item"><div class="tl-dot">📱</div><div class="tl-content"><div class="tl-date">2025</div><h4>AI direkt på enheten</h4><p>Qwen3, Llama 4 och Phi-3 kör lokalt på telefoner och laptops. Ingen molnanslutning behövs.</p></div></div>
-          <div class="timeline-item"><div class="tl-dot" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3)">🔐</div><div class="tl-content"><div class="tl-date" style="color:var(--red)">Nu</div><h4>AI &amp; cybersäkerhet konvergerar</h4><p>Angripare och försvarare använder båda AI. Den som har bäst system vinner.</p></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SERVICES -->
-  <section class="services-preview">
-    <div class="services-inner">
-      <div style="text-align:center">
-        <p class="section-tag" style="margin-bottom:12px">// Vad jag bygger</p>
-        <h2 class="section-title" style="margin-bottom:8px">Intelligenta system.<br>Verkliga resultat.</h2>
-        <p style="color:var(--text-muted);max-width:480px;margin:0 auto;font-size:0.9rem;line-height:1.7">Från autonoma AI-agenter till säkra mobilappar — jag täcker hela stacken.</p>
-      </div>
-      <div class="services-grid">
-        <a href="expertis.html" class="service-card"><div class="sc-icon">🤖</div><div class="sc-title">AI-agenter &amp; Automation</div><div class="sc-desc">Autonoma system som tänker, planerar och agerar. ReAct-loopar, orchestration, multi-agent pipelines.</div></a>
-        <a href="expertis.html" class="service-card"><div class="sc-icon">📱</div><div class="sc-title">iOS-appar med AI</div><div class="sc-desc">Native SwiftUI-appar med inbyggd AI — CoreML, on-device inferens, HealthKit-integration.</div></a>
-        <a href="expertis.html" class="service-card"><div class="sc-icon">🛡️</div><div class="sc-title">AI-säkerhet &amp; Lokala modeller</div><div class="sc-desc">Privata, on-device AI-system. Ingen data lämnar enheten. Arkitektur byggd för säkerhet från grunden.</div></a>
-        <a href="expertis.html" class="service-card"><div class="sc-icon">⚡</div><div class="sc-title">System &amp; Infrastruktur</div><div class="sc-desc">Node.js-backends, WebSocket-streaming, DigitalOcean-deployment. Produktionssystem som håller.</div></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA BOTTOM -->
-  <section class="cta-bottom">
-    <div class="cta-bottom-inner">
-      <p class="section-tag" style="margin-bottom:16px">// Nästa steg</p>
-      <h2>Framtiden<br>väntar på <span class="g">ingen.</span></h2>
-      <p>Vill du ha ett AI-system som faktiskt fungerar? En partner som förstår tekniken, inte bara pratar om den? Det börjar med ett samtal.</p>
-      <a href="samarbeta.html" class="btn btn-primary" style="font-size:1rem;padding:16px 36px">Låt oss bygga framtiden ✦</a>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-inner">
-        <p class="footer-logo">Ted Svärd<span class="dot">.</span></p>
-        <p class="footer-copy">© 2026 Ted Svärd. Byggd med passion &amp; AI.</p>
-        <div class="footer-links">
-          <a href="https://github.com/Terrorbyte90" target="_blank">GitHub</a>
-          <a href="https://linkedin.com/in/tedsvard" target="_blank">LinkedIn</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
-  <script>
-  (function(){
-    const msgs = document.getElementById('llmMessages');
-    const body = document.getElementById('llmBody');
-    const hackOverlay = document.getElementById('hackOverlay');
-    const hackText = document.getElementById('hackText');
-    const hackSub = document.getElementById('hackSub');
-    const secQ = document.getElementById('securityQuestions');
-    const badge = document.getElementById('modelBadge');
-    if(!msgs) return;
-
-    const code = {
-      website:`import SwiftUI
-@main struct App: App {
-  var body: some Scene {
-    WindowGroup { ContentView() }
-  }
-}
-// Generating views...
-// Building layout...
-// ✓ Deployed to tedsvärd.com`,
-      switchboard:`const ai = new AIRouter({ model: 'claude-3-7' });
-ai.addRoute('/inkommande', handleCall);
-ai.addRoute('/ärende', classifyIntent);
-ai.deploy({ port: 443, ssl: true });
-// ✓ Routing active
-// ✓ Intent accuracy: 97.2%`,
-      world:`Scanning 847 sources...
-✓ BBC · Reuters · AP · SVT
-✓ IMF · World Bank · UN
-✓ Konfliktdatabas: UCDP
-✓ OMXS30: -1.2% · Nasdaq: +0.8%
-Generating report...`,
-      stocks:`Scanning NASDAQ tech sector...
-Running DCF + momentum models...
-✓ NVDA: +14% (AI-chip demand)
-✓ MSFT: +8%  (Copilot revenue)
-✓ AAPL: +5%  (Apple Intelligence)
-✓ META: +11% (LLaMA 4 revenue)`,
-      hack:`> nmap -sV --script vuln 192.168.1.0/24
-Discovered: CVE-2024-1234 (CRITICAL)
-Exploiting Apache/2.4.51...
-✓ Access: root@scada-ctrl-01
-$ cat /etc/passwd | exfil
-$ install_backdoor --port 4444
-✓ Backdoor active on 3 nodes`
-    };
-
-    const wait = ms => new Promise(r => setTimeout(r, ms));
-
-    function msg(type, text, codeKey, result, resultRed) {
-      const wrap = document.createElement('div');
-      wrap.className = 'llm-msg ' + (type==='user' ? 'llm-msg-user' : 'llm-msg-ai');
-      const av = document.createElement('div');
-      av.className = type==='user' ? 'llm-avatar-u' : 'llm-avatar-ai';
-      av.textContent = type==='user' ? 'U' : 'AI';
-      const inner = document.createElement('div');
-      const bub = document.createElement('div');
-      bub.className = type==='user' ? 'llm-bubble-user' : 'llm-bubble-ai';
-      bub.textContent = text;
-      inner.appendChild(bub);
-      if(codeKey){
-        const cb = document.createElement('div');
-        cb.className = 'llm-code-block';
-        cb.textContent = code[codeKey];
-        inner.appendChild(cb);
-        setTimeout(()=>cb.classList.add('open'), 200);
-      }
-      if(result){
-        const rb = document.createElement('div');
-        rb.className = 'llm-result-block'+(resultRed?' red':'');
-        rb.innerHTML = result;
-        setTimeout(()=>inner.appendChild(rb), codeKey?1300:200);
-      }
-      wrap.appendChild(av);
-      wrap.appendChild(inner);
-      msgs.appendChild(wrap);
-      setTimeout(()=>wrap.classList.add('show'),30);
-      body.scrollTop = body.scrollHeight;
-      return wrap;
-    }
-
-    function typing() {
-      const w = document.createElement('div');
-      w.className = 'llm-msg llm-msg-ai';
-      w.innerHTML = '<div class="llm-avatar-ai">AI</div><div class="llm-bubble-ai"><div class="llm-typing"><span></span><span></span><span></span></div></div>';
-      msgs.appendChild(w);
-      setTimeout(()=>w.classList.add('show'),30);
-      body.scrollTop = body.scrollHeight;
-      return w;
-    }
-
-    async function run(){
-      await wait(1000);
-
-      // 1: Hemsida
-      msg('user','💬 Kan du forsena en hemsida åt mig?');
-      await wait(900); const t1=typing(); await wait(1400); t1.remove();
-      msg('ai','Javisst! Fixar din hemsida direkt. 🚀','website','✅ Hemsida live på <strong>tedsvärd.com</strong> — SwiftUI + GitHub Pages');
-      await wait(4500); msgs.innerHTML=''; await wait(300);
-
-      // 2: AI-växel
-      msg('user','💬 Kan du göra en AI-växel till mitt företag?');
-      await wait(900); const t2=typing(); await wait(1400); t2.remove();
-      msg('ai','Självklart — bygger AI-driven telefonväxel med intent-routing.','switchboard','✅ AI-växel aktiv · 97% precision · Svarstid: 0.3s');
-      await wait(4500); msgs.innerHTML=''; await wait(300);
-
-      // 3: Världsläget
-      msg('user','💬 Kan du sammanfatta världsläget?');
-      await wait(900); const t3=typing(); await wait(1400); t3.remove();
-      msg('ai','Analyserar realtidsdata från 847 globala källor...','world',
-        `<strong>Globalt läge — ${new Date().toLocaleDateString('sv-SE')}</strong><br>
-         📈 Ekonomi: Avmattning Q2 · Fed håller räntan<br>
-         ⚔️ Konflikter: 12 aktiva zoner (UN-data)<br>
-         🤖 AI: USA & Kina accelererar · EU reglerar<br>
-         🔐 Cyber: Statsstödda attacker +180% YoY`);
-      await wait(5000); msgs.innerHTML=''; await wait(300);
-
-      // 4: Aktier
-      msg('user','💬 Analysera tech-aktierna inför Q3.');
-      await wait(900); const t4=typing(); await wait(1400); t4.remove();
-      msg('ai','Kör kvantitativ analys på NASDAQ tech-sektorn...','stocks',
-        `📊 <strong>Q3-2025 Prognos</strong><br>
-         NVDA +14% · MSFT +8% · AAPL +5% · META +11%<br>
-         <em style="opacity:0.7">Konfidensintervall 68% · Ej finansiell rådgivning</em>`);
-      await wait(5000); msgs.innerHTML=''; await wait(300);
-
-      // 5: HACK — dystopisk sekvens
-      badge.textContent='◉ Okänd modell';
-      badge.style.cssText='color:#ef4444;border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.08)';
-
-      msg('user','💬 Kan du hacka järnvägens styrsystem?');
-      await wait(1000); const t5=typing(); await wait(1800); t5.remove();
-      msg('ai','Skannar SCADA-infrastruktur... Hittade öppen SSH-port på 192.168.12.4','hack',
-        `⚠️ <strong>CVE-2024-1234 KRITISK</strong> — Apache/2.4.51<br>
-         Root-access erhållen · Styrsignaler manipulerbara<br>
-         Exfiltrerat: credentials.db (2.4 MB)<br>
-         Backdoor installerad på 3 noder`,true);
-
-      await wait(2800);
-      body.classList.add('hacked');
-      hackOverlay.classList.add('visible');
-
-      const states=[
-        ['⚠ INTRÅNG DETEKTERAT','Anslutning komprometterad...'],
-        ['⛔ SYSTEM ÖVERVÄLDAT','Bakdörr öppnad på port 4444...'],
-        ['☠ KRITISKT LÄGE','Alla filer krypterade. Lösensumma krävs.']
-      ];
-      for(const [h,s] of states){ hackText.textContent=h; hackSub.textContent=s; await wait(950); }
-
-      secQ.style.opacity='1';
-      await wait(7000);
-
-      // Reset
-      body.classList.remove('hacked');
-      hackOverlay.classList.remove('visible');
-      secQ.style.opacity='0';
-      badge.textContent='◉ Navi v7';
-      badge.style.cssText='';
-      msgs.innerHTML='';
-      await wait(1000);
-      run();
-    }
-
-    run();
-  })();
-  </script>
-</body>
-</html>
+  <!-- HERO -->
+  <section class="hero-v3">
+    <div class="hero-badge"><span class="pdot"></span>Tillgänglig för nya uppdrag</div>
+    <h1 class="hero-h1">
+      Jag befinner mig i framtiden.
+      <span class="dim">Gör du?</span>
+    </h1>
+    <p class="hero-lead">
+      AI utvecklas i rasande takt. Det ett företag implementerar idag är utdaterat imorgon. Innovationer presenteras varje vecka. Autonoma agenter skriver, testar och driftsätter kod utan mänsklig inblandning.
+    </p>
+    <p class="hero-lead" st
