@@ -197,6 +197,18 @@
     @media (max-width: 680px) {
       .nav__links { display: none; }
       .nav__hamburger { display: grid; }
+      .nav__links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: var(--space-6);
+        gap: var(--space-4);
+      }
     }
 
     /* === HERO === */
@@ -699,6 +711,17 @@
         }
       }
       typeNext();
+    })();
+
+    // Mobilmeny
+    (function () {
+      var hamburger = document.querySelector('.nav__hamburger');
+      var navLinks = document.querySelector('.nav__links');
+      if (!hamburger || !navLinks) return;
+      hamburger.addEventListener('click', function () {
+        var isOpen = navLinks.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', isOpen);
+      });
     })();
   </script>
 </body>
