@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Expertis – Ted Svärd</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
   <canvas id="particleCanvas"></canvas>
-
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">TS<span class="dot">.</span></a>
@@ -27,63 +28,73 @@
 
   <div class="page-hero">
     <div class="container">
-      <p class="section-tag">// Expertis</p>
+      <p class="section-tag">// expertis</p>
       <h1 class="page-title">Vad jag <span class="gradient-text">bemästrar</span></h1>
+      <p class="page-sub">Djup teknisk kompetens inom AI-system, agenter och moderna produktionsflöden.</p>
     </div>
   </div>
 
   <section class="section">
     <div class="container">
       <div class="expertise-grid">
-        <div class="expertise-card visible" data-delay="0">
-          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" stroke="url(#g1)" stroke-width="2"/><circle cx="24" cy="24" r="6" fill="url(#g1)"/><line x1="24" y1="4" x2="24" y2="14" stroke="url(#g1)" stroke-width="2"/><line x1="24" y1="34" x2="24" y2="44" stroke="url(#g1)" stroke-width="2"/><line x1="4" y1="24" x2="14" y2="24" stroke="url(#g1)" stroke-width="2"/><line x1="34" y1="24" x2="44" y2="24" stroke="url(#g1)" stroke-width="2"/><defs><linearGradient id="g1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
-          <h3>LLM Arkitektur</h3>
-          <p>Design av storskaliga språkmodellssystem, fine-tuning, RAG-pipelines och optimering för produktion.</p>
+
+        <div class="expertise-card">
+          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="20" stroke="url(#g1)" stroke-width="2"/><circle cx="24" cy="24" r="6" fill="url(#g1)"/><line x1="24" y1="4" x2="24" y2="14" stroke="url(#g1)" stroke-width="2"/><line x1="24" y1="34" x2="24" y2="44" stroke="url(#g1)" stroke-width="2"/><line x1="4" y1="24" x2="14" y2="24" stroke="url(#g1)" stroke-width="2"/><line x1="34" y1="24" x2="44" y2="24" stroke="url(#g1)" stroke-width="2"/><defs><linearGradient id="g1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
+          <h3>LLM-arkitektur</h3>
+          <p>Design av storskaliga språkmodellssystem, finjustering, RAG-pipelines och optimering för produktion.</p>
           <div class="expertise-bar"><div class="bar-fill" style="width:95%"></div></div>
-          <div class="expertise-detail"><p>Djup erfarenhet av GPT-4, Claude 3, Llama 3, Mistral och Gemini. Har designat system som hanterar miljontals tokens dagligen med låg latens och hög precision.</p></div>
+          <div class="expertise-detail"><p>Djup erfarenhet av GPT-4o, Claude 3.7, Llama 4, Mistral och Gemini. Har designat system som hanterar miljontals tokens dagligen med låg latens och hög precision.</p></div>
         </div>
-        <div class="expertise-card visible" data-delay="100">
-          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/><rect x="28" y="6" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/><rect x="6" y="28" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/><rect x="28" y="28" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/><line x1="20" y1="13" x2="28" y2="13" stroke="url(#g2)" stroke-width="2"/><line x1="20" y1="35" x2="28" y2="35" stroke="url(#g2)" stroke-width="2"/><line x1="13" y1="20" x2="13" y2="28" stroke="url(#g2)" stroke-width="2"/><line x1="35" y1="20" x2="35" y2="28" stroke="url(#g2)" stroke-width="2"/><defs><linearGradient id="g2" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
-          <h3>Agentiska System</h3>
-          <p>Bygger autonoma AI-agenter och multi-agent-system som löser komplexa uppgifter utan mänsklig intervention.</p>
+
+        <div class="expertise-card">
+          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="6" y="6" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/><rect x="28" y="6" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/><rect x="6" y="28" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/><rect x="28" y="28" width="14" height="14" rx="3" stroke="url(#g2)" stroke-width="2"/><line x1="20" y1="13" x2="28" y2="13" stroke="url(#g2)" stroke-width="2"/><line x1="20" y1="35" x2="28" y2="35" stroke="url(#g2)" stroke-width="2"/><line x1="13" y1="20" x2="13" y2="28" stroke="url(#g2)" stroke-width="2"/><line x1="35" y1="20" x2="35" y2="28" stroke="url(#g2)" stroke-width="2"/><defs><linearGradient id="g2" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
+          <h3>Agentiska system</h3>
+          <p>Bygger autonoma AI-agenter och multi-agent-system som löser komplexa uppgifter utan mänsklig inblandning.</p>
           <div class="expertise-bar"><div class="bar-fill" style="width:92%"></div></div>
           <div class="expertise-detail"><p>Specialiserad på LangGraph, AutoGen och CrewAI. Har byggt agentiska pipelines för allt från automatiserad research till komplex affärsbeslutfattning.</p></div>
         </div>
-        <div class="expertise-card visible" data-delay="200">
-          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M8 40 L24 8 L40 40" stroke="url(#g3)" stroke-width="2" stroke-linejoin="round"/><path d="M14 28 L34 28" stroke="url(#g3)" stroke-width="2"/><circle cx="24" cy="8" r="3" fill="url(#g3)"/><defs><linearGradient id="g3" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
-          <h3>AI Strategy</h3>
+
+        <div class="expertise-card">
+          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M8 40 L24 8 L40 40" stroke="url(#g3)" stroke-width="2" stroke-linejoin="round"/><path d="M14 28 L34 28" stroke="url(#g3)" stroke-width="2"/><circle cx="24" cy="8" r="3" fill="url(#g3)"/><defs><linearGradient id="g3" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
+          <h3>AI-strategi</h3>
           <p>Strategisk rådgivning om hur organisationer kan integrera AI effektivt, etiskt och lönsamt.</p>
           <div class="expertise-bar"><div class="bar-fill" style="width:90%"></div></div>
-          <div class="expertise-detail"><p>Hjälper C-suite att navigera AI-transformationen — från roadmap och prioritering till change management och ROI-beräkningar.</p></div>
+          <div class="expertise-detail"><p>Hjälper ledningsgrupper att navigera AI-transformationen — från vägkarta och prioritering till förändringsledning och ROI-beräkningar.</p></div>
         </div>
-        <div class="expertise-card visible" data-delay="300">
-          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none"><rect x="8" y="16" width="32" height="22" rx="3" stroke="url(#g4)" stroke-width="2"/><path d="M16 16 V12 Q24 6 32 12 V16" stroke="url(#g4)" stroke-width="2"/><circle cx="24" cy="27" r="4" stroke="url(#g4)" stroke-width="2"/><line x1="24" y1="31" x2="24" y2="35" stroke="url(#g4)" stroke-width="2"/><defs><linearGradient id="g4" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
-          <h3>MLOps &amp; Deployment</h3>
-          <p>End-to-end deployment av ML-modeller med CI/CD, monitoring och automatisk skalning.</p>
+
+        <div class="expertise-card">
+          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="8" y="16" width="32" height="22" rx="3" stroke="url(#g4)" stroke-width="2"/><path d="M16 16 V12 Q24 6 32 12 V16" stroke="url(#g4)" stroke-width="2"/><circle cx="24" cy="27" r="4" stroke="url(#g4)" stroke-width="2"/><defs><linearGradient id="g4" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
+          <h3>MLOps &amp; Driftsättning</h3>
+          <p>Heltäckande driftsättning av ML-modeller med CI/CD, övervakning och automatisk skalning.</p>
           <div class="expertise-bar"><div class="bar-fill" style="width:88%"></div></div>
-          <div class="expertise-detail"><p>Erfarenhet av AWS SageMaker, Azure ML, GCP Vertex AI och on-premise deployments med Docker och Kubernetes.</p></div>
+          <div class="expertise-detail"><p>Erfarenhet av AWS SageMaker, Azure ML, GCP Vertex AI och lokala driftsättningar med Docker och Kubernetes.</p></div>
         </div>
-        <div class="expertise-card visible" data-delay="400">
-          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none"><ellipse cx="24" cy="18" rx="16" ry="8" stroke="url(#g5)" stroke-width="2"/><path d="M8 18 Q8 36 24 36 Q40 36 40 18" stroke="url(#g5)" stroke-width="2"/><line x1="24" y1="10" x2="24" y2="36" stroke="url(#g5)" stroke-width="2" stroke-dasharray="3 3"/><defs><linearGradient id="g5" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
-          <h3>Vector Databases</h3>
+
+        <div class="expertise-card">
+          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><ellipse cx="24" cy="18" rx="16" ry="8" stroke="url(#g5)" stroke-width="2"/><path d="M8 18 Q8 36 24 36 Q40 36 40 18" stroke="url(#g5)" stroke-width="2"/><line x1="24" y1="10" x2="24" y2="36" stroke="url(#g5)" stroke-width="2" stroke-dasharray="3 3"/><defs><linearGradient id="g5" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
+          <h3>Vektordatabaser</h3>
           <p>Implementation av vektordatabaser för semantisk sökning och minneshantering i AI-system.</p>
           <div class="expertise-bar"><div class="bar-fill" style="width:93%"></div></div>
-          <div class="expertise-detail"><p>Djup kunskap om Pinecone, Weaviate, Qdrant och pgvector. Har optimerat embeddingstrategier för precision och prestanda i stor skala.</p></div>
+          <div class="expertise-detail"><p>Djup kunskap om Pinecone, Weaviate, Qdrant och pgvector. Har optimerat inbäddningsstrategier för precision och prestanda i stor skala.</p></div>
         </div>
-        <div class="expertise-card visible" data-delay="500">
-          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M10 24 Q10 10 24 10 Q38 10 38 24" stroke="url(#g6)" stroke-width="2"/><path d="M10 24 Q10 38 24 38 Q38 38 38 24" stroke="url(#g6)" stroke-width="2" stroke-dasharray="4 3"/><circle cx="24" cy="24" r="4" fill="url(#g6)"/><circle cx="10" cy="24" r="3" fill="url(#g6)"/><circle cx="38" cy="24" r="3" fill="url(#g6)"/><defs><linearGradient id="g6" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
-          <h3>Automation &amp; Workflows</h3>
+
+        <div class="expertise-card">
+          <div class="expertise-icon"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M10 24 Q10 10 24 10 Q38 10 38 24" stroke="url(#g6)" stroke-width="2"/><path d="M10 24 Q10 38 24 38 Q38 38 38 24" stroke="url(#g6)" stroke-width="2" stroke-dasharray="4 3"/><circle cx="24" cy="24" r="4" fill="url(#g6)"/><circle cx="10" cy="24" r="3" fill="url(#g6)"/><circle cx="38" cy="24" r="3" fill="url(#g6)"/><defs><linearGradient id="g6" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
+          <h3>Automation &amp; Arbetsflöden</h3>
           <p>Bygger intelligenta automatiserade arbetsflöden som sparar tid och frigör mänsklig kapacitet.</p>
           <div class="expertise-bar"><div class="bar-fill" style="width:96%"></div></div>
-          <div class="expertise-detail"><p>Har automatiserat allt från kundservice och dataanalys till komplexa affärsprocesser. Resultat: 80%+ tidsbesparingar i snitt.</p></div>
+          <div class="expertise-detail"><p>Har automatiserat allt från kundtjänst och dataanalys till komplexa affärsprocesser. Resultat: 80%+ tidsbesparingar i snitt.</p></div>
         </div>
+
       </div>
 
       <div class="tools-section">
-        <h2 class="section-title" style="text-align:center;margin-bottom:40px">Verktyg &amp; <span class="gradient-text">teknologier</span></h2>
+        <h2 class="section-title" style="text-align:center;margin-bottom:12px">Verktyg &amp; <span class="gradient-text">teknologier</span></h2>
+        <p class="section-sub" style="text-align:center;margin:0 auto 40px">Det jag faktiskt använder i produktion.</p>
         <div class="tools-grid">
-          <div class="tool-badge">OpenAI GPT-4</div>
+          <div class="tool-badge">OpenAI GPT-4o</div>
           <div class="tool-badge">Anthropic Claude</div>
+          <div class="tool-badge">Qwen3 / Llama 4</div>
           <div class="tool-badge">LangChain</div>
           <div class="tool-badge">LangGraph</div>
           <div class="tool-badge">LlamaIndex</div>
@@ -94,12 +105,19 @@
           <div class="tool-badge">Weaviate</div>
           <div class="tool-badge">FastAPI</div>
           <div class="tool-badge">Python</div>
+          <div class="tool-badge">Node.js</div>
+          <div class="tool-badge">SwiftUI</div>
+          <div class="tool-badge">CoreML</div>
+          <div class="tool-badge">Mux / HLS</div>
           <div class="tool-badge">PyTorch</div>
           <div class="tool-badge">Kubernetes</div>
           <div class="tool-badge">Docker</div>
           <div class="tool-badge">AWS</div>
           <div class="tool-badge">Azure</div>
           <div class="tool-badge">Hugging Face</div>
+          <div class="tool-badge">SQLite / better-sqlite3</div>
+          <div class="tool-badge">SwiftData</div>
+          <div class="tool-badge">DigitalOcean</div>
         </div>
       </div>
     </div>
@@ -109,8 +127,11 @@
     <div class="container">
       <div class="footer-inner">
         <p class="footer-logo">Ted Svärd<span class="dot">.</span></p>
-        <p class="footer-copy">© 2026 Ted Svärd.</p>
-        <div class="footer-links"><a href="https://github.com/Terrorbyte90" target="_blank">GitHub</a><a href="https://linkedin.com/in/tedsvard" target="_blank">LinkedIn</a></div>
+        <p class="footer-copy">&copy; 2026 Ted Svärd. Byggd med passion och AI.</p>
+        <div class="footer-links">
+          <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://linkedin.com/in/tedsvard" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
       </div>
     </div>
   </footer>
