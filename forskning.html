@@ -915,88 +915,124 @@
       navi: {
         title: 'Navi — Autonom orchestrator',
         kallor: [
-          'Navi v7 — Orchestrator-arkitektur (huvuddokument)',
-          '└─ Multi-Agent System Design — worker-styrning',
-          '  └─ WebSocket Streaming Protocol — realtidsrapportering',
-          '    └─ GitHub Integration — filsystem och versionshantering',
+          'Navi v7 — Orchestrator/Worker-arkitektur (huvuddokument)',
+          '└─ LLMCoordinator — 50 req/min, 6 samtidiga anrop',
+          '  └─ WebSocket Streaming Protocol — atomisk avslutning',
+          '    └─ Session History Compression — 72% kontextfönster',
           '      └─ Memory System — kontinuitet mellan sessioner'
         ],
-        summary: 'Navi v7 är en autonom AI-assistent med orchestrator-arkitektur. En huvudagent styr worker-agenter som läser och skriver filer, interagerar med GitHub och rapporterar stegvis via WebSocket-streaming. Systemet är byggt för hands-off autonoma körningar med full spårbarhet.',
+        summary: 'Navi v7 är en autonom AI-assistent med orchestrator/worker-arkitektur. En huvudagent styr worker-agenter som läser och skriver filer, interagerar med GitHub och rapporterar stegvis via WebSocket-streaming. LLMCoordinator hanterar 50 anrop/minut med 6 samtidiga anslutningar. Systemet är byggt för hands-off autonoma körningar med full spårbarhet och robust felhantering.',
         content: `
-          <h3>Arkitekturöversikt</h3>
-          <p>Navi bygger på en orchestrator-worker-modell där huvudagenten (orchestratorn) bryter ner uppgifter i delsteg och delegerar till specialiserade workers. Varje worker rapporterar tillbaka via WebSocket, vilket ger realtidsinsyn i processen.</p>
+          <h3>Orchestrator/Worker-arkitektur</h3>
+          <p>Navi bygger på en orchestrator-worker-modell där huvudagenten bryter ner uppgifter i delsteg och delegerar till specialiserade workers. Varje worker har en dedikerad roll och rapporterar tillbaka via WebSocket, vilket ger realtidsinsyn i hela processen.</p>
+
+          <h3>LLMCoordinator</h3>
+          <p>LLLMCoordinator är navet i all AI-kommunikation. Den hanterar:</p>
+          <ul>
+            <li><strong>Rate limiting:</strong> Max 50 anrop/minut över alla LLM-providers (OpenRouter, Anthropic, OpenAI).</li>
+            <li><strong>Konkurrens:</strong> Max 6 samtidiga anrop med Promise-kedjor för serialisering.</li>
+            <li><strong>Provider-fallback:</strong> Automatisk växling mellan providers vid timeout eller fel.</li>
+            <li><strong>Session compression:</strong> Kontextfönstret komprimeras vid 72% kapacitet genom att sammanfatta äldre meddelanden och behålla senaste systemprompten.</li>
+          </ul>
 
           <h3>Worker-typer</h3>
           <ul>
-            <li><strong>File Worker:</strong> Läser, skriver och modifierar filer i projektet.</li>
-            <li><strong>GitHub Worker:</strong> Hanterar commits, branches, pull requests och issue-hantering.</li>
-            <li><strong>Build Worker:</strong> Kör kompilering, tester och validering.</li>
-            <li><strong>Research Worker:</strong> Söker dokumentation och samlar kontext.</li>
+            <li><strong>File Worker:</strong> Läser, skriver och modifierar filer i projektet. Stöd för attachment (4 filer, 4MB max).</li>
+            <li><strong>GitHub Worker:</strong> Hanterar commits, branches, pull requests och issue-hantering via GitHub API.</li>
+            <li><strong>Build Worker:</strong> Kör kompilering, tester och validering. Rapporterar resultat tillbaka till orchestratorn.</li>
+            <li><strong>Research Worker:</strong> Söker dokumentation, läser MASTER-filer och samlar kontext.</li>
           </ul>
 
           <h3>Streaming-protokoll</h3>
-          <p>All kommunikation sker via WebSocket med JSON-meddelanden. Varje meddelande innehåller steg-status, agent-ID och payload. Klienten (SwiftUI-app) renderar en live-terminal som visar arbetet i realtid.</p>
+          <p>All kommunikation sker via WebSocket med JSON-meddelanden. Protokollet implementerar:</p>
+          <ul>
+            <li><strong>Atomisk streaming-avslutning:</strong> onDone anropas endast en gång per meddelande, oavsett antal delta-händelser.</li>
+            <li><strong>scenePhase-guard:</strong> Streaming pausas automatiskt när appen går till bakgrunden och återupptas vid återkomst.</li>
+            <li><strong>flushStreamBuffer():</strong> Anropas på 7 ställen i koden för att säkerställa att alla meddelanden levereras innan nästa operation.</li>
+            <li><strong>Disconnect recovery:</strong> Automatisk återanslutning med exponentiell backoff vid tappad WebSocket-anslutning.</li>
+          </ul>
 
           <h3>Minnessystem</h3>
-          <p>Navi behåller kontext mellan sessioner genom ett persistent minnessystem. Varje session loggas och kan återkallas, vilket ger kontinuitet över långa utvecklingscykler.</p>
+          <p>Navi behåller kontext mellan sessioner genom ett persistent minnessystem. Varje session loggas och komprimeras vid behov. Live Activity uppdateras med en stale window på 30 minuter — efter detta markeras aktiviteten som inaktuell.</p>
         `,
         reportLines: [
           { type: 'heading', text: 'Navi v7 — Orchestrator-logg' },
           { type: 'line', text: '[00:00:01] Orchestrator startad — uppgift: "Bygg ny feature"' },
-          { type: 'line', text: '[00:00:02] Plan genererad — 4 steg identifierade' },
-          { type: 'line', text: '[00:00:03] Worker 1: File Worker — läs repo-struktur' },
-          { type: 'line', text: '[00:00:05] Worker 2: Research Worker — sök docs' },
-          { type: 'line', text: '[00:00:08] Worker 3: File Worker — skriv ny vy' },
-          { type: 'line', text: '[00:00:12] Worker 4: Build Worker — kör tester' },
-          { type: 'line', text: '[00:00:15] Alla tester passerade — commit skapad' },
+          { type: 'line', text: '[00:00:02] LLMCoordinator initierad — 50 req/min, 6 concurrent' },
+          { type: 'line', text: '[00:00:03] Plan genererad — 4 steg identifierade' },
+          { type: 'line', text: '[00:00:04] WorkerPool: 4 workers allokerade' },
+          { type: 'line', text: '[00:00:05] Worker 1: File Worker — läs repo-struktur' },
+          { type: 'line', text: '[00:00:07] Worker 2: Research Worker — sök docs (OpenRouter)' },
+          { type: 'line', text: '[00:00:09] Worker 3: File Worker — skriv ny vy' },
+          { type: 'line', text: '[00:00:11] flushStreamBuffer() — 12 meddelanden levererade' },
+          { type: 'line', text: '[00:00:13] Worker 4: Build Worker — kör tester' },
+          { type: 'line', text: '[00:00:15] Alla tester passerade ✓ — commit skapad' },
           { type: 'line', text: '[00:00:16] GitHub Worker: push till main' },
+          { type: 'line', text: '[00:00:17] Session compression: 72% → 45% (sammanfattad)' },
           { type: 'line', text: '[00:00:18] Uppgift slutförd — 18s total tid' },
+          { type: 'line', text: '[00:00:19] Live Activity uppdaterad — stale: 30 min' },
         ]
       },
       coreml: {
         title: 'CoreML — On-device inferens',
         kallor: [
-          'Lilla-jag — CoreML-arkitektur (huvuddokument)',
-          '└─ Känsloklassningsmodell (EmotionClassifier.mlmodel)',
-          '  └─ Sentimentanalys-modell (SentimentAnalyzer.mlmodel)',
-          '    └─ Ämnesklassningsmodell (TopicClassifier.mlmodel)',
+          'Lilla Jag — CoreML-arkitektur (huvuddokument)',
+          '└─ Qwen3-1.7B via llama.cpp — Neural Engine-inferens',
+          '  └─ CoreML Emotion Detection — 8 Plutchik-känslor',
+          '    └─ KBT-baserade svarsmönster — sokratiska frågor',
           '      └─ Privacy-first design — ingen data lämnar enheten'
         ],
-        summary: 'Forskning kring on-device AI med CoreML för mental hälsa. Tre modeller — känsloklassning, sentimentanalys och ämnesklassning — körs helt lokalt på enheten. Ingen text eller personlig data lämnar någonsin användarens device, vilket garanterar full integritet.',
+        summary: 'Forskning kring on-device AI för mental hälsa med Qwen3-1.7B via llama.cpp som körs på Neural Engine. CoreML-modeller detekterar 8 Plutchik-känslor och KBT-baserade svarsmönster genererar terapeutiska svar. All inferens sker lokalt — ingen text eller personlig data lämnar någonsin användarens device.',
         content: `
-          <h3>Modellöversikt</h3>
-          <p>Projektet utforskar hur tre separata CoreML-modeller kan samverka för att ge en helhetsbild av användarens mentala tillstånd, helt utan molnbaserad AI.</p>
+          <h3>Qwen3-1.7B via llama.cpp</h3>
+          <p>Huvudmodellen är Qwen3-1.7B, en 1.7 miljarder parameter stor språkmodell som körs helt on-device via llama.cpp. Modellen är optimerad för Apple Neural Engine (ANE) vilket ger snabb inferens utan batteripåverkan. Modellen är finjusterad för svenska samtal och KBT-terapeutiska mönster.</p>
 
-          <h3>Känsloklassning</h3>
-          <p>En NLP-modell tränad på svensk text som klassificerar inlägg i sex grundkänslor: glädje, sorg, rädsla, ilska, överraskning och disgust. Modellen är optimerad för kort text och fungerar bra med dagboksanteckningar.</p>
+          <h3>CoreML Emotion Detection</h3>
+          <p>En separat CoreML-modell klassificerar användarens känslouttryck i 8 Plutchik-känslor:</p>
+          <ul>
+            <li><strong>Glädje</strong> — Positiv affekt, välbefinnande</li>
+            <li><strong>Sorg</strong> — Nedstämdhet, förlustkänslor</li>
+            <li><strong>Rädsla</strong> — Oro, ångest, otrygghet</li>
+            <li><strong>Ilska</strong> — Frustration, irritation, ilska</li>
+            <li><strong>Förtroende</strong> — Trygghet, tillit</li>
+            <li><strong>Avsky</strong> — Motvilja, ogillande</li>
+            <li><strong>Överraskning</strong> — Oförutsedd reaktion</li>
+            <li><strong>Förväntan</strong> — Framtidstro, spänning</li>
+          </ul>
 
-          <h3>Sentimentanalys</h3>
-          <p>En separat modell som bedömer den övergripande sentiment-poängen från -1 (mycket negativ) till +1 (mycket positiv). Används för att tracka trender över tid.</p>
+          <h3>KBT-baserade svarsmönster</h3>
+          <p>AI:ns svar genereras enligt KBT-principer (Kognitiv Beteendeterapi):</p>
+          <ul>
+            <li><strong>Sokratiska frågor:</strong> AI:n ställer öppna frågor som hjälper användaren reflektera över sina tankemönster.</li>
+            <li><strong>ABC-modellen:</strong> AI:n hjälper användaren identifiera Activating event, Beliefs och Consequences.</li>
+            <li><strong>Max 3-4 meningar + öppen fråga:</strong> Svaren hålls korta för att inte överväldiga användaren och uppmuntra till fortsatt dialog.</li>
+          </ul>
 
-          <h3>Ämnesklassning</h3>
-          <p>Klassificerar text i ämneskategorier som relationer, arbete, hälsa, ekonomi och fritid. Ger kontext till känslorna och hjälper användaren se mönster.</p>
+          <h3>Design — Glassmorphism</h3>
+          <p>Appen använder glassmorphism med djup varm lila (#1A1025) som bas. Gränssnittet är designat för att kännas lugnande och professionellt. Kris-knappen är alltid synlig i gränssnittet för omedelbar tillgång till stöd.</p>
 
           <h3>Integritet</h3>
-          <p>All inferens sker on-device via CoreML. Ingen nätverkskommunikation för AI-behov. Modellen är bundlad i appen och uppdateras endast via app-uppdateringar.</p>
+          <p>All inferens sker on-device via CoreML och llama.cpp. Ingen nätverkskommunikation för AI-behov. Ingen text, inga känslor och inga personuppgifter lämnar någonsin användarens enhet. Modellen är bundlad i appen och uppdateras endast via app-uppdateringar.</p>
         `,
         reportLines: [
-          { type: 'heading', text: 'CoreML — Inferenslogg' },
-          { type: 'line', text: '[00:00:01] EmotionClassifier laddad — 6 klasser' },
-          { type: 'line', text: '[00:00:02] SentimentAnalyzer laddad — range: [-1, 1]' },
-          { type: 'line', text: '[00:00:03] TopicClassifier laddad — 5 ämnen' },
+          { type: 'heading', text: 'CoreML — Inferenslogg (Lilla Jag)' },
+          { type: 'line', text: '[00:00:01] Qwen3-1.7B laddad via llama.cpp — Neural Engine' },
+          { type: 'line', text: '[00:00:02] CoreML EmotionDetector — 8 Plutchik-känslor' },
+          { type: 'line', text: '[00:00:03] KBT-motor initierad — sokratiska frågor aktiva' },
           { type: 'line', text: '' },
           { type: 'line', text: '[00:00:05] Input: "Jag känner mig stressad över jobbet"' },
           { type: 'bullet', text: 'Emotion: Rädsla (0.72), Ilska (0.18)' },
-          { type: 'bullet', text: 'Sentiment: -0.45' },
-          { type: 'bullet', text: 'Topic: Arbete (0.89)' },
+          { type: 'bullet', text: 'KBT: ABC-modell — Activating: Jobbet' },
+          { type: 'bullet', text: 'Svar: "Vad är det som gör jobbet stressande just nu?"' },
           { type: 'line', text: '' },
-          { type: 'line', text: '[00:00:06] Input: "Underbar dag med familjen"' },
-          { type: 'bullet', text: 'Emotion: Glädje (0.94)' },
-          { type: 'bullet', text: 'Sentiment: +0.87' },
-          { type: 'bullet', text: 'Topic: Relationer (0.76)' },
+          { type: 'line', text: '[00:00:08] Input: "Underbar dag med familjen"' },
+          { type: 'bullet', text: 'Emotion: Glädje (0.94), Förväntan (0.61)' },
+          { type: 'bullet', text: 'KBT: Positiv förstärkning identifierad' },
+          { type: 'bullet', text: 'Svar: "Vad var det som gjorde dagen extra bra?"' },
           { type: 'line', text: '' },
-          { type: 'line', text: '[00:00:07] All inferens klar — 0 nätverksanrop' },
-          { type: 'line', text: '[00:00:08] Privacy check: PASS ✓' },
+          { type: 'line', text: '[00:00:10] All inferens klar — 0 nätverksanrop' },
+          { type: 'line', text: '[00:00:11] Privacy check: PASS ✓ — ingen data lämnade enheten' },
+          { type: 'line', text: '[00:00:12] Neural Engine utilization: 67% — 12ms inferens' },
         ]
       }
     };
