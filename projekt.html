@@ -332,7 +332,7 @@
             <div><div class="project-card__title">Navi v7</div>
             <div class="project-card__subtitle">AI-utvecklingsmiljö & agentplattform</div></div>
           </div>
-          <p class="project-card__desc">Kognitiv AI-agentplattform med orchestrator-arkitektur. Server-side Node.js-backend på DigitalOcean kör persistenta agenter som läser/skriver filer, interagerar med GitHub via REST API och rapporterar stegvis via WebSocket-streaming till iOS/macOS-klienten. Multi-provider AI-routing (Anthropic Claude, xAI Grok, OpenRouter) med automatisk failover. Terra Cotta-designsystem med glasmorfistisk SwiftUI, adaptiv layout och realtidsuppdateringar. Byggd för iterativ AI-assisterad utveckling med fullständig projektöversikt och agentminne.</p>
+          <p class="project-card__desc">Kognitiv AI-agentplattform med Orchestrator/Worker-arkitektur. Server-side Node.js-backend på DigitalOcean kör persistenta agenter som läser/skriver filer, interagerar med GitHub via REST API och rapporterar stegvis via WebSocket-streaming till iOS/macOS-klienten. LLMCoordinator hanterar 50 req/min med max 6 samtidiga anrop — multi-provider routing (Anthropic Claude, xAI Grok, OpenRouter) med automatisk failover. Session-historik komprimeras automatiskt vid 72% kontextfönster: 20 senaste turerna i råform, äldre sammanfattas till 4 000 tecken. Promise-kedjor serialiserar meddelanden per session med robust felhantering. iOS-klienten hanterar atomär streaming-avslutning, scenePhase-guard och disconnect-recovery — snurraren försvinner aldrig permanent. Terra Cotta-designsystem med glasmorfistisk SwiftUI, adaptiv layout och realtidsuppdateringar. Bilagsstöd: upp till 4 bilder/filer (max 4 MB) via PhotosPicker och FileImporter, base64-kodade i CHAT-meddelanden.</p>
           <div class="project-card__tags">
             <span class="tag tag--accent">AI-agent</span>
             <span class="tag">SwiftUI</span>
@@ -342,6 +342,7 @@
             <span class="tag">GitHub API</span>
             <span class="tag">Anthropic</span>
             <span class="tag">xAI Grok</span>
+            <span class="tag">OpenRouter</span>
           </div>
         </article>
 
@@ -352,13 +353,15 @@
             <div><div class="project-card__title">Eon-Y V5</div>
             <div class="project-card__subtitle">Autonom kognitiv AI</div></div>
           </div>
-          <p class="project-card__desc">Autonom kognitiv AI-arkitektur med Qwen3-integration, autonom webbläsare och SuperView-gränssnitt. Fullständig kognitiv arkitektur med långtidsminne, arbetsminne, beslutsfattande och självständig verktygsanvändning. Implementerar Eon-forskningens teorier om emergens och embodiment — AI:n observerar, resonerar och agerar i loopar med självkorrigering. Designat för att utforska gränserna mellan artificiell och emergent intelligens.</p>
+          <p class="project-card__desc">Autonom kognitiv AI-arkitektur med JavaScriptCore som kognitiv motor och Swift Warden som säkerhetsskikt med SHA-256 hash-verifiering. Implementerar sex medvetandeteorier: Global Workspace Theory, Attention Schema Theory, Higher-Order Thought, Predictive Processing, Integrated Information Theory och Interoception. 40+ metrik samlas in i realtid via multi-frequency tick-arkitektur. Qwen3-integration med autonom webbläsare och SuperView-gränssnitt. Fullständig kognitiv arkitektur med långtidsminne, arbetsminne, beslutsfattande och självständig verktygsanvändning. AI:n observerar, resonerar och agerar i loopar med självkorrigering — designat för att utforska gränserna mellan artificiell och emergent intelligens.</p>
           <div class="project-card__tags">
             <span class="tag tag--amber">AI-arkitektur</span>
             <span class="tag">Qwen3</span>
-            <span class="tag">SwiftUI</span>
+            <span class="tag">JavaScriptCore</span>
+            <span class="tag">Swift Warden</span>
             <span class="tag">Autonom agent</span>
             <span class="tag">Emergens</span>
+            <span class="tag">Medvetande</span>
           </div>
         </article>
 
@@ -369,7 +372,7 @@
             <div><div class="project-card__title">Lilla Jag 3</div>
             <div class="project-card__subtitle">On-device mental hälsa</div></div>
           </div>
-          <p class="project-card__desc">Svensk mental hälsoapp med KBT-baserat innehåll — 100 % on-device för maximal integritet. Qwen3-1.7B via llama.cpp för terapeutiska konversationer. Tre CoreML-modeller: EmotionMultiLabel (8 Plutchik-emotioner), SentimentScorer och TopicClassifier. Video-bibliotek med terapeutiska interventioner för ångest, depression, PTSD och OCD. Glasformism-design med alltid-synlig kris-knapp. Ingen data, ingen text, ingen metadata lämnar någonsin enheten.</p>
+          <p class="project-card__desc">Svensk mental hälsoapp som placerar en evidensbaserad KBT-coach i fickan — helt offline, helt privat. Qwen3-1.7B via llama.cpp körs på Neural Engine för terapeutiska konversationer. CoreML-modeller: EmotionMultiLabel detekterar 8 Plutchik-emotioner på varje meddelande, SentimentScorer och TopicClassifier kompletterar bilden. AI:n svarar med sokratiska frågor, ABC-modellen och beteendeaktivering — max 3–4 meningar + en öppen fråga. Glasformism-design med djup varm lila (#1A1025) och lavendel/ros-gradient. Kris-knapp alltid synlig i hörnet. Video-bibliotek med interventioner för ångest, depression, PTSD och OCD. Ingen data, ingen text, ingen metadata lämnar någonsin enheten — inte ens till en API-leverantör.</p>
           <div class="project-card__tags">
             <span class="tag tag--green">Mental hälsa</span>
             <span class="tag">CoreML</span>
@@ -378,6 +381,7 @@
             <span class="tag">KBT</span>
             <span class="tag">SwiftUI</span>
             <span class="tag">On-device AI</span>
+            <span class="tag">Neural Engine</span>
           </div>
         </article>
 
@@ -388,12 +392,13 @@
             <div><div class="project-card__title">Lunaflix v2</div>
             <div class="project-card__subtitle">Personlig streamingplattform</div></div>
           </div>
-          <p class="project-card__desc">Personlig streamingtjänst i Netflix-kvalitet. Mux HLS-strömning med AVPlayer i SwiftUI, hero-karusell med parallax-scrollning, automatisk åldersberäkning per video baserat på födelsedatum. Download manager för offline-visning med progress-spårning. Lila/cyan design med glasmorfism, animerade övergångar och Netflix-grade UI-komponenter. ContentStore-arkitektur med kategorier, sök och profilhantering.</p>
+          <p class="project-card__desc">Personlig streamingtjänst i Netflix-kvalitet — byggd för en familj, för att följa en persons uppväxt. Mux HLS-strömning med AVPlayer i SwiftUI, hero-karusell med 5 auto-roterande videor (5s intervall) och parallax-scrollning. Automatisk åldersberäkning per video: "Luna var 1 år och 3 månader gammal" visas på varje klipp. DownloadManager för offline-visning med progress-spårning i MB/s. Kingfisher-bildcaching (200 MB disk, 50 MB minne) med shimmer-fallback. Matched geometry transitions mellan hem och detaljvy — ingen hoppande layout. Asymmetriska navigeringstransitioner: innehåll glider in från höger, försvinner med opacity. Cinematisk palett: midnatt (#080810), purpur (#7C3AED), cyan (#06B6D4). Pull-to-refresh, shimmer skeleton loaders och haptisk feedback på varje betydelsefull interaktion.</p>
           <div class="project-card__tags">
             <span class="tag tag--orange">Streaming</span>
             <span class="tag">Mux HLS</span>
             <span class="tag">AVPlayer</span>
             <span class="tag">SwiftUI</span>
+            <span class="tag">Kingfisher</span>
             <span class="tag">Offline</span>
             <span class="tag">MVVM</span>
           </div>
@@ -406,7 +411,7 @@
             <div><div class="project-card__title">BabyCare</div>
             <div class="project-card__subtitle">Fertilitet → Graviditet → Föräldraskap</div></div>
           </div>
-          <p class="project-card__desc">Svensk föräldraskapssvit som följer hela resan: fertilitetsspårning → graviditetsvecka → barnets 5 första år. SwiftData för fullständig lokal lagring, Swift Charts för tillväxtkurvor baserade på svenska BVC-percentiler och Livsmedelsverkets riktlinjer. Fas-anpassad design som transformerar automatiskt: korall/ros för fertilitet, lavendel för graviditet, blått för baby. Amnings- och sömnloggar, vaccinationspåminnelser och utvecklingsmilstolpar.</p>
+          <p class="project-card__desc">Svensk föräldraskapssvit som följer hela resan — från barnlöshet till barnets femte år — utan att någonsin byta app. SwiftData för fullständig lokal lagring, ingen molnberoende. Fas-anpassad design transformerar automatiskt: korall/ros för fertilitet (cykelkalender, BBT-kartor, 5-1-1-regeln), lavendel/plommon för graviditet (veckoräknare, trimester, MVC-system), baby-blått/sky för föräldraskap (amning, sömn, blöjor, tillväxt). Swift Charts för tillväxtkurvor med svenska BVC-percentiler. Kontraktionstimer med 5-1-1-detektering — varnar när det är dags att ringa förlossningen. Custom tab bar med animerad pill-indikator som glider mellan flikar med spring-animation. StaggerAppear för listor: varje rad dyker upp med 60 ms fördröjning. GradientCard för hero-sektioner, GlassCard för allt innehåll. Designat dark-first med Apple Health som inspirationskälla — inte pastell-bebisapparna som dominerar App Store.</p>
           <div class="project-card__tags">
             <span class="tag tag--purple">Föräldraskap</span>
             <span class="tag">SwiftData</span>
@@ -414,6 +419,7 @@
             <span class="tag">BVC</span>
             <span class="tag">iOS</span>
             <span class="tag">SwiftUI</span>
+            <span class="tag">Fertilitet</span>
           </div>
         </article>
 
@@ -424,13 +430,14 @@
             <div><div class="project-card__title">Lifetoken</div>
             <div class="project-card__subtitle">Dystopiskt livs-RPG</div></div>
           </div>
-          <p class="project-card__desc">Dystopiskt livshanterings-RPG där varje sekund som tickar är valuta du spenderar. HealthKit-integration konverterar aktivitet, sömn och träning till spelvaluta. 14 zoner med unika utmaningar och berättelser. The Gazette — en AI-driven nyhetstidning som genererar personligt innehåll baserat på spelarens verkliga liv. Neon-grön terminal-estetik med permadeath: när tiden tar slut, börjar du om från noll.</p>
+          <p class="project-card__desc">Dystopiskt livshanterings-RPG inspirerat av filmen *In Time* — varje verklig sekund kostar en sekund av din balans. Du startar med 86 400 sekunder (exakt en dag) och tjänar mer genom att leva väl: gå, sova, träna, arbeta. HealthKit-integration konverterar steg, sömn och träningsdata till spelvaluta. 14 zoner med unik lore, skattesystem och zonspecifikt arbete — från Askans slum till Vaultets privilegier. The Gazette: en AI-genererad dagstidning som skriver personliga artiklar om ditt spel — zonhändelser, kasinovinster, dödsfall, streak-milestones. Neon-grön (#00FF41) terminal-estetik med monospaced typsnitt överallt, skannlinjer och ambient glow. Äkta permadeath: när tiden tar slut, dör du. Ingen pay-to-win — den enda valutan är sekunder, tjänade genom att leva väl. LTPressEffect (0.96x scale, 0.30s spring) på varje knapp. AmbientPulse (2.5s repeat) — klockan andas, UI:n är aldrig helt stilla.</p>
           <div class="project-card__tags">
             <span class="tag tag--green">Gamification</span>
             <span class="tag">HealthKit</span>
             <span class="tag">AI-generated content</span>
             <span class="tag">SwiftUI</span>
             <span class="tag">Permadeath</span>
+            <span class="tag">RPG</span>
           </div>
         </article>
 
@@ -441,7 +448,7 @@
             <div><div class="project-card__title">Lumvra</div>
             <div class="project-card__subtitle">AI-sömncoach</div></div>
           </div>
-          <p class="project-card__desc">AI-driven sömncoach som hämtar HealthKit-data (sömnfaser, aktivitet, koffeinintag, hjärtfrekvens) och genererar personliga sömnrekommendationer via AI. Supabase-backend för molnsynkronisering mellan enheter. Dagliga briefingar med handlingsbara förslag baserade på sömnkvalitet och livsstilsdata. Managers-arkitektur: AIManager, HealthKitManager, SupabaseManager. Mörk, lugn design optimerad för nattlig användning med minimal blåljuspåverkan.</p>
+          <p class="project-card__desc">AI-driven sömncoach som hämtar HealthKit-data — sömnfaser, aktivitet, koffeinintag, hjärtfrekvensvariabilitet — och genererar personliga sömnrekommendationer via AI. Supabase-backend för molnsynkronisering mellan enheter. Dagliga briefingar med handlingsbara förslag baserade på sömnkvalitet och livsstilsdata. Managers-arkitektur: AIManager, HealthKitManager, SupabaseManager — separerade ansvarsområden för testbarhet och underhåll. Mörk, lugn design optimerad för nattlig användning med minimal blåljuspåverkan. Sömnanalys med sömnpoäng, trendgrafer och korrelationer mellan livsstilsval och sömnkvalitet.</p>
           <div class="project-card__tags">
             <span class="tag tag--accent">Sömn</span>
             <span class="tag">HealthKit</span>
@@ -459,7 +466,7 @@
             <div><div class="project-card__title">MindfulTogether</div>
             <div class="project-card__subtitle">Delad mindfulness</div></div>
           </div>
-          <p class="project-card__desc">Delad mindfulness-plattform för par och familjer. Gemensamma meditationsmål, synkroniserade sessioner och aktivitets-spårning via HealthKit. Byggt i SwiftUI med fokus på relationell hälsa — dela framsteg, utmana varandra och bygg gemensamma rutiner. Designat för att stärka band genom medveten närvaro.</p>
+          <p class="project-card__desc">Delad mindfulness-plattform för par och familjer. Gemensamma meditationsmål, synkroniserade sessioner och aktivitets-spårning via HealthKit. Byggt i SwiftUI med fokus på relationell hälsa — dela framsteg, utmana varandra och bygg gemensamma rutiner. Designat för att stärka band genom medveten närvaro och gemensam reflektion.</p>
           <div class="project-card__tags">
             <span class="tag tag--purple">Mindfulness</span>
             <span class="tag">HealthKit</span>
