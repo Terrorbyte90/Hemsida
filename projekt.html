@@ -196,6 +196,18 @@
     @media (max-width: 680px) {
       .nav__links { display: none; }
       .nav__hamburger { display: grid; }
+      .nav__links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 58px;
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: var(--space-6);
+        gap: var(--space-4);
+      }
     }
 
     /* === PAGE HEADER === */
@@ -507,6 +519,17 @@
           : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
       }
       btn.addEventListener('click', function () { setTheme(theme === 'dark' ? 'light' : 'dark'); });
+    })();
+
+    // Mobilmeny
+    (function () {
+      var hamburger = document.querySelector('.nav__hamburger');
+      var navLinks = document.querySelector('.nav__links');
+      if (!hamburger || !navLinks) return;
+      hamburger.addEventListener('click', function () {
+        var isOpen = navLinks.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', isOpen);
+      });
     })();
   </script>
 </body>
