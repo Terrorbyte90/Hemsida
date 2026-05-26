@@ -758,7 +758,7 @@
 
         <div class="project-card" data-project="navi" role="button" tabindex="0" aria-pressed="false">
           <div class="project-card__icon" style="background:var(--green-dim)">🤖</div>
-          <div class="project-card__title">Navi — Autonom orchestrator</div>
+          <div class="project-card__title">Ikarus — Autonom orchestrator</div>
           <div class="project-card__desc">Multi-agent system med worker-styrning och WebSocket-streaming</div>
           <div style="display:flex;gap:var(--space-1);flex-wrap:wrap;">
             <span class="tag tag--green">Orchestrator</span>
@@ -933,18 +933,18 @@
         ]
       },
       navi: {
-        title: 'Navi — Autonom orchestrator',
+        title: 'Ikarus — Autonom orchestrator',
         kallor: [
-          'Navi v7 — Orchestrator/Worker-arkitektur (huvuddokument)',
+          'Ikarus — Orchestrator/Worker-arkitektur (huvuddokument)',
           '└─ LLMCoordinator — 50 req/min, 6 samtidiga anrop',
           '  └─ WebSocket Streaming Protocol — atomisk avslutning',
           '    └─ Session History Compression — 72% kontextfönster',
           '      └─ Memory System — kontinuitet mellan sessioner'
         ],
-        summary: 'Navi v7 är en autonom AI-assistent med orchestrator/worker-arkitektur. En huvudagent styr worker-agenter som läser och skriver filer, interagerar med GitHub och rapporterar stegvis via WebSocket-streaming. LLMCoordinator hanterar 50 anrop/minut med 6 samtidiga anslutningar. Systemet är byggt för hands-off autonoma körningar med full spårbarhet och robust felhantering.',
+        summary: 'Ikarus är en autonom AI-agent med orchestrator/worker-arkitektur. En huvudagent styr worker-agenter som läser och skriver filer, interagerar med GitHub och rapporterar stegvis via WebSocket-streaming. LLMCoordinator hanterar 50 anrop/minut med 6 samtidiga anslutningar. Systemet är byggt för hands-off autonoma körningar med full spårbarhet och robust felhantering.',
         content: `
           <h3>Orchestrator/Worker-arkitektur</h3>
-          <p>Navi bygger på en orchestrator-worker-modell där huvudagenten bryter ner uppgifter i delsteg och delegerar till specialiserade workers. Varje worker har en dedikerad roll och rapporterar tillbaka via WebSocket, vilket ger realtidsinsyn i hela processen.</p>
+          <p>Ikarus bygger på en orchestrator-worker-modell där huvudagenten bryter ner uppgifter i delsteg och delegerar till specialiserade workers. Varje worker har en dedikerad roll och rapporterar tillbaka via WebSocket, vilket ger realtidsinsyn i hela processen.</p>
 
           <h3>LLMCoordinator</h3>
           <p>LLLMCoordinator är navet i all AI-kommunikation. Den hanterar:</p>
@@ -973,10 +973,10 @@
           </ul>
 
           <h3>Minnessystem</h3>
-          <p>Navi behåller kontext mellan sessioner genom ett persistent minnessystem. Varje session loggas och komprimeras vid behov. Live Activity uppdateras med en stale window på 30 minuter — efter detta markeras aktiviteten som inaktuell.</p>
+          <p>Ikarus behåller kontext mellan sessioner genom ett persistent minnessystem. Varje session loggas och komprimeras vid behov. Live Activity uppdateras med en stale window på 30 minuter — efter detta markeras aktiviteten som inaktuell.</p>
         `,
         reportLines: [
-          { type: 'heading', text: 'Navi v7 — Orchestrator-logg' },
+          { type: 'heading', text: 'Ikarus — Orchestrator-logg' },
           { type: 'line', text: '[00:00:01] Orchestrator startad — uppgift: "Bygg ny feature"' },
           { type: 'line', text: '[00:00:02] LLMCoordinator initierad — 50 req/min, 6 concurrent' },
           { type: 'line', text: '[00:00:03] Plan genererad — 4 steg identifierade' },
