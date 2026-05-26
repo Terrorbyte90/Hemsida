@@ -710,12 +710,29 @@
       <div class="container">
         <div class="chat-teaser reveal">
           <div>
-            <p class="chat-teaser__label">Personlig AI</p>
+            <p class="chat-teaser__label">Personlig AI — Skapad av Ted Svärd</p>
             <h2 class="chat-teaser__title">Prata med Leia</h2>
             <p class="chat-teaser__desc">
-              Leia är min personliga AI, tränad på min kod, mina projekt och min arkitektur.
-              Ställ frågor om SwiftUI, AI-design, eller be henne förklara hur Ikarus fungerar.
+              Leia är min egenbyggda AI-assistent — designad, tränad och driftsatt av mig.
+              Under huven kör hon en modell distillerad från Claude Opus 4.6, med ett
+              långtidsminne byggt på vektordatabas, kontextverifiering i Swift och ett
+              anpassat promptlager som gör henne expert på min kod och arkitektur.
             </p>
+            <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-4)">
+              <span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-faint);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-full);padding:3px 10px;">
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+                Distillerad fr. Claude Opus 4.6
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-faint);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-full);padding:3px 10px;">
+                Vektordatabas (ChromaDB)
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-faint);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-full);padding:3px 10px;">
+                Swift-verifiering
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-faint);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-full);padding:3px 10px;">
+                On-premise · Privat
+              </span>
+            </div>
             <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center">
               <a href="chat.html" class="btn btn--purple">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -723,14 +740,15 @@
               </a>
               <span class="chat-teaser__model">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-                Leia v2 · Claude-Opus-distillad
+                Leia v2 · Byggd av T. Svärd
               </span>
             </div>
           </div>
           <div class="chat-teaser__preview" aria-hidden="true">
             <div class="chat-bubble chat-bubble--user">Hur fungerar Ikarus-arkitekturen?</div>
             <div class="chat-bubble chat-bubble--ai">Ikarus använder en orchestrator som bryter ner uppgifter och delegerar till specialiserade workers via WebSocket-streaming...</div>
-            <div class="chat-bubble chat-bubble--user">Vilka AI-modeller stöds?</div>
+            <div class="chat-bubble chat-bubble--user">Hur är Leia byggd?</div>
+            <div class="chat-bubble chat-bubble--ai">Leia är distillerad från Claude Opus 4.6 och körs on-premise med ChromaDB som vektordatabas och Swift för kontextverifiering...</div>
           </div>
         </div>
       </div>
