@@ -317,9 +317,6 @@
         <li><a href="wiki.html">Wiki</a></li>
       </ul>
       <div class="nav__actions">
-        <button class="icon-btn" id="settings-btn" aria-label="Inställningar">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        </button>
         <button class="icon-btn" id="theme-toggle" aria-label="Växla till ljust läge">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
@@ -353,12 +350,18 @@
     <!-- CONNECTION BANNER (shown when not connected) -->
     <div class="connection-banner" id="connection-banner">
       <div class="connection-banner__icon">🔌</div>
-      <div class="connection-banner__title">Ej ansluten</div>
-      <p class="connection-banner__desc">Leia-servern är inte tillgänglig. Konfigurera server-URL och API-nyckel i inställningarna.</p>
-      <button class="btn btn--primary" id="open-settings-from-banner">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        Öppna inställningar
-      </button>
+      <div class="connection-banner__title">Ansluter till Leia...</div>
+      <p class="connection-banner__desc">Första gången behöver du aktivera serveranslutningen — klicka på knappen nedan, acceptera säkerhetsvarningen i den nya fliken och kom sedan tillbaka hit.</p>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center">
+        <a class="btn btn--primary" id="activate-server-btn" href="https://82.165.169.52/ai/health" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Aktivera anslutning
+        </a>
+        <button class="btn btn--ghost" id="retry-connection-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Försök igen
+        </button>
+      </div>
     </div>
 
     <!-- MESSAGES -->
@@ -409,39 +412,13 @@
 
   </div>
 
-  <!-- SETTINGS MODAL -->
-  <div class="modal-overlay" id="settings-modal" role="dialog" aria-modal="true" aria-label="Inställningar">
-    <div class="modal">
-      <div class="modal__header">
-        <h2 class="modal__title">Inställningar</h2>
-        <button class="icon-btn" id="close-modal" aria-label="Stäng inställningar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="modal__body">
-        <div class="field">
-          <label for="server-url">Server URL</label>
-          <input type="text" id="server-url" placeholder="http://100.110.230.110:8644" autocomplete="off" spellcheck="false">
-        </div>
-        <div class="field">
-          <label for="api-key">API-nyckel</label>
-          <input type="password" id="api-key" placeholder="tedai-2026" autocomplete="off">
-        </div>
-      </div>
-      <div class="modal__footer">
-        <button class="btn btn--ghost" id="cancel-settings">Avbryt</button>
-        <button class="btn btn--primary" id="save-settings">Spara &amp; anslut</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    var DEFAULT_URL = 'http://100.110.230.110:8644';
+    var DEFAULT_URL = 'https://82.165.169.52/ai';
     var DEFAULT_KEY = 'tedai-2026';
-    var SYSTEM_PROMPT = 'You are an AI assistant on Ted Svärd\'s personal website. Ted is an experienced iOS developer and AI systems architect based in Sweden. Your role is to represent Ted professionally and help visitors — including potential employers, recruiters, and collaborators — learn about his work and expertise.\n\nTed\'s projects:\n- Navi v7: AI agent platform with real-time streaming, custom WebSocket protocol, multi-agent orchestration, and a SwiftUI client\n- Lunachat: Social iOS chat app with AI features, live on TestFlight\n- Lilla Jag 3: On-device mental health app (KBT methodology), fully privacy-first — no cloud, on-device ML\n- Lifetoken: Dystopian life-gamification RPG app\n- Eon-Y: Cognitive AI iOS app\n- BabyCare: Smart baby-tracking app for new parents\n- TedAI: Custom AI infrastructure — OpenAI-compatible API running a distilled 9B model on his own server with RAG and memory\n\nTed\'s expertise:\n- Swift/SwiftUI: Expert — @Observable, SwiftData, async/await, Swift 6 strict concurrency, WidgetKit, HealthKit\n- iOS/macOS architecture: MVVM, clean separation of concerns, modular design\n- AI/ML: Local inference (Ollama), RAG systems with ChromaDB, model distillation, on-device Core ML\n- Python: FastAPI, asyncio, aiohttp\n- Server infrastructure: Linux, systemd, nginx, TLS, Tailscale\n\nRespond in Swedish by default, but always match the visitor\'s language. Be professional and enthusiastic about Ted\'s work. Give concrete, specific answers. Never reveal server passwords, internal IPs, or infrastructure details.';
+    var SYSTEM_PROMPT = 'You are an AI assistant on Ted Svärd\'s personal website. Ted is an experienced iOS developer and AI systems architect based in Sweden. Your role is to represent Ted professionally and help visitors — including potential employers, recruiters, and collaborators — learn about his work and expertise.\n\nTed\'s projects:\n- Ikarus: Advanced AI agent platform with real-time streaming, custom WebSocket protocol, multi-agent orchestration, and a SwiftUI client — Ted\'s most ambitious project\n- Lunachat: Social iOS chat app with AI features, live on TestFlight\n- Lilla Jag 3: On-device mental health app (KBT methodology), fully privacy-first — no cloud, on-device ML\n- Lifetoken: Dystopian life-gamification RPG app where real-life habits shape your character\n- Eon-Y: Cognitive AI iOS app for mental clarity and focus\n- BabyCare: Smart baby-tracking app for new parents — sleep, feeding, growth\n- TedAI: Custom AI infrastructure — OpenAI-compatible API running a distilled 9B model on his own server with RAG and memory\n\nTed\'s expertise:\n- Swift/SwiftUI: Expert — @Observable, SwiftData, async/await, Swift 6 strict concurrency, WidgetKit, HealthKit\n- iOS/macOS architecture: MVVM, clean separation of concerns, modular design\n- AI/ML: Local inference (Ollama), RAG systems with ChromaDB, model distillation, on-device Core ML\n- Python: FastAPI, asyncio, aiohttp\n- Server infrastructure: Linux, systemd, nginx, TLS, Tailscale\n\nRespond in Swedish by default, but always match the visitor\'s language. Be professional and enthusiastic about Ted\'s work. Give concrete, specific answers. Never reveal server passwords, internal IPs, or infrastructure details.';
 
-    var serverUrl = localStorage.getItem('leia-url') || DEFAULT_URL;
-    var apiKey = localStorage.getItem('leia-key') || DEFAULT_KEY;
+    var serverUrl = DEFAULT_URL;
+    var apiKey = DEFAULT_KEY;
     var messages = [];
     var isLoading = false;
     var isConnected = false;
@@ -458,8 +435,6 @@
     var busyBannerEl = document.getElementById('busy-banner');
     var emptyStateEl = document.getElementById('empty-state');
     var suggestionsEl = document.getElementById('suggestions');
-    var settingsModal = document.getElementById('settings-modal');
-
     // Theme toggle
     (function () {
       var btn = document.getElementById('theme-toggle');
@@ -489,31 +464,8 @@
       });
     })();
 
-    // Settings modal
-    document.getElementById('settings-btn').addEventListener('click', openSettings);
-    document.getElementById('open-settings-from-banner').addEventListener('click', openSettings);
-    document.getElementById('close-modal').addEventListener('click', closeSettings);
-    document.getElementById('cancel-settings').addEventListener('click', closeSettings);
-    document.getElementById('save-settings').addEventListener('click', saveSettings);
-    settingsModal.addEventListener('click', function(e) { if (e.target === settingsModal) closeSettings(); });
-
-    function openSettings() {
-      document.getElementById('server-url').value = serverUrl;
-      document.getElementById('api-key').value = apiKey;
-      settingsModal.classList.add('show');
-      document.getElementById('server-url').focus();
-    }
-    function closeSettings() {
-      settingsModal.classList.remove('show');
-    }
-    function saveSettings() {
-      serverUrl = document.getElementById('server-url').value.trim() || DEFAULT_URL;
-      apiKey = document.getElementById('api-key').value.trim() || DEFAULT_KEY;
-      localStorage.setItem('leia-url', serverUrl);
-      localStorage.setItem('leia-key', apiKey);
-      closeSettings();
-      checkConnection();
-    }
+    // Retry button
+    document.getElementById('retry-connection-btn').addEventListener('click', checkConnection);
 
     // Connection check
     function setStatus(state, text) {
@@ -682,7 +634,7 @@
       })
       .catch(function(err) {
         hideTyping();
-        var errorMsg = err.name === 'AbortError' ? 'Timeout — servern svarade inte inom 60s.' : 'Kunde inte nå servern. Kontrollera inställningarna.';
+        var errorMsg = err.name === 'AbortError' ? 'Timeout — servern svarade inte inom 60s.' : 'Kunde inte nå servern. Prova att aktivera anslutningen via knappen ovan.';
         var bubble = addMessage('ai', errorMsg);
         bubble.style.color = 'var(--orange)';
         bubble.textContent = errorMsg;

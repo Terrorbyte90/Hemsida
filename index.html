@@ -307,7 +307,7 @@
     .divider { border: none; border-top: 1px solid var(--divider); }
     .section__header-row { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); margin-bottom: var(--space-10); }
 
-    /* === PROJECT GRID — with Navi featured card === */
+    /* === PROJECT GRID — with Ikarus featured card === */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
@@ -342,7 +342,7 @@
     .project-card__desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.65; flex: 1; }
     .project-card__tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: auto; padding-top: var(--space-2); }
 
-    /* Navi architecture diagram (pure CSS) */
+    /* Ikarus architecture diagram (pure CSS) */
     .arch-diagram {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
@@ -517,7 +517,7 @@
             <div class="t-ok">&nbsp;&nbsp;&nbsp;✔ Alla tjänster aktiva — uptime 14d 7h 23m</div>
             <br>
             <div class="t-line"><span class="t-prompt">github &nbsp;›</span><span class="t-cmd">synkroniserar 10 repos…</span></div>
-            <div class="t-out">&nbsp;&nbsp;&nbsp;└─ Navi-v7 ✅ · BabyCare ✅ · Lunaflix ✅</div>
+            <div class="t-out">&nbsp;&nbsp;&nbsp;└─ Ikarus ✅ · BabyCare ✅ · Lunachat ✅</div>
             <div class="t-out">&nbsp;&nbsp;&nbsp;└─ Lilla-jag-3 ✅ · Lifetoken ✅ · Lunachat ✅</div>
             <div class="t-ok">&nbsp;&nbsp;&nbsp;✔ 10/10 repos synkroniserade</div>
             <br>
@@ -532,7 +532,7 @@
 
     <hr class="divider">
 
-    <!-- PROJEKT — Featured Navi + grid -->
+    <!-- PROJEKT — Featured Ikarus + grid -->
     <section class="section" id="projekt">
       <div class="container">
         <div class="section__header-row">
@@ -547,20 +547,20 @@
           </a>
         </div>
 
-        <!-- Featured: Navi v7 spans full width -->
+        <!-- Featured: Ikarus spans full width -->
         <div style="margin-bottom: var(--space-4)">
           <article class="project-card project-card--featured reveal">
             <div class="project-card__header">
               <div style="display:flex;align-items:center;gap:var(--space-3)">
                 <div class="project-card__icon" style="background:var(--accent-dim)">🤖</div>
                 <div>
-                  <div class="project-card__title">Navi v7</div>
+                  <div class="project-card__title">Ikarus</div>
                   <div style="font-size:var(--text-xs);color:var(--text-muted);margin-top:2px;letter-spacing:0.03em">AI-agentplattform · Orchestrator/Worker-arkitektur</div>
                 </div>
               </div>
               <span class="project-card__badge tag--accent" style="background:var(--accent-dim);color:var(--accent)">Flagship</span>
             </div>
-            <p class="project-card__desc" style="max-width:60ch">Server-side Node.js-backend med persistenta agenter som läser/skriver filer, interagerar med GitHub via REST API och rapporterar stegvis via WebSocket-streaming. LLMCoordinator hanterar 50 req/min med max 6 simultana anrop. Multi-provider routing (Claude, Grok, OpenRouter) med automatisk failover.</p>
+            <p class="project-card__desc" style="max-width:60ch">Avancerad AI-agentplattform med server-side Node.js-backend och persistenta agenter som läser/skriver filer, interagerar med GitHub via REST API och rapporterar stegvis via WebSocket-streaming. LLMCoordinator hanterar 50 req/min med max 6 simultana anrop. Multi-provider routing (Claude, Grok, OpenRouter) med automatisk failover och en inbyggd SwiftUI-klient för iOS och macOS.</p>
             <!-- Mini architecture diagram -->
             <div class="arch-diagram" aria-hidden="true">
               <div>
@@ -714,7 +714,7 @@
             <h2 class="chat-teaser__title">Prata med Leia</h2>
             <p class="chat-teaser__desc">
               Leia är min personliga AI, tränad på min kod, mina projekt och min arkitektur.
-              Ställ frågor om SwiftUI, AI-design, eller be henne förklara hur Navi fungerar.
+              Ställ frågor om SwiftUI, AI-design, eller be henne förklara hur Ikarus fungerar.
             </p>
             <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center">
               <a href="chat.html" class="btn btn--purple">
@@ -728,8 +728,8 @@
             </div>
           </div>
           <div class="chat-teaser__preview" aria-hidden="true">
-            <div class="chat-bubble chat-bubble--user">Hur fungerar Navi-arkitekturen?</div>
-            <div class="chat-bubble chat-bubble--ai">Navi använder en orchestrator som bryter ner uppgifter och delegerar till specialiserade workers via WebSocket...</div>
+            <div class="chat-bubble chat-bubble--user">Hur fungerar Ikarus-arkitekturen?</div>
+            <div class="chat-bubble chat-bubble--ai">Ikarus använder en orchestrator som bryter ner uppgifter och delegerar till specialiserade workers via WebSocket-streaming...</div>
             <div class="chat-bubble chat-bubble--user">Vilka AI-modeller stöds?</div>
           </div>
         </div>
