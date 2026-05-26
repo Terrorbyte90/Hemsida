@@ -775,6 +775,16 @@
             <span class="tag">On-device</span>
           </div>
         </div>
+
+        <div class="project-card" data-project="ms" role="button" tabindex="0" aria-pressed="false">
+          <div class="project-card__icon" style="background:var(--rose-dim,rgba(248,113,113,.10))">🧬</div>
+          <div class="project-card__title">MS-behandling 2025–2026</div>
+          <div class="project-card__desc">Senaste genombrotten inom multipel skleros — BTK, CAR-T och remyelinisering</div>
+          <div style="display:flex;gap:var(--space-1);flex-wrap:wrap;">
+            <span class="tag" style="background:rgba(248,113,113,.10);color:#f87171;border-color:transparent">Medicinsk forskning</span>
+            <span class="tag">MS</span>
+          </div>
+        </div>
       </aside>
 
       <!-- CONTENT -->
@@ -1053,6 +1063,59 @@
           { type: 'line', text: '[00:00:10] All inferens klar — 0 nätverksanrop' },
           { type: 'line', text: '[00:00:11] Privacy check: PASS ✓ — ingen data lämnade enheten' },
           { type: 'line', text: '[00:00:12] Neural Engine utilization: 67% — 12ms inferens' },
+        ]
+      },
+      ms: {
+        title: 'MS-behandling 2025–2026',
+        kallor: [
+          'PMC: New Horizons for Multiple Sclerosis Therapy (2025)',
+          '└─ Roche: Fenebrutinib — fas III PPMS-studie (feb 2026)',
+          '  └─ BMS Breakfree-2: Anti-BCMA CAR-T i progressiv MS',
+          '    └─ ECTRIMS 2025: Metformin + Clemastine remyelinisering',
+          '      └─ Phase II: PIPE-307 — oligodendrocyt-regenerering'
+        ],
+        summary: 'Det senaste året har inneburit oöverträffade framsteg i MS-behandling. Tre stora innovationsområden har framträtt: BTK-inhibitorer som för första gången bromsar funktionsförsämring vid primär progressiv MS, CAR-T cellterapi som visar lovande tidiga resultat, och remyeliniseringsforskning med kombinationsterapi som faktiskt reparerar nervskador. Sammantaget representerar detta ett paradigmskifte — från symptomhantering till faktisk vävnadsreparation.',
+        content: `
+          <h3>BTK-inhibitorer — Genombrott vid progressiv MS</h3>
+          <p>Bruton's Tyrosinkinashämmare (BTK-inhibitorer) är det mest lovande nya behandlingskonceptet. Roches <strong>fenebrutinib</strong> uppnådde 2025–2026 ett historiskt genombrott som det första läkemedlet på över ett decennium att reducera funktionsförsämring vid primär progressiv MS (PPMS) — en form som tidigare ansetts i princip obehandlingsbar.</p>
+          <ul>
+            <li><strong>Fenebrutinib (Roche):</strong> Fas III-studier vid PPMS visar signifikant minskning av disability progression. Regulatoriska ansökningar förväntas efter slutlig avläsning 2026.</li>
+            <li><strong>Remibrutinib (Novartis):</strong> Avancerar i sena fas-studier för relapserande MS med högre BTK-selektivitet och färre biverkningar.</li>
+            <li><strong>Mekanism:</strong> BTK-inhibitorer blockerar B-cellsaktivering i CNS, vilket dämpar neuroinflammation direkt i nervvävnaden — inte bara perifert.</li>
+          </ul>
+
+          <h3>CAR-T Cellterapi — Immunologisk reset</h3>
+          <p>CAR-T cellterapi, länge använd vid blodcancer, har gjort sitt intåg inom MS-forskningen. Genetiskt modifierade T-celler programmeras att eliminera de patogena B-celler som driver neuroinflammation.</p>
+          <ul>
+            <li><strong>Anti-BCMA CAR-T (BMS Breakfree-2):</strong> Pågående Fas I-studie vid progressiv MS visar hanterbar biverkningsprofil och potential för långvarig immunologisk reset.</li>
+            <li><strong>Koncept:</strong> En enda behandlingsomgång kan potentiellt ge flerårig remission — en sorts "reboot" av immunsystemet.</li>
+            <li><strong>Status:</strong> Tidiga säkerhetsdata är lovande, effektdata samlas fortfarande in.</li>
+          </ul>
+
+          <h3>Remyelinisering — Faktisk nervläkning</h3>
+          <p>Det mest revolutionerande perspektivet är forskning som inte bara stoppar skador utan faktiskt reparerar dem. Vid ECTRIMS 2025 presenterades övertygande data för kombinationsterapin <strong>metformin + clemastine</strong>.</p>
+          <ul>
+            <li><strong>Metformin + Clemastine:</strong> Tredje bekräftande studien visar signifikant förbättrad myelinreparation vid relapserande MS. Kumulativa fördelar förväntas växa över tid.</li>
+            <li><strong>PIPE-307:</strong> Oral terapi i Fas II som riktar sig mot oligodendrocyt-regenerering — cellerna som bygger upp myelinskidan.</li>
+            <li><strong>Betydelse:</strong> Tidigare MS-behandling hindrade angrepp. Nu börjar man faktiskt kunna läka skadorna.</li>
+          </ul>
+
+          <h3>Sammanfattning</h3>
+          <p>MS-behandlingens landskap förändras fundamentalt. Det är inte längre bara bromsmediciner — vi ser nu de första tecknen på att progressiv MS kan bromsas, att immunsystemet kan omprogrammeras och att nervskador kanske kan läkas. Särskilt progressiv MS, som länge saknat behandlingsalternativ, är nu i centrum för flera parallella genombrott.</p>
+        `,
+        reportLines: [
+          { type: 'heading', text: 'MS-forskning — Genombrott 2025–2026' },
+          { type: 'line', text: '[BTK] Fenebrutinib — Fas III PPMS: PRIMARY ENDPOINT MET ✓' },
+          { type: 'bullet', text: 'Disability progression reducerad — första på >10 år' },
+          { type: 'bullet', text: 'Regulatorisk ansökan Q3 2026' },
+          { type: 'line', text: '[CAR-T] Anti-BCMA BMS Breakfree-2: AKTIV' },
+          { type: 'bullet', text: 'Fas I progressiv MS — säkerhetsdata: PASS' },
+          { type: 'bullet', text: 'Immunologisk reset — potential: hög' },
+          { type: 'line', text: '[REMYELIN] Metformin + Clemastine: ECTRIMS 2025' },
+          { type: 'bullet', text: '3:e bekräftande studie — myelinreparation signifikant' },
+          { type: 'bullet', text: 'PIPE-307 Fas II: oligodendrocyt-regenerering' },
+          { type: 'line', text: '' },
+          { type: 'line', text: 'Paradigmskifte: symptomkontroll → vävnadsreparation' },
         ]
       }
     };
