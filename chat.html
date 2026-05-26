@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat med Leia — Ted Svärd</title>
-  <meta name="description" content="Prata med Leia — Teds personliga AI, powered by Qwen3.5 9B.">
+  <meta name="description" content="Prata med Leia — Teds personliga AI-assistent.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -337,7 +337,7 @@
           <div class="chat-header__avatar" aria-hidden="true">✦</div>
           <div>
             <div class="chat-header__name">Chat med Leia</div>
-            <div class="chat-header__sub">Teds personliga AI · Qwen3.5 9B</div>
+            <div class="chat-header__sub">Teds personliga AI · Leia v2</div>
           </div>
         </div>
         <div class="chat-status chat-status--connecting" id="connection-status">
@@ -347,16 +347,12 @@
       </div>
     </div>
 
-    <!-- CONNECTION BANNER (shown when not connected) -->
+    <!-- CONNECTION BANNER (shown only on connection failure) -->
     <div class="connection-banner" id="connection-banner">
-      <div class="connection-banner__icon">🔌</div>
-      <div class="connection-banner__title">Ansluter till Leia...</div>
-      <p class="connection-banner__desc">Första gången behöver du aktivera serveranslutningen — klicka på knappen nedan, acceptera säkerhetsvarningen i den nya fliken och kom sedan tillbaka hit.</p>
+      <div class="connection-banner__icon">⚠️</div>
+      <div class="connection-banner__title">Leia är inte tillgänglig just nu</div>
+      <p class="connection-banner__desc">Servern svarar inte. Prova igen om en stund.</p>
       <div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center">
-        <a class="btn btn--primary" id="activate-server-btn" href="https://82.165.169.52/ai/health" target="_blank" rel="noopener">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Aktivera anslutning
-        </a>
         <button class="btn btn--ghost" id="retry-connection-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
           Försök igen
@@ -413,7 +409,7 @@
   </div>
 
   <script>
-    var DEFAULT_URL = 'https://82.165.169.52/ai';
+    var DEFAULT_URL = 'https://82.165.169.52.nip.io/ai';
     var DEFAULT_KEY = 'tedai-2026';
     var SYSTEM_PROMPT = 'You are an AI assistant on Ted Svärd\'s personal website. Ted is an experienced iOS developer and AI systems architect based in Sweden. Your role is to represent Ted professionally and help visitors — including potential employers, recruiters, and collaborators — learn about his work and expertise.\n\nTed\'s projects:\n- Ikarus: Advanced AI agent platform with real-time streaming, custom WebSocket protocol, multi-agent orchestration, and a SwiftUI client — Ted\'s most ambitious project\n- Lunachat: Social iOS chat app with AI features, live on TestFlight\n- Lilla Jag 3: On-device mental health app (KBT methodology), fully privacy-first — no cloud, on-device ML\n- Lifetoken: Dystopian life-gamification RPG app where real-life habits shape your character\n- Eon-Y: Cognitive AI iOS app for mental clarity and focus\n- BabyCare: Smart baby-tracking app for new parents — sleep, feeding, growth\n- TedAI: Custom AI infrastructure — OpenAI-compatible API running a distilled 9B model on his own server with RAG and memory\n\nTed\'s expertise:\n- Swift/SwiftUI: Expert — @Observable, SwiftData, async/await, Swift 6 strict concurrency, WidgetKit, HealthKit\n- iOS/macOS architecture: MVVM, clean separation of concerns, modular design\n- AI/ML: Local inference (Ollama), RAG systems with ChromaDB, model distillation, on-device Core ML\n- Python: FastAPI, asyncio, aiohttp\n- Server infrastructure: Linux, systemd, nginx, TLS, Tailscale\n\nRespond in Swedish by default, but always match the visitor\'s language. Be professional and enthusiastic about Ted\'s work. Give concrete, specific answers. Never reveal server passwords, internal IPs, or infrastructure details.';
 
