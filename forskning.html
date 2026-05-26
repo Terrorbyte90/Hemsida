@@ -178,8 +178,8 @@
       border-radius: var(--radius-md);
       transition: color var(--transition), background var(--transition);
     }
-    .nav__links a.nav__link--highlight { color: var(--accent); border: 1px solid var(--accent-dim); }
-    .nav__links a.nav__link--highlight:hover { background: var(--accent-dim); color: var(--accent-hover); }
+    .nav__links a.nav__ai { color: var(--purple); background: var(--purple-dim); border: 1px solid rgba(167,139,250,0.2); }
+    .nav__links a.nav__ai:hover { background: rgba(167,139,250,0.20); }
     .nav__links a:hover, .nav__links a[aria-current="page"] {
       color: var(--text);
       background: var(--surface-2);
@@ -715,14 +715,14 @@
   <nav class="nav" role="navigation" aria-label="Huvudnavigering">
     <div class="container">
       <div class="nav__inner">
-        <a href="index.html" class="nav__logo" aria-label="Hem">Ted Svärd</a>
+        <a href="index.html" class="nav__logo" aria-label="Hem">Ted <span>Svärd</span></a>
         <ul class="nav__links">
           <li><a href="index.html">Hem</a></li>
           <li><a href="projekt.html">Projekt</a></li>
           <li><a href="forskning.html" aria-current="page">Forskning</a></li>
           <li><a href="podcasts.html">Podcasts</a></li>
           <li><a href="om-mig.html">Om mig</a></li>
-          <li><a href="chat.html" class="nav__link--highlight">AI Chat</a></li>
+          <li><a href="chat.html" class="nav__ai">AI Chat</a></li>
           <li><a href="wiki.html">Wiki</a></li>
           <li><a href="mailto:Ted@Tuvaluna.com">Kontakt</a></li>
         </ul>
@@ -793,6 +793,8 @@
         <ul class="footer__links">
           <li><a href="mailto:Ted@Tuvaluna.com">Ted@Tuvaluna.com</a></li>
           <li><a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="chat.html">AI Chat</a></li>
+          <li><a href="wiki.html">Wiki</a></li>
         </ul>
       </div>
     </div>
@@ -803,15 +805,17 @@
     (function () {
       var btn = document.querySelector('[data-theme-toggle]');
       var html = document.documentElement;
+      var saved = localStorage.getItem('ts-theme') || localStorage.getItem('theme');
+      if (saved) html.setAttribute('data-theme', saved);
       var theme = html.getAttribute('data-theme') || 'dark';
+      function moonIcon() { return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'; }
+      function sunIcon()  { return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'; }
       function setTheme(t) {
-        theme = t;
-        html.setAttribute('data-theme', t);
+        theme = t; html.setAttribute('data-theme', t); localStorage.setItem('ts-theme', t);
         btn.setAttribute('aria-label', t === 'dark' ? 'Växla till ljust läge' : 'Växla till mörkt läge');
-        btn.innerHTML = t === 'dark'
-          ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
-          : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+        btn.innerHTML = t === 'dark' ? moonIcon() : sunIcon();
       }
+      if (saved === 'light') btn.innerHTML = sunIcon();
       btn.addEventListener('click', function () { setTheme(theme === 'dark' ? 'light' : 'dark'); });
     })();
 

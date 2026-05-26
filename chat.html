@@ -75,8 +75,9 @@
     .nav__links { display: flex; align-items: center; gap: var(--space-1); list-style: none; }
     .nav__links a { font-size: var(--text-sm); color: var(--text-muted); padding: 0.4rem 0.7rem; border-radius: var(--radius-md); transition: color var(--transition), background var(--transition); }
     .nav__links a:hover, .nav__links a[aria-current="page"] { color: var(--text); background: var(--surface-2); }
-    .nav__links a.nav__link--highlight { color: var(--accent); border: 1px solid var(--accent-dim); }
-    .nav__links a.nav__link--highlight:hover { background: var(--accent-dim); }
+    .nav__links a.nav__ai { color: var(--purple); background: var(--purple-dim); border: 1px solid rgba(167,139,250,0.2); }
+    .nav__links a.nav__ai:hover { background: rgba(167,139,250,0.20); }
+    .nav__links a.nav__ai[aria-current="page"] { background: var(--purple-dim); color: var(--purple); }
     .nav__actions { display: flex; align-items: center; gap: var(--space-2); }
     .icon-btn { width: 36px; height: 36px; border-radius: var(--radius-md); display: grid; place-items: center; color: var(--text-muted); border: 1px solid var(--border); transition: all var(--transition); }
     .icon-btn:hover { color: var(--text); background: var(--surface-2); border-color: var(--border-strong); }
@@ -312,7 +313,7 @@
         <li><a href="forskning.html">Forskning</a></li>
         <li><a href="podcasts.html">Podcasts</a></li>
         <li><a href="om-mig.html">Om mig</a></li>
-        <li><a href="chat.html" class="nav__link--highlight" aria-current="page">AI Chat</a></li>
+        <li><a href="chat.html" class="nav__ai" aria-current="page">AI Chat</a></li>
         <li><a href="wiki.html">Wiki</a></li>
       </ul>
       <div class="nav__actions">

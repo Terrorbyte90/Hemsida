@@ -4,369 +4,237 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Om mig — Ted Svärd</title>
-  <meta name="description" content="Om Ted Svärd — AI-arkitekt, iOS-utvecklare och forskare.">
-
-  <!-- Fonts -->
+  <meta name="description" content="Ted Svärd — självlärd iOS-utvecklare och AI-arkitekt från Sverige. Bygger kognitiva agenter, on-device AI och iOS-appar från grunden.">
+  <meta property="og:title" content="Om Ted Svärd — AI-arkitekt & iOS-utvecklare">
+  <meta property="og:description" content="Självlärd iOS-utvecklare och AI-arkitekt. Jag shippar, jag lär mig, jag bygger.">
+  <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
   <style>
-    /* === TOKENS (same as index.html) === */
     :root {
       --font-body: 'Inter', system-ui, sans-serif;
       --font-display: 'Instrument Serif', Georgia, serif;
-      --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
-
-      --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
-      --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
-      --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
-      --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
-      --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
-      --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
-
+      --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+      --text-xs: clamp(0.72rem, 0.68rem + 0.2vw, 0.8rem);
+      --text-sm: clamp(0.875rem, 0.82rem + 0.28vw, 0.975rem);
+      --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.65vw, 1.4rem);
+      --text-xl: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
       --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
-      --space-4: 1rem;    --space-5: 1.25rem; --space-6: 1.5rem;
-      --space-8: 2rem;    --space-10: 2.5rem; --space-12: 3rem;
-      --space-16: 4rem;   --space-20: 5rem;   --space-24: 6rem;
-
+      --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem;
+      --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem;
+      --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
       --radius-sm: 0.375rem; --radius-md: 0.5rem;
-      --radius-lg: 0.75rem;  --radius-xl: 1rem;
+      --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-2xl: 1.5rem;
       --radius-full: 9999px;
-
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
       --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
-
       --content-default: 960px;
       --content-wide: 1200px;
     }
-
-    /* === DARK THEME (default) === */
     [data-theme="dark"], :root {
-      --bg:             #0a0a09;
-      --bg-subtle:      #101010;
-      --surface:        #141413;
-      --surface-2:      #1a1a18;
-      --surface-3:      #20201d;
-      --border:         rgba(255,255,255,0.07);
-      --border-strong:  rgba(255,255,255,0.12);
-      --divider:        rgba(255,255,255,0.05);
-
-      --text:           #eceae6;
-      --text-muted:     #8a8882;
-      --text-faint:     #565450;
-
-      --accent:         #5b9cf6;
-      --accent-hover:   #79b4ff;
-      --accent-dim:     rgba(91,156,246,0.10);
-
-      --green:          #4ade80;
-      --green-dim:      rgba(74,222,128,0.10);
-      --orange:         #fb923c;
-      --orange-dim:     rgba(251,146,60,0.10);
-      --purple:         #a78bfa;
-      --purple-dim:     rgba(167,139,250,0.10);
-      --amber:          #fbbf24;
-      --amber-dim:      rgba(251,191,36,0.10);
-
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.45);
-      --shadow-md: 0 8px 24px rgba(0,0,0,0.50);
-      --shadow-lg: 0 20px 60px rgba(0,0,0,0.65);
+      --bg: #0a0a09; --bg-subtle: #0e0e0d; --surface: #141413;
+      --surface-2: #1a1a18; --surface-3: #222220;
+      --border: rgba(255,255,255,0.07); --border-md: rgba(255,255,255,0.10);
+      --border-strong: rgba(255,255,255,0.14); --divider: rgba(255,255,255,0.05);
+      --text: #eceae6; --text-muted: #8a8882; --text-faint: #555350;
+      --accent: #5b9cf6; --accent-hover: #79b4ff; --accent-dim: rgba(91,156,246,0.10);
+      --green: #4ade80; --green-dim: rgba(74,222,128,0.10);
+      --orange: #fb923c; --orange-dim: rgba(251,146,60,0.10);
+      --purple: #a78bfa; --purple-dim: rgba(167,139,250,0.10); --purple-glow: rgba(167,139,250,0.20);
+      --amber: #fbbf24; --amber-dim: rgba(251,191,36,0.10);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.5); --shadow-md: 0 8px 24px rgba(0,0,0,0.55); --shadow-lg: 0 20px 60px rgba(0,0,0,0.7);
     }
-
-    /* === LIGHT THEME === */
     [data-theme="light"] {
-      --bg:             #f8f7f4;
-      --bg-subtle:      #f2f1ee;
-      --surface:        #ffffff;
-      --surface-2:      #f8f7f4;
-      --surface-3:      #f1efea;
-      --border:         rgba(0,0,0,0.07);
-      --border-strong:  rgba(0,0,0,0.13);
-      --divider:        rgba(0,0,0,0.06);
-
-      --text:           #161617;
-      --text-muted:     #6f6c66;
-      --text-faint:     #a8a49d;
-
-      --accent:         #1a63d0;
-      --accent-hover:   #0f56bf;
-      --accent-dim:     rgba(26,99,208,0.09);
-
-      --green:          #169b4a;
-      --green-dim:      rgba(22,155,74,0.09);
-      --orange:         #ea6a0a;
-      --orange-dim:     rgba(234,106,10,0.09);
-      --purple:         #7c3aed;
-      --purple-dim:     rgba(124,58,237,0.09);
-      --amber:          #d97706;
-      --amber-dim:      rgba(217,119,6,0.09);
-
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-      --shadow-md: 0 8px 24px rgba(0,0,0,0.10);
-      --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+      --bg: #f8f7f4; --bg-subtle: #f2f1ee; --surface: #ffffff;
+      --surface-2: #f5f4f1; --surface-3: #eeede9;
+      --border: rgba(0,0,0,0.07); --border-md: rgba(0,0,0,0.10);
+      --border-strong: rgba(0,0,0,0.14); --divider: rgba(0,0,0,0.06);
+      --text: #161617; --text-muted: #6f6c66; --text-faint: #aaa49d;
+      --accent: #1a63d0; --accent-hover: #0f56bf; --accent-dim: rgba(26,99,208,0.09);
+      --green: #169b4a; --green-dim: rgba(22,155,74,0.09);
+      --orange: #ea6a0a; --orange-dim: rgba(234,106,10,0.09);
+      --purple: #7c3aed; --purple-dim: rgba(124,58,237,0.09); --purple-glow: rgba(124,58,237,0.15);
+      --amber: #d97706; --amber-dim: rgba(217,119,6,0.09);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06); --shadow-md: 0 8px 24px rgba(0,0,0,0.09); --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
     }
-
-    /* === RESET === */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font-body);
-      font-size: var(--text-base);
-      line-height: 1.6;
-      color: var(--text);
-      background: var(--bg);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    img { max-width: 100%; display: block; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; scroll-padding-top: 72px; }
+    body { font-family: var(--font-body); font-size: var(--text-base); color: var(--text); background: var(--bg); min-height: 100dvh; line-height: 1.65; overflow-x: hidden; transition: background var(--transition), color var(--transition); }
+    img, svg { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
-    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-    ul { list-style: none; }
+    button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+    ::selection { background: var(--accent-dim); color: var(--text); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius-sm); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 
-    /* === LAYOUT === */
-    .container {
-      max-width: var(--content-wide);
-      margin: 0 auto;
-      padding: 0 var(--space-6);
-    }
+    .container { max-width: var(--content-default); margin-inline: auto; padding-inline: clamp(var(--space-4), 5vw, var(--space-12)); }
+    .container--wide { max-width: var(--content-wide); }
 
-    /* === NAV === */
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: color-mix(in srgb, var(--bg) 85%, transparent);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav__inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 56px;
-      gap: var(--space-6);
-    }
-    .nav__logo {
-      font-family: var(--font-display);
-      font-size: var(--text-xl);
-      letter-spacing: -0.02em;
-    }
+    /* NAV */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; backdrop-filter: blur(28px) saturate(200%); -webkit-backdrop-filter: blur(28px) saturate(200%); border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 78%, transparent); }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 58px; gap: var(--space-8); }
+    .nav__logo { font-family: var(--font-display); font-size: 1.2rem; letter-spacing: -0.01em; color: var(--text); flex-shrink: 0; }
     .nav__logo span { color: var(--accent); }
-    .nav__links {
-      display: flex;
-      gap: var(--space-8);
-      font-size: var(--text-sm);
-      font-weight: 500;
-    }
-    .nav__links a {
-      color: var(--text-muted);
-      transition: color var(--transition);
-    }
-    .nav__links a:hover { color: var(--text); }
-    .nav__links a[aria-current="page"] {
-      color: var(--text);
-    }
-    .nav__actions { display: flex; align-items: center; gap: var(--space-3); }
-    .icon-btn {
-      display: grid;
-      place-items: center;
-      width: 36px;
-      height: 36px;
-      border-radius: var(--radius-full);
-      transition: background var(--transition);
-    }
-    .icon-btn:hover { background: var(--border); }
+    .nav__links { display: flex; align-items: center; gap: var(--space-1); list-style: none; }
+    .nav__links a { font-size: var(--text-sm); color: var(--text-muted); padding: 0.4rem 0.7rem; border-radius: var(--radius-md); transition: color var(--transition), background var(--transition); }
+    .nav__links a:hover, .nav__links a[aria-current="page"] { color: var(--text); background: var(--surface-2); }
+    .nav__links a.nav__ai { color: var(--purple); background: var(--purple-dim); border: 1px solid rgba(167,139,250,0.2); }
+    .nav__links a.nav__ai:hover { background: var(--purple-glow); }
+    .nav__actions { display: flex; align-items: center; gap: var(--space-2); }
+    .icon-btn { width: 36px; height: 36px; border-radius: var(--radius-md); display: grid; place-items: center; color: var(--text-muted); border: 1px solid var(--border); transition: all var(--transition); }
+    .icon-btn:hover { color: var(--text); background: var(--surface-2); border-color: var(--border-strong); }
     .nav__hamburger { display: none; }
-
-    @media (max-width: 768px) {
+    @media (max-width: 800px) {
       .nav__links { display: none; }
       .nav__hamburger { display: grid; }
-      .nav__links.open {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 56px;
-        left: 0;
-        right: 0;
-        background: var(--surface);
-        border-bottom: 1px solid var(--border);
-        padding: var(--space-6);
-        gap: var(--space-4);
-      }
+      .nav__links.open { display: flex; flex-direction: column; position: absolute; top: 58px; left: 0; right: 0; background: color-mix(in srgb, var(--surface) 97%, transparent); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: var(--space-6); gap: var(--space-1); z-index: 99; }
+      .nav__links.open a { padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); }
     }
 
-    /* === PAGE HEADER === */
-    .page-header {
-      padding: var(--space-20) 0 var(--space-12);
-      text-align: center;
-    }
-    .page-header__eyebrow {
-      font-size: var(--text-sm);
-      font-weight: 500;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: var(--space-4);
-    }
-    .page-header__title {
-      font-family: var(--font-display);
-      font-size: var(--text-2xl);
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: var(--space-6);
-    }
-    .page-header__desc {
-      max-width: 600px;
-      margin: 0 auto;
-      color: var(--text-muted);
-      font-size: var(--text-lg);
-      line-height: 1.5;
-    }
+    /* BUTTONS */
+    .btn { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-6); border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 500; transition: all var(--transition); letter-spacing: 0.01em; white-space: nowrap; }
+    .btn:active { transform: scale(0.97); }
+    .btn--primary { background: var(--accent); color: #fff; }
+    .btn--primary:hover { background: var(--accent-hover); box-shadow: 0 0 0 4px var(--accent-dim); }
+    .btn--ghost { border: 1px solid var(--border-md); color: var(--text-muted); }
+    .btn--ghost:hover { color: var(--text); background: var(--surface-2); border-color: var(--border-strong); }
+    .btn--purple { background: var(--purple); color: #fff; }
+    .btn--purple:hover { filter: brightness(1.1); box-shadow: 0 0 0 4px var(--purple-dim); }
 
-    /* === ABOUT CONTENT === */
-    .about-content {
-      max-width: var(--content-default);
-      margin: 0 auto;
-      padding: 0 var(--space-6) var(--space-20);
+    /* PAGE HERO */
+    .page-hero {
+      padding-top: calc(58px + clamp(var(--space-12), 7vw, var(--space-24)));
+      padding-bottom: clamp(var(--space-12), 6vw, var(--space-20));
+      position: relative; overflow: hidden;
     }
-    .about-section {
-      margin-bottom: var(--space-16);
+    .page-hero__glow {
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 80vw; max-width: 800px; height: 400px;
+      background: radial-gradient(ellipse at center top, rgba(91,156,246,0.08) 0%, rgba(167,139,250,0.05) 40%, transparent 70%);
+      filter: blur(50px); pointer-events: none;
     }
-    .about-section:last-child { margin-bottom: 0; }
-    .about-section__title {
-      font-family: var(--font-display);
-      font-size: var(--text-xl);
-      margin-bottom: var(--space-6);
-      letter-spacing: -0.02em;
-    }
-    .about-section__text {
-      color: var(--text-muted);
-      line-height: 1.7;
-      font-size: var(--text-base);
-    }
-    .about-section__text p + p { margin-top: var(--space-4); }
+    .page-hero .container { position: relative; z-index: 1; }
+    .page-hero__eyebrow { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-4); }
+    .page-hero__title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 400; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: var(--space-6); }
+    .page-hero__desc { font-size: var(--text-lg); color: var(--text-muted); max-width: 56ch; line-height: 1.65; margin-bottom: var(--space-8); }
 
-    /* === SKILLS GRID === */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: var(--space-4);
+    /* PILLARS — "What I bring" */
+    .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); margin-bottom: clamp(var(--space-12), 6vw, var(--space-20)); }
+    .pillar {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl);
+      padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-3);
+      transition: all var(--transition); position: relative; overflow: hidden;
     }
+    .pillar::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+    .pillar--blue::before   { background: linear-gradient(90deg, var(--accent), transparent); }
+    .pillar--purple::before { background: linear-gradient(90deg, var(--purple), transparent); }
+    .pillar--green::before  { background: linear-gradient(90deg, var(--green), transparent); }
+    .pillar:hover { background: var(--surface-2); border-color: var(--border-strong); transform: translateY(-2px); }
+    .pillar__icon { font-size: 1.5rem; }
+    .pillar__title { font-size: var(--text-base); font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+    .pillar__desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.65; }
+
+    /* ABOUT CONTENT */
+    .about-content { padding-bottom: clamp(var(--space-16), 8vw, var(--space-24)); }
+    .section { padding-block: clamp(var(--space-10), 5vw, var(--space-16)); }
+    .section__label { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-bottom: var(--space-4); }
+    .section__title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; letter-spacing: -0.02em; color: var(--text); margin-bottom: var(--space-6); line-height: 1.1; }
+    .divider { border: none; border-top: 1px solid var(--divider); }
+
+    /* STORY TEXT */
+    .story { font-size: var(--text-base); color: var(--text-muted); line-height: 1.8; max-width: 68ch; }
+    .story p + p { margin-top: var(--space-5); }
+    .story strong { color: var(--text); font-weight: 600; }
+
+    /* SKILLS MATRIX */
+    .skills-matrix { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-4); }
     .skill-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: var(--space-6);
-      transition: border-color var(--transition), transform var(--transition);
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl);
+      padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3);
+      transition: all var(--transition);
     }
-    .skill-card:hover {
-      border-color: var(--border-strong);
-      transform: translateY(-2px);
-    }
-    .skill-card__icon {
-      width: 40px;
-      height: 40px;
-      border-radius: var(--radius-md);
-      display: grid;
-      place-items: center;
-      margin-bottom: var(--space-4);
-      font-size: var(--text-lg);
-    }
-    .skill-card__icon--blue { background: var(--accent-dim); color: var(--accent); }
-    .skill-card__icon--green { background: var(--green-dim); color: var(--green); }
+    .skill-card:hover { border-color: var(--border-strong); background: var(--surface-2); transform: translateY(-2px); }
+    .skill-card__header { display: flex; align-items: center; gap: var(--space-3); }
+    .skill-card__icon { width: 40px; height: 40px; border-radius: var(--radius-md); display: grid; place-items: center; flex-shrink: 0; }
+    .skill-card__icon--blue   { background: var(--accent-dim); color: var(--accent); }
+    .skill-card__icon--green  { background: var(--green-dim);  color: var(--green); }
     .skill-card__icon--orange { background: var(--orange-dim); color: var(--orange); }
     .skill-card__icon--purple { background: var(--purple-dim); color: var(--purple); }
-    .skill-card__title {
-      font-weight: 600;
-      font-size: var(--text-base);
-      margin-bottom: var(--space-2);
-    }
-    .skill-card__desc {
-      color: var(--text-muted);
-      font-size: var(--text-sm);
-      line-height: 1.5;
-    }
+    .skill-card__icon--amber  { background: var(--amber-dim);  color: var(--amber); }
+    .skill-card__name { font-size: var(--text-sm); font-weight: 700; color: var(--text); }
+    .skill-card__level { font-size: var(--text-xs); color: var(--text-muted); }
+    .skill-card__bar { height: 3px; background: var(--divider); border-radius: 2px; overflow: hidden; }
+    .skill-card__bar-fill { height: 100%; border-radius: 2px; width: 0; transition: width 1.2s var(--ease); }
+    .skill-card__techs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: var(--space-1); }
+    .tech-pill { font-size: 0.66rem; padding: 2px 8px; border-radius: var(--radius-full); background: var(--surface-3); color: var(--text-muted); border: 1px solid var(--border); }
 
-    /* === TIMELINE === */
-    .timeline {
-      position: relative;
-      padding-left: var(--space-8);
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 6px;
-      top: 8px;
-      bottom: 8px;
-      width: 1px;
-      background: var(--border-strong);
-    }
-    .timeline__item {
-      position: relative;
-      margin-bottom: var(--space-8);
-    }
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: var(--space-8); }
+    .timeline::before { content: ''; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 1px; background: linear-gradient(to bottom, var(--accent), var(--purple), transparent); opacity: 0.4; }
+    .timeline__item { position: relative; margin-bottom: var(--space-10); }
     .timeline__item:last-child { margin-bottom: 0; }
-    .timeline__dot {
-      position: absolute;
-      left: calc(-1 * var(--space-8) + 2px);
-      top: 6px;
-      width: 10px;
-      height: 10px;
-      border-radius: var(--radius-full);
-      background: var(--accent);
-    }
-    .timeline__year {
-      font-family: var(--font-mono);
-      font-size: var(--text-sm);
-      color: var(--accent);
-      margin-bottom: var(--space-2);
-    }
-    .timeline__title {
-      font-weight: 600;
-      font-size: var(--text-lg);
-      margin-bottom: var(--space-2);
-    }
-    .timeline__desc {
-      color: var(--text-muted);
-      font-size: var(--text-sm);
-      line-height: 1.6;
-    }
+    .timeline__dot { position: absolute; left: calc(-1 * var(--space-8) + 1px); top: 4px; width: 10px; height: 10px; border-radius: var(--radius-full); background: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+    .timeline__year { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent); margin-bottom: var(--space-2); letter-spacing: 0.04em; }
+    .timeline__title { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; color: var(--text); margin-bottom: var(--space-2); letter-spacing: -0.01em; }
+    .timeline__desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.7; }
 
-    /* === FOOTER === */
-    .footer {
-      border-top: 1px solid var(--border);
-      padding: var(--space-12) 0;
-      text-align: center;
-      color: var(--text-faint);
-      font-size: var(--text-sm);
+    /* CONTACT CARD */
+    .contact-card {
+      background: linear-gradient(135deg, var(--surface) 0%, rgba(91,156,246,0.04) 100%);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-2xl);
+      padding: clamp(var(--space-8), 5vw, var(--space-16));
+      display: grid; grid-template-columns: 1fr auto; gap: var(--space-8); align-items: center;
+      position: relative; overflow: hidden;
     }
-    .footer a { color: var(--text-muted); transition: color var(--transition); }
-    .footer a:hover { color: var(--text); }
+    .contact-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(91,156,246,0.3), transparent); }
+    .contact-card__title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; margin-bottom: var(--space-4); }
+    .contact-card__desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.65; max-width: 48ch; margin-bottom: var(--space-6); }
+    .contact-links { display: flex; flex-direction: column; gap: var(--space-3); }
+    .contact-link { display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-sm); color: var(--text-muted); transition: color var(--transition); }
+    .contact-link:hover { color: var(--accent); }
+    .contact-link svg { flex-shrink: 0; }
+    @media (max-width: 640px) { .contact-card { grid-template-columns: 1fr; } .contact-links { display: none; } }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* FOOTER */
+    .footer { border-top: 1px solid var(--divider); padding-block: var(--space-10); margin-top: var(--space-12); }
+    .footer__inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
+    .footer__copy { font-size: var(--text-xs); color: var(--text-faint); }
+    .footer__links { display: flex; gap: var(--space-5); list-style: none; }
+    .footer__links a { font-size: var(--text-xs); color: var(--text-faint); transition: color var(--transition); }
+    .footer__links a:hover { color: var(--text-muted); }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
   <nav class="nav" role="navigation" aria-label="Huvudnavigering">
     <div class="container">
       <div class="nav__inner">
-        <a href="index.html" class="nav__logo" aria-label="Hem">Ted Svärd</a>
-        <ul class="nav__links">
+        <a href="index.html" class="nav__logo" aria-label="Hem">Ted <span>Svärd</span></a>
+        <ul class="nav__links" id="nav-links">
           <li><a href="index.html">Hem</a></li>
           <li><a href="projekt.html">Projekt</a></li>
           <li><a href="forskning.html">Forskning</a></li>
           <li><a href="podcasts.html">Podcasts</a></li>
           <li><a href="om-mig.html" aria-current="page">Om mig</a></li>
-          <li><a href="chat.html" class="nav__link--highlight">AI Chat</a></li>
+          <li><a href="chat.html" class="nav__ai">AI Chat</a></li>
           <li><a href="wiki.html">Wiki</a></li>
-          <li><a href="mailto:Ted@Tuvaluna.com">Kontakt</a></li>
         </ul>
         <div class="nav__actions">
-          <button class="icon-btn" data-theme-toggle aria-label="Växla till ljust läge">
+          <button class="icon-btn" id="theme-toggle" aria-label="Växla till ljust läge">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
-          <button class="nav__hamburger icon-btn" aria-label="Meny" aria-expanded="false">
+          <button class="nav__hamburger icon-btn" id="hamburger" aria-label="Meny" aria-expanded="false">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
         </div>
@@ -374,145 +242,334 @@
     </div>
   </nav>
 
-  <!-- OM MIG PAGE -->
   <main>
-    <div class="page-header">
+
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+      <div class="page-hero__glow" aria-hidden="true"></div>
       <div class="container">
-        <p class="page-header__eyebrow">Om mig</p>
-        <h1 class="page-header__title">Ted Svärd</h1>
-        <p class="page-header__desc">AI-arkitekt, iOS-utvecklare och forskare — bygger intelligenta system som tänker, anpassar sig och bryr sig.</p>
+        <p class="page-hero__eyebrow">Om mig</p>
+        <h1 class="page-hero__title">Ted Svärd<br><em style="font-style:italic;color:var(--accent)">Byggare av intelligenta system.</em></h1>
+        <p class="page-hero__desc">
+          Självlärd iOS-utvecklare och AI-arkitekt från Sverige. Jag tar idéer hela vägen
+          från whiteboard till ett produkt som faktiskt används av riktiga människor.
+        </p>
+        <div style="display:flex;gap:var(--space-3);flex-wrap:wrap">
+          <a href="mailto:Ted@Tuvaluna.com" class="btn btn--primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Ted@Tuvaluna.com
+          </a>
+          <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener noreferrer" class="btn btn--ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            GitHub
+          </a>
+          <a href="chat.html" class="btn btn--purple">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Prata med Leia
+          </a>
+        </div>
       </div>
     </div>
 
     <div class="about-content">
+      <div class="container">
 
-      <!-- Bakgrund -->
-      <section class="about-section">
-        <h2 class="about-section__title">Bakgrund</h2>
-        <div class="about-section__text">
-          <p>Jag arbetar i skärningspunkten mellan artificiell intelligens, kognitiv vetenskap och mjukvaruutveckling. Mitt fokus ligger på att bygga system som inte bara är funktionella, utan också intelligenta, adaptiva och alignerade med mänskliga värden.</p>
-          <p>Genom åren har jag utvecklat ett brett spektrum av projekt — från iOS-appar med on-device AI till avancerade multi-agent-system och kognitiva arkitekturer. Jag driver en egen server (Ted-server) som koordinerar AI-arbete, synkar GitHub-repositories och tar emot jobb från Ikarus-iOS för autonom app-utveckling.</p>
-          <p>Mitt forskningsarbete inom artificiell medvetande kulminerar i projektet Eon — ett kognitivt system byggt på principen om intrinsic normativity, där systemet självt genererar vad som spelar roll utifrån sin egen viabilitet och organisatoriska integritet.</p>
-        </div>
-      </section>
-
-      <!-- Kompetenser -->
-      <section class="about-section">
-        <h2 class="about-section__title">Kompetenser</h2>
-        <div class="skills-grid">
-          <div class="skill-card">
-            <div class="skill-card__icon skill-card__icon--blue">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-            </div>
-            <h3 class="skill-card__title">AI & Maskininlärning</h3>
-            <p class="skill-card__desc">Kognitiva arkitekturer (Eon-Y), orchestrator/worker-system (Navi v7), on-device AI med Qwen3-1.7B via llama.cpp, CoreML emotion detection, KBT-baserade svarsmönster.</p>
+        <!-- PILLARS — what I bring -->
+        <div class="pillars">
+          <div class="pillar pillar--blue reveal">
+            <div class="pillar__icon">🚀</div>
+            <div class="pillar__title">Jag shippar.</div>
+            <p class="pillar__desc">Varje projekt tar sig hela vägen till produkt. Inte halvfärdiga proof-of-concepts, utan appar på TestFlight, servrar i produktion och system som körs.</p>
           </div>
-          <div class="skill-card">
-            <div class="skill-card__icon skill-card__icon--green">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-            </div>
-            <h3 class="skill-card__title">iOS-utveckling</h3>
-            <p class="skill-card__desc">Swift, SwiftUI, SwiftData, HealthKit, CoreML, JavaScriptCore, phase-adaptive design, glassmorphism, Live Activity, WidgetKit.</p>
+          <div class="pillar pillar--purple reveal reveal-delay-1">
+            <div class="pillar__icon">🧠</div>
+            <div class="pillar__title">Jag lär mig.</div>
+            <p class="pillar__desc">100% självlärd. Varje färdighet — Swift, Node.js, CoreML, RAG, Nginx — intjänad genom att faktiskt bygga och misslyckas och bygga igen.</p>
           </div>
-          <div class="skill-card">
-            <div class="skill-card__icon skill-card__icon--orange">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            </div>
-            <h3 class="skill-card__title">Backend & Infrastruktur</h3>
-            <p class="skill-card__desc">Node.js, DigitalOcean, WebSocket streaming, LLM coordination (50 req/min, 6 concurrent), GitHub API, Supabase, Mux HLS streaming.</p>
-          </div>
-          <div class="skill-card">
-            <div class="skill-card__icon skill-card__icon--purple">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            </div>
-            <h3 class="skill-card__title">Systemarkitektur</h3>
-            <p class="skill-card__desc">Orchestrator/Worker-mönster, WebSocket streaming, session history compression, Swift Warden (SHA-256), privacy-first design, skalbara molntjänster.</p>
+          <div class="pillar pillar--green reveal reveal-delay-2">
+            <div class="pillar__icon">⚡</div>
+            <div class="pillar__title">Jag bygger AI som faktiskt fungerar.</div>
+            <p class="pillar__desc">Inte demo-ware. Kognitiva agenter med orchestrator-arkitektur, on-device LLM på Neural Engine, distillerade modeller — produktionsgrade AI.</p>
           </div>
         </div>
-      </section>
 
-      <!-- Tidslinje -->
-      <section class="about-section">
-        <h2 class="about-section__title">Resa</h2>
-        <div class="timeline">
-          <div class="timeline__item">
-            <div class="timeline__dot"></div>
-            <p class="timeline__year">2026–nu</p>
-            <h3 class="timeline__title">Navi v7, Eon-Y V5 & Ted-server</h3>
-            <p class="timeline__desc">Lanserade Navi v7 med orchestrator/worker-arkitektur, LLMCoordinator (50 req/min) och WebSocket streaming. Fullbordade Eon-Y V5 — Intrinsic Normativity Edition med 16 kognitiva moduler och CCI-Ω score 91/100. Driver Ted-server med autonom hälsokontroll, GitHub-sync och Ikarus-jobb.</p>
-          </div>
-          <div class="timeline__item">
-            <div class="timeline__dot"></div>
-            <p class="timeline__year">2025</p>
-            <h3 class="timeline__title">Lilla Jag 3, Lifetoken & BabyCare</h3>
-            <p class="timeline__desc">Byggde Lilla Jag 3 med Qwen3-1.7B på Neural Engine, CoreML emotion detection (8 Plutchik-känslor) och KBT-baserade svar. Skapade Lifetoken — en dystopisk life-management RPG med HealthKit-integration och neon terminal-estetik. Uppdaterade BabyCare med phase-adaptive design (Fertility→Pregnancy→Baby) och Swift Charts med BVC-percentiler.</p>
-          </div>
-          <div class="timeline__item">
-            <div class="timeline__dot"></div>
-            <p class="timeline__year">2024</p>
-            <h3 class="timeline__title">Lunaflix v2, Lumvra & MindfulTogether</h3>
-            <p class="timeline__desc">Lanserade Lunaflix v2 — en personlig streamingplattform med Mux HLS, Kingfisher caching och matched geometry transitions. Byggde Lumvra med HealthKit-data, Supabase-sync och dagliga AI-briefings. Utvecklade MindfulTogether för mindful relations.</p>
-          </div>
-          <div class="timeline__item">
-            <div class="timeline__dot"></div>
-            <p class="timeline__year">2022–2023</p>
-            <h3 class="timeline__title">Tidiga AI-experiment & kognitiv forskning</h3>
-            <p class="timeline__desc">Började experimentera med maskininlärning, neurala nätverk och agentic AI-system. La grunden för Eon-arkitekturen med Global Workspace Theory och Predictive Processing. Påbörjade forskning om intrinsic normativity och artificiell medvetande.</p>
-          </div>
-        </div>
-      </section>
+        <hr class="divider">
 
-      <!-- Kontakt -->
-      <section class="about-section">
-        <h2 class="about-section__title">Kontakt</h2>
-        <div class="about-section__text">
-          <p>Är du intresserad av samarbete, forskning eller vill diskutera AI-arkitektur, on-device inferens eller kognitiva system? Hör av dig — jag är alltid öppen för givande samtal.</p>
-          <p><a href="mailto:Ted@Tuvaluna.com" style="color: var(--accent);">Ted@Tuvaluna.com</a></p>
-          <p style="margin-top: var(--space-2);"><a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">GitHub →</a></p>
-        </div>
-      </section>
+        <!-- BAKGRUND -->
+        <section class="section">
+          <p class="section__label">Bakgrund</p>
+          <h2 class="section__title reveal">Från noll till AI-arkitekt</h2>
+          <div class="story reveal">
+            <p>Jag är självlärd från grunden. Inga dyra bootcamps, inga akademiska examina i datavetenskap — bara en drivkraft att förstå hur saker faktiskt fungerar och bygga dem.</p>
+            <p>Det började med iOS-appar i Swift. Snart insåg jag att det intressantaste var skärningspunkten mellan mobila system och intelligens — hur man ger en app förmågan att <strong>förstå</strong> snarare än bara reagera.</p>
+            <p>Idag driver jag en privat server med autonoma AI-agenter (Navi v7) som självständigt hanterar kod, GitHub och infrastruktur. Jag bygger on-device mental hälsoapp som kör en 1.7B-parametersmodell direkt på Neural Engine utan ett enda API-anrop. Jag distillerar egna AI-modeller med Claude Opus 4.6 som läromästare.</p>
+            <p>Det är den typen av saker som håller mig uppe på nätterna — på bra sätt.</p>
+          </div>
+        </section>
 
+        <hr class="divider">
+
+        <!-- SKILLS MATRIX -->
+        <section class="section">
+          <p class="section__label">Kompetenser</p>
+          <h2 class="section__title reveal">Vad jag behärskar</h2>
+          <div class="skills-matrix" id="skills-matrix">
+            <div class="skill-card reveal">
+              <div class="skill-card__header">
+                <div class="skill-card__icon skill-card__icon--blue">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                </div>
+                <div>
+                  <div class="skill-card__name">Swift / SwiftUI</div>
+                  <div class="skill-card__level">Expert · 4+ år</div>
+                </div>
+              </div>
+              <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="95" style="background:var(--accent)"></div></div>
+              <div class="skill-card__techs">
+                <span class="tech-pill">@Observable</span>
+                <span class="tech-pill">SwiftData</span>
+                <span class="tech-pill">async/await</span>
+                <span class="tech-pill">Swift 6</span>
+                <span class="tech-pill">WidgetKit</span>
+                <span class="tech-pill">HealthKit</span>
+              </div>
+            </div>
+
+            <div class="skill-card reveal reveal-delay-1">
+              <div class="skill-card__header">
+                <div class="skill-card__icon skill-card__icon--purple">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                </div>
+                <div>
+                  <div class="skill-card__name">AI / LLM-arkitektur</div>
+                  <div class="skill-card__level">Expert</div>
+                </div>
+              </div>
+              <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="92" style="background:var(--purple)"></div></div>
+              <div class="skill-card__techs">
+                <span class="tech-pill">Orchestrator/Worker</span>
+                <span class="tech-pill">RAG</span>
+                <span class="tech-pill">ChromaDB</span>
+                <span class="tech-pill">Ollama</span>
+                <span class="tech-pill">Distillering</span>
+              </div>
+            </div>
+
+            <div class="skill-card reveal reveal-delay-2">
+              <div class="skill-card__header">
+                <div class="skill-card__icon skill-card__icon--green">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+                </div>
+                <div>
+                  <div class="skill-card__name">On-device ML</div>
+                  <div class="skill-card__level">Avancerad</div>
+                </div>
+              </div>
+              <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="88" style="background:var(--green)"></div></div>
+              <div class="skill-card__techs">
+                <span class="tech-pill">CoreML</span>
+                <span class="tech-pill">llama.cpp</span>
+                <span class="tech-pill">Neural Engine</span>
+                <span class="tech-pill">Qwen3</span>
+              </div>
+            </div>
+
+            <div class="skill-card reveal">
+              <div class="skill-card__header">
+                <div class="skill-card__icon skill-card__icon--orange">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                </div>
+                <div>
+                  <div class="skill-card__name">Backend / Infrastruktur</div>
+                  <div class="skill-card__level">Avancerad</div>
+                </div>
+              </div>
+              <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="80" style="background:var(--orange)"></div></div>
+              <div class="skill-card__techs">
+                <span class="tech-pill">Node.js</span>
+                <span class="tech-pill">FastAPI</span>
+                <span class="tech-pill">WebSocket</span>
+                <span class="tech-pill">nginx</span>
+                <span class="tech-pill">Linux</span>
+                <span class="tech-pill">Tailscale</span>
+              </div>
+            </div>
+
+            <div class="skill-card reveal reveal-delay-1">
+              <div class="skill-card__header">
+                <div class="skill-card__icon skill-card__icon--amber">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                </div>
+                <div>
+                  <div class="skill-card__name">Systemarkitektur</div>
+                  <div class="skill-card__level">Avancerad</div>
+                </div>
+              </div>
+              <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="85" style="background:var(--amber)"></div></div>
+              <div class="skill-card__techs">
+                <span class="tech-pill">MVVM</span>
+                <span class="tech-pill">Multi-agent</span>
+                <span class="tech-pill">Privacy-first</span>
+                <span class="tech-pill">Streaming</span>
+              </div>
+            </div>
+
+            <div class="skill-card reveal reveal-delay-2">
+              <div class="skill-card__header">
+                <div class="skill-card__icon skill-card__icon--blue">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+                <div>
+                  <div class="skill-card__name">UI/UX Design</div>
+                  <div class="skill-card__level">Avancerad</div>
+                </div>
+              </div>
+              <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="82" style="background:var(--accent)"></div></div>
+              <div class="skill-card__techs">
+                <span class="tech-pill">Glassmorphism</span>
+                <span class="tech-pill">Matched Geometry</span>
+                <span class="tech-pill">Animationer</span>
+                <span class="tech-pill">Dark Mode</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- TIDSLINJE -->
+        <section class="section">
+          <p class="section__label">Resa</p>
+          <h2 class="section__title reveal">Hur det gick till</h2>
+          <div class="timeline reveal">
+            <div class="timeline__item">
+              <div class="timeline__dot"></div>
+              <p class="timeline__year">2026 — nu</p>
+              <h3 class="timeline__title">Navi v7, TedAI & kognitiv forskning</h3>
+              <p class="timeline__desc">Lanserade Navi v7 med orchestrator/worker-arkitektur, LLMCoordinator (50 req/min) och WebSocket streaming. Distillerade en 9B-modell från Claude Opus 4.6 — körs på min egna infrastruktur med ChromaDB RAG och Honcho-minne. Forskning kring intrinsic normativity och AI-alignment via Eon-Y.</p>
+            </div>
+            <div class="timeline__item">
+              <div class="timeline__dot" style="background:var(--purple);box-shadow:0 0 0 3px var(--purple-dim)"></div>
+              <p class="timeline__year" style="color:var(--purple)">2025</p>
+              <h3 class="timeline__title">Lilla Jag 3, Lifetoken & BabyCare</h3>
+              <p class="timeline__desc">Byggde Lilla Jag 3 med Qwen3-1.7B på Neural Engine, CoreML emotion detection (8 Plutchik-känslor) och KBT-baserade svar — noll molnanrop. Skapade Lifetoken — dystopisk life-management RPG med HealthKit, 14 zoner och permadeath. Uppdaterade BabyCare med fase-adaptiv design och Swift Charts med BVC-percentiler.</p>
+            </div>
+            <div class="timeline__item">
+              <div class="timeline__dot" style="background:var(--orange);box-shadow:0 0 0 3px var(--orange-dim)"></div>
+              <p class="timeline__year" style="color:var(--orange)">2024</p>
+              <h3 class="timeline__title">Lunaflix v2, Lunachat & server-infrastruktur</h3>
+              <p class="timeline__desc">Lanserade Lunaflix v2 med Mux HLS, AVPlayer, matched geometry transitions och offline-nedladdning. Byggde Lunachat som social iOS-chattapp med WebSocket streaming. Satte upp privat server med Tailscale, nginx och autonoma AI-tjänster.</p>
+            </div>
+            <div class="timeline__item">
+              <div class="timeline__dot" style="background:var(--green);box-shadow:0 0 0 3px var(--green-dim)"></div>
+              <p class="timeline__year" style="color:var(--green)">2022–2023</p>
+              <h3 class="timeline__title">Tidiga projekt & AI-experiment</h3>
+              <p class="timeline__desc">Began experimentera med maskininlärning och agentic AI. La grunden till Eon-arkitekturen (Global Workspace Theory, Predictive Processing). Bygger de första iOS-apparna och lär sig Swift inifrån och ut — utan handledning, utan kurser.</p>
+            </div>
+          </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- KONTAKT -->
+        <section class="section">
+          <div class="contact-card reveal">
+            <div>
+              <h2 class="contact-card__title">Dags att bygga något bra?</h2>
+              <p class="contact-card__desc">
+                Är du intresserad av samarbete, har en iOS-idé som behöver en person som faktiskt kan bygga den,
+                eller vill diskutera AI-arkitektur och on-device inferens? Hör av dig — jag svarar alltid.
+              </p>
+              <div style="display:flex;gap:var(--space-3);flex-wrap:wrap">
+                <a href="mailto:Ted@Tuvaluna.com" class="btn btn--primary">Skicka ett mail</a>
+                <a href="chat.html" class="btn btn--purple">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  Chatta med Leia
+                </a>
+                <a href="projekt.html" class="btn btn--ghost">Se projekt</a>
+              </div>
+            </div>
+            <div class="contact-links" aria-label="Kontaktlänkar">
+              <a href="mailto:Ted@Tuvaluna.com" class="contact-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Ted@Tuvaluna.com
+              </a>
+              <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener noreferrer" class="contact-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                github.com/Terrorbyte90
+              </a>
+              <a href="chat.html" class="contact-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Chatta med Leia (AI)
+              </a>
+            </div>
+          </div>
+        </section>
+
+      </div>
     </div>
   </main>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
-      <p>&copy; 2026 Ted Svärd. Alla rättigheter förbehållna.</p>
+      <div class="footer__inner">
+        <span class="footer__copy">&copy; 2026 Ted Svärd</span>
+        <ul class="footer__links">
+          <li><a href="mailto:Ted@Tuvaluna.com">Ted@Tuvaluna.com</a></li>
+          <li><a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="chat.html">AI Chat</a></li>
+          <li><a href="wiki.html">Wiki</a></li>
+        </ul>
+      </div>
     </div>
   </footer>
 
   <script>
-    // Theme toggle
-    const html = document.documentElement;
-    const toggleBtn = document.querySelector('[data-theme-toggle]');
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) html.setAttribute('data-theme', savedTheme);
+    // === THEME ===
+    (function () {
+      var btn = document.getElementById('theme-toggle');
+      var html = document.documentElement;
+      var saved = localStorage.getItem('ts-theme');
+      if (saved) html.setAttribute('data-theme', saved);
+      var theme = html.getAttribute('data-theme') || 'dark';
+      function moonIcon() { return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'; }
+      function sunIcon()  { return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'; }
+      function setTheme(t) {
+        theme = t; html.setAttribute('data-theme', t); localStorage.setItem('ts-theme', t);
+        btn.setAttribute('aria-label', t === 'dark' ? 'Växla till ljust läge' : 'Växla till mörkt läge');
+        btn.innerHTML = t === 'dark' ? moonIcon() : sunIcon();
+      }
+      if (saved === 'light') btn.innerHTML = sunIcon();
+      btn.addEventListener('click', function () { setTheme(theme === 'dark' ? 'light' : 'dark'); });
+    })();
 
-    function updateToggleLabel() {
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      toggleBtn.setAttribute('aria-label', isDark ? 'Växla till ljust läge' : 'Växla till mörkt läge');
-    }
-    updateToggleLabel();
-
-    toggleBtn.addEventListener('click', () => {
-      const current = html.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-      updateToggleLabel();
-    });
-
-    // Mobile menu
-    const hamburger = document.querySelector('.nav__hamburger');
-    const navLinks = document.querySelector('.nav__links');
-    if (hamburger && navLinks) {
-      hamburger.addEventListener('click', () => {
-        const isOpen = navLinks.classList.toggle('open');
+    // === MOBILE NAV ===
+    (function () {
+      var hamburger = document.getElementById('hamburger');
+      var navLinks = document.getElementById('nav-links');
+      if (!hamburger || !navLinks) return;
+      hamburger.addEventListener('click', function () {
+        var isOpen = navLinks.classList.toggle('open');
         hamburger.setAttribute('aria-expanded', isOpen);
       });
-    }
-  </script>
+    })();
 
+    // === SCROLL REVEAL + SKILL BARS ===
+    (function () {
+      var ease = 'cubic-bezier(0.16, 1, 0.3, 1)';
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            entry.target.querySelectorAll('[data-width]').forEach(function(bar) {
+              bar.style.width = bar.dataset.width + '%';
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+    })();
+  </script>
 </body>
 </html>

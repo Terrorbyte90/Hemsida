@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projekt — Ted Svärd</title>
-  <meta name="description" content="Projekt av Ted Svärd — AI-agenter, iOS-appar och streaminglösningar.">
+  <meta name="description" content="Projekt av Ted Svärd — AI-agenter, iOS-appar, on-device ML och streaminglösningar. Allt byggt i Swift med fokus på prestanda, integritet och design.">
+  <meta property="og:title" content="Projekt — Ted Svärd">
+  <meta property="og:description" content="Autonoma AI-agenter, kognitiva system, on-device ML och iOS-appar från Sverige.">
+  <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -26,33 +29,36 @@
       --radius-sm: 0.375rem; --radius-md: 0.5rem;
       --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-2xl: 1.5rem;
       --radius-full: 9999px;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
       --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
       --content-default: 960px;
       --content-wide: 1240px;
     }
     [data-theme="dark"], :root {
-      --bg: #0a0a09; --bg-subtle: #101010; --surface: #141413;
-      --surface-2: #1a1a18; --surface-3: #20201d;
-      --border: rgba(255,255,255,0.07); --border-strong: rgba(255,255,255,0.12); --divider: rgba(255,255,255,0.05);
-      --text: #eceae6; --text-muted: #8a8882; --text-faint: #565450;
+      --bg: #0a0a09; --bg-subtle: #0e0e0d; --surface: #141413;
+      --surface-2: #1a1a18; --surface-3: #222220;
+      --border: rgba(255,255,255,0.07); --border-md: rgba(255,255,255,0.10);
+      --border-strong: rgba(255,255,255,0.14); --divider: rgba(255,255,255,0.05);
+      --text: #eceae6; --text-muted: #8a8882; --text-faint: #555350;
       --accent: #5b9cf6; --accent-hover: #79b4ff; --accent-dim: rgba(91,156,246,0.10);
       --green: #4ade80; --green-dim: rgba(74,222,128,0.10);
       --orange: #fb923c; --orange-dim: rgba(251,146,60,0.10);
-      --purple: #a78bfa; --purple-dim: rgba(167,139,250,0.10);
+      --purple: #a78bfa; --purple-dim: rgba(167,139,250,0.10); --purple-glow: rgba(167,139,250,0.20);
       --amber: #fbbf24; --amber-dim: rgba(251,191,36,0.10);
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.45); --shadow-md: 0 8px 24px rgba(0,0,0,0.50); --shadow-lg: 0 20px 60px rgba(0,0,0,0.65);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.5); --shadow-md: 0 8px 24px rgba(0,0,0,0.55); --shadow-lg: 0 20px 60px rgba(0,0,0,0.7);
     }
     [data-theme="light"] {
       --bg: #f8f7f4; --bg-subtle: #f2f1ee; --surface: #ffffff;
-      --surface-2: #f8f7f4; --surface-3: #f1efea;
-      --border: rgba(0,0,0,0.07); --border-strong: rgba(0,0,0,0.13); --divider: rgba(0,0,0,0.06);
-      --text: #161617; --text-muted: #6f6c66; --text-faint: #a8a49d;
+      --surface-2: #f5f4f1; --surface-3: #eeede9;
+      --border: rgba(0,0,0,0.07); --border-md: rgba(0,0,0,0.10);
+      --border-strong: rgba(0,0,0,0.14); --divider: rgba(0,0,0,0.06);
+      --text: #161617; --text-muted: #6f6c66; --text-faint: #aaa49d;
       --accent: #1a63d0; --accent-hover: #0f56bf; --accent-dim: rgba(26,99,208,0.09);
       --green: #169b4a; --green-dim: rgba(22,155,74,0.09);
       --orange: #ea6a0a; --orange-dim: rgba(234,106,10,0.09);
-      --purple: #7c3aed; --purple-dim: rgba(124,58,237,0.09);
+      --purple: #7c3aed; --purple-dim: rgba(124,58,237,0.09); --purple-glow: rgba(124,58,237,0.15);
       --amber: #d97706; --amber-dim: rgba(217,119,6,0.09);
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06); --shadow-md: 0 8px 24px rgba(0,0,0,0.08); --shadow-lg: 0 20px 60px rgba(0,0,0,0.10);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06); --shadow-md: 0 8px 24px rgba(0,0,0,0.09); --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; scroll-padding-top: 72px; }
@@ -68,15 +74,15 @@
     .container--wide { max-width: var(--content-wide); }
 
     /* NAV */
-    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; backdrop-filter: blur(28px) saturate(200%); -webkit-backdrop-filter: blur(28px) saturate(200%); border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 75%, transparent); }
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; backdrop-filter: blur(28px) saturate(200%); -webkit-backdrop-filter: blur(28px) saturate(200%); border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 78%, transparent); }
     .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 58px; gap: var(--space-8); }
     .nav__logo { font-family: var(--font-display); font-size: 1.2rem; letter-spacing: -0.01em; color: var(--text); flex-shrink: 0; }
     .nav__logo span { color: var(--accent); }
     .nav__links { display: flex; align-items: center; gap: var(--space-1); list-style: none; }
     .nav__links a { font-size: var(--text-sm); color: var(--text-muted); padding: 0.4rem 0.7rem; border-radius: var(--radius-md); transition: color var(--transition), background var(--transition); }
     .nav__links a:hover, .nav__links a[aria-current="page"] { color: var(--text); background: var(--surface-2); }
-    .nav__links a.nav__link--highlight { color: var(--accent); border: 1px solid var(--accent-dim); }
-    .nav__links a.nav__link--highlight:hover { background: var(--accent-dim); color: var(--accent-hover); }
+    .nav__links a.nav__ai { color: var(--purple); background: var(--purple-dim); border: 1px solid rgba(167,139,250,0.2); }
+    .nav__links a.nav__ai:hover { background: var(--purple-glow); }
     .nav__actions { display: flex; align-items: center; gap: var(--space-2); }
     .icon-btn { width: 36px; height: 36px; border-radius: var(--radius-md); display: grid; place-items: center; color: var(--text-muted); border: 1px solid var(--border); transition: all var(--transition); }
     .icon-btn:hover { color: var(--text); background: var(--surface-2); border-color: var(--border-strong); }
@@ -84,9 +90,27 @@
     @media (max-width: 800px) {
       .nav__links { display: none; }
       .nav__hamburger { display: grid; }
-      .nav__links.open { display: flex; flex-direction: column; position: absolute; top: 58px; left: 0; right: 0; background: color-mix(in srgb, var(--surface) 96%, transparent); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: var(--space-6); gap: var(--space-1); }
+      .nav__links.open { display: flex; flex-direction: column; position: absolute; top: 58px; left: 0; right: 0; background: color-mix(in srgb, var(--surface) 97%, transparent); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: var(--space-6); gap: var(--space-1); z-index: 99; }
       .nav__links.open a { padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); }
     }
+
+    /* BUTTONS & TAGS */
+    .btn { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-6); border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 500; transition: all var(--transition); letter-spacing: 0.01em; white-space: nowrap; }
+    .btn:active { transform: scale(0.97); }
+    .btn--ghost { border: 1px solid var(--border-md); color: var(--text-muted); }
+    .btn--ghost:hover { color: var(--text); background: var(--surface-2); border-color: var(--border-strong); }
+    .tag { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em; padding: 2px 9px; border-radius: var(--radius-full); background: var(--surface-3); color: var(--text-muted); border: 1px solid var(--border); }
+    .tag--accent { background: var(--accent-dim); color: var(--accent); border-color: transparent; }
+    .tag--green  { background: var(--green-dim);  color: var(--green);  border-color: transparent; }
+    .tag--orange { background: var(--orange-dim); color: var(--orange); border-color: transparent; }
+    .tag--purple { background: var(--purple-dim); color: var(--purple); border-color: transparent; }
+    .tag--amber  { background: var(--amber-dim);  color: var(--amber);  border-color: transparent; }
+
+    /* STATUS BADGES */
+    .status-badge { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: var(--radius-full); }
+    .status-badge--live   { background: var(--green-dim); color: var(--green); }
+    .status-badge--beta   { background: var(--amber-dim); color: var(--amber); }
+    .status-badge--build  { background: var(--accent-dim); color: var(--accent); }
 
     /* PAGE HEADER */
     .page-header {
@@ -94,86 +118,76 @@
       padding-bottom: clamp(var(--space-10), 5vw, var(--space-16));
       position: relative; overflow: hidden;
     }
-    .page-header::before {
-      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      width: 70vw; max-width: 700px; height: 300px;
-      background: radial-gradient(ellipse at center top, rgba(91,156,246,0.07) 0%, transparent 70%);
-      filter: blur(40px); pointer-events: none;
-    }
+    .page-header::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 70vw; max-width: 700px; height: 300px; background: radial-gradient(ellipse at center top, rgba(91,156,246,0.07) 0%, transparent 70%); filter: blur(40px); pointer-events: none; }
     .page-header .container { position: relative; }
     .page-header__eyebrow { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-3); }
-    .page-header__title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 400; letter-spacing: -0.02em; line-height: 1.08; margin-bottom: var(--space-4); }
+    .page-header__title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 400; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: var(--space-4); }
     .page-header__desc { font-size: var(--text-lg); color: var(--text-muted); max-width: 600px; line-height: 1.6; }
 
-    /* TAGS */
-    .tag { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em; padding: 2px 9px; border-radius: var(--radius-full); background: var(--surface-3); color: var(--text-muted); border: 1px solid var(--border); }
-    .tag--accent { background: var(--accent-dim); color: var(--accent); border-color: transparent; }
-    .tag--green { background: var(--green-dim); color: var(--green); border-color: transparent; }
-    .tag--orange { background: var(--orange-dim); color: var(--orange); border-color: transparent; }
-    .tag--purple { background: var(--purple-dim); color: var(--purple); border-color: transparent; }
-    .tag--amber { background: var(--amber-dim); color: var(--amber); border-color: transparent; }
-
     /* SECTION LABEL */
-    .section-label { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-bottom: var(--space-5); display: flex; align-items: center; gap: var(--space-3); }
+    .section { padding-block: clamp(var(--space-8), 4vw, var(--space-16)); }
+    .section-label { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-bottom: var(--space-6); display: flex; align-items: center; gap: var(--space-3); }
     .section-label::after { content: ''; flex: 1; height: 1px; background: var(--divider); }
+    .divider { border: none; border-top: 1px solid var(--divider); }
 
-    /* FEATURED PROJECTS — 2-col big cards */
-    .featured-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-5);
-      margin-bottom: clamp(var(--space-12), 6vw, var(--space-20));
-    }
-    @media (max-width: 700px) { .featured-grid { grid-template-columns: 1fr; } }
-
+    /* FEATURED CARDS — large hero cards */
     .feat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-2xl);
-      padding: clamp(var(--space-6), 3vw, var(--space-8));
-      display: flex; flex-direction: column; gap: var(--space-4);
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-2xl);
+      padding: clamp(var(--space-6), 3vw, var(--space-10));
+      display: flex; flex-direction: column; gap: var(--space-5);
       transition: background var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition);
       position: relative; overflow: hidden;
     }
-    .feat-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
-    }
+    .feat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent); }
     .feat-card:hover { background: var(--surface-2); border-color: var(--border-strong); box-shadow: var(--shadow-md); transform: translateY(-3px); }
-    .feat-card__top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
-    .feat-card__icon {
-      width: 48px; height: 48px; border-radius: var(--radius-lg);
-      display: grid; place-items: center; font-size: 1.4rem; flex-shrink: 0;
-    }
-    .feat-card__badge { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: var(--radius-full); }
-    .feat-card__title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; margin-bottom: var(--space-1); }
-    .feat-card__subtitle { font-size: var(--text-xs); color: var(--text-muted); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
-    .feat-card__desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.7; flex: 1; }
+    .feat-card__top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+    .feat-card__icon { width: 52px; height: 52px; border-radius: var(--radius-lg); display: grid; place-items: center; font-size: 1.5rem; flex-shrink: 0; }
+    .feat-card__meta { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+    .feat-card__title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; }
+    .feat-card__subtitle { font-size: var(--text-xs); color: var(--text-muted); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-top: 2px; }
+    .feat-card__desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.75; flex: 1; }
     .feat-card__tags { display: flex; flex-wrap: wrap; gap: var(--space-1); padding-top: var(--space-2); margin-top: auto; }
 
-    /* SMALLER GRID */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
-      gap: var(--space-4);
-    }
+    /* CATEGORY GRID — 2 cols for featured, then 3 for smaller */
+    .featured-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); margin-bottom: clamp(var(--space-12), 6vw, var(--space-20)); }
+    @media (max-width: 680px) { .featured-grid { grid-template-columns: 1fr; } }
+
+    /* SMALLER PROJECT CARDS */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: var(--space-4); margin-bottom: clamp(var(--space-12), 6vw, var(--space-20)); }
     .project-card {
       background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl);
       padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-3);
       transition: background var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+      position: relative; overflow: hidden;
     }
+    .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); }
     .project-card:hover { background: var(--surface-2); border-color: var(--border-strong); box-shadow: var(--shadow-md); transform: translateY(-2px); }
     .project-card__header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
-    .project-card__icon { width: 36px; height: 36px; border-radius: var(--radius-md); display: grid; place-items: center; font-size: 1rem; flex-shrink: 0; }
+    .project-card__icon { width: 40px; height: 40px; border-radius: var(--radius-md); display: grid; place-items: center; font-size: 1.1rem; flex-shrink: 0; }
     .project-card__title { font-size: var(--text-base); font-weight: 600; color: var(--text); line-height: 1.3; }
     .project-card__subtitle { font-size: var(--text-xs); color: var(--accent); font-weight: 500; margin-top: 2px; letter-spacing: 0.02em; }
     .project-card__desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.65; flex: 1; }
     .project-card__tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: auto; padding-top: var(--space-2); }
 
-    /* SECTION */
-    .section { padding-block: clamp(var(--space-8), 4vw, var(--space-16)); }
+    /* TIMELINE */
+    .dev-timeline { display: flex; flex-direction: column; gap: 0; position: relative; padding-bottom: var(--space-16); }
+    .dev-timeline::before { content: ''; position: absolute; left: 90px; top: 0; bottom: 0; width: 1px; background: var(--divider); }
+    @media (max-width: 560px) { .dev-timeline::before { left: 16px; } }
+    .dev-timeline__item { display: grid; grid-template-columns: 90px 1fr; gap: 0; padding: var(--space-5) 0; position: relative; }
+    @media (max-width: 560px) { .dev-timeline__item { grid-template-columns: 32px 1fr; } }
+    .dev-timeline__year { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-faint); padding-right: var(--space-4); padding-top: 3px; text-align: right; }
+    .dev-timeline__content { padding-left: var(--space-6); padding-bottom: var(--space-3); }
+    .dev-timeline__dot { position: absolute; left: calc(90px - 5px); top: 22px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+    @media (max-width: 560px) { .dev-timeline__dot { left: calc(16px - 4px); } }
+    .dev-timeline__title { font-weight: 600; font-size: var(--text-sm); color: var(--text); line-height: 1.4; margin-bottom: var(--space-1); }
+    .dev-timeline__desc { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.6; }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
 
     /* FOOTER */
     .footer { border-top: 1px solid var(--divider); padding-block: var(--space-10); margin-top: var(--space-16); }
@@ -196,7 +210,7 @@
           <li><a href="forskning.html">Forskning</a></li>
           <li><a href="podcasts.html">Podcasts</a></li>
           <li><a href="om-mig.html">Om mig</a></li>
-          <li><a href="chat.html" class="nav__link--highlight">AI Chat</a></li>
+          <li><a href="chat.html" class="nav__ai">AI Chat</a></li>
           <li><a href="wiki.html">Wiki</a></li>
         </ul>
         <div class="nav__actions">
@@ -213,7 +227,7 @@
 
   <header class="page-header">
     <div class="container">
-      <p class="page-header__eyebrow">Utvalda projekt</p>
+      <p class="page-header__eyebrow">Projekt</p>
       <h1 class="page-header__title">Det jag byggt</h1>
       <p class="page-header__desc">Från autonoma AI-agenter och on-device ML till personliga streamingtjänster och hälsoverktyg — allt byggt i SwiftUI med fokus på prestanda, integritet och design.</p>
     </div>
@@ -222,23 +236,24 @@
   <main>
     <div class="container container--wide">
 
-      <!-- FEATURED 6 -->
-      <section class="section" aria-label="Utvalda projekt">
-        <p class="section-label">Utvalda projekt</p>
-
+      <!-- AI SYSTEMS -->
+      <section class="section" aria-label="AI-system">
+        <p class="section-label">AI-system</p>
         <div class="featured-grid">
 
-          <!-- Navi v7 -->
-          <article class="feat-card">
+          <article class="feat-card reveal">
             <div class="feat-card__top">
               <div class="feat-card__icon" style="background:var(--accent-dim)">🤖</div>
-              <span class="feat-card__badge" style="background:var(--accent-dim);color:var(--accent)">AI-agent</span>
+              <div class="feat-card__meta">
+                <span class="status-badge status-badge--live">Live</span>
+                <span class="tag tag--accent">Flagship</span>
+              </div>
             </div>
             <div>
               <div class="feat-card__title">Navi v7</div>
-              <div class="feat-card__subtitle">AI-agentplattform</div>
+              <div class="feat-card__subtitle">AI-agentplattform · Orchestrator/Worker</div>
             </div>
-            <p class="feat-card__desc">Kognitiv AI-agentplattform med Orchestrator/Worker-arkitektur. Server-side Node.js-backend kör persistenta agenter som läser/skriver filer, interagerar med GitHub via REST API och rapporterar stegvis via WebSocket-streaming till iOS/macOS-klienten. LLMCoordinator hanterar 50 req/min med max 6 samtidiga anrop — multi-provider routing (Claude, Grok, OpenRouter) med automatisk failover. Session-historik komprimeras vid 72% kontextfönster.</p>
+            <p class="feat-card__desc">Kognitiv AI-agentplattform med Orchestrator/Worker-arkitektur. Server-side Node.js-backend kör persistenta agenter som läser/skriver filer, interagerar med GitHub via REST API och rapporterar stegvis via WebSocket-streaming till iOS/macOS-klienten. LLMCoordinator hanterar 50 req/min med max 6 simultana anrop — multi-provider routing (Claude, Grok, OpenRouter) med automatisk failover. Session-historik komprimeras vid 72% kontextfönster.</p>
             <div class="feat-card__tags">
               <span class="tag tag--accent">AI-agent</span>
               <span class="tag">SwiftUI</span>
@@ -246,20 +261,97 @@
               <span class="tag">WebSocket</span>
               <span class="tag">GitHub API</span>
               <span class="tag">DigitalOcean</span>
+              <span class="tag">Multi-provider</span>
             </div>
           </article>
 
-          <!-- Lunachat -->
-          <article class="feat-card">
+          <article class="feat-card reveal reveal-delay-1">
+            <div class="feat-card__top">
+              <div class="feat-card__icon" style="background:var(--amber-dim)">⚡</div>
+              <div class="feat-card__meta">
+                <span class="status-badge status-badge--live">Live</span>
+              </div>
+            </div>
+            <div>
+              <div class="feat-card__title">TedAI</div>
+              <div class="feat-card__subtitle">Custom AI-infrastruktur</div>
+            </div>
+            <p class="feat-card__desc">OpenAI-kompatibel API som kör en 9B-parametersmodell distillerad från Claude Opus 4.6 — tränad på Teds egna konversationer och kunskapsbas. ChromaDB RAG för kontextuell minnessökning. Honcho-integrerat minne för persistent personlighetskontext. Kör på dedikerad Linux-server med nginx och systemd.</p>
+            <div class="feat-card__tags">
+              <span class="tag tag--amber">Distillering</span>
+              <span class="tag">Claude Opus 4.6</span>
+              <span class="tag">ChromaDB</span>
+              <span class="tag">RAG</span>
+              <span class="tag">FastAPI</span>
+              <span class="tag">Linux</span>
+            </div>
+          </article>
+
+          <article class="feat-card reveal">
+            <div class="feat-card__top">
+              <div class="feat-card__icon" style="background:var(--accent-dim)">🌙</div>
+              <div class="feat-card__meta">
+                <span class="status-badge status-badge--build">Forskning</span>
+              </div>
+            </div>
+            <div>
+              <div class="feat-card__title">Eon-Y V5</div>
+              <div class="feat-card__subtitle">Kognitiv AI · Intrinsic Normativity</div>
+            </div>
+            <p class="feat-card__desc">Autonom kognitiv AI-arkitektur som implementerar 16 kognitiva moduler i en rekurrent integrationsslinga. Bygger på Global Workspace Theory, Predictive Processing och Intrinsic Normativity. JavaScriptCore som kognitiv motor med Swift Warden som säkerhetsskikt. CCI-Ω score 91/100 — alla 25 gates passerade.</p>
+            <div class="feat-card__tags">
+              <span class="tag tag--accent">AI-forskning</span>
+              <span class="tag">Qwen3</span>
+              <span class="tag">JavaScriptCore</span>
+              <span class="tag">Emergens</span>
+              <span class="tag">SwiftUI</span>
+            </div>
+          </article>
+
+          <article class="feat-card reveal reveal-delay-1">
+            <div class="feat-card__top">
+              <div class="feat-card__icon" style="background:var(--orange-dim)">💻</div>
+              <div class="feat-card__meta">
+                <span class="status-badge status-badge--build">Bygger</span>
+              </div>
+            </div>
+            <div>
+              <div class="feat-card__title">Eon-Code v2</div>
+              <div class="feat-card__subtitle">Autonom kodagent</div>
+            </div>
+            <p class="feat-card__desc">Autonom kodagent — iOS-app som klient, macOS-komponent som styr Cursor och Xcode, kör git-kommandon och rapporterar byggstatus tillbaka. Hands-off autonoma körningar med full spårbarhet. Integration med Navi v7 orchestrator-systemet.</p>
+            <div class="feat-card__tags">
+              <span class="tag tag--orange">AI-agent</span>
+              <span class="tag">iOS ↔ macOS</span>
+              <span class="tag">SwiftUI</span>
+              <span class="tag">Git</span>
+              <span class="tag">Xcode</span>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <hr class="divider" style="margin-bottom:0">
+
+      <!-- IOS APPAR -->
+      <section class="section" aria-label="iOS-appar">
+        <p class="section-label">iOS-appar</p>
+        <div class="featured-grid">
+
+          <article class="feat-card reveal">
             <div class="feat-card__top">
               <div class="feat-card__icon" style="background:var(--purple-dim)">💬</div>
-              <span class="feat-card__badge" style="background:var(--purple-dim);color:var(--purple)">iOS-app</span>
+              <div class="feat-card__meta">
+                <span class="status-badge status-badge--beta">TestFlight</span>
+                <span class="tag tag--purple">iOS</span>
+              </div>
             </div>
             <div>
               <div class="feat-card__title">Lunachat</div>
-              <div class="feat-card__subtitle">AI-chattapp</div>
+              <div class="feat-card__subtitle">Social AI-chattapp</div>
             </div>
-            <p class="feat-card__desc">Intuitiv AI-chattapp med stöd för multimediala samtal, personlig assistent och realtidsinteraktion. SwiftUI med WebSocket-streaming och multi-provider AI. Bilagsstöd för upp till 4 bilder/filer, base64-kodade i meddelanden. Glasmorfistisk design med adaptiv layout och sömlösa transitions.</p>
+            <p class="feat-card__desc">Intuitiv AI-chattapp med stöd för multimediala samtal, personlig assistent och realtidsinteraktion. SwiftUI med WebSocket-streaming och multi-provider AI. Bilagsstöd för upp till 4 bilder/filer, base64-kodade. Glasmorfistisk design med adaptiv layout och sömlösa transitions. Live på TestFlight.</p>
             <div class="feat-card__tags">
               <span class="tag tag--purple">iOS</span>
               <span class="tag">SwiftUI</span>
@@ -269,15 +361,16 @@
             </div>
           </article>
 
-          <!-- Lilla Jag 3 -->
-          <article class="feat-card">
+          <article class="feat-card reveal reveal-delay-1">
             <div class="feat-card__top">
               <div class="feat-card__icon" style="background:var(--green-dim)">🧠</div>
-              <span class="feat-card__badge" style="background:var(--green-dim);color:var(--green)">On-device AI</span>
+              <div class="feat-card__meta">
+                <span class="status-badge status-badge--live">On-device</span>
+              </div>
             </div>
             <div>
               <div class="feat-card__title">Lilla Jag 3</div>
-              <div class="feat-card__subtitle">Mental hälsa &amp; KBT</div>
+              <div class="feat-card__subtitle">Mental hälsa · KBT · On-device AI</div>
             </div>
             <p class="feat-card__desc">Svensk mental hälsoapp som placerar en evidensbaserad KBT-coach i fickan — helt offline, helt privat. Qwen3-1.7B via llama.cpp körs på Neural Engine. CoreML-modeller detekterar 8 Plutchik-emotioner. AI:n svarar med sokratiska frågor, ABC-modellen och beteendeaktivering. Ingen text lämnar aldrig enheten.</p>
             <div class="feat-card__tags">
@@ -290,36 +383,16 @@
             </div>
           </article>
 
-          <!-- Lunaflix v2 -->
-          <article class="feat-card">
-            <div class="feat-card__top">
-              <div class="feat-card__icon" style="background:var(--orange-dim)">📺</div>
-              <span class="feat-card__badge" style="background:var(--orange-dim);color:var(--orange)">Streaming</span>
-            </div>
-            <div>
-              <div class="feat-card__title">Lunaflix v2</div>
-              <div class="feat-card__subtitle">Personlig streamingplattform</div>
-            </div>
-            <p class="feat-card__desc">Personlig streamingtjänst i Netflix-kvalitet. Mux HLS-strömning med AVPlayer i SwiftUI, hero-karusell med 5 auto-roterande videor och parallax-scrollning. Automatisk åldersberäkning per video. DownloadManager för offline-visning. Matched geometry transitions mellan hem och detaljvy.</p>
-            <div class="feat-card__tags">
-              <span class="tag tag--orange">Streaming</span>
-              <span class="tag">Mux HLS</span>
-              <span class="tag">AVPlayer</span>
-              <span class="tag">SwiftUI</span>
-              <span class="tag">Offline</span>
-              <span class="tag">Kingfisher</span>
-            </div>
-          </article>
-
-          <!-- BabyCare -->
-          <article class="feat-card">
+          <article class="feat-card reveal">
             <div class="feat-card__top">
               <div class="feat-card__icon" style="background:var(--purple-dim)">👶</div>
-              <span class="feat-card__badge" style="background:var(--purple-dim);color:var(--purple)">Hälsa</span>
+              <div class="feat-card__meta">
+                <span class="status-badge status-badge--live">Live</span>
+              </div>
             </div>
             <div>
               <div class="feat-card__title">BabyCare</div>
-              <div class="feat-card__subtitle">Fertilitet → Graviditet → Föräldraskap</div>
+              <div class="feat-card__subtitle">Fertilitet — Graviditet — Föräldraskap</div>
             </div>
             <p class="feat-card__desc">Svensk föräldraskapssvit som täcker hela resan utan att byta app. SwiftData för lokal lagring. Fas-anpassad design: korall/ros för fertilitet, lavendel för graviditet, baby-blått för föräldraskap. Swift Charts med svenska BVC-percentiler. Kontraktionstimer med 5-1-1-detektering.</p>
             <div class="feat-card__tags">
@@ -331,11 +404,12 @@
             </div>
           </article>
 
-          <!-- Lifetoken -->
-          <article class="feat-card">
+          <article class="feat-card reveal reveal-delay-1">
             <div class="feat-card__top">
-              <div class="feat-card__icon" style="background:var(--green-dim)">⏳</div>
-              <span class="feat-card__badge" style="background:var(--green-dim);color:var(--green)">RPG</span>
+              <div class="feat-card__icon" style="background:var(--amber-dim)">⏳</div>
+              <div class="feat-card__meta">
+                <span class="status-badge status-badge--build">Bygger</span>
+              </div>
             </div>
             <div>
               <div class="feat-card__title">Lifetoken</div>
@@ -343,7 +417,7 @@
             </div>
             <p class="feat-card__desc">Dystopiskt livs-RPG inspirerat av "In Time" — varje sekund kostar en sekund av din balans. HealthKit konverterar steg, sömn och träning till spelvaluta. 14 zoner med unik lore. The Gazette: AI-genererad dagstidning om ditt spel. Neon-grön terminal-estetik. Äkta permadeath.</p>
             <div class="feat-card__tags">
-              <span class="tag tag--green">Gamification</span>
+              <span class="tag tag--amber">Gamification</span>
               <span class="tag">HealthKit</span>
               <span class="tag">AI-generated</span>
               <span class="tag">SwiftUI</span>
@@ -354,37 +428,38 @@
         </div>
       </section>
 
-      <!-- REMAINING PROJECTS -->
-      <section class="section" aria-label="Fler projekt">
-        <p class="section-label">Fler projekt</p>
+      <hr class="divider" style="margin-bottom:0">
+
+      <!-- INFRASTRUKTUR & ÖVRIGT -->
+      <section class="section" aria-label="Infrastruktur">
+        <p class="section-label">Infrastruktur &amp; streaming</p>
         <div class="projects-grid">
 
-          <article class="project-card">
+          <article class="project-card reveal">
             <div class="project-card__header">
-              <div class="project-card__icon" style="background:var(--amber-dim)">⚡</div>
-              <div>
-                <div class="project-card__title">Eon-Y V5</div>
-                <div class="project-card__subtitle">Autonom kognitiv AI</div>
-              </div>
+              <div class="project-card__icon" style="background:var(--orange-dim)">📺</div>
+              <span class="status-badge status-badge--live">Live</span>
             </div>
-            <p class="project-card__desc">Autonom kognitiv AI-arkitektur med JavaScriptCore som kognitiv motor och Swift Warden som säkerhetsskikt. Implementerar sex medvetandeteorier. Qwen3-integration med autonom webbläsare. CCI-Ω score 91/100.</p>
+            <div class="project-card__title">Lunaflix v2</div>
+            <div class="project-card__subtitle">Personlig streamingplattform</div>
+            <p class="project-card__desc">Personlig streamingtjänst i Netflix-kvalitet. Mux HLS-strömning med AVPlayer i SwiftUI, hero-karusell med 5 auto-roterande videor. DownloadManager för offline-visning. Matched geometry transitions.</p>
             <div class="project-card__tags">
-              <span class="tag tag--amber">AI-arkitektur</span>
-              <span class="tag">Qwen3</span>
-              <span class="tag">JavaScriptCore</span>
-              <span class="tag">Emergens</span>
+              <span class="tag tag--orange">Streaming</span>
+              <span class="tag">Mux HLS</span>
+              <span class="tag">AVPlayer</span>
+              <span class="tag">SwiftUI</span>
+              <span class="tag">Offline</span>
             </div>
           </article>
 
-          <article class="project-card">
+          <article class="project-card reveal reveal-delay-1">
             <div class="project-card__header">
               <div class="project-card__icon" style="background:var(--accent-dim)">🌙</div>
-              <div>
-                <div class="project-card__title">Lumvra</div>
-                <div class="project-card__subtitle">AI-sömncoach</div>
-              </div>
+              <span class="status-badge status-badge--build">Pausad</span>
             </div>
-            <p class="project-card__desc">AI-driven sömncoach med HealthKit-data — sömnfaser, aktivitet, HRV — och personliga sömnrekommendationer. Supabase-backend, dagliga briefingar med handlingsbara förslag. Mörk design för nattlig användning.</p>
+            <div class="project-card__title">Lumvra</div>
+            <div class="project-card__subtitle">AI-sömncoach</div>
+            <p class="project-card__desc">AI-driven sömncoach med HealthKit-data — sömnfaser, aktivitet, HRV — och personliga sömnrekommendationer. Supabase-backend, dagliga briefingar med handlingsbara förslag.</p>
             <div class="project-card__tags">
               <span class="tag tag--accent">Sömn</span>
               <span class="tag">HealthKit</span>
@@ -393,15 +468,14 @@
             </div>
           </article>
 
-          <article class="project-card">
+          <article class="project-card reveal reveal-delay-2">
             <div class="project-card__header">
               <div class="project-card__icon" style="background:var(--purple-dim)">🤝</div>
-              <div>
-                <div class="project-card__title">MindfulTogether</div>
-                <div class="project-card__subtitle">Delad mindfulness</div>
-              </div>
+              <span class="status-badge status-badge--build">Pausad</span>
             </div>
-            <p class="project-card__desc">Delad mindfulness-plattform för par och familjer. Gemensamma meditationsmål, synkroniserade sessioner och aktivitetsspårning via HealthKit. Designat för att stärka band genom medveten närvaro.</p>
+            <div class="project-card__title">MindfulTogether</div>
+            <div class="project-card__subtitle">Delad mindfulness</div>
+            <p class="project-card__desc">Delad mindfulness-plattform för par och familjer. Gemensamma meditationsmål, synkroniserade sessioner och aktivitetsspårning via HealthKit.</p>
             <div class="project-card__tags">
               <span class="tag tag--purple">Mindfulness</span>
               <span class="tag">HealthKit</span>
@@ -410,23 +484,48 @@
             </div>
           </article>
 
-          <article class="project-card">
-            <div class="project-card__header">
-              <div class="project-card__icon" style="background:var(--orange-dim)">💻</div>
-              <div>
-                <div class="project-card__title">Eon-Code v2</div>
-                <div class="project-card__subtitle">Autonom kodagent</div>
-              </div>
-            </div>
-            <p class="project-card__desc">Autonom kodagent — iOS-app som klient, macOS-komponent som styr Cursor och Xcode, kör git-kommandon och rapporterar byggstatus tillbaka. Hands-off autonoma körningar med full spårbarhet.</p>
-            <div class="project-card__tags">
-              <span class="tag tag--orange">AI-agent</span>
-              <span class="tag">iOS ↔ macOS</span>
-              <span class="tag">SwiftUI</span>
-              <span class="tag">Git</span>
-            </div>
-          </article>
+        </div>
+      </section>
 
+      <hr class="divider" style="margin-bottom:0">
+
+      <!-- DEVELOPMENT TIMELINE -->
+      <section class="section" aria-label="Tidslinje">
+        <p class="section-label">Tidslinje</p>
+        <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;letter-spacing:-0.02em;margin-bottom:var(--space-10)" class="reveal">Kronologisk utveckling</h2>
+        <div class="dev-timeline reveal">
+          <div class="dev-timeline__item">
+            <div class="dev-timeline__year">2026</div>
+            <div class="dev-timeline__dot"></div>
+            <div class="dev-timeline__content">
+              <div class="dev-timeline__title">Navi v7 · TedAI · Eon-Y V5 — distillering av Claude Opus 4.6</div>
+              <div class="dev-timeline__desc">AI-agentplattform med orchestrator-arkitektur och custom 9B-modell. Forskning kring intrinsic normativity.</div>
+            </div>
+          </div>
+          <div class="dev-timeline__item">
+            <div class="dev-timeline__year">2025</div>
+            <div class="dev-timeline__dot" style="background:var(--purple)"></div>
+            <div class="dev-timeline__content">
+              <div class="dev-timeline__title">Lilla Jag 3 · Lifetoken · BabyCare</div>
+              <div class="dev-timeline__desc">On-device ML med Neural Engine, HealthKit RPG och föräldraskapssvit med Swift Charts.</div>
+            </div>
+          </div>
+          <div class="dev-timeline__item">
+            <div class="dev-timeline__year">2024</div>
+            <div class="dev-timeline__dot" style="background:var(--orange)"></div>
+            <div class="dev-timeline__content">
+              <div class="dev-timeline__title">Lunaflix v2 · Lunachat · Lumvra · Ted-server</div>
+              <div class="dev-timeline__desc">Streaming-plattform, social chattapp och privat server-infrastruktur med Tailscale.</div>
+            </div>
+          </div>
+          <div class="dev-timeline__item">
+            <div class="dev-timeline__year">2022–2023</div>
+            <div class="dev-timeline__dot" style="background:var(--green)"></div>
+            <div class="dev-timeline__content">
+              <div class="dev-timeline__title">Tidiga iOS-appar · AI-experiment · Eon-arkitektur</div>
+              <div class="dev-timeline__desc">Självstudier i Swift, maskininlärning och kognitiv AI. La grunden för all framtida arkitektur.</div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -455,7 +554,7 @@
       if (saved) html.setAttribute('data-theme', saved);
       var theme = html.getAttribute('data-theme') || 'dark';
       function moonIcon() { return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'; }
-      function sunIcon() { return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'; }
+      function sunIcon()  { return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'; }
       function setTheme(t) {
         theme = t; html.setAttribute('data-theme', t); localStorage.setItem('ts-theme', t);
         btn.setAttribute('aria-label', t === 'dark' ? 'Växla till ljust läge' : 'Växla till mörkt läge');
@@ -472,6 +571,14 @@
         var isOpen = navLinks.classList.toggle('open');
         hamburger.setAttribute('aria-expanded', isOpen);
       });
+    })();
+    (function () {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
     })();
   </script>
 </body>
