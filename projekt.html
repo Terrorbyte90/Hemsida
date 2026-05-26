@@ -5,126 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projekt — Ted Svärd</title>
   <meta name="description" content="Projekt av Ted Svärd — AI-agenter, iOS-appar och streaminglösningar.">
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
   <style>
-    /* === TOKENS === */
     :root {
       --font-body: 'Inter', system-ui, sans-serif;
       --font-display: 'Instrument Serif', Georgia, serif;
-      --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
-
-      --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
-      --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
-      --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
-      --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
-      --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
-      --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
-
+      --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+      --text-xs: clamp(0.72rem, 0.68rem + 0.2vw, 0.8rem);
+      --text-sm: clamp(0.875rem, 0.82rem + 0.28vw, 0.975rem);
+      --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.65vw, 1.4rem);
+      --text-xl: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
       --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
-      --space-4: 1rem;    --space-5: 1.25rem; --space-6: 1.5rem;
-      --space-8: 2rem;    --space-10: 2.5rem; --space-12: 3rem;
-      --space-16: 4rem;   --space-20: 5rem;   --space-24: 6rem;
-
+      --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem;
+      --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem;
+      --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
       --radius-sm: 0.375rem; --radius-md: 0.5rem;
-      --radius-lg: 0.75rem;  --radius-xl: 1rem;
+      --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-2xl: 1.5rem;
       --radius-full: 9999px;
-
       --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
-
       --content-default: 960px;
-      --content-wide: 1200px;
+      --content-wide: 1240px;
     }
-
-    /* === DARK THEME (default) === */
     [data-theme="dark"], :root {
-      --bg:             #0a0a09;
-      --bg-subtle:      #101010;
-      --surface:        #141413;
-      --surface-2:      #1a1a18;
-      --surface-3:      #20201d;
-      --border:         rgba(255,255,255,0.07);
-      --border-strong:  rgba(255,255,255,0.12);
-      --divider:        rgba(255,255,255,0.05);
-
-      --text:           #eceae6;
-      --text-muted:     #8a8882;
-      --text-faint:     #565450;
-
-      --accent:         #5b9cf6;
-      --accent-hover:   #79b4ff;
-      --accent-dim:     rgba(91,156,246,0.10);
-
-      --green:          #4ade80;
-      --green-dim:      rgba(74,222,128,0.10);
-      --orange:         #fb923c;
-      --orange-dim:     rgba(251,146,60,0.10);
-      --purple:         #a78bfa;
-      --purple-dim:     rgba(167,139,250,0.10);
-      --amber:          #fbbf24;
-      --amber-dim:      rgba(251,191,36,0.10);
-
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.45);
-      --shadow-md: 0 8px 24px rgba(0,0,0,0.50);
-      --shadow-lg: 0 20px 60px rgba(0,0,0,0.65);
+      --bg: #0a0a09; --bg-subtle: #101010; --surface: #141413;
+      --surface-2: #1a1a18; --surface-3: #20201d;
+      --border: rgba(255,255,255,0.07); --border-strong: rgba(255,255,255,0.12); --divider: rgba(255,255,255,0.05);
+      --text: #eceae6; --text-muted: #8a8882; --text-faint: #565450;
+      --accent: #5b9cf6; --accent-hover: #79b4ff; --accent-dim: rgba(91,156,246,0.10);
+      --green: #4ade80; --green-dim: rgba(74,222,128,0.10);
+      --orange: #fb923c; --orange-dim: rgba(251,146,60,0.10);
+      --purple: #a78bfa; --purple-dim: rgba(167,139,250,0.10);
+      --amber: #fbbf24; --amber-dim: rgba(251,191,36,0.10);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.45); --shadow-md: 0 8px 24px rgba(0,0,0,0.50); --shadow-lg: 0 20px 60px rgba(0,0,0,0.65);
     }
-
-    /* === LIGHT THEME === */
     [data-theme="light"] {
-      --bg:             #f8f7f4;
-      --bg-subtle:      #f2f1ee;
-      --surface:        #ffffff;
-      --surface-2:      #f8f7f4;
-      --surface-3:      #f1efea;
-      --border:         rgba(0,0,0,0.07);
-      --border-strong:  rgba(0,0,0,0.13);
-      --divider:        rgba(0,0,0,0.06);
-
-      --text:           #161617;
-      --text-muted:     #6f6c66;
-      --text-faint:     #a8a49d;
-
-      --accent:         #1a63d0;
-      --accent-hover:   #0f56bf;
-      --accent-dim:     rgba(26,99,208,0.09);
-
-      --green:          #169b4a;
-      --green-dim:      rgba(22,155,74,0.09);
-      --orange:         #ea6a0a;
-      --orange-dim:     rgba(234,106,10,0.09);
-      --purple:         #7c3aed;
-      --purple-dim:     rgba(124,58,237,0.09);
-      --amber:          #d97706;
-      --amber-dim:      rgba(217,119,6,0.09);
-
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
-      --shadow-lg: 0 20px 60px rgba(0,0,0,0.10);
+      --bg: #f8f7f4; --bg-subtle: #f2f1ee; --surface: #ffffff;
+      --surface-2: #f8f7f4; --surface-3: #f1efea;
+      --border: rgba(0,0,0,0.07); --border-strong: rgba(0,0,0,0.13); --divider: rgba(0,0,0,0.06);
+      --text: #161617; --text-muted: #6f6c66; --text-faint: #a8a49d;
+      --accent: #1a63d0; --accent-hover: #0f56bf; --accent-dim: rgba(26,99,208,0.09);
+      --green: #169b4a; --green-dim: rgba(22,155,74,0.09);
+      --orange: #ea6a0a; --orange-dim: rgba(234,106,10,0.09);
+      --purple: #7c3aed; --purple-dim: rgba(124,58,237,0.09);
+      --amber: #d97706; --amber-dim: rgba(217,119,6,0.09);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06); --shadow-md: 0 8px 24px rgba(0,0,0,0.08); --shadow-lg: 0 20px 60px rgba(0,0,0,0.10);
     }
-
-    /* === BASE === */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html {
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-      scroll-padding-top: 72px;
-    }
-    body {
-      font-family: var(--font-body);
-      font-size: var(--text-base);
-      color: var(--text);
-      background: var(--bg);
-      min-height: 100dvh;
-      line-height: 1.65;
-      overflow-x: hidden;
-      transition: background var(--transition), color var(--transition);
-    }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; scroll-padding-top: 72px; }
+    body { font-family: var(--font-body); font-size: var(--text-base); color: var(--text); background: var(--bg); min-height: 100dvh; line-height: 1.65; overflow-x: hidden; transition: background var(--transition), color var(--transition); }
     img, svg { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
     button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
@@ -132,190 +64,146 @@
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius-sm); }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 
-    /* === LAYOUT === */
-    .container {
-      max-width: var(--content-default);
-      margin-inline: auto;
-      padding-inline: clamp(var(--space-4), 5vw, var(--space-12));
-    }
+    .container { max-width: var(--content-default); margin-inline: auto; padding-inline: clamp(var(--space-4), 5vw, var(--space-12)); }
     .container--wide { max-width: var(--content-wide); }
 
-    /* === NAV === */
-    .nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border-bottom: 1px solid var(--border);
-      background: color-mix(in srgb, var(--bg) 80%, transparent);
-    }
-    .nav__inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 58px;
-      gap: var(--space-8);
-    }
-    .nav__logo {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      letter-spacing: -0.01em;
-      color: var(--text);
-      flex-shrink: 0;
-    }
+    /* NAV */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; backdrop-filter: blur(28px) saturate(200%); -webkit-backdrop-filter: blur(28px) saturate(200%); border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 75%, transparent); }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 58px; gap: var(--space-8); }
+    .nav__logo { font-family: var(--font-display); font-size: 1.2rem; letter-spacing: -0.01em; color: var(--text); flex-shrink: 0; }
     .nav__logo span { color: var(--accent); }
-    .nav__links {
-      display: flex;
-      align-items: center;
-      gap: var(--space-1);
-      list-style: none;
-    }
-    .nav__links a {
-      font-size: var(--text-sm);
-      color: var(--text-muted);
-      padding: 0.45rem 0.75rem;
-      border-radius: var(--radius-md);
-      transition: color var(--transition), background var(--transition);
-    }
-    .nav__links a:hover, .nav__links a[aria-current="page"] {
-      color: var(--text);
-      background: var(--surface-2);
-    }
+    .nav__links { display: flex; align-items: center; gap: var(--space-1); list-style: none; }
+    .nav__links a { font-size: var(--text-sm); color: var(--text-muted); padding: 0.4rem 0.7rem; border-radius: var(--radius-md); transition: color var(--transition), background var(--transition); }
+    .nav__links a:hover, .nav__links a[aria-current="page"] { color: var(--text); background: var(--surface-2); }
+    .nav__links a.nav__link--highlight { color: var(--accent); border: 1px solid var(--accent-dim); }
+    .nav__links a.nav__link--highlight:hover { background: var(--accent-dim); color: var(--accent-hover); }
     .nav__actions { display: flex; align-items: center; gap: var(--space-2); }
-    .icon-btn {
-      width: 36px; height: 36px;
-      border-radius: var(--radius-md);
-      display: grid; place-items: center;
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      transition: all var(--transition);
-    }
+    .icon-btn { width: 36px; height: 36px; border-radius: var(--radius-md); display: grid; place-items: center; color: var(--text-muted); border: 1px solid var(--border); transition: all var(--transition); }
     .icon-btn:hover { color: var(--text); background: var(--surface-2); border-color: var(--border-strong); }
     .nav__hamburger { display: none; }
-    @media (max-width: 680px) {
+    @media (max-width: 800px) {
       .nav__links { display: none; }
       .nav__hamburger { display: grid; }
-      .nav__links.open {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 58px;
-        left: 0;
-        right: 0;
-        background: var(--surface);
-        border-bottom: 1px solid var(--border);
-        padding: var(--space-6);
-        gap: var(--space-4);
-      }
+      .nav__links.open { display: flex; flex-direction: column; position: absolute; top: 58px; left: 0; right: 0; background: color-mix(in srgb, var(--surface) 96%, transparent); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: var(--space-6); gap: var(--space-1); }
+      .nav__links.open a { padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); }
     }
 
-    /* === PAGE HEADER === */
+    /* PAGE HEADER */
     .page-header {
-      padding-top: 58px;
-      padding-bottom: var(--space-16);
+      padding-top: calc(58px + clamp(var(--space-12), 6vw, var(--space-20)));
+      padding-bottom: clamp(var(--space-10), 5vw, var(--space-16));
+      position: relative; overflow: hidden;
     }
-    .page-header__eyebrow {
-      font-size: var(--text-sm);
-      font-weight: 500;
-      color: var(--accent);
-      letter-spacing: 0.04em;
-      margin-bottom: var(--space-3);
+    .page-header::before {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 70vw; max-width: 700px; height: 300px;
+      background: radial-gradient(ellipse at center top, rgba(91,156,246,0.07) 0%, transparent 70%);
+      filter: blur(40px); pointer-events: none;
     }
-    .page-header__title {
-      font-family: var(--font-display);
-      font-size: var(--text-2xl);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      line-height: 1.08;
-      margin-bottom: var(--space-4);
-    }
-    .page-header__desc {
-      font-size: var(--text-lg);
-      color: var(--text-muted);
-      max-width: 600px;
-      line-height: 1.6;
-    }
+    .page-header .container { position: relative; }
+    .page-header__eyebrow { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--space-3); }
+    .page-header__title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 400; letter-spacing: -0.02em; line-height: 1.08; margin-bottom: var(--space-4); }
+    .page-header__desc { font-size: var(--text-lg); color: var(--text-muted); max-width: 600px; line-height: 1.6; }
 
-    /* === PROJECT CARDS === */
-    .projects-grid {
+    /* TAGS */
+    .tag { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em; padding: 2px 9px; border-radius: var(--radius-full); background: var(--surface-3); color: var(--text-muted); border: 1px solid var(--border); }
+    .tag--accent { background: var(--accent-dim); color: var(--accent); border-color: transparent; }
+    .tag--green { background: var(--green-dim); color: var(--green); border-color: transparent; }
+    .tag--orange { background: var(--orange-dim); color: var(--orange); border-color: transparent; }
+    .tag--purple { background: var(--purple-dim); color: var(--purple); border-color: transparent; }
+    .tag--amber { background: var(--amber-dim); color: var(--amber); border-color: transparent; }
+
+    /* SECTION LABEL */
+    .section-label { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-bottom: var(--space-5); display: flex; align-items: center; gap: var(--space-3); }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--divider); }
+
+    /* FEATURED PROJECTS — 2-col big cards */
+    .featured-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: var(--space-6);
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+      margin-bottom: clamp(var(--space-12), 6vw, var(--space-20));
     }
-    .project-card {
+    @media (max-width: 700px) { .featured-grid { grid-template-columns: 1fr; } }
+
+    .feat-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: var(--space-6);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-3);
-      transition: all var(--transition);
+      border-radius: var(--radius-2xl);
+      padding: clamp(var(--space-6), 3vw, var(--space-8));
+      display: flex; flex-direction: column; gap: var(--space-4);
+      transition: background var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+      position: relative; overflow: hidden;
     }
-    .project-card:hover {
-      border-color: var(--border-strong);
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
+    .feat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
     }
+    .feat-card:hover { background: var(--surface-2); border-color: var(--border-strong); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .feat-card__top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
+    .feat-card__icon {
+      width: 48px; height: 48px; border-radius: var(--radius-lg);
+      display: grid; place-items: center; font-size: 1.4rem; flex-shrink: 0;
+    }
+    .feat-card__badge { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: var(--radius-full); }
+    .feat-card__title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; margin-bottom: var(--space-1); }
+    .feat-card__subtitle { font-size: var(--text-xs); color: var(--text-muted); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+    .feat-card__desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.7; flex: 1; }
+    .feat-card__tags { display: flex; flex-wrap: wrap; gap: var(--space-1); padding-top: var(--space-2); margin-top: auto; }
+
+    /* SMALLER GRID */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+      gap: var(--space-4);
+    }
+    .project-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl);
+      padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-3);
+      transition: background var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+    }
+    .project-card:hover { background: var(--surface-2); border-color: var(--border-strong); box-shadow: var(--shadow-md); transform: translateY(-2px); }
     .project-card__header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
-    .project-card__icon {
-      width: 36px; height: 36px;
-      border-radius: var(--radius-md);
-      display: grid; place-items: center;
-      font-size: 1rem; flex-shrink: 0;
-    }
+    .project-card__icon { width: 36px; height: 36px; border-radius: var(--radius-md); display: grid; place-items: center; font-size: 1rem; flex-shrink: 0; }
     .project-card__title { font-size: var(--text-base); font-weight: 600; color: var(--text); line-height: 1.3; }
     .project-card__subtitle { font-size: var(--text-xs); color: var(--accent); font-weight: 500; margin-top: 2px; letter-spacing: 0.02em; }
     .project-card__desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.65; flex: 1; }
     .project-card__tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: auto; padding-top: var(--space-2); }
-    .tag {
-      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em;
-      padding: 2px 9px; border-radius: var(--radius-full);
-      background: var(--surface-3); color: var(--text-muted);
-      border: 1px solid var(--border);
-    }
-    .tag--accent { background: var(--accent-dim); color: var(--accent); border-color: transparent; }
-    .tag--green  { background: var(--green-dim);  color: var(--green);  border-color: transparent; }
-    .tag--orange { background: var(--orange-dim); color: var(--orange); border-color: transparent; }
-    .tag--purple { background: var(--purple-dim); color: var(--purple); border-color: transparent; }
-    .tag--amber  { background: var(--amber-dim);  color: var(--amber);  border-color: transparent; }
 
-    /* === FOOTER === */
-    .footer { border-top: 1px solid var(--divider); padding-block: var(--space-10); }
+    /* SECTION */
+    .section { padding-block: clamp(var(--space-8), 4vw, var(--space-16)); }
+
+    /* FOOTER */
+    .footer { border-top: 1px solid var(--divider); padding-block: var(--space-10); margin-top: var(--space-16); }
     .footer__inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
     .footer__copy { font-size: var(--text-xs); color: var(--text-faint); }
     .footer__links { display: flex; gap: var(--space-5); list-style: none; }
     .footer__links a { font-size: var(--text-xs); color: var(--text-faint); transition: color var(--transition); }
     .footer__links a:hover { color: var(--text-muted); }
-
-    /* === SECTION === */
-    .section { padding-block: var(--space-16); }
-    .section__label { font-size: var(--text-sm); font-weight: 500; color: var(--accent); letter-spacing: 0.04em; margin-bottom: var(--space-2); }
-    .section__title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; margin-bottom: var(--space-3); }
-    .section__desc { font-size: var(--text-base); color: var(--text-muted); max-width: 600px; line-height: 1.6; }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
   <nav class="nav" role="navigation" aria-label="Huvudnavigering">
     <div class="container">
       <div class="nav__inner">
-        <a href="index.html" class="nav__logo" aria-label="Hem">Ted Svärd</a>
-        <ul class="nav__links">
+        <a href="index.html" class="nav__logo" aria-label="Hem">Ted <span>Svärd</span></a>
+        <ul class="nav__links" id="nav-links">
           <li><a href="index.html">Hem</a></li>
           <li><a href="projekt.html" aria-current="page">Projekt</a></li>
           <li><a href="forskning.html">Forskning</a></li>
           <li><a href="podcasts.html">Podcasts</a></li>
           <li><a href="om-mig.html">Om mig</a></li>
-          <li><a href="mailto:Ted@Tuvaluna.com">Kontakt</a></li>
+          <li><a href="chat.html" class="nav__link--highlight">AI Chat</a></li>
+          <li><a href="wiki.html">Wiki</a></li>
         </ul>
         <div class="nav__actions">
-          <button class="icon-btn" data-theme-toggle aria-label="Växla till ljust läge">
+          <button class="icon-btn" id="theme-toggle" aria-label="Växla till ljust läge">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
-          <button class="nav__hamburger icon-btn" aria-label="Meny" aria-expanded="false">
+          <button class="nav__hamburger icon-btn" id="hamburger" aria-label="Meny" aria-expanded="false">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
         </div>
@@ -323,7 +211,6 @@
     </div>
   </nav>
 
-  <!-- PAGE HEADER -->
   <header class="page-header">
     <div class="container">
       <p class="page-header__eyebrow">Utvalda projekt</p>
@@ -332,166 +219,220 @@
     </div>
   </header>
 
-  <!-- PROJECTS -->
-  <section class="section" style="padding-top: 0;">
-    <div class="container">
-      <div class="projects-grid">
+  <main>
+    <div class="container container--wide">
 
-        <!-- Navi v7 -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--accent-dim)">🤖</div>
-            <div><div class="project-card__title">Navi v7</div>
-            <div class="project-card__subtitle">AI-utvecklingsmiljö & agentplattform</div></div>
-          </div>
-          <p class="project-card__desc">Kognitiv AI-agentplattform med Orchestrator/Worker-arkitektur. Server-side Node.js-backend på DigitalOcean kör persistenta agenter som läser/skriver filer, interagerar med GitHub via REST API och rapporterar stegvis via WebSocket-streaming till iOS/macOS-klienten. LLMCoordinator hanterar 50 req/min med max 6 samtidiga anrop — multi-provider routing (Anthropic Claude, xAI Grok, OpenRouter) med automatisk failover. Session-historik komprimeras automatiskt vid 72% kontextfönster: 20 senaste turerna i råform, äldre sammanfattas till 4 000 tecken. Promise-kedjor serialiserar meddelanden per session med robust felhantering. iOS-klienten hanterar atomär streaming-avslutning, scenePhase-guard och disconnect-recovery — snurraren försvinner aldrig permanent. Terra Cotta-designsystem med glasmorfistisk SwiftUI, adaptiv layout och realtidsuppdateringar. Bilagsstöd: upp till 4 bilder/filer (max 4 MB) via PhotosPicker och FileImporter, base64-kodade i CHAT-meddelanden.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--accent">AI-agent</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Node.js</span>
-            <span class="tag">WebSocket</span>
-            <span class="tag">DigitalOcean</span>
-            <span class="tag">GitHub API</span>
-            <span class="tag">Anthropic</span>
-            <span class="tag">xAI Grok</span>
-            <span class="tag">OpenRouter</span>
-          </div>
-        </article>
+      <!-- FEATURED 6 -->
+      <section class="section" aria-label="Utvalda projekt">
+        <p class="section-label">Utvalda projekt</p>
 
-        <!-- Eon-Y -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--amber-dim)">⚡</div>
-            <div><div class="project-card__title">Eon-Y V5</div>
-            <div class="project-card__subtitle">Autonom kognitiv AI</div></div>
-          </div>
-          <p class="project-card__desc">Autonom kognitiv AI-arkitektur med JavaScriptCore som kognitiv motor och Swift Warden som säkerhetsskikt med SHA-256 hash-verifiering. Implementerar sex medvetandeteorier: Global Workspace Theory, Attention Schema Theory, Higher-Order Thought, Predictive Processing, Integrated Information Theory och Interoception. 40+ metrik samlas in i realtid via multi-frequency tick-arkitektur. Qwen3-integration med autonom webbläsare och SuperView-gränssnitt. Fullständig kognitiv arkitektur med långtidsminne, arbetsminne, beslutsfattande och självständig verktygsanvändning. AI:n observerar, resonerar och agerar i loopar med självkorrigering — designat för att utforska gränserna mellan artificiell och emergent intelligens.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--amber">AI-arkitektur</span>
-            <span class="tag">Qwen3</span>
-            <span class="tag">JavaScriptCore</span>
-            <span class="tag">Swift Warden</span>
-            <span class="tag">Autonom agent</span>
-            <span class="tag">Emergens</span>
-            <span class="tag">Medvetande</span>
-          </div>
-        </article>
+        <div class="featured-grid">
 
-        <!-- Lilla Jag -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--green-dim)">🧠</div>
-            <div><div class="project-card__title">Lilla Jag 3</div>
-            <div class="project-card__subtitle">On-device mental hälsa</div></div>
-          </div>
-          <p class="project-card__desc">Svensk mental hälsoapp som placerar en evidensbaserad KBT-coach i fickan — helt offline, helt privat. Qwen3-1.7B via llama.cpp körs på Neural Engine för terapeutiska konversationer. CoreML-modeller: EmotionMultiLabel detekterar 8 Plutchik-emotioner på varje meddelande, SentimentScorer och TopicClassifier kompletterar bilden. AI:n svarar med sokratiska frågor, ABC-modellen och beteendeaktivering — max 3–4 meningar + en öppen fråga. Glasformism-design med djup varm lila (#1A1025) och lavendel/ros-gradient. Kris-knapp alltid synlig i hörnet. Video-bibliotek med interventioner för ångest, depression, PTSD och OCD. Ingen data, ingen text, ingen metadata lämnar någonsin enheten — inte ens till en API-leverantör.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--green">Mental hälsa</span>
-            <span class="tag">CoreML</span>
-            <span class="tag">llama.cpp</span>
-            <span class="tag">Qwen3-1.7B</span>
-            <span class="tag">KBT</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">On-device AI</span>
-            <span class="tag">Neural Engine</span>
-          </div>
-        </article>
+          <!-- Navi v7 -->
+          <article class="feat-card">
+            <div class="feat-card__top">
+              <div class="feat-card__icon" style="background:var(--accent-dim)">🤖</div>
+              <span class="feat-card__badge" style="background:var(--accent-dim);color:var(--accent)">AI-agent</span>
+            </div>
+            <div>
+              <div class="feat-card__title">Navi v7</div>
+              <div class="feat-card__subtitle">AI-agentplattform</div>
+            </div>
+            <p class="feat-card__desc">Kognitiv AI-agentplattform med Orchestrator/Worker-arkitektur. Server-side Node.js-backend kör persistenta agenter som läser/skriver filer, interagerar med GitHub via REST API och rapporterar stegvis via WebSocket-streaming till iOS/macOS-klienten. LLMCoordinator hanterar 50 req/min med max 6 samtidiga anrop — multi-provider routing (Claude, Grok, OpenRouter) med automatisk failover. Session-historik komprimeras vid 72% kontextfönster.</p>
+            <div class="feat-card__tags">
+              <span class="tag tag--accent">AI-agent</span>
+              <span class="tag">SwiftUI</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">WebSocket</span>
+              <span class="tag">GitHub API</span>
+              <span class="tag">DigitalOcean</span>
+            </div>
+          </article>
 
-        <!-- Lunaflix -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--orange-dim)">📺</div>
-            <div><div class="project-card__title">Lunaflix v2</div>
-            <div class="project-card__subtitle">Personlig streamingplattform</div></div>
-          </div>
-          <p class="project-card__desc">Personlig streamingtjänst i Netflix-kvalitet — byggd för en familj, för att följa en persons uppväxt. Mux HLS-strömning med AVPlayer i SwiftUI, hero-karusell med 5 auto-roterande videor (5s intervall) och parallax-scrollning. Automatisk åldersberäkning per video: "Luna var 1 år och 3 månader gammal" visas på varje klipp. DownloadManager för offline-visning med progress-spårning i MB/s. Kingfisher-bildcaching (200 MB disk, 50 MB minne) med shimmer-fallback. Matched geometry transitions mellan hem och detaljvy — ingen hoppande layout. Asymmetriska navigeringstransitioner: innehåll glider in från höger, försvinner med opacity. Cinematisk palett: midnatt (#080810), purpur (#7C3AED), cyan (#06B6D4). Pull-to-refresh, shimmer skeleton loaders och haptisk feedback på varje betydelsefull interaktion.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--orange">Streaming</span>
-            <span class="tag">Mux HLS</span>
-            <span class="tag">AVPlayer</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Kingfisher</span>
-            <span class="tag">Offline</span>
-            <span class="tag">MVVM</span>
-          </div>
-        </article>
+          <!-- Lunachat -->
+          <article class="feat-card">
+            <div class="feat-card__top">
+              <div class="feat-card__icon" style="background:var(--purple-dim)">💬</div>
+              <span class="feat-card__badge" style="background:var(--purple-dim);color:var(--purple)">iOS-app</span>
+            </div>
+            <div>
+              <div class="feat-card__title">Lunachat</div>
+              <div class="feat-card__subtitle">AI-chattapp</div>
+            </div>
+            <p class="feat-card__desc">Intuitiv AI-chattapp med stöd för multimediala samtal, personlig assistent och realtidsinteraktion. SwiftUI med WebSocket-streaming och multi-provider AI. Bilagsstöd för upp till 4 bilder/filer, base64-kodade i meddelanden. Glasmorfistisk design med adaptiv layout och sömlösa transitions.</p>
+            <div class="feat-card__tags">
+              <span class="tag tag--purple">iOS</span>
+              <span class="tag">SwiftUI</span>
+              <span class="tag">WebSocket</span>
+              <span class="tag">Multi-provider AI</span>
+              <span class="tag">Streaming</span>
+            </div>
+          </article>
 
-        <!-- BabyCare -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--purple-dim)">👶</div>
-            <div><div class="project-card__title">BabyCare</div>
-            <div class="project-card__subtitle">Fertilitet → Graviditet → Föräldraskap</div></div>
-          </div>
-          <p class="project-card__desc">Svensk föräldraskapssvit som följer hela resan — från barnlöshet till barnets femte år — utan att någonsin byta app. SwiftData för fullständig lokal lagring, ingen molnberoende. Fas-anpassad design transformerar automatiskt: korall/ros för fertilitet (cykelkalender, BBT-kartor, 5-1-1-regeln), lavendel/plommon för graviditet (veckoräknare, trimester, MVC-system), baby-blått/sky för föräldraskap (amning, sömn, blöjor, tillväxt). Swift Charts för tillväxtkurvor med svenska BVC-percentiler. Kontraktionstimer med 5-1-1-detektering — varnar när det är dags att ringa förlossningen. Custom tab bar med animerad pill-indikator som glider mellan flikar med spring-animation. StaggerAppear för listor: varje rad dyker upp med 60 ms fördröjning. GradientCard för hero-sektioner, GlassCard för allt innehåll. Designat dark-first med Apple Health som inspirationskälla — inte pastell-bebisapparna som dominerar App Store.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--purple">Föräldraskap</span>
-            <span class="tag">SwiftData</span>
-            <span class="tag">Swift Charts</span>
-            <span class="tag">BVC</span>
-            <span class="tag">iOS</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Fertilitet</span>
-          </div>
-        </article>
+          <!-- Lilla Jag 3 -->
+          <article class="feat-card">
+            <div class="feat-card__top">
+              <div class="feat-card__icon" style="background:var(--green-dim)">🧠</div>
+              <span class="feat-card__badge" style="background:var(--green-dim);color:var(--green)">On-device AI</span>
+            </div>
+            <div>
+              <div class="feat-card__title">Lilla Jag 3</div>
+              <div class="feat-card__subtitle">Mental hälsa &amp; KBT</div>
+            </div>
+            <p class="feat-card__desc">Svensk mental hälsoapp som placerar en evidensbaserad KBT-coach i fickan — helt offline, helt privat. Qwen3-1.7B via llama.cpp körs på Neural Engine. CoreML-modeller detekterar 8 Plutchik-emotioner. AI:n svarar med sokratiska frågor, ABC-modellen och beteendeaktivering. Ingen text lämnar aldrig enheten.</p>
+            <div class="feat-card__tags">
+              <span class="tag tag--green">Mental hälsa</span>
+              <span class="tag">CoreML</span>
+              <span class="tag">llama.cpp</span>
+              <span class="tag">Qwen3-1.7B</span>
+              <span class="tag">KBT</span>
+              <span class="tag">Neural Engine</span>
+            </div>
+          </article>
 
-        <!-- Lifetoken -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--green-dim)">⏳</div>
-            <div><div class="project-card__title">Lifetoken</div>
-            <div class="project-card__subtitle">Dystopiskt livs-RPG</div></div>
-          </div>
-          <p class="project-card__desc">Dystopiskt livshanterings-RPG inspirerat av filmen *In Time* — varje verklig sekund kostar en sekund av din balans. Du startar med 86 400 sekunder (exakt en dag) och tjänar mer genom att leva väl: gå, sova, träna, arbeta. HealthKit-integration konverterar steg, sömn och träningsdata till spelvaluta. 14 zoner med unik lore, skattesystem och zonspecifikt arbete — från Askans slum till Vaultets privilegier. The Gazette: en AI-genererad dagstidning som skriver personliga artiklar om ditt spel — zonhändelser, kasinovinster, dödsfall, streak-milestones. Neon-grön (#00FF41) terminal-estetik med monospaced typsnitt överallt, skannlinjer och ambient glow. Äkta permadeath: när tiden tar slut, dör du. Ingen pay-to-win — den enda valutan är sekunder, tjänade genom att leva väl. LTPressEffect (0.96x scale, 0.30s spring) på varje knapp. AmbientPulse (2.5s repeat) — klockan andas, UI:n är aldrig helt stilla.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--green">Gamification</span>
-            <span class="tag">HealthKit</span>
-            <span class="tag">AI-generated content</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Permadeath</span>
-            <span class="tag">RPG</span>
-          </div>
-        </article>
+          <!-- Lunaflix v2 -->
+          <article class="feat-card">
+            <div class="feat-card__top">
+              <div class="feat-card__icon" style="background:var(--orange-dim)">📺</div>
+              <span class="feat-card__badge" style="background:var(--orange-dim);color:var(--orange)">Streaming</span>
+            </div>
+            <div>
+              <div class="feat-card__title">Lunaflix v2</div>
+              <div class="feat-card__subtitle">Personlig streamingplattform</div>
+            </div>
+            <p class="feat-card__desc">Personlig streamingtjänst i Netflix-kvalitet. Mux HLS-strömning med AVPlayer i SwiftUI, hero-karusell med 5 auto-roterande videor och parallax-scrollning. Automatisk åldersberäkning per video. DownloadManager för offline-visning. Matched geometry transitions mellan hem och detaljvy.</p>
+            <div class="feat-card__tags">
+              <span class="tag tag--orange">Streaming</span>
+              <span class="tag">Mux HLS</span>
+              <span class="tag">AVPlayer</span>
+              <span class="tag">SwiftUI</span>
+              <span class="tag">Offline</span>
+              <span class="tag">Kingfisher</span>
+            </div>
+          </article>
 
-        <!-- Lumvra -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--accent-dim)">🌙</div>
-            <div><div class="project-card__title">Lumvra</div>
-            <div class="project-card__subtitle">AI-sömncoach</div></div>
-          </div>
-          <p class="project-card__desc">AI-driven sömncoach som hämtar HealthKit-data — sömnfaser, aktivitet, koffeinintag, hjärtfrekvensvariabilitet — och genererar personliga sömnrekommendationer via AI. Supabase-backend för molnsynkronisering mellan enheter. Dagliga briefingar med handlingsbara förslag baserade på sömnkvalitet och livsstilsdata. Managers-arkitektur: AIManager, HealthKitManager, SupabaseManager — separerade ansvarsområden för testbarhet och underhåll. Mörk, lugn design optimerad för nattlig användning med minimal blåljuspåverkan. Sömnanalys med sömnpoäng, trendgrafer och korrelationer mellan livsstilsval och sömnkvalitet.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--accent">Sömn</span>
-            <span class="tag">HealthKit</span>
-            <span class="tag">Supabase</span>
-            <span class="tag">AI</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Cloud sync</span>
-          </div>
-        </article>
+          <!-- BabyCare -->
+          <article class="feat-card">
+            <div class="feat-card__top">
+              <div class="feat-card__icon" style="background:var(--purple-dim)">👶</div>
+              <span class="feat-card__badge" style="background:var(--purple-dim);color:var(--purple)">Hälsa</span>
+            </div>
+            <div>
+              <div class="feat-card__title">BabyCare</div>
+              <div class="feat-card__subtitle">Fertilitet → Graviditet → Föräldraskap</div>
+            </div>
+            <p class="feat-card__desc">Svensk föräldraskapssvit som täcker hela resan utan att byta app. SwiftData för lokal lagring. Fas-anpassad design: korall/ros för fertilitet, lavendel för graviditet, baby-blått för föräldraskap. Swift Charts med svenska BVC-percentiler. Kontraktionstimer med 5-1-1-detektering.</p>
+            <div class="feat-card__tags">
+              <span class="tag tag--purple">Föräldraskap</span>
+              <span class="tag">SwiftData</span>
+              <span class="tag">Swift Charts</span>
+              <span class="tag">BVC</span>
+              <span class="tag">iOS</span>
+            </div>
+          </article>
 
-        <!-- MindfulTogether -->
-        <article class="project-card">
-          <div class="project-card__header">
-            <div class="project-card__icon" style="background:var(--purple-dim)">🤝</div>
-            <div><div class="project-card__title">MindfulTogether</div>
-            <div class="project-card__subtitle">Delad mindfulness</div></div>
-          </div>
-          <p class="project-card__desc">Delad mindfulness-plattform för par och familjer. Gemensamma meditationsmål, synkroniserade sessioner och aktivitets-spårning via HealthKit. Byggt i SwiftUI med fokus på relationell hälsa — dela framsteg, utmana varandra och bygg gemensamma rutiner. Designat för att stärka band genom medveten närvaro och gemensam reflektion.</p>
-          <div class="project-card__tags">
-            <span class="tag tag--purple">Mindfulness</span>
-            <span class="tag">HealthKit</span>
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Social</span>
-          </div>
-        </article>
+          <!-- Lifetoken -->
+          <article class="feat-card">
+            <div class="feat-card__top">
+              <div class="feat-card__icon" style="background:var(--green-dim)">⏳</div>
+              <span class="feat-card__badge" style="background:var(--green-dim);color:var(--green)">RPG</span>
+            </div>
+            <div>
+              <div class="feat-card__title">Lifetoken</div>
+              <div class="feat-card__subtitle">Dystopiskt livs-RPG</div>
+            </div>
+            <p class="feat-card__desc">Dystopiskt livs-RPG inspirerat av "In Time" — varje sekund kostar en sekund av din balans. HealthKit konverterar steg, sömn och träning till spelvaluta. 14 zoner med unik lore. The Gazette: AI-genererad dagstidning om ditt spel. Neon-grön terminal-estetik. Äkta permadeath.</p>
+            <div class="feat-card__tags">
+              <span class="tag tag--green">Gamification</span>
+              <span class="tag">HealthKit</span>
+              <span class="tag">AI-generated</span>
+              <span class="tag">SwiftUI</span>
+              <span class="tag">Permadeath</span>
+            </div>
+          </article>
 
-      </div>
+        </div>
+      </section>
+
+      <!-- REMAINING PROJECTS -->
+      <section class="section" aria-label="Fler projekt">
+        <p class="section-label">Fler projekt</p>
+        <div class="projects-grid">
+
+          <article class="project-card">
+            <div class="project-card__header">
+              <div class="project-card__icon" style="background:var(--amber-dim)">⚡</div>
+              <div>
+                <div class="project-card__title">Eon-Y V5</div>
+                <div class="project-card__subtitle">Autonom kognitiv AI</div>
+              </div>
+            </div>
+            <p class="project-card__desc">Autonom kognitiv AI-arkitektur med JavaScriptCore som kognitiv motor och Swift Warden som säkerhetsskikt. Implementerar sex medvetandeteorier. Qwen3-integration med autonom webbläsare. CCI-Ω score 91/100.</p>
+            <div class="project-card__tags">
+              <span class="tag tag--amber">AI-arkitektur</span>
+              <span class="tag">Qwen3</span>
+              <span class="tag">JavaScriptCore</span>
+              <span class="tag">Emergens</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-card__header">
+              <div class="project-card__icon" style="background:var(--accent-dim)">🌙</div>
+              <div>
+                <div class="project-card__title">Lumvra</div>
+                <div class="project-card__subtitle">AI-sömncoach</div>
+              </div>
+            </div>
+            <p class="project-card__desc">AI-driven sömncoach med HealthKit-data — sömnfaser, aktivitet, HRV — och personliga sömnrekommendationer. Supabase-backend, dagliga briefingar med handlingsbara förslag. Mörk design för nattlig användning.</p>
+            <div class="project-card__tags">
+              <span class="tag tag--accent">Sömn</span>
+              <span class="tag">HealthKit</span>
+              <span class="tag">Supabase</span>
+              <span class="tag">SwiftUI</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-card__header">
+              <div class="project-card__icon" style="background:var(--purple-dim)">🤝</div>
+              <div>
+                <div class="project-card__title">MindfulTogether</div>
+                <div class="project-card__subtitle">Delad mindfulness</div>
+              </div>
+            </div>
+            <p class="project-card__desc">Delad mindfulness-plattform för par och familjer. Gemensamma meditationsmål, synkroniserade sessioner och aktivitetsspårning via HealthKit. Designat för att stärka band genom medveten närvaro.</p>
+            <div class="project-card__tags">
+              <span class="tag tag--purple">Mindfulness</span>
+              <span class="tag">HealthKit</span>
+              <span class="tag">SwiftUI</span>
+              <span class="tag">Social</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-card__header">
+              <div class="project-card__icon" style="background:var(--orange-dim)">💻</div>
+              <div>
+                <div class="project-card__title">Eon-Code v2</div>
+                <div class="project-card__subtitle">Autonom kodagent</div>
+              </div>
+            </div>
+            <p class="project-card__desc">Autonom kodagent — iOS-app som klient, macOS-komponent som styr Cursor och Xcode, kör git-kommandon och rapporterar byggstatus tillbaka. Hands-off autonoma körningar med full spårbarhet.</p>
+            <div class="project-card__tags">
+              <span class="tag tag--orange">AI-agent</span>
+              <span class="tag">iOS ↔ macOS</span>
+              <span class="tag">SwiftUI</span>
+              <span class="tag">Git</span>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
     </div>
-  </section>
+  </main>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
       <div class="footer__inner">
@@ -499,32 +440,33 @@
         <ul class="footer__links">
           <li><a href="mailto:Ted@Tuvaluna.com">Ted@Tuvaluna.com</a></li>
           <li><a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="chat.html">AI Chat</a></li>
+          <li><a href="wiki.html">Wiki</a></li>
         </ul>
       </div>
     </div>
   </footer>
 
   <script>
-    // Tema-toggle
     (function () {
-      var btn = document.querySelector('[data-theme-toggle]');
+      var btn = document.getElementById('theme-toggle');
       var html = document.documentElement;
+      var saved = localStorage.getItem('ts-theme');
+      if (saved) html.setAttribute('data-theme', saved);
       var theme = html.getAttribute('data-theme') || 'dark';
+      function moonIcon() { return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'; }
+      function sunIcon() { return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'; }
       function setTheme(t) {
-        theme = t;
-        html.setAttribute('data-theme', t);
+        theme = t; html.setAttribute('data-theme', t); localStorage.setItem('ts-theme', t);
         btn.setAttribute('aria-label', t === 'dark' ? 'Växla till ljust läge' : 'Växla till mörkt läge');
-        btn.innerHTML = t === 'dark'
-          ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
-          : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+        btn.innerHTML = t === 'dark' ? moonIcon() : sunIcon();
       }
+      if (saved === 'light') btn.innerHTML = sunIcon();
       btn.addEventListener('click', function () { setTheme(theme === 'dark' ? 'light' : 'dark'); });
     })();
-
-    // Mobilmeny
     (function () {
-      var hamburger = document.querySelector('.nav__hamburger');
-      var navLinks = document.querySelector('.nav__links');
+      var hamburger = document.getElementById('hamburger');
+      var navLinks = document.getElementById('nav-links');
       if (!hamburger || !navLinks) return;
       hamburger.addEventListener('click', function () {
         var isOpen = navLinks.classList.toggle('open');
