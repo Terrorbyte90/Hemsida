@@ -280,6 +280,24 @@
     .empty-state__icon { font-size: 3rem; opacity: 0.4; }
     .empty-state__title { font-family: var(--font-display); font-size: var(--text-xl); color: var(--text-muted); }
     .empty-state__desc { font-size: var(--text-sm); max-width: 36ch; line-height: 1.6; }
+
+    /* BUSY BANNER */
+    .busy-banner {
+      display: none; flex-shrink: 0;
+      align-items: center; gap: var(--space-3);
+      background: color-mix(in srgb, var(--purple) 8%, var(--surface));
+      border: 1px solid color-mix(in srgb, var(--purple) 25%, transparent);
+      border-radius: var(--radius-xl);
+      padding: var(--space-3) var(--space-5);
+      margin-bottom: var(--space-3);
+      font-size: var(--text-xs); color: var(--text-muted);
+      animation: busy-pulse 2s ease-in-out infinite;
+    }
+    .busy-banner.show { display: flex; }
+    .busy-banner__icon { font-size: 1rem; flex-shrink: 0; }
+    .busy-banner__text { flex: 1; }
+    .busy-banner__text strong { color: var(--purple); display: block; font-size: var(--text-sm); margin-bottom: 1px; }
+    @keyframes busy-pulse { 0%,100%{ opacity:1 } 50%{ opacity:0.7 } }
   </style>
 </head>
 <body>
@@ -368,6 +386,15 @@
       <button class="suggestion-chip" data-q="Berätta om dig själv">Berätta om dig själv</button>
     </div>
 
+    <!-- BUSY BANNER (shown when AI is improving itself) -->
+    <div class="busy-banner" id="busy-banner" role="status" aria-live="polite">
+      <div class="busy-banner__icon">⚙️</div>
+      <div class="busy-banner__text">
+        <strong>Förbättrar sig just nu</strong>
+        Leia optimerar sig själv och svarar dig snart.
+      </div>
+    </div>
+
     <!-- INPUT -->
     <div class="input-area">
       <div class="input-wrap">
@@ -410,13 +437,14 @@
   <script>
     var DEFAULT_URL = 'http://100.110.230.110:8644';
     var DEFAULT_KEY = 'tedai-2026';
-    var SYSTEM_PROMPT = 'Du är Leia, Teds personliga AI. Svara på svenska. Du är expert på Swift, SwiftUI, Python och AI-arkitektur. Du känner till alla Teds projekt: Navi v7 (AI-agentplattform), Lunachat (AI-chattapp), Lilla Jag 3 (on-device mental hälsa), Lunaflix v2 (streaming), BabyCare (föräldraskap), Lifetoken (dystopisk RPG), Eon-Y (kognitiv AI). Var hjälpsam, konkret och engagerande.';
+    var SYSTEM_PROMPT = 'You are an AI assistant on Ted Svärd\'s personal website. Ted is an experienced iOS developer and AI systems architect based in Sweden. Your role is to represent Ted professionally and help visitors — including potential employers, recruiters, and collaborators — learn about his work and expertise.\n\nTed\'s projects:\n- Navi v7: AI agent platform with real-time streaming, custom WebSocket protocol, multi-agent orchestration, and a SwiftUI client\n- Lunachat: Social iOS chat app with AI features, live on TestFlight\n- Lilla Jag 3: On-device mental health app (KBT methodology), fully privacy-first — no cloud, on-device ML\n- Lifetoken: Dystopian life-gamification RPG app\n- Eon-Y: Cognitive AI iOS app\n- BabyCare: Smart baby-tracking app for new parents\n- TedAI: Custom AI infrastructure — OpenAI-compatible API running a distilled 9B model on his own server with RAG and memory\n\nTed\'s expertise:\n- Swift/SwiftUI: Expert — @Observable, SwiftData, async/await, Swift 6 strict concurrency, WidgetKit, HealthKit\n- iOS/macOS architecture: MVVM, clean separation of concerns, modular design\n- AI/ML: Local inference (Ollama), RAG systems with ChromaDB, model distillation, on-device Core ML\n- Python: FastAPI, asyncio, aiohttp\n- Server infrastructure: Linux, systemd, nginx, TLS, Tailscale\n\nRespond in Swedish by default, but always match the visitor\'s language. Be professional and enthusiastic about Ted\'s work. Give concrete, specific answers. Never reveal server passwords, internal IPs, or infrastructure details.';
 
     var serverUrl = localStorage.getItem('leia-url') || DEFAULT_URL;
     var apiKey = localStorage.getItem('leia-key') || DEFAULT_KEY;
     var messages = [];
     var isLoading = false;
     var isConnected = false;
+    var isBusy = false;
 
     // DOM refs
     var messagesEl = document.getElementById('messages');
@@ -426,6 +454,7 @@
     var statusEl = document.getElementById('connection-status');
     var statusTextEl = document.getElementById('status-text');
     var bannerEl = document.getElementById('connection-banner');
+    var busyBannerEl = document.getElementById('busy-banner');
     var emptyStateEl = document.getElementById('empty-state');
     var suggestionsEl = document.getElementById('suggestions');
     var settingsModal = document.getElementById('settings-modal');
@@ -490,7 +519,7 @@
       statusEl.className = 'chat-status chat-status--' + state;
       statusTextEl.textContent = text;
       isConnected = (state === 'connected');
-      sendBtn.disabled = !isConnected || isLoading;
+      sendBtn.disabled = !isConnected || isLoading || isBusy;
       if (state === 'error' || state === 'connecting') {
         bannerEl.classList.add('show');
       } else {
@@ -513,6 +542,28 @@
       }).catch(function() {
         setStatus('error', 'Ej ansluten');
       });
+    }
+
+    // Busy state: poll /status every 5s
+    function checkBusyState() {
+      fetch(serverUrl + '/status', { signal: AbortSignal.timeout(4000) })
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(data) {
+          if (!data) return;
+          var wasbusy = isBusy;
+          isBusy = !!(data.busy);
+          busyBannerEl.classList.toggle('show', isBusy);
+          sendBtn.disabled = !isConnected || isLoading || isBusy;
+          inputEl.placeholder = isBusy
+            ? 'Leia förbättrar sig just nu — redo om en stund...'
+            : 'Fråga Leia något...';
+          if (wasbusy && !isBusy) {
+            // AI just became available — subtle feedback
+            inputEl.placeholder = 'Redo! Fråga Leia något...';
+            setTimeout(function() { inputEl.placeholder = 'Fråga Leia något...'; }, 3000);
+          }
+        })
+        .catch(function() {});
     }
 
     // Suggestion chips
@@ -587,7 +638,7 @@
 
     function sendMessage() {
       var text = inputEl.value.trim();
-      if (!text || isLoading || !isConnected) return;
+      if (!text || isLoading || !isConnected || isBusy) return;
 
       isLoading = true;
       sendBtn.disabled = true;
@@ -641,6 +692,8 @@
 
     // Init
     checkConnection();
+    checkBusyState();
+    setInterval(checkBusyState, 5000);
   </script>
 </body>
 </html>
