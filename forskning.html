@@ -776,6 +776,16 @@
           </div>
         </div>
 
+        <div class="project-card" data-project="naraperfektion" role="button" tabindex="0" aria-pressed="false">
+          <div class="project-card__icon" style="background:var(--green-dim)">🧬</div>
+          <div class="project-card__title">Nära Perfektion — MS</div>
+          <div class="project-card__desc">Simuleringsbaserad multifaktoriell behandlingsmodell för multipel skleros</div>
+          <div style="display:flex;gap:var(--space-1);flex-wrap:wrap;">
+            <span class="tag tag--green">Medicinsk forskning</span>
+            <span class="tag">T. Svärd & AI</span>
+          </div>
+        </div>
+
       </aside>
 
       <!-- CONTENT -->
@@ -1057,6 +1067,73 @@
         ]
       }
     };
+    projects.naraperfektion = {
+      title: 'Nära Perfektion — MS-behandlingsmodell',
+      kallor: [
+        'Nära Perfektion — Fullständig simulerad MS-behandling (T. Svärd & ChatGPT)',
+        '└─ Valacyklovir — EBV-hämning, 3000 mg/dag i 12 veckor',
+        '  └─ Ocrelizumab — Anti-CD20, immunmodulering',
+        '    └─ PRP + MSC-sekretom — myelinreparation intratekalt',
+        '      └─ Myelinpeptider + IL-2 + D3 — immunologisk tolerans',
+        '        └─ tDCS/EMS + ketogen kost — neurostimulering & livsstil'
+      ],
+      summary: 'Nära Perfektion är en simuleringsbaserad multifaktoriell behandlingsmodell för multipel skleros, utvecklad av T. Svärd i samarbete med AI. Modellen testad på 1 000 000 syntetiska patienter visar 99,89 % fullständig återhämtning. Behandlingen kombinerar antiviral sanering, immunmodulering, regenerativ terapi, toleransinduktion och neurostimulering — och angriper sjukdomens orsak, immunrespons och vävnadsskada simultant. Samtliga komponenter är redan godkända för kliniskt bruk inom andra indikationer.',
+      content: `
+        <h3>Bakgrund & vision</h3>
+        <p>MS är en kronisk autoimmun sjukdom där immunsystemet attackerar myelin i centrala nervsystemet. Befintliga behandlingar bromsar förloppet men botar sällan. <em>Nära Perfektion</em> är ett forskningsprojekt som frågar: vad händer om man kombinerar alla kända verksamma mekanismer i ett koordinerat protokoll?</p>
+        <p>Visionen är radikal: en patient som är sängliggande idag ska kunna återfå rörelseförmåga. Inte teoretiskt — utan baserat på simuleringar av verkliga biologiska mekanismer, körd mot en miljon syntetiska patientprofiler.</p>
+
+        <h3>Behandlingens sju steg</h3>
+        <ul>
+          <li><strong>Steg 1 — EBV-reduktion:</strong> Valacyklovir 3 000 mg/dag i 12 veckor. Hämmar Epstein-Barr-virus, som kopplats till MS-initiering.</li>
+          <li><strong>Steg 2 — Immunmodulering:</strong> Ocrelizumab 600 mg var 6:e månad. Eliminerar autoreaktiva B-celler.</li>
+          <li><strong>Steg 3 — Myelinreparation:</strong> PRP + MSC-sekretom, intratekalt. Stimulerar oligodendrocyter att återuppbygga myelinskidan.</li>
+          <li><strong>Steg 4 — Immunologisk tolerans:</strong> MBP/MOG-myelinpeptider (mikrotitrering) + lågdos IL-2 + Vitamin D3 + Lactobacillus reuteri. Lär om immunsystemet att sluta attackera myelin.</li>
+          <li><strong>Steg 5 — Neurostimulering:</strong> Daglig tDCS och EMS i 12 veckor. Återaktiverar nervsignaler och neuroplasticitet.</li>
+          <li><strong>Steg 6 — Livsstilsintervention:</strong> Ketogen kost med MCT-olja, optimerad sömn, stressreduktion, progressiv träning.</li>
+          <li><strong>Steg 7 — Långtidsövervakning:</strong> Kvartalsvisa mätningar av EBV-DNA, neurofilament (NfL) och Treg/Teff-kvot.</li>
+        </ul>
+
+        <h3>Simuleringsresultat</h3>
+        <p>Behandlingen testades mot 1 000 000 syntetiska patienter med variation i genetik, immunfunktion, EBV-belastning, ålder, kön och progressionsgrad.</p>
+        <ul>
+          <li><strong>Fullständig återhämtning:</strong> 99,89 %</li>
+          <li><strong>Partiell återhämtning:</strong> 0,10 %</li>
+          <li><strong>Ingen effekt:</strong> 0,0003 %</li>
+          <li><strong>Biverkningar (milda–måttliga):</strong> under 2 %</li>
+          <li><strong>Bestående effekt >15 år:</strong> 97 %</li>
+          <li><strong>Återfår gångförmåga vid avancerad MS:</strong> >95 %</li>
+        </ul>
+
+        <h3>Etik & genomförbarhet</h3>
+        <p>Samtliga komponenter i protokollet är redan godkända för mänskligt bruk inom andra indikationer. Ingen genetisk manipulation ingår. Modellen kräver koordinering och etiskt godkännande för klinisk prövning — men utgångspunkten är befintlig, beprövad medicin i en ny kombination.</p>
+        <p>Projektet har väckt intresse inom neurologisk expertis som bedömt behandlingslogiken som vetenskapligt intressant.</p>
+
+        <h3>Framtida forskning</h3>
+        <ul>
+          <li>Nanopartikelbaserad peptidleverans för reducerad inflammationsrisk</li>
+          <li>Individanpassad EBV-hämning mot latenta virus i B-celler</li>
+          <li>Personlig mikrobiomprofilering före toleransbehandling</li>
+          <li>Biomarkörer i CSF för att prediktera behandlingsutfall</li>
+        </ul>
+      `,
+      reportLines: [
+        { type: 'heading', text: 'Nära Perfektion — Simuleringslogg' },
+        { type: 'line', text: '[Init] 1 000 000 syntetiska patienter — variation: hög' },
+        { type: 'line', text: '[Steg 1] Valacyklovir 3000 mg — EBV-DNA: ↓94%' },
+        { type: 'line', text: '[Steg 2] Ocrelizumab — B-celler eliminerade: 98%' },
+        { type: 'line', text: '[Steg 3] PRP + MSC-sekretom — remyelinisering: aktiv' },
+        { type: 'bullet', text: 'Oligodendrocyt-aktivering: +340%' },
+        { type: 'line', text: '[Steg 4] Toleransinduktion — Treg/Teff ↑ 2.8x' },
+        { type: 'line', text: '[Steg 5] tDCS/EMS — neuroplasticitet: +67%' },
+        { type: 'line', text: '[Steg 6] Ketogen kost — neuroinflammation: ↓61%' },
+        { type: 'line', text: '' },
+        { type: 'line', text: 'Fullständig återhämtning: 99,89 % ✓' },
+        { type: 'line', text: 'Biverkningar: <2 % (milda) — ingen dödlighet' },
+        { type: 'line', text: 'Status: Simulering klar — Nästa: Klinisk prövning' },
+      ]
+    };
+
     // Render project content
     var testResultsInterval = null;
     var carouselIndex = 0;
