@@ -561,22 +561,11 @@
         .replace(/\n/g, '<br>');
     }
 
-    function renderBubble(bubble, fullText) {
-      var thinkEnd = fullText.indexOf('</think>');
-      if (fullText.startsWith('<think>')) {
-        if (thinkEnd === -1) {
-          var thinkContent = fullText.slice(7);
-          bubble.innerHTML = '<div class="think-block">' + escapeHtml(thinkContent) + '</div>';
-        } else {
-          var thinkContent = fullText.slice(7, thinkEnd);
-          var answer = fullText.slice(thinkEnd + 8).trim();
-          bubble.innerHTML =
-            (thinkContent ? '<div class="think-block">' + escapeHtml(thinkContent) + '</div>' : '') +
-            escapeHtml(answer);
-        }
-      } else {
-        bubble.innerHTML = escapeHtml(fullText);
-      }
+    function renderBubble(bubble, thinkText, answerText) {
+      if (answerText === undefined) { answerText = thinkText; thinkText = ''; }
+      bubble.innerHTML =
+        (thinkText ? '<div class="think-block">' + escapeHtml(thinkText) + '</div>' : '') +
+        escapeHtml(answerText);
       scrollToBottom();
     }
 
@@ -643,7 +632,7 @@
           reader.read().then(function(result) {
             clearTimeout(timeoutId);
             if (result.done) {
-              if (fullReply) messages.push({ role: 'assistant', content: fullReply });
+              if (fullAnswer || fullReply) messages.push({ role: 'assistant', content: fullAnswer || fullReply });
               isLoading = false;
               sendBtn.disabled = !inputEl.value.trim();
               return;
@@ -658,10 +647,13 @@
               if (data === '[DONE]') continue;
               try {
                 var chunk = JSON.parse(data);
-                var delta = (chunk.choices && chunk.choices[0] && chunk.choices[0].delta && chunk.choices[0].delta.content) || '';
-                if (delta) {
-                  fullReply += delta;
-                  renderBubble(bubble, fullReply);
+                var reasoning = (chunk.choices && chunk.choices[0] && chunk.choices[0].delta && chunk.choices[0].delta.reasoning) || '';
+                var content = (chunk.choices && chunk.choices[0] && chunk.choices[0].delta && chunk.choices[0].delta.content) || '';
+                if (reasoning) { fullThink += reasoning; }
+                if (content) { fullAnswer += content; }
+                if (reasoning || content) {
+                  fullReply = fullAnswer;
+                  renderBubble(bubble, fullThink, fullAnswer);
                 }
               } catch(e) {}
             }
