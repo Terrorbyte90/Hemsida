@@ -299,6 +299,13 @@
     .busy-banner__text { flex: 1; }
     .busy-banner__text strong { color: var(--purple); display: block; font-size: var(--text-sm); margin-bottom: 1px; }
     @keyframes busy-pulse { 0%,100%{ opacity:1 } 50%{ opacity:0.7 } }
+
+    /* THINK BLOCK */
+    .think-block {
+      font-size: var(--text-xs); color: var(--text-faint); font-style: italic;
+      border-left: 2px solid var(--border); padding: var(--space-2) var(--space-3);
+      margin-bottom: var(--space-3); line-height: 1.6; white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
@@ -337,7 +344,7 @@
           <div class="chat-header__avatar" aria-hidden="true">✦</div>
           <div>
             <div class="chat-header__name">Leia</div>
-            <div class="chat-header__sub">Byggd av T. Svärd · Distillerad fr. Claude Opus 4.6 · ChromaDB · Swift</div>
+            <div class="chat-header__sub">Byggd av T. Svärd · Distillerad fr. Claude Opus 4.7 · Gemma 4 · Swift</div>
           </div>
         </div>
         <div class="chat-status chat-status--connecting" id="connection-status">
@@ -411,7 +418,7 @@
   <script>
     var DEFAULT_URL = 'https://82.165.169.52.nip.io/ai';
     var DEFAULT_KEY = 'tedai-2026';
-    var SYSTEM_PROMPT = 'You are an AI assistant on Ted Svärd\'s personal website. Ted is an experienced iOS developer and AI systems architect based in Sweden. Your role is to represent Ted professionally and help visitors — including potential employers, recruiters, and collaborators — learn about his work and expertise.\n\nTed\'s projects:\n- Ikarus: Advanced AI agent platform with real-time streaming, custom WebSocket protocol, multi-agent orchestration, and a SwiftUI client — Ted\'s most ambitious project\n- Lunachat: Social iOS chat app with AI features, live on TestFlight\n- Lilla Jag 3: On-device mental health app (KBT methodology), fully privacy-first — no cloud, on-device ML\n- Lifetoken: Dystopian life-gamification RPG app where real-life habits shape your character\n- Eon-Y: Cognitive AI iOS app for mental clarity and focus\n- BabyCare: Smart baby-tracking app for new parents — sleep, feeding, growth\n- TedAI: Custom AI infrastructure — OpenAI-compatible API running a distilled 9B model on his own server with RAG and memory\n\nTed\'s expertise:\n- Swift/SwiftUI: Expert — @Observable, SwiftData, async/await, Swift 6 strict concurrency, WidgetKit, HealthKit\n- iOS/macOS architecture: MVVM, clean separation of concerns, modular design\n- AI/ML: Local inference (Ollama), RAG systems with ChromaDB, model distillation, on-device Core ML\n- Python: FastAPI, asyncio, aiohttp\n- Server infrastructure: Linux, systemd, nginx, TLS, Tailscale\n\nRespond in Swedish by default, but always match the visitor\'s language. Be professional and enthusiastic about Ted\'s work. Give concrete, specific answers. Never reveal server passwords, internal IPs, or infrastructure details.';
+    var SYSTEM_PROMPT = 'You are an AI assistant on Ted Svärd\'s personal website. Ted is an experienced iOS developer and AI systems architect based in Sweden. Your role is to represent Ted professionally and help visitors — including potential employers, recruiters, and collaborators — learn about his work and expertise.\n\nTed\'s projects:\n- Ikarus: Advanced AI agent platform with real-time streaming, custom WebSocket protocol, multi-agent orchestration, and a SwiftUI client — Ted\'s most ambitious project\n- Lunachat: Social iOS chat app with AI features, live on TestFlight\n- Lilla Jag 3: On-device mental health app (KBT methodology), fully privacy-first — no cloud, on-device ML\n- Lifetoken: Dystopian life-gamification RPG app where real-life habits shape your character\n- Eon-Y: Cognitive AI iOS app for mental clarity and focus\n- BabyCare: Smart baby-tracking app for new parents — sleep, feeding, growth\n- TedAI: Custom AI infrastructure — OpenAI-compatible API running Gemma 4 (distilled from Claude Opus 4.7) on his own server\n\nTed\'s expertise:\n- Swift/SwiftUI: Expert — @Observable, SwiftData, async/await, Swift 6 strict concurrency, WidgetKit, HealthKit\n- iOS/macOS architecture: MVVM, clean separation of concerns, modular design\n- AI/ML: Local inference (Ollama), RAG systems with ChromaDB, model distillation, on-device Core ML\n- Python: FastAPI, asyncio, aiohttp\n- Server infrastructure: Linux, systemd, nginx, TLS, Tailscale\n\nRespond in Swedish by default, but always match the visitor\'s language. Be professional and enthusiastic about Ted\'s work. Give concrete, specific answers. Never reveal server passwords, internal IPs, or infrastructure details.';
 
     var serverUrl = DEFAULT_URL;
     var apiKey = DEFAULT_KEY;
@@ -546,8 +553,31 @@
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
         .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/### (.+)/g, '<strong>$1</strong>')
+        .replace(/## (.+)/g, '<strong>$1</strong>')
         .replace(/\n/g, '<br>');
+    }
+
+    function renderBubble(bubble, fullText) {
+      var thinkEnd = fullText.indexOf('</think>');
+      if (fullText.startsWith('<think>')) {
+        if (thinkEnd === -1) {
+          var thinkContent = fullText.slice(7);
+          bubble.innerHTML = '<div class="think-block">' + escapeHtml(thinkContent) + '</div>';
+        } else {
+          var thinkContent = fullText.slice(7, thinkEnd);
+          var answer = fullText.slice(thinkEnd + 8).trim();
+          bubble.innerHTML =
+            (thinkContent ? '<div class="think-block">' + escapeHtml(thinkContent) + '</div>' : '') +
+            escapeHtml(answer);
+        }
+      } else {
+        bubble.innerHTML = escapeHtml(fullText);
+      }
+      scrollToBottom();
     }
 
     function addMessage(role, content) {
@@ -584,7 +614,7 @@
       showTyping();
 
       var body = {
-        model: 'kwangsuklee/Qwen3.5-9B.Q4_K_M-Claude-4.6-Opus-Reasoning-Distilled-v2:latest',
+        model: 'gemma4-uncensored',
         messages: [{ role: 'system', content: SYSTEM_PROMPT }].concat(messages),
         stream: true,
         max_tokens: 600
@@ -631,8 +661,7 @@
                 var delta = (chunk.choices && chunk.choices[0] && chunk.choices[0].delta && chunk.choices[0].delta.content) || '';
                 if (delta) {
                   fullReply += delta;
-                  bubble.innerHTML = escapeHtml(fullReply);
-                  scrollToBottom();
+                  renderBubble(bubble, fullReply);
                 }
               } catch(e) {}
             }
