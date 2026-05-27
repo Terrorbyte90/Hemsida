@@ -606,7 +606,8 @@
         model: 'gemma4-uncensored',
         messages: [{ role: 'system', content: SYSTEM_PROMPT }].concat(messages),
         stream: true,
-        max_tokens: 600
+        max_tokens: 800,
+        think: false
       };
 
       var controller = new AbortController();
