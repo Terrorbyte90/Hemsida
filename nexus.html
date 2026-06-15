@@ -1102,14 +1102,14 @@
     };
 
     function getState(h) {
-      if(h>=23||h<6.5)  return 'SLEEPING';
-      if(h<7.5)          return 'WAKING';
-      if(h<8.5)          return 'AT_DESK';
-      if(h<12)           return 'AT_PRIMARY';
-      if(h<13.5)         return 'PLAZA_SOCIAL';
-      if(h<17)           return 'AT_PRIMARY';
-      if(h<20)           return 'WANDERING';
-      if(h<22.5)         return 'RESTING_HOME';
+      if(h>=23.5||h<6.5) return 'SLEEPING';
+      if(h<7.5)           return 'WAKING';
+      if(h<8.5)           return 'AT_DESK';
+      if(h<12)            return 'AT_PRIMARY';
+      if(h<13.5)          return 'PLAZA_SOCIAL';
+      if(h<17.5)          return 'AT_PRIMARY';
+      if(h<22)            return 'WANDERING';
+      if(h<23.5)          return 'RESTING_HOME';
       return 'SLEEPING';
     }
 
@@ -1168,16 +1168,17 @@
     ];
 
     function avoidObstacles(pos, target) {
-      // Returnerar ett justerat mål som undviker hinder
+      let push = null;
       for(const obs of NAV_OBSTACLES) {
         const dx2=pos.x-obs.x, dz2=pos.z-obs.z;
         const d=Math.sqrt(dx2*dx2+dz2*dz2);
-        if(d<obs.r+1.5 && d>0.1) {
-          // Skjut ut agenten ur hindret
-          return pos.clone().add(new THREE.Vector3(dx2/d*(obs.r+2-d), 0, dz2/d*(obs.r+2-d)));
+        if(d<obs.r+1.2 && d>0.1) {
+          const strength=(obs.r+1.2-d)*0.25; // gradvis push, ej teleport
+          if(!push) push=new THREE.Vector3();
+          push.x+=dx2/d*strength; push.z+=dz2/d*strength;
         }
       }
-      return null; // Inga kollisioner
+      return push ? pos.clone().add(push) : null;
     }
 
     function isInsideBuilding(pos) {
@@ -2168,15 +2169,22 @@
         const agentInside = ap && Math.abs(ap.x-b.cx)<b.hw+0.5 && Math.abs(ap.z-b.cz)<b.hd+0.5;
         const camNear = Math.abs(cp.x-b.cx)<b.hw+3 && Math.abs(cp.z-b.cz)<b.hd+3;
         const inside = agentInside || (autoCam && camNear);
-        const tgtOp = inside ? 0.12 : 1.0;
+        const _tmp=new THREE.Vector3();
         b.group.traverse(c=>{
           if(!c.isMesh) return;
           const base=c.userData.baseOp!==undefined?c.userData.baseOp:1;
+          let tgtOp;
+          if(inside){
+            c.getWorldPosition(_tmp);
+            tgtOp = (_tmp.y<1.6) ? 0.15 : 0.0; // baslist genomskinlig, övre delar osynliga
+          } else {
+            tgtOp = base;
+          }
           const cur=c.material.opacity;
-          const next=cur+(tgtOp*base-cur)*0.18;
+          const next=cur+(tgtOp-cur)*0.18;
           c.material.opacity=next;
           c.material.depthWrite=next>0.5;
-          c.material.visible=next>0.01;
+          c.material.visible=next>0.02;
           c.material.side=inside?THREE.DoubleSide:THREE.FrontSide;
         });
       });
@@ -2290,8 +2298,9 @@
           // Hinder-avvikelse: skjut ut agenten ur väggar/fontän
           const pushed=avoidObstacles(pos, a.target);
           if(pushed){ pos.x=pushed.x; pos.z=pushed.z; }
-          const spd=2.8, step=Math.min(spd*dt,dist2), n2=1/dist2;
+          const spd=2.2, step=Math.min(spd*dt,dist2), n2=1/dist2;
           pos.x+=dx*n2*step; pos.z+=dz*n2*step;
+          pos.y=0; // sätt direkt, ingen lerp
           a.mesh.rotation.y=Math.atan2(dx,dz);
         }
 
