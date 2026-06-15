@@ -517,7 +517,7 @@
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
+    renderer.toneMappingExposure = 0.85;
 
     function resize() {
       const w = viewport.clientWidth, h = viewport.clientHeight;
@@ -532,7 +532,7 @@
 
     // ── CAMERA ───────────────────────────────────────────────
     const camera = new THREE.PerspectiveCamera(52, 4/3, 0.1, 500);
-    camera.position.set(5, 5.5, 10);
+    camera.position.set(7, 5.5, 9);
 
     // ── CONTROLS ─────────────────────────────────────────────
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -541,7 +541,7 @@
     controls.minDistance = 3.5;
     controls.maxDistance = 22;
     controls.maxPolarAngle = Math.PI / 2.08;
-    controls.target.set(0, 1.5, 0);
+    controls.target.set(0, 1.0, 0);
 
     // ── POST-PROCESSING ───────────────────────────────────────
     const composer = new EffectComposer(renderer);
@@ -603,7 +603,7 @@
         ambientLight.intensity = 0.5;
         sunLight.intensity = 0;
         renderer.toneMappingExposure = 1.8;
-        bloom.strength = 1.2;
+        bloom.strength = 0.9;
         // Show stars
         if (starField) starField.visible = true;
         // Night lamps brighter
@@ -627,11 +627,11 @@
         ambientLight.color.set(0xffcc88);
         ambientLight.intensity = 1.5 + t * 1.5;
         sunLight.color.set(0xff8833);
-        sunLight.intensity = 1.5 + t * 2;
-        renderer.toneMappingExposure = 1.2 + t * 0.3;
-        bloom.strength = 0.8;
+        sunLight.intensity = 1.0 + t * 1.5;
+        renderer.toneMappingExposure = 0.85 + t * 0.15;
+        bloom.strength = 0.45;
         skyUniforms['turbidity'].value = 5;
-        skyUniforms['rayleigh'].value = 4;
+        skyUniforms['rayleigh'].value = 2.5;
         if (starField) starField.visible = (elev < 0.12);
         lampLights.forEach(l => l.intensity = 1.2 - t * 0.8);
       } else {
@@ -643,7 +643,7 @@
         sunLight.color.set(0xfff5e0);
         sunLight.intensity = 3.5 + t;
         renderer.toneMappingExposure = 0.9;
-        bloom.strength = 0.4;
+        bloom.strength = 0.3;
         skyUniforms['turbidity'].value = 2.5;
         skyUniforms['rayleigh'].value = 2;
         if (starField) starField.visible = false;
@@ -1058,16 +1058,16 @@
     // ── EYES (layered: socket → iris → pupil → highlight) ────
     // Eye socket (dark recessed area)
     const sockMat = new THREE.MeshStandardMaterial({ color: 0x0a0d14, roughness: 1 });
-    SPH(0.055, sockMat, -0.1,  0.05, 0.19, headPivot, 1.1, 1.0, 0.5);
-    SPH(0.055, sockMat,  0.1,  0.05, 0.19, headPivot, 1.1, 1.0, 0.5);
+    SPH(0.036, sockMat, -0.1,  0.05, 0.195, headPivot, 1.2, 0.9, 0.4);
+    SPH(0.036, sockMat,  0.1,  0.05, 0.195, headPivot, 1.2, 0.9, 0.4);
     // Iris (colored, subtle glow)
     const irisMat = new THREE.MeshStandardMaterial({ color: 0x3a7fd5, emissive: 0x1a44aa, emissiveIntensity: 0.8, roughness: 0.3 });
-    SPH(0.038, irisMat, -0.1, 0.05, 0.205, headPivot, 1.1, 1.0, 0.5);
-    SPH(0.038, irisMat,  0.1, 0.05, 0.205, headPivot, 1.1, 1.0, 0.5);
+    SPH(0.032, irisMat, -0.1, 0.05, 0.207, headPivot, 1.1, 1.0, 0.45);
+    SPH(0.032, irisMat,  0.1, 0.05, 0.207, headPivot, 1.1, 1.0, 0.45);
     // Pupil
     const pupilMat = new THREE.MeshStandardMaterial({ color: 0x050810, roughness: 1 });
-    SPH(0.022, pupilMat, -0.1, 0.05, 0.215, headPivot, 1.0, 1.0, 0.4);
-    SPH(0.022, pupilMat,  0.1, 0.05, 0.215, headPivot, 1.0, 1.0, 0.4);
+    SPH(0.018, pupilMat, -0.1, 0.05, 0.212, headPivot, 1.0, 1.0, 0.4);
+    SPH(0.018, pupilMat,  0.1, 0.05, 0.212, headPivot, 1.0, 1.0, 0.4);
     // Specular highlight
     const hiMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.6, roughness: 0 });
     SPH(0.010, hiMat, -0.086, 0.062, 0.218, headPivot);
