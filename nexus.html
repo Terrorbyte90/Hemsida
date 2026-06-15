@@ -294,9 +294,9 @@
         <h1 class="hero__title">Nexus — <em>Agentvärld</em></h1>
         <p class="hero__desc">
           En levande digital stad där autonoma agenter bygger samhällen, formar relationer och
-          fattar egna beslut — helt utan LLM-styrning. Observera Elin, Mira, Kai, Aria och Nox
-          i deras dagliga liv: arbete, vila, sociala möten — drivna av ett tidsbaserat
-          tillståndssystem med needs som energi, social kontakt, kunskap och välmående.
+          fattar egna beslut — drivna av fem olika AI-modeller via OpenRouter. Observera Elin, Mira, Kai, Aria och Nox
+          i deras dagliga liv: arbete, vila, sociala möten — med riktiga minnen, relationer
+          och dagböcker. Deras behov av energi, social kontakt och kunskap styr när de agerar.
         </p>
         <div class="hero__meta">
           <div class="hero__stat">
@@ -516,6 +516,13 @@
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     import { Sky } from 'three/addons/objects/Sky.js';
+
+    // Global error display
+    window.addEventListener('error', e => {
+      const vp = document.getElementById('world-viewport');
+      if(vp) { vp.style.background='#0a0005'; vp.innerHTML='<div style="color:#f87171;font-family:monospace;font-size:12px;padding:20px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center"><div style="font-size:2rem;margin-bottom:10px">⚠</div><div>JS-fel: '+e.message+'</div><div style="opacity:0.5;margin-top:8px">'+e.filename+':'+e.lineno+'</div></div>'; }
+    });
+    window.addEventListener('unhandledrejection', e => { console.error('Unhandled:', e.reason); });
 
     // Theme & nav
     document.getElementById('theme-toggle').addEventListener('click', () => {
@@ -817,7 +824,7 @@
       {name:'Mira',role:'Den sociala vävaren',model:'google/gemini-3.1-flash-lite',color:0x1a7a5a,hair:0x3a2810,home:new THREE.Vector3(-18,0,-52),primary:new THREE.Vector3(20,0,28),dot:'#2aaa7a'},
       {name:'Kai', role:'Byggaren',model:'openai/gpt-5-nano',color:0x6a2a8a,hair:0x111111,home:new THREE.Vector3(38,0,-46),primary:new THREE.Vector3(28,0,6),dot:'#8a3aaa'},
       {name:'Aria',role:'Utforskaren',model:'deepseek/deepseek-v4-flash',color:0x9a5a1a,hair:0xff9a40,home:new THREE.Vector3(58,0,-24),primary:new THREE.Vector3(-15,0,32),dot:'#ca7a2a'},
-      {name:'Nox', role:'Arkivarien',model:'anthropic/claude-haiku-4.5',color:0x2a2a4a,hair:0x888888,home:new THREE.Vector3(-58,0,4),primary:new THREE.Vector3(-26,0,8),dot:'#4a4a6a'},
+      {name:'Nox', role:'Arkivarien',model:'anthropic/claude-haiku-4-5',color:0x2a2a4a,hair:0x888888,home:new THREE.Vector3(-58,0,4),primary:new THREE.Vector3(-26,0,8),dot:'#4a4a6a'},
     ];
     const PLAZA = new THREE.Vector3(0,0,0);
     const WSPOT = [new THREE.Vector3(-20,0,-14),new THREE.Vector3(22,0,-16),new THREE.Vector3(28,0,6),new THREE.Vector3(-15,0,32),new THREE.Vector3(20,0,28),new THREE.Vector3(-26,0,8),new THREE.Vector3(8,0,-10),new THREE.Vector3(-10,0,12),new THREE.Vector3(15,0,5)];
@@ -1521,7 +1528,7 @@
       'google/gemini-3.1-flash-lite': { in: 0.25/1e6,  out: 1.5/1e6  },
       'openai/gpt-5-nano':            { in: 0.05/1e6,  out: 0.4/1e6   },
       'deepseek/deepseek-v4-flash':   { in: 0.09/1e6,  out: 0.18/1e6  },
-      'anthropic/claude-haiku-4.5':   { in: 1.0/1e6,   out: 5.0/1e6   },
+      'anthropic/claude-haiku-4-5':   { in: 1.0/1e6,   out: 5.0/1e6   },
     };
     const tokenStats = { totalIn:0, totalOut:0, totalCost:0, byAgent:{} };
 
@@ -1710,7 +1717,10 @@
         const usage=d.usage||{};
         trackTokens(agent.name, agent.model, usage.prompt_tokens||150, usage.completion_tokens||80);
         // Parse response
-        const raw=d.choices[0].message.content.trim();
+        const msg=d.choices[0].message;
+        // Some reasoning models return content:null with reasoning field
+        const raw=(msg.content||msg.reasoning||'').trim();
+        if(!raw) throw new Error('Empty response from model');
         const jsonMatch=raw.match(/\{[\s\S]*\}/);
         if(!jsonMatch) throw new Error('No JSON in response');
         return JSON.parse(jsonMatch[0]);
