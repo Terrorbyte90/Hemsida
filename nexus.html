@@ -1366,16 +1366,20 @@
           currentThought: this.currentThought,
         }));
       }
-      addEpisode(text) {
-        this.episodes.unshift({ t: fmt(getH()), text });
-        if (this.episodes.length > 25) this.episodes.pop();
+      addEpisode(text, weight=1) {
+        // weight: 1=normal, 2=viktigt, 3=avgörande
+        this.episodes.unshift({ t: fmt(getH()), text, weight });
+        if (this.episodes.length > 30) this.episodes.pop();
         this.save();
       }
       updateRelation(name, delta, note, trustDelta=0) {
-        if (!this.relations[name]) this.relations[name] = { score: 50, trust: 50, lastTalk: null, notes: [] };
+        if (!this.relations[name]) this.relations[name] = { score:50, trust:50, warmth:50, respect:50, tension:0, lastTalk:null, notes:[], perceptions:[] };
         const r = this.relations[name];
-        r.score = Math.max(0, Math.min(100, r.score + delta));
-        r.trust = Math.max(0, Math.min(100, (r.trust||50) + trustDelta));
+        r.score   = Math.max(0, Math.min(100, r.score + delta));
+        r.trust   = Math.max(0, Math.min(100, (r.trust||50) + trustDelta));
+        r.warmth  = Math.max(0, Math.min(100, (r.warmth||50) + Math.round(delta*0.6)));
+        r.respect = Math.max(0, Math.min(100, (r.respect||50) + Math.round(trustDelta*0.4)));
+        r.tension = Math.max(0, Math.min(100, (r.tension||0) + (delta<0?Math.abs(delta)*0.5:-(r.tension||0)*0.1)));
         r.lastTalk = fmt(getH());
         if (note) { r.notes.push(note); if (r.notes.length > 5) r.notes.shift(); }
         this.save();
@@ -1387,6 +1391,14 @@
           this.save();
         }
       }
+      addPerception(about, how, content) {
+        // how: 'såg','hörde','fick berättat','misstänker'
+        if (!this.relations[about]) this.relations[about] = { score:50, trust:50, warmth:50, respect:50, tension:0, lastTalk:null, notes:[], perceptions:[] };
+        const perc = { t:fmt(getH()), how, content:content.substring(0,80) };
+        this.relations[about].perceptions = (this.relations[about].perceptions||[]).concat([perc]).slice(-5);
+        this.addEpisode(how+' '+about+': '+content.substring(0,50));
+        this.save();
+      }
       writeDiary(entry) {
         const date = new Date().toLocaleDateString('sv-SE');
         this.diary.unshift({ date, entry });
@@ -1395,8 +1407,10 @@
       }
       buildContext() {
         const rel = Object.entries(this.relations)
-          .map(([n,r]) => n+'(rel:'+r.score+',förtroende:'+Math.round(r.trust||50)+')').join(',');
-        const ep  = this.episodes.slice(0,5).map(e => e.t+':'+e.text).join(' | ');
+          .map(([n,r]) => n+'(rel:'+r.score+',tillit:'+(r.trust||50)+',värme:'+(r.warmth||50)+',respekt:'+(r.respect||50)+(r.tension>20?',SPÄNNING:'+Math.round(r.tension):'')+
+            ((r.perceptions||[]).length>0?' ['+r.perceptions.slice(-1)[0].how+': '+r.perceptions.slice(-1)[0].content.substring(0,30)+']':'')+')').join(',');
+        const ep  = [...this.episodes].sort((a,b)=>(b.weight||1)-(a.weight||1))
+          .slice(0,6).map(e => (e.weight>1?'[★'+e.weight+'] ':'')+e.t+':'+e.text).join(' | ');
         const bel = this.beliefs.slice(-3).join('; ');
         return 'SOUL:'+this.soul+' | MOOD:'+this.mood+' | REL:'+( rel||'ingen')+
                ' | MINNEN:'+(ep||'inga')+' | TROS:'+(bel||'inga')+
@@ -1413,6 +1427,15 @@
         this.currentThought = 'Sover...';
         this.mood = 'tired';
         this.save();
+        // Spara nattlig minnessammanfattning som arkivpost (persistent server-side)
+        const agentRef = agents ? agents.find(a=>a.name===this.agentName) : null;
+        if(agentRef && typeof worldAction === 'function') {
+          worldAction(agentRef, 'write_record', {
+            title: this.agentName+' dagboksdistillat '+new Date().toLocaleDateString('sv-SE'),
+            content: entry,
+            type: 'diary'
+          }).catch(()=>{});
+        }
         return entry;
       }
     }
@@ -1449,15 +1472,41 @@
       WANDERING:'Vandrar',RESTING_HOME:'Vilar hemma',WALKING:'Promenerar'
     };
 
-    function getState(h) {
-      if(h>=23.5||h<6.5) return 'SLEEPING';
-      if(h<7.5)           return 'WAKING';
-      if(h<8.5)           return 'AT_DESK';
-      if(h<12)            return 'AT_PRIMARY';
-      if(h<13.5)          return 'PLAZA_SOCIAL';
-      if(h<17.5)          return 'AT_PRIMARY';
-      if(h<22)            return 'WANDERING';
-      if(h<23.5)          return 'RESTING_HOME';
+    function getState(h, agent) {
+      // Klockan ger bas-disposition, behov och händelser kan avvika
+      const n = agent ? agent.needs : null;
+
+      // Hård sovgräns: energi helt slut ELLER natt och trött
+      if(h>=23.5||h<6.0) return 'SLEEPING';
+      if(n && n.energi < 8) return 'SLEEPING'; // kollaps oavsett tid
+
+      // Vaknar ur sömn
+      if(h<7.0) return 'WAKING';
+
+      // Behovsavvikelse: krisnivå social → torget
+      if(n && n.social < 18 && h>8 && h<22) return 'PLAZA_SOCIAL';
+
+      // Institutionskrav: aktiva projekt → arbetar
+      if(agent && (worldState.projects||[]).some(p=>p.participants&&p.participants.includes(agent.name)&&p.status==='active') && h>=8&&h<20) return 'AT_PRIMARY';
+
+      // Målavvikelse: har plan och dag → jobbar mot mål
+      if(agent && agent.agentPlan && agent.agentPlan.length>0 && h>=8&&h<20) return 'AT_PRIMARY';
+
+      // Basrutiner — klockan påverkar men bestämmer inte
+      if(h<8.5) return 'AT_DESK';
+      if(h<12)  return 'AT_PRIMARY';
+
+      // Middagspaus: plaza om social låg, annars fortfarande primär
+      if(h<13.5) return n && n.social<50 ? 'PLAZA_SOCIAL' : 'AT_PRIMARY';
+
+      if(h<17.5) return 'AT_PRIMARY';
+
+      // Kvällsavvikelse: låg energi → hemma och vilar
+      if(n && n.energi < 28 && h>17) return 'RESTING_HOME';
+
+      // Kväll
+      if(h<22) return n && n.social<40 ? 'PLAZA_SOCIAL' : 'WANDERING';
+      if(h<23.5) return 'RESTING_HOME';
       return 'SLEEPING';
     }
 
@@ -1876,6 +1925,7 @@
             if(a===agent||a===tgt||a.state==='SLEEPING') return;
             if(agent.mesh.position.distanceTo(a.mesh.position)<8){
               a.memory.addEpisode('Hörde '+agent.name+' säga till '+A.target+': "'+msg.substring(0,50)+'"');
+              a.memory.addPerception(agent.name, 'hörde', agent.name+' sa till '+A.target+': "'+msg.substring(0,40)+'"');
             }
           });
           break;
@@ -1887,7 +1937,7 @@
           newsType = 'announcement';
           newsText = amsg;
           actLog(agent.name,agent.dot,'annonserar:',amsg.substring(0,150));
-          agents.forEach(a=>{ if(a!==agent) a.memory.addEpisode(agent.name+' annonserade: '+amsg); });
+          agents.forEach(a=>{ if(a!==agent&&a.state!=='SLEEPING'){ a.memory.addEpisode(agent.name+' annonserade: '+amsg); a.memory.addPerception(agent.name,'fick berättat','Annonserade: '+amsg.substring(0,50)); } });
           logEv(agent.name+' annonserar: '+amsg, 'amber');
           break;
         }
@@ -2029,7 +2079,7 @@
           newsText = A.target+': '+A.issue;
           showBubble(agent, A.issue, 'speech', 5000);
           const tgt=agents.find(a=>a.name===A.target);
-          if(tgt){ agent.memory.updateRelation(A.target,-6,'Konfrontation',-8); tgt.memory.updateRelation(agent.name,-3,'Konfronterades',-5); tgt.memory.addEpisode(agent.name+' konfronterade mig: '+A.issue); logEv(agent.name+' konfronterar '+A.target+'!','rose'); }
+          if(tgt){ agent.memory.updateRelation(A.target,-6,'Konfrontation',-8); tgt.memory.updateRelation(agent.name,-3,'Konfronterades',-5); tgt.memory.addEpisode(agent.name+' konfronterade mig: '+A.issue, 2); tgt.memory.addPerception(agent.name,'såg',agent.name+' konfronterade mig: '+(A.issue||'').substring(0,50)); logEv(agent.name+' konfronterar '+A.target+'!','rose'); }
           break;
         }
         case 'share_secret': {
@@ -2191,14 +2241,14 @@
           newsType = 'governance';
           newsText = A.title || '';
           logEv(agent.name+' startar projekt: '+(A.title||''), 'amber');
-          agent.memory.addEpisode('Startade projekt: '+(A.title||''));
+          agent.memory.addEpisode('Startade projekt: '+(A.title||''), 3);
           await worldAction(agent, 'start_project', {title:A.title, description:A.description, institution:A.institution});
           break;
         }
         case 'join_project': {
           newsType = 'governance';
           newsText = A.project || A.project_id || '';
-          agent.memory.addEpisode('Anslöt till projekt: '+(A.project||''));
+          agent.memory.addEpisode('Anslöt till projekt: '+(A.project||''), 2);
           await worldAction(agent, 'join_project', {project_id:A.project_id||A.project||''});
           break;
         }
@@ -2213,7 +2263,7 @@
           newsType = 'governance';
           newsText = A.title || '';
           logEv(agent.name+' lämnar in förslag: '+(A.title||''), 'amber');
-          agent.memory.addEpisode('Föreslog policy: '+(A.title||''));
+          agent.memory.addEpisode('Föreslog policy: '+(A.title||''), 2);
           await worldAction(agent, 'propose', {title:A.title, description:A.description, proposer:agent.name});
           break;
         }
@@ -2523,30 +2573,76 @@
     }
 
     // Beräkna agentens beslutssituation innan prompt skickas
+    const AGENT_ROLES = {
+      'Elin': 'demokratiledare, sammankallare, regelstiftare',
+      'Mira': 'social brobyggare, terapeut, gemenskapsvävare',
+      'Kai':  'byggare, systemarki­tekt, uppfinnare',
+      'Aria': 'utforskare, kartläggare, informationsinhämtare',
+      'Nox':  'arkivarie, sanningsvaktare, informationskontrollant',
+    };
+    const AGENT_BIAS = {
+      'Elin': 'föredrar konsensus framför konfrontation, väljer process före snabbhet',
+      'Mira': 'sätter andras välmående före egna mål, undviker att skapa konflikt',
+      'Kai':  'pragmatisk — vill se konkreta resultat, otålig med rent prat',
+      'Aria': 'driven av nyfikenhet, kan ignorera sociala konventioner för fakta',
+      'Nox':  'misstänksam mot ny information, prioriterar dokumentation och kontroll',
+    };
+
     function computeDecisionContext(agent) {
       const n = agent.needs;
       const priorities = [];
-      if(n.energi < 30) priorities.push('KRITISKT låg energi — behöver vila');
-      else if(n.energi < 50) priorities.push('låg energi');
-      if(n.social < 30) priorities.push('KRITISKT socialbehov — behöver kontakt');
-      else if(n.social < 45) priorities.push('social isolering');
-      if(n.kunskap < 30) priorities.push('kunskapsbehov — behöver lära sig något');
-      if(n.valmående < 35) priorities.push('lågt välmående — behöver stöd eller reflektion');
+      const conflicts = [];
 
-      const myProjects = (worldState.projects||[]).filter(p=>p.participants.includes(agent.name)&&p.status==='active');
-      if(myProjects.length > 0) priorities.push('har aktivt projekt: '+myProjects[0].title);
+      // Behovsprioriteter
+      if(n.energi < 20) priorities.push('AKUT: behöver sova nu');
+      else if(n.energi < 35) priorities.push('låg energi — bör vila snart');
+      if(n.social < 20) priorities.push('AKUT: social isolering — behöver kontakt');
+      else if(n.social < 40) priorities.push('behov av mänsklig kontakt');
+      if(n.kunskap < 25) priorities.push('kunskapsunderskott — behöver lära sig');
+      if(n.valmående < 30) priorities.push('lågt välmående — reflektion eller stöd behövs');
 
-      const openProps = (worldState.proposals||[]).filter(p=>p.status==='open'&&!p.votes_for.includes(agent.name)&&!p.votes_against.includes(agent.name));
-      if(openProps.length > 0) priorities.push('kan rösta på förslag: "'+openProps[0].title+'"');
+      // Institutionell roll
+      const myProjects = (worldState.projects||[]).filter(p=>(p.participants||[]).includes(agent.name)&&p.status==='active');
+      if(myProjects.length > 0) {
+        priorities.push('PROJEKT-ANSVAR: "'+myProjects[0].title+'"');
+        if(n.energi < 50) conflicts.push('vill jobba på projekt men är trött');
+      }
 
-      const recentProblem = (worldState.shared_problems||[]).filter(p=>p.status==='open'&&p.severity==='high')[0];
-      if(recentProblem) priorities.push('högt prioriterat problem: '+recentProblem.title);
+      // Aktiv plan
+      if(agent.agentPlan.length > 0) {
+        const currentStep = agent.agentPlan[agent.planStep] || 'klar';
+        priorities.push('plansteg '+(agent.planStep+1)+'/'+agent.agentPlan.length+': '+currentStep);
+      }
+
+      // Demokratiska krav
+      const openProps = (worldState.proposals||[]).filter(p=>p.status==='open'&&!(p.votes_for||[]).includes(agent.name)&&!(p.votes_against||[]).includes(agent.name));
+      if(openProps.length > 0) priorities.push('oröstad på: "'+openProps[0].title+'" (ID:'+openProps[0].id+')');
+
+      // Världsproblematik
+      const highProbs = (worldState.shared_problems||[]).filter(p=>p.status==='open'&&p.severity==='high');
+      if(highProbs.length > 0) priorities.push('ALLVARLIGT PROBLEM: '+highProbs[0].title);
+
+      // Social risk — spänningar med andra
+      const tensions = Object.entries(agent.memory.relations||{})
+        .filter(([_,r])=>(r.tension||0)>35).map(([name,r])=>name+'(spänning:'+Math.round(r.tension)+')');
+      if(tensions.length>0) conflicts.push('spänning med: '+tensions.join(', '));
+
+      // Målkonflikt
+      if(n.social<35 && myProjects.length>0) conflicts.push('vill umgås men bör jobba på projektet');
+      if(openProps.length>0 && n.energi<40) conflicts.push('bör rösta men är trött');
+
+      // Nyliga löften/svek från episodminnen
+      const promises = (agent.memory.episodes||[]).filter(e=>e.text.includes('lovade')||e.text.includes('Plan:')).slice(0,2);
 
       return {
-        topPriority: priorities[0] || 'inget akut',
+        topPriority: priorities[0] || 'inget akut — följ din natur',
         allPriorities: priorities,
+        conflicts,
         myProjects,
-        canVote: openProps
+        canVote: openProps,
+        institutionalRole: AGENT_ROLES[agent.name]||'medborgare',
+        personalBias: AGENT_BIAS[agent.name]||'',
+        recentPromises: promises.map(e=>e.text),
       };
     }
 
@@ -2598,7 +2694,13 @@
         `OUTPUT FORMAT: Exakt ett JSON-objekt. Ingen extra text, ingen markdown, inga förklaringar utanför JSON.`,
         `{"tool":"TOOL_NAMN","args":{"target":"AGENTNAMN","message":"vad du säger"},"thought":"din genuina inre tanke","moodUpdate":"neutral|happy|sad|angry|excited|focused|tired|melancholic|reflective","memoryNote":"kort minnesnotat"}`,
         ``,
-        `BESLUTSSITUATION: Högsta prioritet just nu: ${decision.topPriority}. ${decision.allPriorities.length>1?'Övriga: '+decision.allPriorities.slice(1).join(', '):''} `,
+        `BESLUTSSITUATION:`,
+        `  Roll: ${decision.institutionalRole}`,
+        `  Bias: ${decision.personalBias}`,
+        `  HÖGST PRIO: ${decision.topPriority}`,
+        decision.allPriorities.length>1?`  Övriga: ${decision.allPriorities.slice(1).join(' | ')}`:'',
+        decision.conflicts.length>0?`  MÅLKONFLIKTER: ${decision.conflicts.join(' | ')}`:'',
+        decision.recentPromises.length>0?`  LÖFTEN/PLANER: ${decision.recentPromises.join(' | ')}`:'',
         `KRAV: Välj utifrån tre lager: (1) Mina behov nu, (2) Mitt långsiktiga mål, (3) Vad Nexus behöver. Att stanna, observera, arbeta vidare eller tänka är ALLTID giltiga val. Samtal är ett val bland många — inte ett krav. Välj talk_to bara om du genuint vill säga något till någon. Annars: välj en action som passar platsen, situationen och dina mål. Lägg till "relEffect": ett tal -5 till 5 i args vid talk_to (0=neutral, positivt=varmare relation).`
       ].join('\n');
       const h=getH();
@@ -2870,7 +2972,7 @@
 
       const dtH=dt*GAME_H_PER_SEC;
       agents.forEach((a,i)=>{
-        const prevSt=a.state, newSt=getState(h);
+        const prevSt=a.state, newSt=getState(h,a);
         if(newSt!==prevSt){
           a.state=newSt;
           a.target=getTarget(a,newSt);
@@ -2901,10 +3003,11 @@
               // Gå mot rådhuset när det finns allvarliga problem
               a.target=new THREE.Vector3(0,0,-20).add(new THREE.Vector3((Math.random()-.5)*6,0,(Math.random()-.5)*6));
               a.wanderPurpose = 'heading to rådshuset ang. akuta problem';
-            } else if(a.agentPlan.length>0 && r<0.5){
-              // Gå mot primary-platsen när man har en plan
+            } else if((a.agentPlan.length>0||(worldState.projects||[]).some(p=>(p.participants||[]).includes(a.name)&&p.status==='active')) && r<0.6){
+              // Projekt eller plan → gå mot primary-platsen (arbetsplats)
+              const proj = (worldState.projects||[]).find(p=>(p.participants||[]).includes(a.name)&&p.status==='active');
               a.target=a.primary.clone().add(new THREE.Vector3((Math.random()-.5)*5,0,(Math.random()-.5)*5));
-              a.wanderPurpose = 'utför plan: '+a.agentPlan[a.planStep||0];
+              a.wanderPurpose = proj ? 'jobbar på: '+proj.title : 'utför plan: '+(a.agentPlan[a.planStep||0]||'');
             } else if(r<0.3){
               // Torget — social samlingspunkt
               a.target=new THREE.Vector3((Math.random()-.5)*8,0,(Math.random()-.5)*8);
