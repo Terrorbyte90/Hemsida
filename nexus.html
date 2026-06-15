@@ -1589,7 +1589,7 @@
       // floating overlay
       const ov=document.createElement('div');
       ov.className='agent-focus-overlay';
-      ov.innerHTML=`<div class="agent-focus-overlay__name">${def.name}</div><div class="agent-focus-overlay__status" id="ov-status-${i}" style="font-size:0.45rem;color:rgba(255,255,255,0.55);font-family:monospace;margin-bottom:2px">Sover</div><div class="agent-focus-overlay__bar"><div class="agent-focus-overlay__bar-fill" id="ov-e-${i}" style="width:80%"></div></div>`;
+      ov.innerHTML=`<div class="agent-focus-overlay__name">${def.name}</div><div class="agent-focus-overlay__status" id="ov-status-${i}" style="font-size:0.45rem;color:rgba(255,255,255,0.55);font-family:monospace;margin-bottom:2px">Sover</div><div id="ov-plan-${i}" style="font-size:0.38rem;color:rgba(255,200,80,0.7);font-family:monospace;max-width:120px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-bottom:1px"></div><div class="agent-focus-overlay__bar"><div class="agent-focus-overlay__bar-fill" id="ov-e-${i}" style="width:80%"></div></div>`;
       vp.appendChild(ov);
       const memory = new AgentMemory(def.name);
       // Seed laws as initial beliefs if none exist
@@ -1849,6 +1849,13 @@
           const tgt = agents.find(a=>a.name===A.target);
           if (!tgt) { actLog(agent.name,agent.dot,'försökte prata med',A.target+' (ej hittad)'); break; }
           const msg = A.message||A.text||A.content||'...';
+          // Move agent toward target if more than 5m away
+          const dist = agent.mesh.position.distanceTo(tgt.mesh.position);
+          if(dist > 5) {
+            const dir = tgt.mesh.position.clone().sub(agent.mesh.position).normalize();
+            agent.target = tgt.mesh.position.clone().sub(dir.multiplyScalar(2.5));
+            agent.moving = true;
+          }
           showBubble(agent, msg, 'speech', 6000);
           // Mottagaren svarar via sin EGEN kognition — inga skriptade repliker
           setTimeout(()=>{
@@ -2659,8 +2666,10 @@
           agentCooldown[agent.name]=now; return;
         }
 
-        // SPONTANEOUS thought
-        const sp=agent.state==='WANDERING'?0.025:agent.state==='AT_PRIMARY'?0.018:agent.state==='PLAZA_SOCIAL'?0.04:agent.state==='RESTING_HOME'?0.008:0;
+        // SPONTANEOUS thought — boosted when high-severity problems exist
+        const _highProbs = (worldState.shared_problems||[]).filter(p=>p.status==='open'&&p.severity==='high').length;
+        const _spBoost = _highProbs > 0 ? 1.6 : 1.0;
+        const sp=(agent.state==='WANDERING'?0.025:agent.state==='AT_PRIMARY'?0.018:agent.state==='PLAZA_SOCIAL'?0.04:agent.state==='RESTING_HOME'?0.008:0)*_spBoost;
         if(sp>0&&Math.random()<sp){
           enqueueCog(agent,'spontaneous',null);
           agentCooldown[agent.name]=now+45000; return;
@@ -2972,9 +2981,16 @@
             const locStr=loc!=='ute'&&loc!=='hemma'?' @ '+loc:'';
             st.textContent=(STATES[a.state]||a.state)+locStr;
           }
-          // Update energy bar in overlay
+          // Update energy bar and plan indicator in overlay
           const eb=document.getElementById('ov-e-'+i);
           if(eb) eb.style.width=Math.round(a.needs.energi)+'%';
+          const planEl=document.getElementById('ov-plan-'+i);
+          if(planEl){
+            if(a.agentPlan&&a.agentPlan.length>0){
+              planEl.textContent='📋 '+(a.agentPlan[a.planStep]||'').substring(0,30);
+              planEl.style.display='';
+            } else { planEl.style.display='none'; }
+          }
         });
       }
 
