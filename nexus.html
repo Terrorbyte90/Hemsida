@@ -350,9 +350,9 @@
           <canvas id="world-canvas"></canvas>
           <div class="world-hud">
             <div class="world-hud__top">
-              <div class="world-badge">
+              <div class="world-badge" id="hud-clock-wrap">
                 <span class="world-badge__dot"></span>
-                NEXUS · DEMO · DAG 1 · 14:27
+                <span id="hud-clock">NEXUS · DEMO · DAG 1 · 14:27</span>
               </div>
               <div class="world-controls-hint">Drag för att rotera · Scroll för zoom</div>
             </div>
@@ -472,7 +472,7 @@
     </div>
   </footer>
 
-  <script type="importmap">
+    <script type="importmap">
   {
     "imports": {
       "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
@@ -484,525 +484,805 @@
   <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { Sky } from 'three/addons/objects/Sky.js';
     import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
     import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
     import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-    const canvas = document.getElementById('world-canvas');
+    const canvas   = document.getElementById('world-canvas');
     const viewport = canvas.parentElement;
-    const bubble = document.getElementById('speech-bubble');
+    const bubble   = document.getElementById('speech-bubble');
+    const hudClock = document.getElementById('hud-clock');
 
-    // ── RENDERER ──────────────────────────────────────────────
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    // ── TIME SYSTEM (Sweden CEST = UTC+2) ────────────────────
+    const SUNRISE_H = 4.5;   // ~04:30 local
+    const SUNSET_H  = 22.22; // 22:13 local
+    const NOON_H    = (SUNRISE_H + SUNSET_H) / 2;
+
+    function getLocalHour() {
+      const now = new Date();
+      return ((now.getUTCHours() + 2) % 24) + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+    }
+
+    // 0=midnight, peaks at 1.0 at solar noon
+    function getSunElevation(h) {
+      const dayLen = SUNSET_H - SUNRISE_H;
+      if (h < SUNRISE_H || h > SUNSET_H) return -0.1;
+      return Math.sin(((h - SUNRISE_H) / dayLen) * Math.PI);
+    }
+
+    // ── RENDERER ─────────────────────────────────────────────
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 2.2;
+    renderer.toneMappingExposure = 1.0;
 
     function resize() {
       const w = viewport.clientWidth, h = viewport.clientHeight;
-      renderer.setSize(w, h);
+      renderer.setSize(w, h, false);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       composer.setSize(w, h);
     }
 
-    // ── SCENE ─────────────────────────────────────────────────
+    // ── SCENE ────────────────────────────────────────────────
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x010306);
-    scene.fog = new THREE.FogExp2(0x010810, 0.022);
 
-    // ── CAMERA ────────────────────────────────────────────────
-    const camera = new THREE.PerspectiveCamera(55, 16/9, 0.1, 200);
-    camera.position.set(6, 4.5, 8);
+    // ── CAMERA ───────────────────────────────────────────────
+    const camera = new THREE.PerspectiveCamera(52, 4/3, 0.1, 500);
+    camera.position.set(6, 4.2, 8.5);
 
-    // ── CONTROLS ──────────────────────────────────────────────
+    // ── CONTROLS ─────────────────────────────────────────────
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.06;
-    controls.minDistance = 4;
+    controls.dampingFactor = 0.05;
+    controls.minDistance = 3.5;
     controls.maxDistance = 22;
-    controls.maxPolarAngle = Math.PI / 2.05;
+    controls.maxPolarAngle = Math.PI / 2.08;
     controls.target.set(0, 1.2, 0);
 
     // ── POST-PROCESSING ───────────────────────────────────────
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    const bloom = new UnrealBloomPass(new THREE.Vector2(1280, 720), 1.2, 0.5, 0.75);
+    const bloom = new UnrealBloomPass(new THREE.Vector2(1280, 960), 0.6, 0.4, 0.82);
     composer.addPass(bloom);
 
-    // ── LIGHTING ──────────────────────────────────────────────
-    scene.add(new THREE.AmbientLight(0x1a3a6a, 8));
+    // ── SKY ──────────────────────────────────────────────────
+    const sky = new Sky();
+    sky.scale.setScalar(450);
+    scene.add(sky);
+    const sunVec = new THREE.Vector3();
+    const skyUniforms = sky.material.uniforms;
+    skyUniforms['turbidity'].value = 3;
+    skyUniforms['rayleigh'].value = 2.5;
+    skyUniforms['mieCoefficient'].value = 0.005;
+    skyUniforms['mieDirectionalG'].value = 0.82;
 
-    const moon = new THREE.DirectionalLight(0x88aadd, 4.5);
-    moon.position.set(-8, 14, -4);
-    moon.castShadow = true;
-    moon.shadow.mapSize.set(2048, 2048);
-    moon.shadow.camera.near = 0.5;
-    moon.shadow.camera.far = 50;
-    moon.shadow.camera.left = moon.shadow.camera.bottom = -14;
-    moon.shadow.camera.right = moon.shadow.camera.top = 14;
-    scene.add(moon);
+    // ── LIGHTING ─────────────────────────────────────────────
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
 
-    const fillLight = new THREE.PointLight(0x5b9cf6, 6, 25);
-    const groundFill = new THREE.PointLight(0x2244aa, 3, 20);
-    groundFill.position.set(0, 0.5, 3);
-    scene.add(groundFill);
-    fillLight.position.set(0, 7, 0);
+    const sunLight = new THREE.DirectionalLight(0xffeedd, 3);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.set(2048, 2048);
+    sunLight.shadow.camera.near = 0.5;
+    sunLight.shadow.camera.far = 60;
+    sunLight.shadow.camera.left = sunLight.shadow.camera.bottom = -16;
+    sunLight.shadow.camera.right = sunLight.shadow.camera.top = 16;
+    sunLight.shadow.bias = -0.0005;
+    scene.add(sunLight);
+
+    const fillLight = new THREE.PointLight(0x6688cc, 2, 20);
+    fillLight.position.set(-3, 4, 3);
     scene.add(fillLight);
 
-    // ── STARS ─────────────────────────────────────────────────
-    {
-      const geo = new THREE.BufferGeometry();
-      const pos = new Float32Array(3000 * 3);
-      for (let i = 0; i < pos.length; i++) pos[i] = (Math.random() - 0.5) * 180;
-      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      const mat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.12, sizeAttenuation: true, transparent: true, opacity: 0.85 });
-      scene.add(new THREE.Points(geo, mat));
+    // ── UPDATE SKY + LIGHTING BY TIME ────────────────────────
+    function updateSky() {
+      const h = getLocalHour();
+      const elev = getSunElevation(h);
+
+      // Sun position
+      const phi   = THREE.MathUtils.degToRad(90 - elev * 80);
+      const theta = THREE.MathUtils.degToRad(200);
+      sunVec.setFromSphericalCoords(1, phi, theta);
+      skyUniforms['sunPosition'].value.copy(sunVec);
+      sunLight.position.copy(sunVec.clone().multiplyScalar(50));
+
+      // Time of day parameters
+      const isDay     = elev > 0;
+      const isGolden  = elev > 0 && elev < 0.25;  // dawn/dusk
+      const isTwilight = elev > -0.15 && elev <= 0; // civil twilight
+
+      if (!isDay && !isTwilight) {
+        // Night
+        scene.background = new THREE.Color(0x03060f);
+        scene.fog = new THREE.FogExp2(0x05080e, 0.022);
+        ambientLight.color.set(0x1a2a4a);
+        ambientLight.intensity = 0.5;
+        sunLight.intensity = 0;
+        renderer.toneMappingExposure = 1.8;
+        bloom.strength = 1.2;
+        // Show stars
+        if (starField) starField.visible = true;
+        // Night lamps brighter
+        lampLights.forEach(l => l.intensity = 2.5);
+      } else if (isTwilight) {
+        // Civil twilight (just before sunrise / just after sunset)
+        scene.background = new THREE.Color(0x0d1a3a);
+        scene.fog = new THREE.FogExp2(0x0d1a2e, 0.018);
+        ambientLight.color.set(0x334466);
+        ambientLight.intensity = 1.2;
+        sunLight.intensity = 0.3;
+        sunLight.color.set(0xff9955);
+        renderer.toneMappingExposure = 1.5;
+        bloom.strength = 0.9;
+        if (starField) starField.visible = true;
+        lampLights.forEach(l => l.intensity = 2.0);
+      } else if (isGolden) {
+        // Golden hour (dawn/dusk) — current situation ~04:49
+        const t = elev / 0.25;
+        scene.fog = new THREE.FogExp2(0x1a1008, 0.012);
+        ambientLight.color.set(0xffcc88);
+        ambientLight.intensity = 1.5 + t * 1.5;
+        sunLight.color.set(0xff8833);
+        sunLight.intensity = 1.5 + t * 2;
+        renderer.toneMappingExposure = 1.2 + t * 0.3;
+        bloom.strength = 0.8;
+        skyUniforms['turbidity'].value = 5;
+        skyUniforms['rayleigh'].value = 4;
+        if (starField) starField.visible = (elev < 0.12);
+        lampLights.forEach(l => l.intensity = 1.2 - t * 0.8);
+      } else {
+        // Full day
+        const t = Math.min((elev - 0.25) / 0.5, 1);
+        scene.fog = new THREE.FogExp2(0x8ab0d8, 0.008);
+        ambientLight.color.set(0xddeeff);
+        ambientLight.intensity = 3 + t * 2;
+        sunLight.color.set(0xfff5e0);
+        sunLight.intensity = 3.5 + t;
+        renderer.toneMappingExposure = 0.9;
+        bloom.strength = 0.4;
+        skyUniforms['turbidity'].value = 2.5;
+        skyUniforms['rayleigh'].value = 2;
+        if (starField) starField.visible = false;
+        lampLights.forEach(l => l.intensity = 0.3);
+      }
+
+      // Update HUD clock
+      const hInt = Math.floor(h);
+      const mInt = Math.floor((h - hInt) * 60);
+      const timeStr = hInt.toString().padStart(2,'0') + ':' + mInt.toString().padStart(2,'0');
+      if (hudClock) hudClock.textContent = 'NEXUS · DEMO · DAG 1 · ' + timeStr;
     }
 
-    // ── GROUND ────────────────────────────────────────────────
+    // ── STARS ────────────────────────────────────────────────
+    let starField;
     {
-      const geo = new THREE.PlaneGeometry(40, 40, 40, 40);
-      const mat = new THREE.MeshStandardMaterial({ color: 0x080d14, roughness: 0.95, metalness: 0.1 });
+      const geo = new THREE.BufferGeometry();
+      const n = 2500;
+      const pos = new Float32Array(n * 3);
+      const sizes = new Float32Array(n);
+      for (let i = 0; i < n; i++) {
+        // Distribute on upper hemisphere
+        const r = 150 + Math.random() * 50;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.random() * Math.PI * 0.5; // upper hemisphere
+        pos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+        pos[i*3+1] = r * Math.cos(phi);
+        pos[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
+        sizes[i] = 0.5 + Math.random() * 1.5;
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+      const mat = new THREE.PointsMaterial({
+        color: 0xffffff, size: 0.15, sizeAttenuation: true,
+        transparent: true, opacity: 0.9
+      });
+      starField = new THREE.Points(geo, mat);
+      scene.add(starField);
+    }
+
+    // ── GROUND ───────────────────────────────────────────────
+    {
+      const geo = new THREE.PlaneGeometry(60, 60);
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0x2a3a28, roughness: 0.95, metalness: 0.0
+      });
       const ground = new THREE.Mesh(geo, mat);
       ground.rotation.x = -Math.PI / 2;
       ground.receiveShadow = true;
       scene.add(ground);
 
-      const grid = new THREE.GridHelper(40, 40, 0x1a2a3a, 0x111820);
-      grid.position.y = 0.002;
-      scene.add(grid);
-
-      // Plaza circle
-      const plazaGeo = new THREE.CircleGeometry(4, 64);
-      const plazaMat = new THREE.MeshStandardMaterial({ color: 0x0d1420, roughness: 0.9, metalness: 0.15 });
-      const plaza = new THREE.Mesh(plazaGeo, plazaMat);
+      // Paved plaza
+      const plazaMat = new THREE.MeshStandardMaterial({ color: 0x3a3c3e, roughness: 0.85, metalness: 0.1 });
+      const plaza = new THREE.Mesh(new THREE.PlaneGeometry(12, 12), plazaMat);
       plaza.rotation.x = -Math.PI / 2;
-      plaza.position.y = 0.003;
+      plaza.position.y = 0.002;
       plaza.receiveShadow = true;
       scene.add(plaza);
 
-      // Plaza ring
-      const ringGeo = new THREE.RingGeometry(3.85, 4, 64);
-      const ringMat = new THREE.MeshBasicMaterial({ color: 0x1a3a5a, side: THREE.DoubleSide });
-      const ring = new THREE.Mesh(ringGeo, ringMat);
+      // Plaza tiles (lines)
+      const gridH = new THREE.GridHelper(12, 6, 0x555560, 0x44464a);
+      gridH.position.y = 0.003;
+      scene.add(gridH);
+
+      // Plaza circle
+      const ring = new THREE.Mesh(
+        new THREE.RingGeometry(3.8, 4.0, 64),
+        new THREE.MeshBasicMaterial({ color: 0x5b9cf6, side: THREE.DoubleSide, transparent: true, opacity: 0.5 })
+      );
       ring.rotation.x = -Math.PI / 2;
       ring.position.y = 0.004;
       scene.add(ring);
+
+      // Green patches
+      [-7, 7].forEach(x => {
+        [-7, 7].forEach(z => {
+          const gp = new THREE.Mesh(
+            new THREE.PlaneGeometry(4 + Math.random()*2, 4 + Math.random()*2),
+            new THREE.MeshStandardMaterial({ color: 0x2d5a22, roughness: 1 })
+          );
+          gp.rotation.x = -Math.PI / 2;
+          gp.position.set(x, 0.001, z);
+          scene.add(gp);
+        });
+      });
     }
 
-    // ── BUILDING ──────────────────────────────────────────────
+    // ── BUILDING ─────────────────────────────────────────────
     function buildBuilding() {
-      const group = new THREE.Group();
-      group.position.set(0, 0, -6);
+      const g = new THREE.Group();
+      g.position.set(0, 0, -7);
 
-      const darkGlass = new THREE.MeshPhysicalMaterial({ color: 0x0a1020, roughness: 0.15, metalness: 0.8, reflectivity: 0.6 });
-      const glowBlue = new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x2255bb, emissiveIntensity: 1.2, roughness: 0.4 });
-      const glowCyan = new THREE.MeshStandardMaterial({ color: 0x00d4ff, emissive: 0x00aacc, emissiveIntensity: 1.5, roughness: 0.3 });
+      const glassMat = new THREE.MeshPhysicalMaterial({
+        color: 0x0d1e32, roughness: 0.05, metalness: 0.9,
+        reflectivity: 0.8, envMapIntensity: 1
+      });
+      const concreteMat = new THREE.MeshStandardMaterial({ color: 0x1e2428, roughness: 0.8, metalness: 0.2 });
 
-      // Base plinth
-      const baseGeo = new THREE.BoxGeometry(3.2, 0.4, 3.2);
-      const base = new THREE.Mesh(baseGeo, new THREE.MeshStandardMaterial({ color: 0x111825, roughness: 0.8, metalness: 0.3 }));
-      base.position.y = 0.2;
-      base.castShadow = true; base.receiveShadow = true;
-      group.add(base);
+      // Base
+      const base = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.5, 3.6), concreteMat);
+      base.position.y = 0.25; base.castShadow = true; base.receiveShadow = true;
+      g.add(base);
+
+      // Steps
+      [0.7, 0.5, 0.3].forEach((w, i) => {
+        const step = new THREE.Mesh(new THREE.BoxGeometry(w*3.6, 0.12, 0.3), concreteMat);
+        step.position.set(0, 0.5 + i*0.12, 1.8 - i*0.15);
+        g.add(step);
+      });
 
       // Main tower
-      const towerGeo = new THREE.BoxGeometry(2.4, 7.5, 2.4);
-      const tower = new THREE.Mesh(towerGeo, darkGlass);
-      tower.position.y = 4.15;
-      tower.castShadow = true;
-      group.add(tower);
+      const tower = new THREE.Mesh(new THREE.BoxGeometry(2.6, 8.5, 2.6), glassMat);
+      tower.position.y = 4.75; tower.castShadow = true;
+      g.add(tower);
 
-      // Window rows (6 floors × 3 windows per face)
-      const winW = 0.28, winH = 0.5, winD = 0.04;
-      const winPositionsX = [-0.7, 0, 0.7];
-      for (let floor = 0; floor < 6; floor++) {
-        const y = 1.2 + floor * 1.05;
-        winPositionsX.forEach(wx => {
-          // Front face
-          const wf = new THREE.Mesh(new THREE.BoxGeometry(winW, winH, winD), glowBlue.clone());
-          wf.material.emissiveIntensity = 0.6 + Math.random() * 0.8;
-          wf.position.set(wx, y, 1.22);
-          group.add(wf);
-          // Back face
-          const wb = new THREE.Mesh(new THREE.BoxGeometry(winW, winH, winD), glowBlue.clone());
-          wb.material.emissiveIntensity = 0.4 + Math.random() * 0.6;
-          wb.position.set(wx, y, -1.22);
-          group.add(wb);
-          // Left face
-          const wl = new THREE.Mesh(new THREE.BoxGeometry(winD, winH, winW), glowBlue.clone());
-          wl.material.emissiveIntensity = 0.5 + Math.random() * 0.7;
-          wl.position.set(-1.22, y, wx);
-          group.add(wl);
-          // Right face
-          const wr = new THREE.Mesh(new THREE.BoxGeometry(winD, winH, winW), glowBlue.clone());
-          wr.material.emissiveIntensity = 0.5 + Math.random() * 0.7;
-          wr.position.set(1.22, y, wx);
-          group.add(wr);
+      // Secondary tower offset
+      const tower2 = new THREE.Mesh(new THREE.BoxGeometry(1.2, 5.5, 1.2), glassMat);
+      tower2.position.set(1.1, 3.25, -1.1); tower2.castShadow = true;
+      g.add(tower2);
+
+      // Horizontal bands (floors)
+      const bandMat = new THREE.MeshStandardMaterial({ color: 0x334455, roughness: 0.6, metalness: 0.5 });
+      for (let f = 0; f < 8; f++) {
+        const band = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.06, 2.64), bandMat);
+        band.position.y = 0.75 + f * 1.05;
+        g.add(band);
+      }
+
+      // Windows — emissive
+      const winMats = [
+        new THREE.MeshStandardMaterial({ color: 0x88aaff, emissive: 0x4466cc, emissiveIntensity: 1.5, roughness: 0.3 }),
+        new THREE.MeshStandardMaterial({ color: 0xffeebb, emissive: 0xddaa55, emissiveIntensity: 1.0, roughness: 0.4 }),
+      ];
+      const faces = [
+        { axis:'z', sign: 1, dir:'x' },
+        { axis:'z', sign:-1, dir:'x' },
+        { axis:'x', sign: 1, dir:'z' },
+        { axis:'x', sign:-1, dir:'z' },
+      ];
+      for (let floor = 0; floor < 7; floor++) {
+        const y = 1.1 + floor * 1.05;
+        faces.forEach(face => {
+          [-0.72, 0, 0.72].forEach(offset => {
+            const isOff = Math.random() > 0.85;
+            const wm = winMats[Math.random() > 0.8 ? 1 : 0].clone();
+            if (isOff) wm.emissiveIntensity = 0;
+            const pos = new THREE.Vector3();
+            pos[face.axis] = 1.31 * face.sign;
+            pos[face.dir] = offset;
+            pos.y = y;
+            const dims = { w:0.3, h:0.55, d:0.04 };
+            const wg = face.axis === 'z'
+              ? new THREE.BoxGeometry(dims.w, dims.h, dims.d)
+              : new THREE.BoxGeometry(dims.d, dims.h, dims.w);
+            const wm2 = new THREE.Mesh(wg, wm);
+            wm2.position.copy(pos);
+            g.add(wm2);
+          });
         });
       }
 
       // Roof crown
-      const crownGeo = new THREE.BoxGeometry(2.6, 0.2, 2.6);
-      const crown = new THREE.Mesh(crownGeo, new THREE.MeshStandardMaterial({ color: 0x1a2a40, roughness: 0.6, metalness: 0.5 }));
-      crown.position.y = 8.0;
-      group.add(crown);
+      const roof = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.25, 2.8),
+        new THREE.MeshStandardMaterial({ color: 0x223344, roughness: 0.5, metalness: 0.6 }));
+      roof.position.y = 9.12; g.add(roof);
 
       // Antenna
-      const antGeo = new THREE.CylinderGeometry(0.03, 0.06, 1.8, 8);
-      const ant = new THREE.Mesh(antGeo, new THREE.MeshStandardMaterial({ color: 0x334466, metalness: 0.9, roughness: 0.2 }));
-      ant.position.set(0, 8.9, 0);
-      group.add(ant);
+      const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.05, 2.2, 8),
+        new THREE.MeshStandardMaterial({ color: 0x556677, metalness: 0.9, roughness: 0.2 }));
+      ant.position.y = 10.1; g.add(ant);
 
-      // Antenna tip glow
-      const tipGeo = new THREE.SphereGeometry(0.08, 8, 8);
-      const tip = new THREE.Mesh(tipGeo, new THREE.MeshStandardMaterial({ color: 0xff4444, emissive: 0xff2222, emissiveIntensity: 3 }));
-      tip.position.set(0, 9.85, 0);
-      group.add(tip);
+      const antTip = new THREE.Mesh(new THREE.SphereGeometry(0.09, 8, 8),
+        new THREE.MeshStandardMaterial({ color: 0xff3333, emissive: 0xff2222, emissiveIntensity: 4 }));
+      antTip.position.y = 11.3; g.add(antTip);
 
-      // Roof edge glow strips
-      const edgeMat = new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x3377cc, emissiveIntensity: 2 });
-      [[2.5, 0], [-2.5, 0], [0, 2.5], [0, -2.5]].forEach(([x, z]) => {
-        const eg = new THREE.BoxGeometry(x !== 0 ? 0.06 : 2.5, 0.06, z !== 0 ? 0.06 : 2.5);
-        const em = new THREE.Mesh(eg, edgeMat);
-        em.position.set(x !== 0 ? x : 0, 8.12, z !== 0 ? z : 0);
-        group.add(em);
-      });
+      // Roof glow strip
+      const roofGlow = new THREE.Mesh(new THREE.BoxGeometry(2.62, 0.04, 2.62),
+        new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x2255bb, emissiveIntensity: 2.5 }));
+      roofGlow.position.y = 9.26; g.add(roofGlow);
 
-      // Roof point light
-      const roofLight = new THREE.PointLight(0x5b9cf6, 4, 12);
-      roofLight.position.set(0, 9, 0);
-      group.add(roofLight);
+      // Roof light
+      const rLight = new THREE.PointLight(0x5b9cf6, 5, 15);
+      rLight.position.y = 9.5; g.add(rLight);
 
-      // Entrance
-      const entrGeo = new THREE.BoxGeometry(0.8, 1.0, 0.15);
-      const entr = new THREE.Mesh(entrGeo, new THREE.MeshStandardMaterial({ color: 0x001a33, emissive: 0x002244, emissiveIntensity: 0.5 }));
-      entr.position.set(0, 0.9, 1.22);
-      group.add(entr);
+      // Entrance door glow
+      const doorGlow = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.15, 0.06),
+        new THREE.MeshStandardMaterial({ color: 0x003355, emissive: 0x003366, emissiveIntensity: 1 }));
+      doorGlow.position.set(0, 1.05, 1.31); g.add(doorGlow);
+      const doorTop = new THREE.Mesh(new THREE.BoxGeometry(0.96, 0.05, 0.05),
+        new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x5b9cf6, emissiveIntensity: 3 }));
+      doorTop.position.set(0, 1.65, 1.31); g.add(doorTop);
 
-      // Door frame glow
-      const frameGeo = new THREE.BoxGeometry(0.86, 0.06, 0.08);
-      const frame = new THREE.Mesh(frameGeo, new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x5b9cf6, emissiveIntensity: 2 }));
-      frame.position.set(0, 1.42, 1.22);
-      group.add(frame);
-
-      scene.add(group);
-      return group;
+      scene.add(g);
+      return g;
     }
-    const building = buildBuilding();
+    const mainBuilding = buildBuilding();
 
-    // Smaller side building
+    // Side building
     {
       const g = new THREE.Group();
-      g.position.set(5.5, 0, -4);
-      const mat = new THREE.MeshStandardMaterial({ color: 0x0c1520, roughness: 0.8, metalness: 0.4 });
-      const main = new THREE.Mesh(new THREE.BoxGeometry(1.8, 4.2, 1.8), mat);
-      main.position.y = 2.1; main.castShadow = true;
-      g.add(main);
-      const winMat = new THREE.MeshStandardMaterial({ emissive: 0xaa8800, emissiveIntensity: 0.8, color: 0xfbbf24, roughness: 0.5 });
+      g.position.set(6.5, 0, -3.5);
+      g.rotation.y = 0.3;
+      const mat = new THREE.MeshStandardMaterial({ color: 0x1c2830, roughness: 0.7, metalness: 0.3 });
+      const b = new THREE.Mesh(new THREE.BoxGeometry(2.2, 4.8, 2.2), mat);
+      b.position.y = 2.4; b.castShadow = true;
+      g.add(b);
+      const wm = new THREE.MeshStandardMaterial({ emissive: 0xddaa33, emissiveIntensity: 0.8, color: 0xfbbf24, roughness: 0.4 });
       for (let fl = 0; fl < 3; fl++) {
-        [-0.4, 0.4].forEach(wx => {
-          const ww = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.4, 0.04), winMat.clone());
-          ww.material.emissiveIntensity = 0.4 + Math.random() * 0.7;
-          ww.position.set(wx, 0.9 + fl * 1.1, 0.92);
-          g.add(ww);
+        [-0.5, 0.5].forEach(wx => {
+          const w = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.45, 0.04), wm.clone());
+          w.position.set(wx, 1.0 + fl * 1.2, 1.12);
+          w.material.emissiveIntensity = 0.3 + Math.random() * 0.8;
+          g.add(w);
         });
+      }
+      const roofG = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.15, 2.4),
+        new THREE.MeshStandardMaterial({ color: 0x2a3540, roughness: 0.8 }));
+      roofG.position.y = 4.87; g.add(roofG);
+      scene.add(g);
+    }
+
+    // Low building left
+    {
+      const g = new THREE.Group();
+      g.position.set(-7, 0, -4);
+      const mat = new THREE.MeshStandardMaterial({ color: 0x252e22, roughness: 0.9 });
+      const b = new THREE.Mesh(new THREE.BoxGeometry(3, 2.4, 4), mat);
+      b.position.y = 1.2; b.castShadow = true; b.receiveShadow = true;
+      g.add(b);
+      for (let i = 0; i < 4; i++) {
+        const w = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.5, 0.04),
+          new THREE.MeshStandardMaterial({ emissive: 0x88aaff, emissiveIntensity: 0.6, color: 0x6688cc }));
+        w.position.set(-1.05 + i * 0.7, 1.4, 2.02);
+        g.add(w);
       }
       scene.add(g);
     }
 
+    // Trees
+    function addTree(x, z) {
+      const g = new THREE.Group();
+      g.position.set(x, 0, z);
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.14, 1.4, 7),
+        new THREE.MeshStandardMaterial({ color: 0x4a2e14, roughness: 1 }));
+      trunk.position.y = 0.7; trunk.castShadow = true;
+      g.add(trunk);
+      [0, 0.7, 1.3].forEach((dy, i) => {
+        const r = 0.9 - i * 0.2;
+        const cone = new THREE.Mesh(new THREE.ConeGeometry(r, 1.2, 7),
+          new THREE.MeshStandardMaterial({ color: 0x1a4a18, roughness: 0.95 }));
+        cone.position.y = 1.4 + dy; cone.castShadow = true;
+        g.add(cone);
+      });
+      scene.add(g);
+    }
+    addTree(-5, 2); addTree(-5.8, -1); addTree(5, 1.5); addTree(5.5, -2);
+    addTree(-3, 5.5); addTree(3, 5.5); addTree(-2, -6); addTree(2, -6.5);
+
     // ── LAMP POSTS ────────────────────────────────────────────
+    const lampLights = [];
     function addLamp(x, z) {
       const g = new THREE.Group();
-      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.06, 2.8, 8), new THREE.MeshStandardMaterial({ color: 0x334455, metalness: 0.8, roughness: 0.3 }));
-      pole.position.y = 1.4;
-      pole.castShadow = true;
-      g.add(pole);
+      const pole = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.035, 0.055, 3.5, 8),
+        new THREE.MeshStandardMaterial({ color: 0x3a4455, metalness: 0.85, roughness: 0.2 })
+      );
+      pole.position.y = 1.75; pole.castShadow = true; g.add(pole);
 
-      const headGeo = new THREE.BoxGeometry(0.35, 0.12, 0.35);
-      const head = new THREE.Mesh(headGeo, new THREE.MeshStandardMaterial({ color: 0x445566, metalness: 0.7 }));
-      head.position.y = 2.9;
-      g.add(head);
+      // Arm
+      const arm = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.02, 0.02, 0.6, 6),
+        new THREE.MeshStandardMaterial({ color: 0x3a4455, metalness: 0.8 })
+      );
+      arm.rotation.z = Math.PI / 2;
+      arm.position.set(0.3, 3.5, 0); g.add(arm);
 
-      const glow = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 8), new THREE.MeshStandardMaterial({ color: 0xfff0aa, emissive: 0xffcc44, emissiveIntensity: 3 }));
-      glow.position.y = 2.85;
-      g.add(glow);
+      // Head
+      const head = new THREE.Mesh(
+        new THREE.BoxGeometry(0.28, 0.1, 0.28),
+        new THREE.MeshStandardMaterial({ color: 0x445566, metalness: 0.7 })
+      );
+      head.position.set(0.6, 3.5, 0); g.add(head);
 
-      const light = new THREE.PointLight(0xffd066, 1.8, 6);
-      light.position.y = 2.85;
+      const glow = new THREE.Mesh(
+        new THREE.SphereGeometry(0.09, 8, 8),
+        new THREE.MeshStandardMaterial({ color: 0xffe880, emissive: 0xffcc33, emissiveIntensity: 4 })
+      );
+      glow.position.set(0.6, 3.42, 0); g.add(glow);
+
+      const light = new THREE.PointLight(0xffdd66, 2.5, 8);
+      light.position.set(0.6, 3.4, 0);
       g.add(light);
+      lampLights.push(light);
 
       g.position.set(x, 0, z);
       scene.add(g);
     }
-    addLamp(-3.5, -3.5);
-    addLamp( 3.5, -3.5);
-    addLamp(-3.5,  3.5);
-    addLamp( 3.5,  3.5);
+    addLamp(-4, -4); addLamp(4, -4); addLamp(-4, 4); addLamp(4, 4);
+    addLamp(-8, 0); addLamp(8, 0);
 
-    // ── PARTICLES (floating data) ─────────────────────────────
-    const particles = [];
+    // ── BENCH ─────────────────────────────────────────────────
+    function addBench(x, z, ry) {
+      const g = new THREE.Group();
+      g.position.set(x, 0, z); g.rotation.y = ry;
+      const mat = new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.9 });
+      const seat = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.06, 0.4), mat);
+      seat.position.y = 0.45; seat.castShadow = true; g.add(seat);
+      const back = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.38, 0.05), mat);
+      back.position.set(0, 0.68, -0.18); back.castShadow = true; g.add(back);
+      [-0.5, 0.5].forEach(lx => {
+        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.44, 0.35),
+          new THREE.MeshStandardMaterial({ color: 0x334444, metalness: 0.7 }));
+        leg.position.set(lx, 0.22, 0); g.add(leg);
+      });
+      scene.add(g);
+    }
+    addBench(-2.5, 3.2, 0.2); addBench(2.5, 3.2, -0.2);
+    addBench(-3.0, -2.8, 0.5); addBench(3.0, -2.8, -0.5);
+
+    // ── PARTICLES ────────────────────────────────────────────
+    let particleGeo, particlePos, particleVel;
     {
-      const geo = new THREE.BufferGeometry();
-      const n = 200;
-      const pos = new Float32Array(n * 3);
-      const vel = [];
+      const n = 300;
+      particlePos = new Float32Array(n * 3);
+      particleVel = [];
+      particleGeo = new THREE.BufferGeometry();
       for (let i = 0; i < n; i++) {
-        const r = 2 + Math.random() * 8;
-        const theta = Math.random() * Math.PI * 2;
-        pos[i*3]   = Math.cos(theta) * r;
-        pos[i*3+1] = 0.5 + Math.random() * 5;
-        pos[i*3+2] = Math.sin(theta) * r;
-        vel.push({ speed: 0.002 + Math.random() * 0.004, phase: Math.random() * Math.PI * 2 });
+        const r = 1.5 + Math.random() * 9;
+        const a = Math.random() * Math.PI * 2;
+        particlePos[i*3]   = Math.cos(a) * r;
+        particlePos[i*3+1] = 0.3 + Math.random() * 6;
+        particlePos[i*3+2] = Math.sin(a) * r;
+        particleVel.push({ vy: 0.003 + Math.random() * 0.006, phase: Math.random() * Math.PI * 2, r, a });
       }
-      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      const mat = new THREE.PointsMaterial({ color: 0x5b9cf6, size: 0.06, sizeAttenuation: true, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, depthWrite: false });
-      const pts = new THREE.Points(geo, mat);
-      scene.add(pts);
-      particles.push({ pts, geo, vel, pos });
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+      const pMat = new THREE.PointsMaterial({
+        color: 0x5b9cf6, size: 0.055, sizeAttenuation: true,
+        transparent: true, opacity: 0.75,
+        blending: THREE.AdditiveBlending, depthWrite: false
+      });
+      scene.add(new THREE.Points(particleGeo, pMat));
     }
 
     // ── CHARACTER ARIA-1 ──────────────────────────────────────
-    const character = new THREE.Group();
+    const charRoot = new THREE.Group();
 
-    const skin = new THREE.MeshLambertMaterial({ color: 0xffd4a8 });
-    const uniform = new THREE.MeshLambertMaterial({ color: 0x2255bb });
-    const uniformLight = new THREE.MeshLambertMaterial({ color: 0x4477dd });
-    const dark = new THREE.MeshLambertMaterial({ color: 0x0d1428 });
-    const hairMat = new THREE.MeshLambertMaterial({ color: 0x1a0d3a });
-    const glowEye = new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x5b9cf6, emissiveIntensity: 3 });
-    const gloveMat = new THREE.MeshLambertMaterial({ color: 0x1a3366 });
-    const solesMat = new THREE.MeshLambertMaterial({ color: 0x060c1a });
+    // Materials
+    const mSkin   = new THREE.MeshLambertMaterial({ color: 0xffc896 });
+    const mSkinD  = new THREE.MeshLambertMaterial({ color: 0xe8a870 });
+    const mUnif   = new THREE.MeshLambertMaterial({ color: 0x1e4fa0 });
+    const mUnifL  = new THREE.MeshLambertMaterial({ color: 0x3366cc });
+    const mDark   = new THREE.MeshLambertMaterial({ color: 0x0f1828 });
+    const mHair   = new THREE.MeshLambertMaterial({ color: 0x1a0d36 });
+    const mGlove  = new THREE.MeshLambertMaterial({ color: 0x0d2a55 });
+    const mBoot   = new THREE.MeshLambertMaterial({ color: 0x080f1c });
+    const mBootA  = new THREE.MeshLambertMaterial({ color: 0x0f1a2e });
+    const mEye    = new THREE.MeshStandardMaterial({ color: 0x88ccff, emissive: 0x5b9cf6, emissiveIntensity: 4 });
+    const mBadge  = new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x2255cc, emissiveIntensity: 3 });
+    const mStripe = new THREE.MeshLambertMaterial({ color: 0x4488ee });
 
-    function box(w, h, d, mat, px, py, pz, parent) {
-      const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-      m.position.set(px, py, pz);
+    function B(w,h,d,mat,px,py,pz,parent,rx,ry,rz) {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat);
+      m.position.set(px,py,pz);
+      if (rx) m.rotation.x = rx;
+      if (ry) m.rotation.y = ry;
+      if (rz) m.rotation.z = rz;
       m.castShadow = true;
       parent.add(m);
       return m;
     }
 
-    // Head group
-    const headGroup = new THREE.Group();
-    headGroup.position.set(0, 1.62, 0);
-    // Head
-    box(0.38, 0.38, 0.36, skin, 0, 0, 0, headGroup);
-    // Hair top
-    box(0.42, 0.1, 0.42, hairMat, 0, 0.22, 0, headGroup);
-    // Hair back
-    box(0.34, 0.28, 0.06, hairMat, 0, 0.06, -0.19, headGroup);
-    // Hair sides
-    box(0.04, 0.28, 0.3, hairMat, -0.2, 0.04, -0.04, headGroup);
-    box(0.04, 0.28, 0.3, hairMat, 0.2, 0.04, -0.04, headGroup);
-    // Eyes
-    box(0.07, 0.05, 0.04, glowEye, -0.1, 0.04, 0.19, headGroup);
-    box(0.07, 0.05, 0.04, glowEye, 0.1, 0.04, 0.19, headGroup);
+    // ── HEAD ─────────────────────────────────────────────────
+    const headPivot = new THREE.Group();
+    headPivot.position.set(0, 1.72, 0);
+
+    // Head shape (slightly wider than tall for stylised look)
+    B(0.42, 0.40, 0.38, mSkin,  0,  0,  0, headPivot);
+    // Cheek blush
+    B(0.12, 0.08, 0.04, mSkinD, -0.14, -0.06, 0.20, headPivot);
+    B(0.12, 0.08, 0.04, mSkinD,  0.14, -0.06, 0.20, headPivot);
+    // Eyes (with glow)
+    B(0.09, 0.065, 0.05, mEye,  -0.115, 0.06, 0.20, headPivot);
+    B(0.09, 0.065, 0.05, mEye,   0.115, 0.06, 0.20, headPivot);
+    // Eyebrows
+    B(0.1, 0.025, 0.04, mHair, -0.115,  0.13, 0.21, headPivot);
+    B(0.1, 0.025, 0.04, mHair,  0.115,  0.13, 0.21, headPivot);
     // Nose
-    box(0.04, 0.04, 0.05, new THREE.MeshLambertMaterial({ color: 0xeec090 }), 0, -0.04, 0.19, headGroup);
+    B(0.05, 0.045, 0.055, mSkinD, 0, -0.04, 0.21, headPivot);
     // Mouth
-    box(0.12, 0.025, 0.04, new THREE.MeshLambertMaterial({ color: 0xcc8866 }), 0, -0.1, 0.19, headGroup);
-    // Ear
-    box(0.04, 0.1, 0.08, skin, -0.21, 0, 0, headGroup);
-    box(0.04, 0.1, 0.08, skin,  0.21, 0, 0, headGroup);
-    character.add(headGroup);
+    B(0.14, 0.028, 0.04, new THREE.MeshLambertMaterial({color:0xc06848}), 0, -0.10, 0.21, headPivot);
+    // Ears
+    B(0.045, 0.11, 0.09, mSkin, -0.23, 0, 0, headPivot);
+    B(0.045, 0.11, 0.09, mSkin,  0.23, 0, 0, headPivot);
+    // Hair top
+    B(0.46, 0.12, 0.44, mHair,  0,  0.25, -0.01, headPivot);
+    // Hair back & sides
+    B(0.38, 0.34, 0.07, mHair,  0,  0.06, -0.22, headPivot);
+    B(0.05, 0.30, 0.32, mHair, -0.22, 0.04, -0.04, headPivot);
+    B(0.05, 0.30, 0.32, mHair,  0.22, 0.04, -0.04, headPivot);
+    // Hair fringe
+    B(0.42, 0.08, 0.06, mHair, 0, 0.17, 0.20, headPivot);
 
-    // Neck
-    box(0.12, 0.14, 0.12, skin, 0, 1.46, 0, character);
+    charRoot.add(headPivot);
 
-    // Torso
-    const torsoGroup = new THREE.Group();
-    torsoGroup.position.set(0, 1.1, 0);
-    box(0.52, 0.56, 0.28, uniform, 0, 0, 0, torsoGroup);
-    // Chest detail line
-    box(0.04, 0.46, 0.04, uniformLight, 0, 0, 0.14, torsoGroup);
-    // Chest badge (glowing)
-    const badgeMat = new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x3366bb, emissiveIntensity: 2 });
-    box(0.1, 0.08, 0.03, badgeMat, 0.14, 0.1, 0.15, torsoGroup);
+    // ── NECK ─────────────────────────────────────────────────
+    B(0.14, 0.16, 0.14, mSkin, 0, 1.53, 0, charRoot);
+
+    // ── TORSO ────────────────────────────────────────────────
+    const torsoPivot = new THREE.Group();
+    torsoPivot.position.set(0, 1.12, 0);
+
+    B(0.56, 0.62, 0.30, mUnif, 0, 0, 0, torsoPivot);
+    // Chest centre stripe
+    B(0.05, 0.54, 0.05, mStripe, 0, 0.02, 0.16, torsoPivot);
+    // Chest badge
+    B(0.11, 0.09, 0.04, mBadge, 0.15, 0.14, 0.16, torsoPivot);
     // Collar
-    box(0.28, 0.06, 0.2, uniformLight, 0, 0.32, 0, torsoGroup);
+    B(0.34, 0.08, 0.22, mUnifL, 0, 0.34, 0, torsoPivot);
     // Shoulder pads
-    box(0.08, 0.06, 0.3, uniformLight, -0.29, 0.29, 0, torsoGroup);
-    box(0.08, 0.06, 0.3, uniformLight, 0.29, 0.29, 0, torsoGroup);
-    character.add(torsoGroup);
+    B(0.10, 0.07, 0.32, mUnifL, -0.32, 0.32, 0, torsoPivot);
+    B(0.10, 0.07, 0.32, mUnifL,  0.32, 0.32, 0, torsoPivot);
+    // Back detail
+    B(0.44, 0.44, 0.04, mUnifL, 0, 0.04, -0.17, torsoPivot);
+
+    charRoot.add(torsoPivot);
 
     // Belt
-    box(0.54, 0.06, 0.3, dark, 0, 0.82, 0, character);
-    box(0.08, 0.08, 0.04, new THREE.MeshLambertMaterial({ color: 0x557799 }), 0, 0.82, 0.16, character);
+    B(0.58, 0.08, 0.32, mDark, 0, 0.80, 0, charRoot);
+    B(0.09, 0.09, 0.05, new THREE.MeshLambertMaterial({color:0x5588aa}), 0, 0.80, 0.18, charRoot);
 
-    // Arms (as pivoting groups)
-    const leftArmGroup = new THREE.Group();
-    leftArmGroup.position.set(-0.36, 1.39, 0);
-    box(0.17, 0.35, 0.19, uniform, 0, -0.175, 0, leftArmGroup);      // upper arm
-    box(0.14, 0.3, 0.16, uniformLight, 0, -0.45, 0, leftArmGroup);   // lower arm
-    box(0.13, 0.04, 0.18, gloveMat, 0, -0.63, 0, leftArmGroup);      // wrist guard
-    box(0.12, 0.14, 0.12, skin, 0, -0.73, 0, leftArmGroup);          // hand
-    character.add(leftArmGroup);
+    // ── ARM SYSTEM (shoulder → elbow → hand pivot) ────────────
+    function makeArm(side) {
+      const shoulderPivot = new THREE.Group();
+      shoulderPivot.position.set(side * 0.38, 1.44, 0);
 
-    const rightArmGroup = new THREE.Group();
-    rightArmGroup.position.set(0.36, 1.39, 0);
-    box(0.17, 0.35, 0.19, uniform, 0, -0.175, 0, rightArmGroup);
-    box(0.14, 0.3, 0.16, uniformLight, 0, -0.45, 0, rightArmGroup);
-    box(0.13, 0.04, 0.18, gloveMat, 0, -0.63, 0, rightArmGroup);
-    box(0.12, 0.14, 0.12, skin, 0, -0.73, 0, rightArmGroup);
-    character.add(rightArmGroup);
+      const elbowPivot = new THREE.Group();
+      elbowPivot.position.set(0, -0.34, 0);
 
-    // Legs
-    const leftLegGroup = new THREE.Group();
-    leftLegGroup.position.set(-0.14, 0.82, 0);
-    box(0.18, 0.36, 0.2, dark, 0, -0.18, 0, leftLegGroup);   // thigh
-    box(0.15, 0.34, 0.18, new THREE.MeshLambertMaterial({ color: 0x111d30 }), 0, -0.51, 0, leftLegGroup); // shin
-    box(0.18, 0.08, 0.28, solesMat, 0, -0.72, 0.04, leftLegGroup);   // foot
-    character.add(leftLegGroup);
+      // Upper arm
+      B(0.19, 0.36, 0.21, mUnif, 0, -0.17, 0, shoulderPivot);
+      // Elbow piece
+      B(0.17, 0.07, 0.19, mUnifL, 0, 0, 0, elbowPivot);
+      // Forearm
+      B(0.16, 0.32, 0.18, mUnifL, 0, -0.18, 0, elbowPivot);
+      // Wrist guard
+      B(0.17, 0.05, 0.20, mGlove, 0, -0.36, 0, elbowPivot);
+      // Hand
+      B(0.15, 0.16, 0.13, mSkin, 0, -0.50, 0, elbowPivot);
+      // Thumb
+      B(0.06, 0.08, 0.05, mSkin, side*0.09, -0.52, 0.07, elbowPivot);
 
-    const rightLegGroup = new THREE.Group();
-    rightLegGroup.position.set(0.14, 0.82, 0);
-    box(0.18, 0.36, 0.2, dark, 0, -0.18, 0, rightLegGroup);
-    box(0.15, 0.34, 0.18, new THREE.MeshLambertMaterial({ color: 0x111d30 }), 0, -0.51, 0, rightLegGroup);
-    box(0.18, 0.08, 0.28, solesMat, 0, -0.72, 0.04, rightLegGroup);
-    character.add(rightLegGroup);
+      shoulderPivot.add(elbowPivot);
+      charRoot.add(shoulderPivot);
+      return { shoulderPivot, elbowPivot };
+    }
+    const leftArm  = makeArm(-1);
+    const rightArm = makeArm( 1);
 
-    // Character point light (aura)
-    const charLight = new THREE.PointLight(0x7ab4ff, 4, 6);
-    charLight.position.set(0, 1.2, 0);
-    character.add(charLight);
+    // ── LEG SYSTEM (hip → knee → foot pivot) ─────────────────
+    function makeLeg(side) {
+      const hipPivot = new THREE.Group();
+      hipPivot.position.set(side * 0.155, 0.82, 0);
 
-    scene.add(character);
+      const kneePivot = new THREE.Group();
+      kneePivot.position.set(0, -0.38, 0);
 
-    // ── SPEECH SYSTEM ─────────────────────────────────────────
-    const speeches = [
+      // Thigh
+      B(0.20, 0.40, 0.22, mDark, 0, -0.19, 0, hipPivot);
+      // Knee cap
+      B(0.18, 0.08, 0.20, new THREE.MeshLambertMaterial({color:0x1a2438}), 0, 0, 0, kneePivot);
+      // Shin
+      B(0.17, 0.36, 0.19, new THREE.MeshLambertMaterial({color:0x111c2e}), 0, -0.21, 0, kneePivot);
+      // Boot shaft
+      B(0.19, 0.22, 0.22, mBoot, 0, -0.45, 0, kneePivot);
+      // Boot sole (extends forward)
+      B(0.19, 0.07, 0.30, mBootA, 0, -0.59, 0.04, kneePivot);
+      // Boot accent stripe
+      B(0.20, 0.03, 0.32, mStripe, 0, -0.55, 0.04, kneePivot);
+
+      hipPivot.add(kneePivot);
+      charRoot.add(hipPivot);
+      return { hipPivot, kneePivot };
+    }
+    const leftLeg  = makeLeg(-1);
+    const rightLeg = makeLeg( 1);
+
+    // Char aura light
+    const charAura = new THREE.PointLight(0x6699ff, 3, 5);
+    charAura.position.set(0, 1.2, 0);
+    charRoot.add(charAura);
+
+    scene.add(charRoot);
+
+    // ── WALK PATH ─────────────────────────────────────────────
+    let walkAngle = 0;
+    const WALK_SPEED   = 0.38;
+    const WALK_RADIUS  = 2.9;
+    let isIdle = false, idleTimer = 0, idleNextIn = 9 + Math.random() * 5;
+
+    // ── SPEECH ────────────────────────────────────────────────
+    const SPEECHES = [
       "Analyserar omgivningen...",
-      "Kartlägger platser i Nexus",
-      "Minnessystem initierat",
+      "Kartlägger nya platser",
+      "Minneslager synkroniseras",
       "Söker interaktionspunkter",
       "Inga agenter i närheten",
       "Väntar på direktiv...",
-      "Registrerar sensordata",
+      "Sensordata registrerad",
       "Systemstatus: optimal",
       "Utforskar stadsgränser",
       "Bearbetar kontext...",
+      "God morgon, Nexus",
+      "Solen går upp i öst",
     ];
-    let bubbleTimer = 0, bubbleVisible = false, bubbleDuration = 0;
-    let bubbleNextIn = 3.0;
+    let bubbleVisible = false, bubbleDur = 0, bubbleNextIn = 3;
 
     function showBubble(text) {
       bubble.textContent = text;
       bubble.classList.add('visible');
-      bubbleVisible = true;
-      bubbleDuration = 2.8;
+      bubbleVisible = true; bubbleDur = 3.2;
     }
     function hideBubble() {
       bubble.classList.remove('visible');
       bubbleVisible = false;
-      bubbleNextIn = 5 + Math.random() * 6;
+      bubbleNextIn = 5 + Math.random() * 7;
     }
-
-    // ── WALK PATH ─────────────────────────────────────────────
-    const WALK_RADIUS = 2.8;
-    let walkAngle = 0;
-    const WALK_SPEED = 0.35; // radians per second
-    let isIdle = false;
-    let idleTimer = 0;
-    let idleNextIn = 8 + Math.random() * 6;
 
     // ── ANIMATE ───────────────────────────────────────────────
     const clock = new THREE.Clock();
     let frame = 0;
+    let skyUpdateTimer = 0;
+
+    // Do first sky update
+    updateSky();
 
     function animate() {
       requestAnimationFrame(animate);
-      const dt = clock.getDelta();
-      const t = clock.getElapsedTime();
+      const dt = Math.min(clock.getDelta(), 0.05);
+      const t  = clock.getElapsedTime();
       frame++;
 
-      // Walk / idle
+      // Update sky every 10s
+      skyUpdateTimer += dt;
+      if (skyUpdateTimer > 10) { updateSky(); skyUpdateTimer = 0; }
+
+      // Idle toggle
       idleTimer += dt;
       if (!isIdle && idleTimer > idleNextIn) {
-        isIdle = true;
-        idleTimer = 0;
-        idleNextIn = 2.5 + Math.random() * 2;
+        isIdle = true; idleTimer = 0; idleNextIn = 2 + Math.random() * 3;
       } else if (isIdle && idleTimer > idleNextIn) {
-        isIdle = false;
-        idleTimer = 0;
-        idleNextIn = 7 + Math.random() * 8;
+        isIdle = false; idleTimer = 0; idleNextIn = 8 + Math.random() * 8;
       }
 
       if (!isIdle) {
+        // Walk
         walkAngle += WALK_SPEED * dt;
-        character.position.x = Math.cos(walkAngle) * WALK_RADIUS;
-        character.position.z = Math.sin(walkAngle) * WALK_RADIUS;
-        character.rotation.y = -walkAngle - Math.PI / 2;
+        charRoot.position.x = Math.cos(walkAngle) * WALK_RADIUS;
+        charRoot.position.z = Math.sin(walkAngle) * WALK_RADIUS;
+        charRoot.rotation.y = -(walkAngle + Math.PI / 2);
 
-        // Walk cycle
-        const wc = Math.sin(t * 6) * 0.5;
-        leftLegGroup.rotation.x  =  wc;
-        rightLegGroup.rotation.x = -wc;
-        leftArmGroup.rotation.x  = -wc * 0.7;
-        rightArmGroup.rotation.x =  wc * 0.7;
-        // Bob
-        character.position.y = Math.abs(Math.sin(t * 6)) * 0.04;
+        // Natural walk cycle
+        const wt = t * 5.5;
+        const sw = Math.sin(wt);
+        const sw2 = Math.sin(wt * 2);
+
+        // Hip pivot (thigh swing)
+        leftLeg.hipPivot.rotation.x   =  sw * 0.55;
+        rightLeg.hipPivot.rotation.x  = -sw * 0.55;
+        // Knee bend on back swing (knee bends when leg swings back)
+        leftLeg.kneePivot.rotation.x  = Math.max(0, -sw) * 0.55;
+        rightLeg.kneePivot.rotation.x = Math.max(0,  sw) * 0.55;
+
+        // Arm swing opposite
+        leftArm.shoulderPivot.rotation.x  = -sw * 0.45;
+        rightArm.shoulderPivot.rotation.x =  sw * 0.45;
+        // Slight elbow bend during swing
+        leftArm.elbowPivot.rotation.x  = 0.1 + Math.max(0, -sw) * 0.2;
+        rightArm.elbowPivot.rotation.x = 0.1 + Math.max(0,  sw) * 0.2;
+
+        // Body bob
+        charRoot.position.y = Math.abs(sw2) * 0.035;
+        // Torso slight twist
+        torsoPivot.rotation.y = sw * 0.08;
+        headPivot.rotation.y  = sw * -0.05;
+
       } else {
-        // Idle: breathe
-        const breath = Math.sin(t * 1.8) * 0.012;
-        torsoGroup && (torsoGroup.position.y = 1.1 + breath);
-        headGroup.position.y = 1.62 + breath * 0.5;
-        leftLegGroup.rotation.x = 0;
-        rightLegGroup.rotation.x = 0;
-        leftArmGroup.rotation.x = Math.sin(t * 0.8) * 0.06;
-        rightArmGroup.rotation.x = -Math.sin(t * 0.8) * 0.06;
-        character.position.y = 0;
-        // Slight head look
-        headGroup.rotation.y = Math.sin(t * 0.5) * 0.15;
+        // Idle: breathing + look around
+        const breath = Math.sin(t * 1.6) * 0.014;
+        torsoPivot.position.y = 1.12 + breath;
+        headPivot.position.y  = 1.72 + breath * 0.4;
+        // Arms rest slightly forward
+        leftArm.shoulderPivot.rotation.x  = 0.05;
+        rightArm.shoulderPivot.rotation.x = 0.05;
+        leftArm.elbowPivot.rotation.x  = 0.12;
+        rightArm.elbowPivot.rotation.x = 0.12;
+        // Legs straight
+        leftLeg.hipPivot.rotation.x  = 0;
+        rightLeg.hipPivot.rotation.x = 0;
+        leftLeg.kneePivot.rotation.x  = 0;
+        rightLeg.kneePivot.rotation.x = 0;
+        charRoot.position.y = 0;
+        torsoPivot.rotation.y = 0;
+        // Head look around
+        headPivot.rotation.y = Math.sin(t * 0.5) * 0.3;
+        headPivot.rotation.x = Math.sin(t * 0.35) * 0.08;
       }
 
-      // Speech bubble positioning
-      bubbleTimer += dt;
+      // Speech bubble
       if (!bubbleVisible) {
-        if (bubbleTimer >= bubbleNextIn) {
-          bubbleTimer = 0;
-          showBubble(speeches[Math.floor(Math.random() * speeches.length)]);
-        }
+        bubbleNextIn -= dt;
+        if (bubbleNextIn <= 0) showBubble(SPEECHES[Math.floor(Math.random() * SPEECHES.length)]);
       } else {
-        bubbleDuration -= dt;
-        if (bubbleDuration <= 0) hideBubble();
+        bubbleDur -= dt;
+        if (bubbleDur <= 0) hideBubble();
       }
 
-      // Project bubble to screen
-      const headPos3D = new THREE.Vector3(
-        character.position.x,
-        character.position.y + 2.15,
-        character.position.z
-      );
-      const projected = headPos3D.clone().project(camera);
+      // Project bubble to 2D
+      const headW = new THREE.Vector3(
+        charRoot.position.x,
+        charRoot.position.y + 2.25,
+        charRoot.position.z
+      ).project(camera);
       const vw = viewport.clientWidth, vh = viewport.clientHeight;
-      const sx = (projected.x * 0.5 + 0.5) * vw;
-      const sy = (-projected.y * 0.5 + 0.5) * vh;
-      bubble.style.left = sx + 'px';
-      bubble.style.top  = sy + 'px';
+      bubble.style.left = ((headW.x  * 0.5 + 0.5) * vw) + 'px';
+      bubble.style.top  = ((-headW.y * 0.5 + 0.5) * vh) + 'px';
 
-      // Particles
-      const pd = particles[0];
-      const pa = pd.pos;
-      for (let i = 0; i < pd.vel.length; i++) {
-        pa[i*3+1] += pd.vel[i].speed;
-        if (pa[i*3+1] > 6) pa[i*3+1] = 0.3;
-        pa[i*3] += Math.sin(t * 0.3 + pd.vel[i].phase) * 0.002;
+      // Particles float up
+      for (let i = 0; i < particleVel.length; i++) {
+        particlePos[i*3+1] += particleVel[i].vy;
+        if (particlePos[i*3+1] > 7) particlePos[i*3+1] = 0.2;
+        particlePos[i*3]   = Math.cos(t * 0.2 + particleVel[i].phase) * particleVel[i].r;
+        particlePos[i*3+2] = Math.sin(t * 0.2 + particleVel[i].phase) * particleVel[i].r;
       }
-      pd.geo.attributes.position.needsUpdate = true;
+      particleGeo.attributes.position.needsUpdate = true;
 
-      // Twinkle antenna
-      const antTip = building.children.find(c => c.geometry && c.geometry.type === 'SphereGeometry');
-      if (antTip) antTip.material.emissiveIntensity = 2.5 + Math.sin(t * 4) * 1.5;
-
-      // Window flicker
-      if (frame % 90 === 0) {
-        building.children.forEach(c => {
-          if (c.material && c.material.emissiveIntensity !== undefined && c.material.color.r > 0.2 && c.material.color.b > 0.5) {
-            c.material.emissiveIntensity = 0.5 + Math.random() * 1.0;
-          }
-        });
+      // Antenna blink
+      if (frame % 2 === 0) {
+        const tip = mainBuilding.children.find(c => c.geometry?.type === 'SphereGeometry');
+        if (tip) tip.material.emissiveIntensity = 3 + Math.sin(t * 5) * 2;
       }
 
       controls.update();
@@ -1012,6 +1292,7 @@
     resize();
     window.addEventListener('resize', resize);
     animate();
+
   </script>
 
   <script>
