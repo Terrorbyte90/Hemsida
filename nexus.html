@@ -1108,7 +1108,7 @@
       const a=agents[focIdx],n=a.needs;
       const hex='#'+a.color.toString(16).padStart(6,'0');
       document.getElementById('focused-badge').textContent=a.name;
-      document.getElementById('focused-agent-hud').textContent='▸ '+a.name+' · '+(STATES[a.state]||a.state);
+      const _hud=document.getElementById('focused-agent-hud-status'); if(_hud) _hud.textContent='▸ '+a.name+' · '+(STATES[a.state]||a.state);
       document.getElementById('focused-agent-details').innerHTML=`<div style="font-weight:600;font-size:var(--text-base);margin-bottom:2px;color:${hex}">${a.name}</div><div style="font-size:0.62rem;color:var(--text-faint);font-family:var(--font-mono);margin-bottom:var(--space-3)">${a.role}</div><div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-3)">Status: ${STATES[a.state]||a.state}</div><div class="needs-bars"><div class="needs-bar-row"><span class="needs-bar-label">Energi</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--energi" style="width:${Math.round(n.energi)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Social</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--social" style="width:${Math.round(n.social)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Kunskap</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--kunskap" style="width:${Math.round(n.kunskap)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Välmående</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--valmående" style="width:${Math.round(n.valmående)}%"></div></div></div></div>`;
     }
 
@@ -1846,7 +1846,7 @@
       const dt=Math.min((now-lastT)/1000,.1); lastT=now; uiT+=dt;
       const h=getH();
       updateSky(h);
-      document.getElementById('hud-clock').textContent='NEXUS · VARA · '+fmt(h);
+      const _clk=document.getElementById('hud-clock'); if(_clk) _clk.textContent='NEXUS · VARA · '+fmt(h);
       const hst=document.getElementById('hero-stat-time'); if(hst) hst.textContent=fmt(h);
 
       const dtH=dt*GAME_H_PER_SEC;
