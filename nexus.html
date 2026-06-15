@@ -255,8 +255,8 @@
     .news-text { font-size: 0.62rem; color: var(--text-muted); line-height: 1.4; }
     .news-content { flex: 1; min-width: 0; }
     /* ── SPEECH BUBBLES ── */
-    .speech-bubble { position: absolute; pointer-events: none; background: rgba(0,0,0,0.88); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.18); border-radius: 10px 10px 10px 2px; padding: 5px 9px; font-size: 0.6rem; color: #fff; max-width: 150px; line-height: 1.4; transform: translate(-50%,-100%) translateY(-22px); z-index: 50; }
-    .thought-bubble { position: absolute; pointer-events: none; background: rgba(167,139,250,0.12); backdrop-filter: blur(10px); border: 1px solid rgba(167,139,250,0.28); border-radius: 10px; padding: 4px 8px; font-size: 0.56rem; color: rgba(200,180,255,0.9); max-width: 140px; line-height: 1.4; transform: translate(-50%,-100%) translateY(-22px); font-style: italic; z-index: 50; }
+    .speech-bubble { position: absolute; pointer-events: none; background: rgba(10,10,30,0.92); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.25); border-radius: 12px 12px 12px 3px; padding: 6px 12px; font-size: 0.65rem; color: #fff; max-width: 180px; line-height: 1.5; transform: translate(-50%,-100%) translateY(-26px); z-index: 50; box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
+    .thought-bubble { position: absolute; pointer-events: none; background: rgba(60,30,120,0.85); backdrop-filter: blur(10px); border: 1px solid rgba(167,139,250,0.4); border-radius: 10px; padding: 5px 10px; font-size: 0.6rem; color: rgba(220,200,255,1); max-width: 170px; line-height: 1.5; transform: translate(-50%,-100%) translateY(-26px); font-style: italic; z-index: 50; box-shadow: 0 4px 20px rgba(80,40,180,0.4); }
   </style>
 </head>
 <body>
@@ -606,6 +606,22 @@
     scene.add(sunL);
     // Fill light from opposite side (sky bounce)
     const fillL = new THREE.DirectionalLight(0x8ab4f8, 0.4);
+
+    // Interior point lights for each building
+    function addBldgLight(wx, wy, wz, color=0xfff5e0, intensity=3, dist=12) {
+      const pl = new THREE.PointLight(color, intensity, dist);
+      pl.position.set(wx, wy, wz);
+      scene.add(pl);
+    }
+    addBldgLight(0, 3, -20, 0xfff0d0, 4, 14);    // Rådhuset
+    addBldgLight(-20, 2.5, -14, 0xfff8e8, 3, 12); // Biblioteket
+    addBldgLight(-26, 3, 8, 0x8090ff, 2.5, 10);   // Arkivet (blue tint)
+    addBldgLight(22, 2.5, -16, 0xd0e8ff, 3, 10);  // Polisen
+    addBldgLight(28, 3, 6, 0x88ffcc, 3, 12);       // Labbet (green)
+    addBldgLight(-15, 4, 32, 0x334466, 2, 14);     // Observatoriet (dark)
+    addBldgLight(20, 2.5, 28, 0xffffff, 4, 12);    // Kliniken (bright white)
+    // Home lights (warm yellow)
+    [[-45,2,-38],[-18,2,-52],[38,2,-46],[58,2,-24],[-58,2,4]].forEach(([x,y,z])=>addBldgLight(x,y,z,0xffd580,2.5,8));
     fillL.position.set(-20, 10, -20);
     scene.add(fillL);
 
@@ -657,6 +673,13 @@
       return new THREE.MeshStandardMaterial(opts);
     }
     const glassMat = new THREE.MeshStandardMaterial({color:0x4a7aaa,roughness:0.1,metalness:0.6,transparent:true,opacity:0.65});
+    const M2 = {
+      table:  new THREE.MeshStandardMaterial({color:0xc8a060,roughness:0.5}),
+      shelf:  new THREE.MeshStandardMaterial({color:0x8B4513,roughness:0.6}),
+      fabric: new THREE.MeshStandardMaterial({color:0xe0e0e0,roughness:0.9}),
+      screen: new THREE.MeshStandardMaterial({color:0x003388,emissive:0x001155,emissiveIntensity:0.8}),
+      glow:   new THREE.MeshStandardMaterial({color:0x00ff88,emissive:0x00cc66,emissiveIntensity:2}),
+    };
     // X-ray: store building groups with bounds for transparency fade
     const bldgs = []; // {group, cx, cz, hw, hd}
     function regBldg(group, cx, cz, hw, hd) {
@@ -737,10 +760,10 @@
       for(let i=-3;i<=3;i+=2) bx(0.9,1.3,0.1,glassMat,i,3.5,4.05,g);
       scene.add(g); regBldg(g,0,-20,5.5,4.5);
       // Interior: council table + chairs
-      bx(4,0.1,1.5,M.wood,0,1.5,0,g);
-      [-1.5,0,1.5].forEach(cx3=>{ bx(0.6,0.5,0.6,M.wood,cx3,0.8,1,g); bx(0.6,0.5,0.6,M.wood,cx3,0.8,-1,g); });
-      bx(0.3,2,0.3,M.wood,-4,0,0,g);
-      bx(1,0.05,0.5,M.wood,-4,2,0,g);
+      bx(5,0.12,2,M2.table,0,1.5,0,g);
+      [-1.8,-0.6,0.6,1.8].forEach(cx3=>{ bx(0.55,0.55,0.55,M2.shelf,cx3,0.82,1.1,g); bx(0.55,0.55,0.55,M2.shelf,cx3,0.82,-1.1,g); });
+      bx(0.3,2.2,0.3,M2.table,-4,0,0,g); bx(1.2,0.08,0.6,M2.table,-4,2.2,0,g);
+      bx(0.6,0.3,0.08,M2.screen,-4,2.6,0,g);
     }
     // 2. BIBLIOTEKET
     {
@@ -751,9 +774,9 @@
       bx(12,0.25,1.5,M.conc,0,0,3.8,g);
       scene.add(g); regBldg(g,-20,-14,6,3.5);
       // Interior: bookshelves + reading table
-      [-4,-1.5,1].forEach(sx=>{ bx(0.15,2.5,3,M.wood,sx,0,-1,g); bx(0.8,0.08,1.4,new THREE.MeshStandardMaterial({color:0x8B4513}),sx,0.8,-1,g); bx(0.8,0.08,1.4,new THREE.MeshStandardMaterial({color:0x8B4513}),sx,1.6,-1,g); });
-      bx(2,0.08,1,M.wood,0,0.9,2,g);
-      bx(0.5,0.4,0.5,M.wood,-0.7,0.5,2,g); bx(0.5,0.4,0.5,M.wood,0.7,0.5,2,g);
+      [-4.5,-2,0.5,3].forEach(sx=>{ bx(0.18,2.8,2.5,M2.shelf,sx,0,-1.5,g); bx(0.16,0.08,2.3,M2.table,sx,0.9,-1.5,g); bx(0.16,0.08,2.3,M2.table,sx,1.7,-1.5,g); });
+      bx(2.5,0.1,1.2,M2.table,0,1.0,2,g);
+      bx(0.5,0.45,0.5,M2.shelf,-0.8,0.5,2,g); bx(0.5,0.45,0.5,M2.shelf,0.8,0.5,2,g);
     }
     // 3. ARKIVET
     {
@@ -764,9 +787,9 @@
       [[-4,3.5],[4,3.5],[-4,-3.5],[4,-3.5]].forEach(([cx2,cz2])=>bx(0.65,6,0.65,M.dark,cx2,0,cz2,g));
       scene.add(g); regBldg(g,-26,8,4,3.5);
       // Interior: filing cabinets + central desk
-      [-2,0,2].forEach(ax=>{ bx(1,2,0.6,M.dark,ax,0,-2,g); bx(0.9,0.05,0.55,M.metal,ax,0.7,-2,g); bx(0.9,0.05,0.55,M.metal,ax,1.4,-2,g); });
-      bx(2,0.08,1,M.dark,0,1,1.5,g);
-    }
+      [-2.5,0,2.5].forEach(ax=>{ bx(0.9,2.2,0.7,M.metal,ax,0,-2.5,g); bx(0.85,0.06,0.65,M2.table,ax,0.75,-2.5,g); bx(0.85,0.06,0.65,M2.table,ax,1.5,-2.5,g); });
+      bx(2.5,0.1,1.2,M2.table,0,1.1,1.5,g);
+      bx(0.8,0.5,0.08,M2.screen,0,1.65,1.55,g);
     // 4. POLISSTATIONEN
     {
       const g=new THREE.Group(); g.position.set(22,0,-16);
@@ -789,12 +812,10 @@
       const al=new THREE.Mesh(new THREE.SphereGeometry(0.09,6,4),new THREE.MeshStandardMaterial({color:0xff2200,emissive:0xff2200,emissiveIntensity:3})); al.position.set(0,8.45,-2); g.add(al);
       scene.add(g); regBldg(g,28,6,4.5,3.5);
       // Interior: workbench + equipment
-      bx(3,0.1,0.8,M.metal,-1,1.5,-2,g);
-      const emR=new THREE.MeshStandardMaterial({color:0x00ff88,emissive:0x00ff88,emissiveIntensity:1,transparent:true,opacity:0.7});
-      bx(0.4,0.6,0.4,emR,0,1.7,-2,g);
-      bx(0.15,1,0.15,M.metal,2,0,2,g); bx(0.5,0.05,0.5,M.metal,2,1,-2,g);
-      [-2.5,-1,0.5,2].forEach(bx2=>bx(0.5,1.2,0.5,M.steel,bx2,0,-2,g));
-    }
+      bx(4,0.1,0.9,M.metal,0,1.6,-2.5,g);
+      bx(0.4,0.65,0.4,M2.glow,-1.5,1.75,-2.5,g); bx(0.35,0.8,0.35,M2.glow,1.2,1.75,-2.5,g);
+      [-3,-1.5,0,1.5,3].forEach(bx2=>bx(0.5,1.5,0.6,M.steel,bx2,0,-3,g));
+      bx(2,0.08,1,M2.table,2,1,1,g); bx(0.9,0.5,0.08,M2.screen,2,1.55,1,g);
     // 6. OBSERVATORIET
     {
       const g=new THREE.Group(); g.position.set(-15,0,32);
@@ -805,11 +826,10 @@
       for(let s=0;s<4;s++) bx(2.5,0.25,0.5,M.conc,0,s*0.25,5.8-s*0.5,g);
       scene.add(g); regBldg(g,-15,32,5.5,5.5);
       // Interior: telescope + console
-      cy(0.12,0.12,3,8,M.metal,0,1,0,g);
-      bx(0.15,2,0.15,M.metal,0,1,0,g);
-      bx(2,0.08,0.8,M.dark,2,1,-1,g);
-      const scrM=new THREE.MeshStandardMaterial({color:0x003366,emissive:0x001133,emissiveIntensity:0.5});
-      bx(0.8,0.5,0.05,scrM,2,1.35,-1,g);
+      cy(0.2,0.25,1.2,12,M.metal,0,1,0,g);
+      cy(0.08,0.08,2.5,8,M.metal,0,2.8,0,g);
+      bx(2.5,0.1,1,M2.table,-2,1,-2,g); bx(1.2,0.6,0.08,M2.screen,-2,1.55,-2,g);
+      bx(1.2,0.6,0.08,M2.screen,2,1.55,-2,g);
     }
     // 7. KLINIKEN
     {
@@ -821,10 +841,9 @@
       bx(2,2.5,1,M.white,0,0,4,g);
       scene.add(g); regBldg(g,20,28,4,3.5);
       // Interior: beds + reception
-      bx(1.5,0.3,2.5,M.white,-2,0.3,-1,g); bx(1.5,0.3,2.5,M.white,2,0.3,-1,g);
-      bx(1.4,0.1,2.4,new THREE.MeshStandardMaterial({color:0xffffff}),-2,0.46,-1,g); bx(1.4,0.1,2.4,new THREE.MeshStandardMaterial({color:0xffffff}),2,0.46,-1,g);
-      bx(1.5,0.08,0.8,M.white,0,0.9,2,g);
-      bx(0.1,1.2,0.1,new THREE.MeshStandardMaterial({color:0xcc1111}),0,0,0,g); bx(1,0.1,0.1,new THREE.MeshStandardMaterial({color:0xcc1111}),0,0.55,0,g);
+      bx(1.6,0.35,2.8,M.white,-2.2,0.35,-1,g); bx(1.6,0.35,2.8,M.white,2.2,0.35,-1,g);
+      bx(1.5,0.08,2.7,M2.fabric,-2.2,0.53,-1,g); bx(1.5,0.08,2.7,M2.fabric,2.2,0.53,-1,g);
+      bx(2,0.1,0.9,M2.table,0,0.95,2.2,g); bx(0.9,0.6,0.06,M2.screen,0,1.55,2.2,g);
     }
 
     // HOMES
@@ -844,9 +863,8 @@
       bx(0.4,1.2,0.4,M.conc,1.2,5,-1,g);
       const gp=new THREE.Mesh(new THREE.PlaneGeometry(7,7),new THREE.MeshStandardMaterial({color:0x3a8025,roughness:1})); gp.rotation.x=-Math.PI/2; gp.position.set(0,0.002,0); g.add(gp);
       // Home interior: bed + table
-      bx(1.5,0.3,2,wm,-1,0.3,-1,g);
-      bx(0.8,0.08,0.8,M.wood,1.2,0.65,1.2,g);
-      bx(0.4,0.4,0.4,M.wood,1.2,0.3,1.2,g);
+      bx(1.6,0.35,2.2,wm,-1.2,0.35,-1,g); bx(1.5,0.08,2.1,M2.fabric,-1.2,0.54,-1,g);
+      bx(1,0.1,0.8,M2.table,1.3,0.75,1,g); bx(0.45,0.48,0.45,M2.table,1.3,0.3,1,g);
       scene.add(g); regBldg(g,x,z,2.8,2.5);
       tree(x+2.5,z-2.5,0.55); flowers(x-1.5,z+2);
     });
@@ -1095,8 +1113,8 @@
         } else {
           vp.classList.add('fake-fs');
           isFakeFs=true;
-          btnFs.textContent='Avsluta ✕';
-          setTimeout(resize,50);
+          btnFs.textContent='✕ Avsluta';
+          setTimeout(()=>{ resize(); }, 50);
         }
       }
     }
@@ -1238,6 +1256,11 @@
     // ════════════════════════════════════════════════════════
     function executeTool(agent, toolName, args) {
       const A = args || {};
+      // Normalize field names from LLM variations
+      if (!A.message && (A.content || A.text || A.speech)) A.message = A.content || A.text || A.speech;
+      if (!A.thought && (A.content || A.text || A.reflection)) A.thought = A.content || A.text || A.reflection;
+      if (!A.entry && (A.content || A.text || A.diary_entry)) A.entry = A.content || A.text || A.diary_entry;
+      if (!A.insight && A.reflection) A.insight = A.reflection;
       const icon = {
         talk_to:'💬', think:'💭', announce:'📣', propose_rule:'⚖️',
         call_meeting:'📢', vote:'🗳', research:'📚', read_book:'📖',
@@ -1284,7 +1307,7 @@
           break;
         }
         case 'think': {
-          if (!A.thought) break;
+          if (!A.thought) { A.thought = agent.memory.currentThought || 'Funderar...'; }
           agent.memory.currentThought = A.thought;
           agent.memory.save();
           showBubble(agent, A.thought, 'thought', 4000);
@@ -1961,7 +1984,15 @@
         // Update status labels over all agents
         agents.forEach((a,i)=>{
           const st=document.getElementById('ov-status-'+i);
-          if(st){ const loc=getAgentLocation(a); st.textContent=(STATES[a.state]||a.state)+(loc!=='ute'?' · '+loc:''); }
+          if(st){
+            const loc=getAgentLocation(a);
+            const thought=a.memory.currentThought;
+            const locStr=loc!=='ute'&&loc!=='hemma'?' @ '+loc:'';
+            st.textContent=(STATES[a.state]||a.state)+locStr;
+          }
+          // Update energy bar in overlay
+          const eb=document.getElementById('ov-e-'+i);
+          if(eb) eb.style.width=Math.round(a.needs.energi)+'%';
         });
       }
 
