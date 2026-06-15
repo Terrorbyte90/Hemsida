@@ -841,6 +841,31 @@
         new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x5b9cf6, emissiveIntensity: 3 }));
       doorTop.position.set(0, 1.65, 1.31); g.add(doorTop);
 
+      // Building sign "NEXUS"
+      const signBg = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.28, 0.06),
+        new THREE.MeshStandardMaterial({color:0x0a1520,emissive:0x001133,emissiveIntensity:0.5}));
+      signBg.position.set(0, 2.1, 1.33); g.add(signBg);
+      const signGlow = new THREE.Mesh(new THREE.BoxGeometry(1.38, 0.26, 0.04),
+        new THREE.MeshStandardMaterial({color:0x5b9cf6,emissive:0x3366cc,emissiveIntensity:2.5}));
+      signGlow.position.set(0, 2.1, 1.36); g.add(signGlow);
+
+      // Awning over entrance
+      const awning = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.06,0.6),
+        new THREE.MeshStandardMaterial({color:0x1a2a44,roughness:0.8,metalness:0.3}));
+      awning.position.set(0, 1.95, 1.6); awning.rotation.x=0.15; g.add(awning);
+
+      // Ground floor accent band
+      const gfBand = new THREE.Mesh(new THREE.BoxGeometry(2.62,0.18,2.62),
+        new THREE.MeshStandardMaterial({color:0x1a2838,roughness:0.7,metalness:0.4}));
+      gfBand.position.y=0.79; g.add(gfBand);
+
+      // Rooftop AC units
+      [[0.6,0,-0.6],[-0.6,0,0.6]].forEach(([rx,_,rz])=>{
+        const ac = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.18,0.25),
+          new THREE.MeshStandardMaterial({color:0x2a3a4a,roughness:0.6,metalness:0.5}));
+        ac.position.set(rx,9.35,rz); g.add(ac);
+      });
+
       scene.add(g);
       return g;
     }
@@ -888,27 +913,55 @@
     }
 
     // Trees
-    function addTree(x, z, scale=1) {
+    // Summer deciduous tree
+    function addTree(x, z, scale=1, type=0) {
       const g = new THREE.Group();
       g.position.set(x, 0, z);
       g.scale.setScalar(scale);
-      const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5c3a1e, roughness: 0.95 });
-      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.18, 1.8, 8), trunkMat);
-      trunk.position.y = 0.9; trunk.castShadow = true; g.add(trunk);
-      const foliageColors = [0x1e5c1a, 0x246820, 0x1a5218];
-      [0, 0.8, 1.5, 2.1].forEach((dy, i) => {
-        const r = 1.1 - i * 0.2;
-        const h = 1.4 - i * 0.1;
-        const col = foliageColors[i % foliageColors.length];
-        const cone = new THREE.Mesh(new THREE.ConeGeometry(r, h, 9),
-          new THREE.MeshStandardMaterial({ color: col, roughness: 0.95 }));
-        cone.position.y = 1.8 + dy; cone.castShadow = true; g.add(cone);
+      const trunkH = 1.4 + Math.random()*0.6;
+      const trunkMat = new THREE.MeshStandardMaterial({ color: type===1?0x6b4a22:0x5a3518, roughness:0.95 });
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.16,trunkH,8), trunkMat);
+      trunk.position.y = trunkH/2; trunk.castShadow=true; g.add(trunk);
+      // Leafy crown: overlapping spheres for lush look
+      const greens = type===1
+        ? [0x2d7a1f,0x38921f,0x246b1a,0x4aa030]  // bright summer green
+        : [0x1f6b1a,0x2a8020,0x1a5c16,0x338a22];
+      const crownY = trunkH + 0.3;
+      const mainCrown = new THREE.Mesh(new THREE.SphereGeometry(0.95,10,8), new THREE.MeshStandardMaterial({color:greens[0],roughness:0.9}));
+      mainCrown.scale.set(1,0.88,1); mainCrown.position.y=crownY+0.1; mainCrown.castShadow=true; g.add(mainCrown);
+      // Cluster spheres around crown
+      const offsets = [[-0.55,0.2,0.1],[0.55,0.15,-0.05],[0.1,0.45,0.4],[-0.15,0.4,-0.45],[0.4,-0.2,0.5],[-0.4,-0.15,-0.5],[0.0,0.6,0.1]];
+      offsets.forEach(([ox,oy,oz],i)=>{
+        const r = 0.52+Math.random()*0.22;
+        const col = greens[i%greens.length];
+        const s = new THREE.Mesh(new THREE.SphereGeometry(r,8,6), new THREE.MeshStandardMaterial({color:col,roughness:0.92}));
+        s.position.set(ox,crownY+oy+0.1,oz); s.castShadow=true; g.add(s);
       });
       scene.add(g);
     }
-    addTree(-5, 2, 1.1); addTree(-5.8, -1, 0.9); addTree(5, 1.5, 1.2); addTree(5.5, -2, 0.85);
-    addTree(-3, 5.5, 1.0); addTree(3, 5.5, 0.95); addTree(-2, -6, 1.15); addTree(2, -6.5, 0.9);
-    addTree(-8, 2, 0.8); addTree(8, -1, 0.75); addTree(0, -8, 1.0);
+    // Keep one or two conifers for variety
+    function addConifer(x, z, scale=1) {
+      const g = new THREE.Group();
+      g.position.set(x, 0, z);
+      g.scale.setScalar(scale);
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.16,1.6,8),
+        new THREE.MeshStandardMaterial({color:0x4a2e10,roughness:0.95}));
+      trunk.position.y=0.8; trunk.castShadow=true; g.add(trunk);
+      [[0,1.6,1.1,1.3],[0.7,2.3,0.85,1.1],[1.3,2.95,0.65,0.9],[1.9,3.5,0.45,0.7]].forEach(([dy,y,r,h])=>{
+        const cone = new THREE.Mesh(new THREE.ConeGeometry(r,h,9),
+          new THREE.MeshStandardMaterial({color:dy<1?0x1a5218:0x246820,roughness:0.95}));
+        cone.position.y=y; cone.castShadow=true; g.add(cone);
+      });
+      scene.add(g);
+    }
+    // Deciduous summer trees (type 0=dark, 1=bright)
+    addTree(-5.2, 1.8, 1.1, 1); addTree(-5.8, -1.2, 0.9, 0); addTree(5.2, 1.5, 1.2, 1);
+    addTree(5.5, -2.2, 0.88, 0); addTree(-3.2, 5.8, 1.0, 1); addTree(3.0, 5.6, 0.95, 0);
+    addTree(-2.0, -6.5, 1.1, 1); addTree(2.2, -6.8, 0.92, 0);
+    addTree(-8.5, 1.5, 0.85, 1); addTree(8.2, -1.2, 0.8, 0); addTree(0.5, -8.5, 1.0, 1);
+    addTree(-6.5, -5, 0.9, 1); addTree(6.8, 4.5, 1.05, 0);
+    // A couple conifers for variety
+    addConifer(-7, -3, 0.9); addConifer(7.5, 3, 1.0);
 
     // ── LAMP POSTS ────────────────────────────────────────────
     const lampLights = [];
@@ -970,6 +1023,28 @@
     }
     addBench(-2.5, 3.2, 0.2); addBench(2.5, 3.2, -0.2);
     addBench(-3.0, -2.8, 0.5); addBench(3.0, -2.8, -0.5);
+
+    // Flower beds (summer colour)
+    const flowerColors = [0xff6688, 0xffaa22, 0xff4455, 0xffdd44, 0xcc44ff];
+    const stemMat = new THREE.MeshStandardMaterial({color:0x2a6620,roughness:0.9});
+    function addFlowerBed(cx, cz, count=12) {
+      for(let i=0;i<count;i++){
+        const angle = (i/count)*Math.PI*2;
+        const r = 0.3 + Math.random()*0.25;
+        const x = cx + Math.cos(angle)*r;
+        const z2 = cz + Math.sin(angle)*r;
+        // Stem
+        const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.018,0.022,0.28,5),stemMat);
+        stem.position.set(x,0.14,z2); scene.add(stem);
+        // Flower head
+        const fc = flowerColors[Math.floor(Math.random()*flowerColors.length)];
+        const fl = new THREE.Mesh(new THREE.SphereGeometry(0.06,7,5),
+          new THREE.MeshStandardMaterial({color:fc,emissive:fc,emissiveIntensity:0.2,roughness:0.8}));
+        fl.scale.set(1,0.55,1); fl.position.set(x,0.3,z2); scene.add(fl);
+      }
+    }
+    addFlowerBed(-4.2, 0, 10); addFlowerBed(4.2, 0, 10);
+    addFlowerBed(0, 4.5, 8);  addFlowerBed(0, -4.8, 8);
 
     // ── PARTICLES ────────────────────────────────────────────
     let particleGeo, particlePos, particleVel;
@@ -1392,53 +1467,60 @@
         charRoot.position.z = Math.sin(walkAngle) * WALK_RADIUS;
         charRoot.rotation.y = -(walkAngle + Math.PI / 2);
 
-        // Natural walk cycle
-        const wt = t * 5.5;
-        const sw = Math.sin(wt);
+        // Natural walk cycle with hip sway
+        const wt  = t * 5.2;
+        const sw  = Math.sin(wt);
         const sw2 = Math.sin(wt * 2);
+        const swH = Math.sin(wt * 0.5); // half-freq for sway
 
-        // Hip pivot (thigh swing)
-        leftLeg.hipPivot.rotation.x   =  sw * 0.55;
-        rightLeg.hipPivot.rotation.x  = -sw * 0.55;
-        // Knee bend on back swing (knee bends when leg swings back)
-        leftLeg.kneePivot.rotation.x  = Math.max(0, -sw) * 0.55;
-        rightLeg.kneePivot.rotation.x = Math.max(0,  sw) * 0.55;
+        // Legs: hip swing + knee bend on back swing
+        leftLeg.hipPivot.rotation.x   =  sw * 0.58;
+        rightLeg.hipPivot.rotation.x  = -sw * 0.58;
+        leftLeg.kneePivot.rotation.x  = Math.max(0, -sw) * 0.52 + 0.04;
+        rightLeg.kneePivot.rotation.x = Math.max(0,  sw) * 0.52 + 0.04;
+        // Slight lateral leg angle (hip sway)
+        leftLeg.hipPivot.rotation.z   =  sw2 * 0.04;
+        rightLeg.hipPivot.rotation.z  = -sw2 * 0.04;
 
-        // Arm swing opposite
-        leftArm.shoulderPivot.rotation.x  = -sw * 0.45;
-        rightArm.shoulderPivot.rotation.x =  sw * 0.45;
-        // Slight elbow bend during swing
-        leftArm.elbowPivot.rotation.x  = 0.1 + Math.max(0, -sw) * 0.2;
-        rightArm.elbowPivot.rotation.x = 0.1 + Math.max(0,  sw) * 0.2;
+        // Arms swing opposite to legs, natural elbow bend
+        leftArm.shoulderPivot.rotation.x  = -sw * 0.42;
+        rightArm.shoulderPivot.rotation.x =  sw * 0.42;
+        leftArm.elbowPivot.rotation.x  = 0.12 + Math.max(0, sw)  * 0.18;
+        rightArm.elbowPivot.rotation.x = 0.12 + Math.max(0, -sw) * 0.18;
+        // Arms swing slightly inward/outward
+        leftArm.shoulderPivot.rotation.z  = -0.08 + sw * 0.04;
+        rightArm.shoulderPivot.rotation.z =  0.08 - sw * 0.04;
 
-        // Body bob
-        charRoot.position.y = Math.abs(sw2) * 0.035;
-        // Torso slight twist
-        // torso twist via charRoot
-        charRoot.children[3] && (charRoot.children[3].rotation.y = sw * 0.08);
-        headPivot.rotation.y = sw * -0.05;
+        // Hip sway side-to-side (realistic weight transfer)
+        charRoot.position.x = Math.cos(walkAngle) * WALK_RADIUS + sw2 * 0.025;
+        charRoot.position.y = Math.abs(sw2) * 0.032;
+
+        // Torso counter-rotate to hip sway
+        headPivot.rotation.y = sw * -0.06;
+        headPivot.rotation.x = Math.abs(sw2) * -0.02;
 
       } else {
-        // Idle: breathing + look around
-        const breath = Math.sin(t * 1.6) * 0.014;
-        // torsoPivot breath handled via charRoot scale
-        charRoot.scale.y = 1.0 + breath * 0.02;
-        headPivot.position.y  = 1.72 + breath * 0.4;
-        // Arms rest slightly forward
-        leftArm.shoulderPivot.rotation.x  = 0.05;
-        rightArm.shoulderPivot.rotation.x = 0.05;
-        leftArm.elbowPivot.rotation.x  = 0.12;
-        rightArm.elbowPivot.rotation.x = 0.12;
-        // Legs straight
+        // Idle: breathing, weight shift, look around
+        const breath = Math.sin(t * 1.5) * 0.013;
+        charRoot.scale.y = 1.0 + breath * 0.015;
+        headPivot.position.y = 1.72 + breath * 0.35;
+        // Slight weight shift
+        charRoot.position.x = Math.cos(walkAngle)*WALK_RADIUS + Math.sin(t*0.7)*0.018;
+        charRoot.position.y = Math.abs(Math.sin(t*1.5))*0.01;
+        // Arms hang naturally with subtle sway
+        leftArm.shoulderPivot.rotation.x  = 0.08 + Math.sin(t*0.9)*0.04;
+        rightArm.shoulderPivot.rotation.x = 0.08 - Math.sin(t*0.9)*0.04;
+        leftArm.shoulderPivot.rotation.z  = -0.1;
+        rightArm.shoulderPivot.rotation.z =  0.1;
+        leftArm.elbowPivot.rotation.x  = 0.1;
+        rightArm.elbowPivot.rotation.x = 0.1;
         leftLeg.hipPivot.rotation.x  = 0;
         rightLeg.hipPivot.rotation.x = 0;
-        leftLeg.kneePivot.rotation.x  = 0;
-        rightLeg.kneePivot.rotation.x = 0;
-        charRoot.position.y = 0;
-        
-        // Head look around
-        headPivot.rotation.y = Math.sin(t * 0.5) * 0.3;
-        headPivot.rotation.x = Math.sin(t * 0.35) * 0.08;
+        leftLeg.kneePivot.rotation.x  = 0.04;
+        rightLeg.kneePivot.rotation.x = 0.04;
+        // Head looks around naturally
+        headPivot.rotation.y = Math.sin(t*0.45)*0.28 + Math.sin(t*1.1)*0.06;
+        headPivot.rotation.x = Math.sin(t*0.3)*0.07;
       }
 
       // Speech bubble
