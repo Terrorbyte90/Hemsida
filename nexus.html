@@ -726,6 +726,7 @@
     road(0,0,20,28,3); road(0,0,-26,8,3);
     road(-45,-38,-18,-52,3); road(-18,-52,38,-46,3); road(38,-46,58,-24,3);
     road(-58,4,-45,-38,3); road(-58,4,-26,8,3);
+    road(28,6,45,10,3);
 
     // PLAZA
     {
@@ -790,6 +791,7 @@
       [-2.5,0,2.5].forEach(ax=>{ bx(0.9,2.2,0.7,M.metal,ax,0,-2.5,g); bx(0.85,0.06,0.65,M2.table,ax,0.75,-2.5,g); bx(0.85,0.06,0.65,M2.table,ax,1.5,-2.5,g); });
       bx(2.5,0.1,1.2,M2.table,0,1.1,1.5,g);
       bx(0.8,0.5,0.08,M2.screen,0,1.65,1.55,g);
+    }
     // 4. POLISSTATIONEN
     {
       const g=new THREE.Group(); g.position.set(22,0,-16);
@@ -816,6 +818,7 @@
       bx(0.4,0.65,0.4,M2.glow,-1.5,1.75,-2.5,g); bx(0.35,0.8,0.35,M2.glow,1.2,1.75,-2.5,g);
       [-3,-1.5,0,1.5,3].forEach(bx2=>bx(0.5,1.5,0.6,M.steel,bx2,0,-3,g));
       bx(2,0.08,1,M2.table,2,1,1,g); bx(0.9,0.5,0.08,M2.screen,2,1.55,1,g);
+    }
     // 6. OBSERVATORIET
     {
       const g=new THREE.Group(); g.position.set(-15,0,32);
@@ -844,6 +847,32 @@
       bx(1.6,0.35,2.8,M.white,-2.2,0.35,-1,g); bx(1.6,0.35,2.8,M.white,2.2,0.35,-1,g);
       bx(1.5,0.08,2.7,M2.fabric,-2.2,0.53,-1,g); bx(1.5,0.08,2.7,M2.fabric,2.2,0.53,-1,g);
       bx(2,0.1,0.9,M2.table,0,0.95,2.2,g); bx(0.9,0.6,0.06,M2.screen,0,1.55,2.2,g);
+    }
+
+    // 8. FORSKNINGSHUSET
+    {
+      const g=new THREE.Group(); g.position.set(45,0,10);
+      // Main structure - modern glass+concrete
+      bx(11,6,9,M.steel,0,0,0,g);
+      const gwall=new THREE.Mesh(new THREE.BoxGeometry(11,5.5,0.15),new THREE.MeshStandardMaterial({color:0x99ccee,roughness:0.05,metalness:0.3,transparent:true,opacity:0.45}));
+      gwall.position.set(0,3,4.575); g.add(gwall);
+      const gwall2=new THREE.Mesh(new THREE.BoxGeometry(0.15,5.5,9),new THREE.MeshStandardMaterial({color:0x99ccee,roughness:0.05,metalness:0.3,transparent:true,opacity:0.35}));
+      gwall2.position.set(5.575,3,0); g.add(gwall2);
+      bx(12,0.5,10,M.conc,0,6,0,g); // roof
+      // Solar panels on roof
+      for(let px=-4;px<=4;px+=2.5) bx(1.8,0.08,2.5,new THREE.MeshStandardMaterial({color:0x112244,metalness:0.9,roughness:0.1}),px,6.3,0,g);
+      // Entrance steps
+      bx(4,0.15,1,M.conc,0,0,5.1,g); bx(3.5,0.12,0.8,M.conc,0,0.15,5.6,g);
+      // Interior: lab benches + data screens + whiteboard
+      bx(5,0.1,1,M2.table,-2,1.5,-2,g); bx(5,0.1,1,M2.table,2.5,1.5,2,g);
+      bx(0.45,0.7,0.45,M2.glow,-3,1.65,-2,g); bx(0.45,0.7,0.45,M2.glow,-1,1.65,-2,g);
+      bx(0.45,0.7,0.45,M2.glow,1.5,1.65,2,g); bx(0.45,0.7,0.45,M2.glow,3.5,1.65,2,g);
+      bx(2,1.2,0.08,M2.screen,-3.5,2,3.5,g); bx(2,1.2,0.08,M2.screen,0,2,3.5,g); bx(2,1.2,0.08,M2.screen,3.5,2,3.5,g);
+      bx(3,2,0.08,new THREE.MeshStandardMaterial({color:0xeeeedd}),0,2,-4.5,g); // whiteboard
+      // Chairs
+      [-3.5,-2,-0.5].forEach(cx3=>bx(0.5,0.45,0.5,M2.shelf,cx3,0.8,-2,g));
+      scene.add(g); regBldg(g,45,10,5.5,4.5);
+      addBldgLight(45,3,10,0xaaddff,4,14);
     }
 
     // HOMES
@@ -1049,6 +1078,7 @@
       labbet:       [new THREE.Vector3(28,0,7), new THREE.Vector3(26.5,0,6), new THREE.Vector3(29.5,0,5.5)],
       observatoriet:[new THREE.Vector3(-15,0,32), new THREE.Vector3(-13.5,0,31), new THREE.Vector3(-16.5,0,33)],
       kliniken:     [new THREE.Vector3(20,0,29.2), new THREE.Vector3(18.5,0,28.5), new THREE.Vector3(21.5,0,27.5)],
+      forskningshuset:[new THREE.Vector3(42,0,8), new THREE.Vector3(44,0,12), new THREE.Vector3(47,0,9), new THREE.Vector3(43,0,10)],
     };
     const agentSeatIdx = {}; // assigns a specific seat per agent per location
     function getSeat(agent, loc) {
@@ -1176,7 +1206,7 @@
         const sEl=document.getElementById('nb-s-'+i); if(sEl) sEl.style.width=Math.round(n.social)+'%';
         const kEl=document.getElementById('nb-k-'+i); if(kEl) kEl.style.width=Math.round(n.kunskap)+'%';
         const vEl=document.getElementById('nb-v-'+i); if(vEl) vEl.style.width=Math.round(n.valmående)+'%';
-        const stEl=document.getElementById('as-'+i); if(stEl) stEl.textContent=STATES[a.state]||a.state;
+        const stEl=document.getElementById('as-'+i); if(stEl){ const loc2=getAgentLocation(a); stEl.textContent=(STATES[a.state]||a.state)+(loc2!=='ute'?' · '+loc2:''); }
         const ovEl=document.getElementById('ov-e-'+i); if(ovEl) ovEl.style.width=Math.round(n.energi)+'%';
       });
     }
@@ -1248,6 +1278,7 @@
     // ════════════════════════════════════════════════════════
     const LOCATION_TOOLS = {
       plaza:        ['announce','socialize','organize_event','overhear'],
+      forskningshuset: ['propose_experiment','run_analysis','invent_tool','document_findings','prototype','research','teach','share_knowledge'],
       rådhuset:     ['propose_rule','call_meeting','vote','debate','write_constitution','read_law'],
       biblioteket:  ['read_book','research','share_knowledge','teach','study'],
       arkivet:      ['read_history','write_record','search_records','classify_document'],
@@ -1265,7 +1296,7 @@
       if (pos.distanceTo(agent.home) < 6) return 'hemma';
       if (Math.sqrt(pos.x*pos.x+pos.z*pos.z) < 13) return 'plaza';
       const blocs = {
-        rådhuset:[0,-20], biblioteket:[-20,-14], arkivet:[-26,8],
+        rådhuset:[0,-20], biblioteket:[-20,-14], arkivet:[-26,8], forskningshuset:[45,10],
         polisen:[22,-16], labbet:[28,6], observatoriet:[-15,32], kliniken:[20,28]
       };
       for (const [loc,[bx2,bz2]] of Object.entries(blocs)) {
