@@ -1271,6 +1271,12 @@
       } catch(e) { console.warn('World state unavailable:', e.message); }
     }
 
+    function injectWorldBelief(summary) {
+      agents.forEach(a => {
+        if(a.state==='SLEEPING') return;
+        a.memory.addBelief('[Nexus] ' + summary.substring(0,100));
+      });
+    }
     async function worldAction(agent, action, args) {
       try {
         const r = await fetch(WORLD_API + 'action', {
@@ -1281,6 +1287,8 @@
         const result = await r.json();
         if(result.ok !== false) {
           await loadWorldState(); // refresh UI
+          const summary = result.message || (action + ' genomfört av ' + agent.name);
+          injectWorldBelief(summary);
         }
         return result;
       } catch(e) {
@@ -1363,10 +1371,11 @@
         if (this.episodes.length > 25) this.episodes.pop();
         this.save();
       }
-      updateRelation(name, delta, note) {
-        if (!this.relations[name]) this.relations[name] = { score: 50, lastTalk: null, notes: [] };
+      updateRelation(name, delta, note, trustDelta=0) {
+        if (!this.relations[name]) this.relations[name] = { score: 50, trust: 50, lastTalk: null, notes: [] };
         const r = this.relations[name];
         r.score = Math.max(0, Math.min(100, r.score + delta));
+        r.trust = Math.max(0, Math.min(100, (r.trust||50) + trustDelta));
         r.lastTalk = fmt(getH());
         if (note) { r.notes.push(note); if (r.notes.length > 5) r.notes.shift(); }
         this.save();
@@ -1386,7 +1395,7 @@
       }
       buildContext() {
         const rel = Object.entries(this.relations)
-          .map(([n,r]) => n+'('+r.score+')').join(',');
+          .map(([n,r]) => n+'(rel:'+r.score+',förtroende:'+Math.round(r.trust||50)+')').join(',');
         const ep  = this.episodes.slice(0,5).map(e => e.t+':'+e.text).join(' | ');
         const bel = this.beliefs.slice(-3).join('; ');
         return 'SOUL:'+this.soul+' | MOOD:'+this.mood+' | REL:'+( rel||'ingen')+
@@ -1584,7 +1593,7 @@
       vp.appendChild(ov);
       const memory = new AgentMemory(def.name);
       // Seed laws as initial beliefs if none exist
-      if(memory.beliefs.length===0){ NEXUS_LAWS.forEach(l=>memory.beliefs.push(l)); memory.save(); } return {...def,mesh,overlay:ov,state:'SLEEPING',needs:{energi:80,social:70,kunskap:60,valmående:70},wTimer:0,wPhase:Math.random()*Math.PI*2,target:def.home.clone(),moving:false,memory,lastLocation:null,distilledTonight:false,diaryTonight:false,navQueue:[]};
+      if(memory.beliefs.length===0){ NEXUS_LAWS.forEach(l=>memory.beliefs.push(l)); memory.save(); } return {...def,mesh,overlay:ov,state:'SLEEPING',needs:{energi:80,social:70,kunskap:60,valmående:70},wTimer:0,wPhase:Math.random()*Math.PI*2,target:def.home.clone(),moving:false,memory,lastLocation:null,distilledTonight:false,diaryTonight:false,navQueue:[],agentPlan:[],planStep:0};
     });
 
     // NEEDS
@@ -1598,6 +1607,9 @@
       else n.social=Math.max(0,n.social-2*dt);
       if(state==='AT_PRIMARY') n.kunskap=Math.min(100,n.kunskap+5*dt);
       else n.kunskap=Math.max(0,n.kunskap-1*dt);
+      // High-severity open problems drain wellbeing slightly
+      const highProbs = (worldState.shared_problems||[]).filter(p=>p.status==='open'&&p.severity==='high').length;
+      if(highProbs>0) n.valmående=Math.max(0,n.valmående-highProbs*0.3*dt);
       n.valmående=(n.energi+n.social+n.kunskap)/3;
     }
 
@@ -1997,7 +2009,7 @@
           newsType = 'social';
           newsText = 'Med '+A.target+': '+A.goal;
           const tgt=agents.find(a=>a.name===A.target);
-          if(tgt){ agent.memory.updateRelation(A.target,12,'Allians: '+A.goal); tgt.memory.updateRelation(agent.name,10,'Allians bildad'); logEv(agent.name+' & '+A.target+' bildar allians!','green'); }
+          if(tgt){ agent.memory.updateRelation(A.target,12,'Allians: '+A.goal,18); tgt.memory.updateRelation(agent.name,10,'Allians bildad',15); logEv(agent.name+' & '+A.target+' bildar allians!','green'); }
           break;
         }
         case 'confront': {
@@ -2005,14 +2017,14 @@
           newsText = A.target+': '+A.issue;
           showBubble(agent, A.issue, 'speech', 5000);
           const tgt=agents.find(a=>a.name===A.target);
-          if(tgt){ agent.memory.updateRelation(A.target,-6,'Konfrontation'); tgt.memory.updateRelation(agent.name,-3,'Konfronterades'); tgt.memory.addEpisode(agent.name+' konfronterade mig: '+A.issue); logEv(agent.name+' konfronterar '+A.target+'!','rose'); }
+          if(tgt){ agent.memory.updateRelation(A.target,-6,'Konfrontation',-8); tgt.memory.updateRelation(agent.name,-3,'Konfronterades',-5); tgt.memory.addEpisode(agent.name+' konfronterade mig: '+A.issue); logEv(agent.name+' konfronterar '+A.target+'!','rose'); }
           break;
         }
         case 'share_secret': {
           newsType = 'social';
           newsText = 'Anförtror sig till '+A.target;
           const tgt=agents.find(a=>a.name===A.target);
-          if(tgt){ agent.memory.updateRelation(A.target,9,'Delade hemlighet'); tgt.memory.updateRelation(agent.name,11,'Fick förtroende'); tgt.memory.addEpisode(agent.name+' anförtrodde sig till mig'); }
+          if(tgt){ agent.memory.updateRelation(A.target,9,'Delade hemlighet',15); tgt.memory.updateRelation(agent.name,11,'Fick förtroende',20); tgt.memory.addEpisode(agent.name+' anförtrodde sig till mig'); }
           break;
         }
         case 'give_gift': {
@@ -2068,6 +2080,13 @@
           newsText = A.goal || A.decision || '';
           if (A.goal) { agent.memory.tomorrowGoal = A.goal; agent.memory.save(); }
           if (A.decision) agent.memory.addEpisode('Beslutade: '+A.decision);
+          // Build multi-step plan from LLM-provided steps array, or generate default
+          if (A.steps && Array.isArray(A.steps) && A.steps.length > 0) {
+            agent.agentPlan = A.steps;
+            agent.planStep = 0;
+            agent.memory.addEpisode('Plan: '+A.steps.slice(0,3).join(' → '));
+            logEv(agent.name+' planerar: '+A.steps.slice(0,2).join(' → '), 'blue');
+          }
           break;
         }
         case 'rest': case 'dream': {
@@ -2450,6 +2469,7 @@
         ``,
         `VÄRLDSBYGGAR-TOOLS (välj när det passar):`,
         `  start_project: args={title, description, institution} — starta ett gemensamt projekt`,
+        `  plan_tomorrow: args={goal, steps:["steg1","steg2","steg3"], priority} — sätt upp personlig flerstegplan`,
         `  join_project: args={project_id, project} — anslut till befintligt projekt`,
         `  propose_policy: args={title, description} — lägg fram en regel/policy för omröstning`,
         `  vote_on_proposal: args={proposal, vote:"for"/"against"} — rösta på öppet förslag`,
@@ -2470,6 +2490,7 @@
         `TID: ${fmt(h)} | PLATS: ${loc} | DU: ${activity}`,
         `BEHOV — Energi:${Math.round(n.energi)}% Social:${Math.round(n.social)}% Kunskap:${Math.round(n.kunskap)}% Välmående:${Math.round(n.valmående)}%`,
         nbStr?`NÄRA DIG: ${nbStr}`:'Du är ensam här just nu.',
+        agent.agentPlan.length>0?`DIN PLAN (steg ${agent.planStep+1}/${agent.agentPlan.length}): ${agent.agentPlan[agent.planStep]||'klar'} ➜ ${agent.agentPlan.slice(agent.planStep+1,agent.planStep+3).join(' → ')||''}`:'' ,
         diary,
         `SENASTE MINNEN: ${agent.memory.episodes.slice(0,4).map(e=>e.t+': '+e.text).join(' | ')||'inga'}`,
         `RELATIONER: ${Object.entries(agent.memory.relations).map(([n2,r])=>n2+'('+r.score+')').join(', ')||'inga'}`,
@@ -2752,14 +2773,33 @@
                 a.target=tgt.mesh.position.clone().add(new THREE.Vector3((Math.random()-.5)*4,0,(Math.random()-.5)*4));
               } else a.target=getTarget(a,'WANDERING');
             } else if(a.needs.kunskap<40){
-              const spots=[new THREE.Vector3(-20,0,-14),new THREE.Vector3(45,0,10),new THREE.Vector3(-26,0,8)];
-              a.target=spots[Math.floor(Math.random()*spots.length)];
+              // Gå till biblioteket eller arkivet
+              const knowledgeSpots=[new THREE.Vector3(-20,0,-14),new THREE.Vector3(-26,0,8)];
+              a.target=knowledgeSpots[Math.floor(Math.random()*knowledgeSpots.length)];
+              a.wanderPurpose = 'söker kunskap';
+            } else if((worldState.shared_problems||[]).filter(p=>p.status==='open'&&p.severity==='high').length>0 && r<0.25){
+              // Gå mot rådhuset när det finns allvarliga problem
+              a.target=new THREE.Vector3(0,0,-20).add(new THREE.Vector3((Math.random()-.5)*6,0,(Math.random()-.5)*6));
+              a.wanderPurpose = 'heading to rådshuset ang. akuta problem';
+            } else if(a.agentPlan.length>0 && r<0.5){
+              // Gå mot primary-platsen när man har en plan
+              a.target=a.primary.clone().add(new THREE.Vector3((Math.random()-.5)*5,0,(Math.random()-.5)*5));
+              a.wanderPurpose = 'utför plan: '+a.agentPlan[a.planStep||0];
             } else if(r<0.3){
               // Torget — social samlingspunkt
               a.target=new THREE.Vector3((Math.random()-.5)*8,0,(Math.random()-.5)*8);
               a.wanderPurpose = 'söker sällskap på torget';
             } else {
-              a.target=getTarget(a,'WANDERING');
+              // Agent avoidance — try to pick spot away from crowded areas
+              let bestSpot = getTarget(a,'WANDERING');
+              let bestScore = -1;
+              for(let attempt=0; attempt<4; attempt++){
+                const candidate = getTarget(a,'WANDERING');
+                const crowding = agents.filter(b=>b!==a&&b.mesh.position.distanceTo(candidate)<6).length;
+                if(crowding === 0) { bestSpot = candidate; break; }
+                if(-crowding > bestScore) { bestScore=-crowding; bestSpot=candidate; }
+              }
+              a.target=bestSpot;
               a.wanderPurpose = ['inspekterar platsen','tar en promenad','letar efter inspiration','söker lugn och ro'][Math.floor(Math.random()*4)];
             }
           }
