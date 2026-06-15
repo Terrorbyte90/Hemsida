@@ -370,7 +370,7 @@
           <div class="panel">
             <div class="panel__header">
               <span class="panel__title">Händelselogg</span>
-              <span class="panel__badge panel__badge--blue">Live</span>
+              <span class="panel__badge panel__badge--blue" id="log-count">Live</span>
             </div>
             <div class="event-log" id="event-log"></div>
           </div>
@@ -398,6 +398,20 @@
           </div>
           <div id="cost-tracker" style="font-family:monospace;font-size:11px;color:#aaa;padding:6px 10px;border-top:1px solid #2a2a3a;background:#0d0d16;line-height:1.8;">
             <span style="color:#666;">⏳ Väntar på LLM-svar…</span>
+          </div>
+        </div>
+
+        <!-- ACTIVITY LOG -->
+        <div class="news-section" style="margin-top:var(--space-4)">
+          <div class="news-panel">
+            <div class="news-header" style="display:flex;justify-content:space-between;align-items:center">
+              <span class="panel__title">Aktivitetslogg — allt som händer</span>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span class="panel__badge panel__badge--blue" id="actlog-count">0</span>
+                <button onclick="document.getElementById('actlog-stream').innerHTML='';actlogCount=0;document.getElementById('actlog-count').textContent=0" style="font-size:10px;padding:2px 8px;background:#1a1a2a;border:1px solid #333;border-radius:4px;color:#888;cursor:pointer">Rensa</button>
+              </div>
+            </div>
+            <div id="actlog-stream" style="max-height:320px;overflow-y:auto;padding:4px;display:flex;flex-direction:column;gap:1px;font-family:monospace;font-size:11px;"></div>
           </div>
         </div>
 
@@ -613,15 +627,16 @@
       pl.position.set(wx, wy, wz);
       scene.add(pl);
     }
-    addBldgLight(0, 3, -20, 0xfff0d0, 4, 14);    // Rådhuset
-    addBldgLight(-20, 2.5, -14, 0xfff8e8, 3, 12); // Biblioteket
-    addBldgLight(-26, 3, 8, 0x8090ff, 2.5, 10);   // Arkivet (blue tint)
-    addBldgLight(22, 2.5, -16, 0xd0e8ff, 3, 10);  // Polisen
-    addBldgLight(28, 3, 6, 0x88ffcc, 3, 12);       // Labbet (green)
-    addBldgLight(-15, 4, 32, 0x334466, 2, 14);     // Observatoriet (dark)
-    addBldgLight(20, 2.5, 28, 0xffffff, 4, 12);    // Kliniken (bright white)
-    // Home lights (warm yellow)
-    [[-45,2,-38],[-18,2,-52],[38,2,-46],[58,2,-24],[-58,2,4]].forEach(([x,y,z])=>addBldgLight(x,y,z,0xffd580,2.5,8));
+    addBldgLight(0, 3, -20, 0xfff0d0, 8, 16);    // Rådhuset
+    addBldgLight(-20, 2.5, -14, 0xfff8e8, 7, 14); // Biblioteket
+    addBldgLight(-26, 3, 8, 0xaabbff, 6, 12);      // Arkivet
+    addBldgLight(22, 2.5, -16, 0xd0e8ff, 7, 12);  // Polisen
+    addBldgLight(28, 3, 6, 0xccffee, 7, 14);       // Labbet
+    addBldgLight(-15, 4, 32, 0x8899cc, 6, 16);     // Observatoriet
+    addBldgLight(20, 2.5, 28, 0xffffff, 8, 14);    // Kliniken
+    addBldgLight(45, 3, 10, 0xaaddff, 8, 16);      // Forskningshuset
+    // Home lights
+    [[-45,2,-38],[-18,2,-52],[38,2,-46],[58,2,-24],[-58,2,4]].forEach(([x,y,z])=>addBldgLight(x,y,z,0xffd580,5,10));
     fillL.position.set(-20, 10, -20);
     scene.add(fillL);
 
@@ -1300,7 +1315,7 @@
         polisen:[22,-16], labbet:[28,6], observatoriet:[-15,32], kliniken:[20,28]
       };
       for (const [loc,[bx2,bz2]] of Object.entries(blocs)) {
-        if (Math.sqrt((pos.x-bx2)**2+(pos.z-bz2)**2) < 9) return loc;
+        if (Math.sqrt((pos.x-bx2)**2+(pos.z-bz2)**2) < 10) return loc;
       }
       return 'ute';
     }
@@ -1344,33 +1359,44 @@
       switch(toolName) {
         case 'talk_to': {
           const tgt = agents.find(a=>a.name===A.target);
-          if (!tgt || !A.message) break;
-          showBubble(agent, A.message, 'speech', 5000);
+          if (!tgt) { actLog(agent.name,agent.dot,'försökte prata med',A.target+' (ej hittad)'); break; }
+          const msg = A.message||A.text||A.content||'...';
+          showBubble(agent, msg, 'speech', 6000);
+          // Show response bubble on target after short delay
+          setTimeout(()=>{
+            const replies=['Intressant...','Ja, precis!','Håller med.','Berätta mer.','Det stämmer.'];
+            const rb=tgt.memory.currentThought||replies[Math.floor(Math.random()*replies.length)];
+            showBubble(tgt, rb, 'thought', 4000);
+          }, 1500);
           newsType = 'conversation';
-          newsText = `→ ${A.target}: "${A.message}"`;
-          agent.memory.addEpisode('Pratade med '+A.target+': "'+A.message+'"');
+          newsText = `→ ${A.target}: "${msg}"`;
+          actLog(agent.name,agent.dot,'säger till '+A.target+':','"'+msg+'"');
+          agent.memory.addEpisode('Pratade med '+A.target+': "'+msg.substring(0,60)+'"');
           agent.memory.updateRelation(A.target, 2, 'Konversation');
-          tgt.memory.addEpisode(agent.name+' sa: "'+A.message+'"');
+          tgt.memory.addEpisode(agent.name+' sa: "'+msg.substring(0,60)+'"');
           tgt.memory.updateRelation(agent.name, 1);
-          logEv(agent.name+' → '+A.target+': "'+A.message+'"', 'green');
+          logEv(agent.name+' → '+A.target+': "'+msg+'"', 'green');
           break;
         }
         case 'announce': {
-          if (!A.message) break;
-          showBubble(agent, A.message, 'speech', 7000);
+          const amsg = A.message||A.text||A.content||'';
+          if (!amsg) break;
+          showBubble(agent, amsg, 'speech', 7000);
           newsType = 'announcement';
-          newsText = A.message;
-          agents.forEach(a=>{ if(a!==agent) a.memory.addEpisode(agent.name+' annonserade: '+A.message); });
-          logEv(agent.name+' annonserar: '+A.message, 'amber');
+          newsText = amsg;
+          actLog(agent.name,agent.dot,'annonserar:',amsg.substring(0,150));
+          agents.forEach(a=>{ if(a!==agent) a.memory.addEpisode(agent.name+' annonserade: '+amsg); });
+          logEv(agent.name+' annonserar: '+amsg, 'amber');
           break;
         }
         case 'think': {
           if (!A.thought) { A.thought = agent.memory.currentThought || 'Funderar...'; }
           agent.memory.currentThought = A.thought;
           agent.memory.save();
-          showBubble(agent, A.thought, 'thought', 4000);
+          showBubble(agent, A.thought, 'thought', 5000);
           newsType = 'thought';
           newsText = A.thought;
+          actLog(agent.name,agent.dot,'tänker:',A.thought.substring(0,120));
           break;
         }
         case 'write_diary': {
@@ -1613,6 +1639,20 @@
       conflict:'#ef4444', social:'#4ade80', archive:'#8a8882', wellbeing:'#34d399',
       announcement:'#fbbf24', action:'#444', personal:'#a78bfa',
     };
+    let actlogCount = 0;
+    function actLog(agentName, agentDot, action, detail) {
+      const stream = document.getElementById('actlog-stream');
+      if(!stream) return;
+      actlogCount++;
+      const el = document.createElement('div');
+      el.style.cssText='padding:2px 4px;border-radius:3px;line-height:1.5;border-left:2px solid '+agentDot+';padding-left:6px;margin-bottom:1px';
+      const h=fmt(getH());
+      el.innerHTML='<span style="color:#555">'+h+'</span> <span style="color:'+agentDot+';font-weight:600">'+agentName+'</span> <span style="color:#777">'+action+'</span> <span style="color:#ccc">'+detail+'</span>';
+      stream.insertBefore(el, stream.firstChild);
+      if(stream.children.length > 200) stream.removeChild(stream.lastChild);
+      const cnt=document.getElementById('actlog-count'); if(cnt) cnt.textContent=actlogCount;
+    }
+
     function addNewsItem(type, agentName, text, agentColor) {
       newsTotal++;
       const stream = document.getElementById('news-stream');
@@ -1788,6 +1828,7 @@
       const {agent,triggerType,context}=cogQueue.shift();
       try {
         await new Promise(r=>setTimeout(r,150+Math.random()*250)); // simulate thinking
+        actLog(agent.name,agent.dot,'[trigger:'+triggerType+']',context||'spontant');
         const resp = OPENROUTER_KEY ? await callOpenRouter(agent,triggerType,context) : mockLLM(agent,triggerType,context);
         if(resp.moodUpdate){ agent.memory.mood=resp.moodUpdate; }
         if(resp.thought){
@@ -1799,7 +1840,7 @@
         }
         if(resp.memoryNote) agent.memory.addEpisode(resp.memoryNote);
         if(resp.relationUpdate){ for(const [n2,d2] of Object.entries(resp.relationUpdate||{})) agent.memory.updateRelation(n2,d2); }
-        if(resp.tool) executeTool(agent,resp.tool,resp.args||{});
+        if(resp.tool){ actLog(agent.name,agent.dot,'väljer tool:',resp.tool+(resp.args?.target?' → '+resp.args.target:'')); executeTool(agent,resp.tool,resp.args||{}); }
       } catch(e){ console.warn('Cog error',e); }
       cogBusy=false;
     }
@@ -1865,7 +1906,7 @@
         // Last resort: build from plain text
         return { tool:'think', args:{thought:raw.substring(0,200)}, thought:raw.substring(0,200), memoryNote:raw.substring(0,80) };
       } catch(e) {
-        console.warn('OpenRouter error for '+agent.name+':', e.message);
+        console.warn('OpenRouter error for '+agent.name+':', e.message); actLog(agent.name,agent.dot,'[LLM-fel]',e.message.substring(0,80)+' → använder mock');
         // Fall back to mock on error
         return mockLLM(agent, triggerType, context);
       }
@@ -1941,14 +1982,15 @@
         const agentInside = ap && Math.abs(ap.x-b.cx)<b.hw+0.5 && Math.abs(ap.z-b.cz)<b.hd+0.5;
         const camNear = Math.abs(cp.x-b.cx)<b.hw+3 && Math.abs(cp.z-b.cz)<b.hd+3;
         const inside = agentInside || (autoCam && camNear);
-        const tgtOp = inside ? 0.08 : 1.0;
+        const tgtOp = inside ? 0.0 : 1.0;
         b.group.traverse(c=>{
           if(!c.isMesh) return;
           const base=c.userData.baseOp!==undefined?c.userData.baseOp:1;
           const cur=c.material.opacity;
-          const next=cur+(tgtOp*base-cur)*0.07;
+          const next=cur+(tgtOp*base-cur)*0.18;
           c.material.opacity=next;
-          c.material.depthWrite=next>0.85;
+          c.material.depthWrite=next>0.5;
+          c.material.visible=next>0.01;
           c.material.side=inside?THREE.DoubleSide:THREE.FrontSide;
         });
       });
