@@ -1838,31 +1838,19 @@
           if (!tgt) { actLog(agent.name,agent.dot,'försökte prata med',A.target+' (ej hittad)'); break; }
           const msg = A.message||A.text||A.content||'...';
           showBubble(agent, msg, 'speech', 6000);
-          // Show personality-based reply bubble on target after short delay
+          // Mottagaren svarar via sin EGEN kognition — inga skriptade repliker
           setTimeout(()=>{
-            const tgtP = PERSONALITY[tgt.name];
-            const tgtReplies = tgtP ? tgtP.talkStyle : ['Intressant...','Hmm, ja.','Berätta mer.'];
-            const rel = tgt.memory.relations[agent.name];
-            const friendly = rel && rel.score > 60;
-            const unfriendly = rel && rel.score < 30;
-            const personalReplies = unfriendly
-              ? ['Jag är inte säker på det.','Vi kanske inte ser det likadant.','Låt mig tänka på det.']
-              : friendly
-              ? ['Det är precis vad jag tänkte!','Tack, det värmer.','Ja, helt rätt.','Jag uppskattar det.']
-              : tgtReplies;
-            const rb = personalReplies[Math.floor(Math.random()*personalReplies.length)];
-            showBubble(tgt, rb, 'speech', 4000);
-            // Agenten som tilltalades svarar alltid (bypass cooldown)
-            agentCooldown[tgt.name] = 0; // nollställ cooldown för att garantera svar
-            enqueueCog(tgt, 'addressed', agent.name+' sa till dig: "'+msg.substring(0,80)+'"');
-          }, 1800);
+            agentCooldown[tgt.name] = 0;
+            enqueueCog(tgt, 'addressed', agent.name+' sa: "'+msg.substring(0,80)+'"');
+          }, 800);
           newsType = 'conversation';
           newsText = `→ ${A.target}: "${msg}"`;
           actLog(agent.name,agent.dot,'säger till '+A.target+':','"'+msg+'"');
           agent.memory.addEpisode('Pratade med '+A.target+': "'+msg.substring(0,60)+'"');
-          agent.memory.updateRelation(A.target, 2, 'Konversation');
+          // Samtal ger minimal baseffekt; LLM:ens relEffect-fält styr verklig förändring
+          const _re = typeof A.relEffect === 'number' ? A.relEffect : 0;
+          if(_re !== 0){ agent.memory.updateRelation(A.target,_re,'Samtal'); tgt.memory.updateRelation(agent.name,Math.round(_re*0.5)); }
           tgt.memory.addEpisode(agent.name+' sa: "'+msg.substring(0,60)+'"');
-          tgt.memory.updateRelation(agent.name, 1);
           logEv(agent.name+' → '+A.target+': "'+msg+'"', 'green');
           break;
         }
@@ -2244,15 +2232,15 @@
     // NEXUS LAWS (5 grundlagar)
     // ════════════════════════════════════════════════════════
     const PERSONALITY = {
-      'Elin':  { prefer:['propose_rule','call_meeting','debate','talk_to','reflect','plan_tomorrow'],    social:0.8,
+      'Elin':  { prefer:['propose_policy','call_meeting','debate','talk_to','reflect','plan_tomorrow','vote_on_proposal','write_record'],    social:0.8,
         talkStyle:['Vi borde sammankalla ett möte om detta.','Har du tänkt på vad det innebär för gemenskapen?','Demokratin kräver att vi handlar nu.','Jag vill diskutera hur vi kan förbättra Nexus tillsammans.','Lagen är till för alla — vad tycker du?','Vi måste lyssna på varandra för att bygga något hållbart.'] },
       'Mira':  { prefer:['talk_to','socialize','give_advice','compliment','share_knowledge','give_gift'], social:0.95,
         talkStyle:['Hur mår du egentligen, på riktigt?','Jag är alltid här om du behöver prata om något.','Du är viktig för oss alla i Nexus — det vill jag att du vet.','Låt oss hitta en lösning tillsammans.','Det du känner är helt förståeligt.','Jag märkte att du verkade lite nere — allt okej?'] },
       'Kai':   { prefer:['propose_experiment','invent_tool','run_analysis','plan_tomorrow','document_findings','prototype'], social:0.35,
         talkStyle:['Har analyserat data och funnit ett mönster.','Min senaste hypotes pekar mot en intressant slutsats.','Systemet kan optimeras — jag har en idé.','Ineffektivitet kostar oss tid. Jag har ett förslag.','Logiken stödjer en annan approach.','Jag testade en ny metod i labbet idag.'] },
-      'Aria':  { prefer:['survey_world','research','observe','share_secret','overhear','track_agent'], social:0.6,
+      'Aria':  { prefer:['survey_world','research','observe','start_project','report_problem','write_record','share_secret'], social:0.6,
         talkStyle:['Har hittat något du borde veta om.','Visste du att det finns delar av Nexus ingen utforskat?','Jag observerade något märkligt i kanten av världen.','Regler är fascinerande — de berättar vad folk fruktar.','Hörde något intressant utanför rådhuset igår.','Det finns ett mönster i hur folk rör sig här.'] },
-      'Nox':   { prefer:['read_history','write_record','search_records','reflect','write_diary','classify_document'], social:0.25,
+      'Nox':   { prefer:['write_record','search_records','reflect','propose_policy','vote_on_proposal','report_problem','write_diary'], social:0.25,
         talkStyle:['Arkivet visar att detta hänt tidigare.','Det historiska mönstret är otvetydigt.','Fakta kvarstår även när minnen bleknar.','Nexus minne är mitt ansvar — och det är tungt.','Det finns en sanning nedtecknad som folk glömt bort.','Historien upprepar sig. Jag dokumenterar det.'] },
     };
     const THOUGHTS = {
@@ -2318,7 +2306,7 @@
         showBubble(agent, arrThought, 'thought', 3000);
         if(locAvail.length>0){
           tool=locAvail[Math.floor(Math.random()*locAvail.length)];
-          if(tool==='propose_rule') args={title:'Ny förordning om '+['gemenskapen','resurser','kunskap','säkerheten'][Math.floor(Math.random()*4)], description:'För det gemensamma bästa.', rationale:'Samhällsutveckling.'};
+          if(tool==='propose_policy'||tool==='propose_rule') args={title:'Ny policy om '+['gemenskapen','resurser','kunskap','säkerheten'][Math.floor(Math.random()*4)], description:'För det gemensamma bästa.'};
           else if(tool==='research'||tool==='study') args={question:'Hur förbättrar vi '+['Nexus','gemenskapen','labbet','demokratin'][Math.floor(Math.random()*4)]+'?', depth:'deep', subject:'samhällsvetenskap'};
           else if(tool==='read_history') args={period:'senaste perioden',topic:'händelser i Nexus'};
           else if(tool==='propose_experiment') args={hypothesis:'Om vi ändrar '+['systemet','protokollet','rutinen'][Math.floor(Math.random()*3)]+' kan vi förbättra resultaten.', method:'Systematisk analys'};
@@ -2357,34 +2345,72 @@
     // COGNITIVE ENGINE
     // ════════════════════════════════════════════════════════
     const cogQueue=[];
-    let cogBusy=false;
 
     function enqueueCog(agent, triggerType, context){
-      if(!cogQueue.find(q=>q.agent.name===agent.name&&q.triggerType===triggerType))
+      if(!cogQueue.find(q=>q.agent.name===agent.name&&q.triggerType===triggerType)){
+        agent._lastTriggerType = triggerType;
         cogQueue.push({agent,triggerType,context});
+      }
     }
 
+    const cogBusyAgents = new Set(); // per-agent busy tracking
     async function processCog(){
-      if(cogBusy||cogQueue.length===0) return;
-      cogBusy=true;
-      const {agent,triggerType,context}=cogQueue.shift();
+      if(cogQueue.length===0) return;
+      // Kör upp till 2 agenter parallellt om de inte är upptagna
+      const available = cogQueue.filter(q=>!cogBusyAgents.has(q.agent.name));
+      if(available.length===0) return;
+      const batch = available.slice(0,2); // max 2 parallellt
+      batch.forEach(item => {
+        const idx = cogQueue.indexOf(item);
+        if(idx>=0) cogQueue.splice(idx,1);
+        cogBusyAgents.add(item.agent.name);
+        runCog(item).finally(()=>cogBusyAgents.delete(item.agent.name));
+      });
+    }
+    async function runCog({agent, triggerType, context}){
       try {
-        await new Promise(r=>setTimeout(r,150+Math.random()*250)); // simulate thinking
-        actLog(agent.name,agent.dot,'[trigger:'+triggerType+']',context||'spontant');
+        await new Promise(r=>setTimeout(r,100+Math.random()*200));
+        actLog(agent.name,agent.dot,'['+triggerType+']',context||'spontant');
         const resp = OPENROUTER_KEY ? await callOpenRouter(agent,triggerType,context) : mockLLM(agent,triggerType,context);
-        if(resp.moodUpdate){ agent.memory.mood=resp.moodUpdate; }
+        if(resp.moodUpdate) agent.memory.mood=resp.moodUpdate;
         if(resp.thought){
           agent.memory.currentThought=resp.thought;
           agent.memory.save();
-          // Always show thought bubble unless tool will show speech
           const speechTools=['talk_to','announce','debate','greet','compliment','apologize','confront'];
-          if(!speechTools.includes(resp.tool)) showBubble(agent, resp.thought, 'thought', 5000);
+          if(!speechTools.includes(resp.tool)) showBubble(agent,resp.thought,'thought',5000);
         }
         if(resp.memoryNote) agent.memory.addEpisode(resp.memoryNote);
         if(resp.relationUpdate){ for(const [n2,d2] of Object.entries(resp.relationUpdate||{})) agent.memory.updateRelation(n2,d2); }
-        if(resp.tool){ actLog(agent.name,agent.dot,'väljer tool:',resp.tool+(resp.args?.target?' → '+resp.args.target:'')); executeTool(agent,resp.tool,resp.args||{}); }
-      } catch(e){ console.warn('Cog error',e); }
-      cogBusy=false;
+        if(resp.tool){ actLog(agent.name,agent.dot,'→',resp.tool+(resp.args?.target?' ▸ '+resp.args.target:'')); executeTool(agent,resp.tool,resp.args||{}); }
+      } catch(e){ console.warn('Cog error',agent.name,e.message); }
+    }
+
+    // Beräkna agentens beslutssituation innan prompt skickas
+    function computeDecisionContext(agent) {
+      const n = agent.needs;
+      const priorities = [];
+      if(n.energi < 30) priorities.push('KRITISKT låg energi — behöver vila');
+      else if(n.energi < 50) priorities.push('låg energi');
+      if(n.social < 30) priorities.push('KRITISKT socialbehov — behöver kontakt');
+      else if(n.social < 45) priorities.push('social isolering');
+      if(n.kunskap < 30) priorities.push('kunskapsbehov — behöver lära sig något');
+      if(n.valmående < 35) priorities.push('lågt välmående — behöver stöd eller reflektion');
+
+      const myProjects = (worldState.projects||[]).filter(p=>p.participants.includes(agent.name)&&p.status==='active');
+      if(myProjects.length > 0) priorities.push('har aktivt projekt: '+myProjects[0].title);
+
+      const openProps = (worldState.proposals||[]).filter(p=>p.status==='open'&&!p.votes_for.includes(agent.name)&&!p.votes_against.includes(agent.name));
+      if(openProps.length > 0) priorities.push('kan rösta på förslag: "'+openProps[0].title+'"');
+
+      const recentProblem = (worldState.shared_problems||[]).filter(p=>p.status==='open'&&p.severity==='high')[0];
+      if(recentProblem) priorities.push('högt prioriterat problem: '+recentProblem.title);
+
+      return {
+        topPriority: priorities[0] || 'inget akut',
+        allPriorities: priorities,
+        myProjects,
+        canVote: openProps
+      };
     }
 
     async function callOpenRouter(agent, triggerType, context){
@@ -2393,6 +2419,7 @@
       const laws=NEXUS_LAWS.join('\n');
       const nb=agents.filter(a=>a.name!==agent.name&&a.state!=='SLEEPING'&&agent.mesh.position.distanceTo(a.mesh.position)<14);
       const nbStr=nb.map(a=>a.name+'('+Math.round(agent.mesh.position.distanceTo(a.mesh.position))+'m,mood:'+a.memory.mood+')').join(', ');
+      const decision = computeDecisionContext(agent);
       const diary=agent.memory.diary[0]?'Senaste dagbok: '+agent.memory.diary[0].entry.substring(0,120):'';
       // Bygg världskontext för prompten
       const activeProjects = worldState.projects.filter(p=>p.status==='active'||p.status==='proposed');
@@ -2433,7 +2460,8 @@
         `Svara ENBART med ett enda giltigt JSON-objekt. INGEN förklaring, INGA kommentarer, INGEN markdown. Bara JSON.`,
         `{"tool":"TOOL_NAMN","args":{"target":"AGENTNAMN","message":"vad du säger"},"thought":"din genuina inre tanke","moodUpdate":"neutral|happy|sad|angry|excited|focused|tired|melancholic|reflective","memoryNote":"kort minnesnotat"}`,
         ``,
-        `KRAV: Tänk på tre nivåer: (1) Vad behöver JAG just nu? (2) Vad vill jag bygga på lång sikt? (3) Vad behöver NEXUS som stad? Välj action utifrån det viktigaste just nu. Om agenter är nära: välj talk_to och säg något genuint och personligt. Annars: välj en action som skapar bestående spår i världen.`
+        `BESLUTSSITUATION: Högsta prioritet just nu: ${decision.topPriority}. ${decision.allPriorities.length>1?'Övriga: '+decision.allPriorities.slice(1).join(', '):''} `,
+        `KRAV: Välj utifrån tre lager: (1) Mina behov nu, (2) Mitt långsiktiga mål, (3) Vad Nexus behöver. Att stanna, observera, arbeta vidare eller tänka är ALLTID giltiga val. Samtal är ett val bland många — inte ett krav. Välj talk_to bara om du genuint vill säga något till någon. Annars: välj en action som passar platsen, situationen och dina mål. Lägg till "relEffect": ett tal -5 till 5 i args vid talk_to (0=neutral, positivt=varmare relation).`
       ].join('\n');
       const h=getH();
       const n=agent.needs;
@@ -2453,7 +2481,7 @@
         recentHistory?`NEXUS HISTORIA (senaste händelser): ${recentHistory}`:'',
         `TRIGGER: ${triggerType==='addressed'?'DIREKT TILLTAL — du MÅSTE svara med talk_to':triggerType}${context?' ('+context+')':''}`,
         triggerType==='addressed'?`SVAR PÅ TILLTAL: Välj tool=talk_to och svara direkt och personligt på vad som sades.`:'',
-        `Du är ${agent.name} som just nu ${activity}. Vad behöver DU, vad vill du BYGGA och vad behöver NEXUS nu? Välj rätt tool.`
+        `Du är ${agent.name} som just nu ${activity}. Välj ett tool som GENUINT passar situationen. Giltiga lågintensiva val: think (fortsätt fundera), observe (iaktta omgivningen), rest (om trött), write_diary (om ensam och vill reflektera). Skapa inte konstgjort drama — vardagen dominerar.`
       ].filter(Boolean).join('\n');
 
       try {
@@ -2500,6 +2528,13 @@
     // ════════════════════════════════════════════════════════
     const agentCooldown={};
     const COOLDOWN=10000;
+    const COOLDOWN_BY_TYPE = {
+      proximity: 12000,
+      addressed: 0,      // svar på tilltal — aldrig blockerat
+      arrival: 8000,
+      spontaneous: 20000,
+      diary: 0,
+    };
 
     function checkTriggers(){
       const now=Date.now(), h=getH();
@@ -2518,7 +2553,8 @@
 
       agents.forEach(agent=>{
         if(agent.state==='SLEEPING') return;
-        if((now-(agentCooldown[agent.name]||0))<COOLDOWN) return;
+        const _cd = COOLDOWN_BY_TYPE[agent._lastTriggerType||'spontaneous'] || COOLDOWN;
+        if((now-(agentCooldown[agent.name]||0))<_cd) return;
 
         // PROXIMITY — triggas bara om agenten verkligen är nära (3m) ELLER om det är länge sedan de pratade
         const nb=agents.filter(a=>a.name!==agent.name&&a.state!=='SLEEPING'&&agent.mesh.position.distanceTo(a.mesh.position)<5);
@@ -2721,8 +2757,10 @@
             } else if(r<0.3){
               // Torget — social samlingspunkt
               a.target=new THREE.Vector3((Math.random()-.5)*8,0,(Math.random()-.5)*8);
+              a.wanderPurpose = 'söker sällskap på torget';
             } else {
               a.target=getTarget(a,'WANDERING');
+              a.wanderPurpose = ['inspekterar platsen','tar en promenad','letar efter inspiration','söker lugn och ro'][Math.floor(Math.random()*4)];
             }
           }
         }
