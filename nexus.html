@@ -1230,9 +1230,9 @@
       if(focIdx<0||focIdx>=agents.length) return;
       const a=agents[focIdx],n=a.needs;
       const hex='#'+a.color.toString(16).padStart(6,'0');
-      document.getElementById('focused-badge').textContent=a.name;
+      const _badge=document.getElementById('focused-badge'); if(_badge) _badge.textContent=a.name;
       const _hud=document.getElementById('focused-agent-hud-status'); if(_hud) _hud.textContent='▸ '+a.name+' · '+(STATES[a.state]||a.state);
-      document.getElementById('focused-agent-details').innerHTML=`<div style="font-weight:600;font-size:var(--text-base);margin-bottom:2px;color:${hex}">${a.name}</div><div style="font-size:0.62rem;color:var(--text-faint);font-family:var(--font-mono);margin-bottom:var(--space-3)">${a.role}</div><div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-3)">Status: ${STATES[a.state]||a.state}</div><div class="needs-bars"><div class="needs-bar-row"><span class="needs-bar-label">Energi</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--energi" style="width:${Math.round(n.energi)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Social</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--social" style="width:${Math.round(n.social)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Kunskap</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--kunskap" style="width:${Math.round(n.kunskap)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Välmående</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--valmående" style="width:${Math.round(n.valmående)}%"></div></div></div></div>`;
+      const _det=document.getElementById('focused-agent-details'); if(_det) _det.innerHTML=`<div style="font-weight:600;font-size:var(--text-base);margin-bottom:2px;color:${hex}">${a.name}</div><div style="font-size:0.62rem;color:var(--text-faint);font-family:var(--font-mono);margin-bottom:var(--space-3)">${a.role}</div><div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-3)">Status: ${STATES[a.state]||a.state}</div><div class="needs-bars"><div class="needs-bar-row"><span class="needs-bar-label">Energi</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--energi" style="width:${Math.round(n.energi)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Social</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--social" style="width:${Math.round(n.social)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Kunskap</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--kunskap" style="width:${Math.round(n.kunskap)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Välmående</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--valmående" style="width:${Math.round(n.valmående)}%"></div></div></div></div>`;
     }
 
     // EVENT LOG
@@ -1254,9 +1254,9 @@
         const d=await r.json(); const w=d.current_weather;
         const codes={0:'Klart',1:'Mest klart',2:'Delvis molnigt',3:'Mulet',45:'Dimma',51:'Duggregn',61:'Regn',63:'Regn',65:'Kraftigt regn',71:'Snö',80:'Regnskurar',95:'Åska'};
         const desc=codes[w.weathercode]||`kod ${w.weathercode}`;
-        document.getElementById('weather-hud').textContent=`${desc} · ${Math.round(w.temperature)}°C · ${Math.round(w.windspeed)}km/h`;
+        const _wh1=document.getElementById('weather-hud'); if(_wh1) _wh1.textContent=`${desc} · ${Math.round(w.temperature)}°C · ${Math.round(w.windspeed)}km/h`;
         logEv(`Väder i Vara: ${desc}, ${Math.round(w.temperature)}°C`,'green');
-      } catch(e) { document.getElementById('weather-hud').textContent='Väder ej tillgängligt'; }
+      } catch(e) { const _wh2=document.getElementById('weather-hud'); if(_wh2) _wh2.textContent='Väder ej tillgängligt'; }
     }
     fetchWeather();
     setInterval(fetchWeather,600000);
@@ -1362,12 +1362,23 @@
           if (!tgt) { actLog(agent.name,agent.dot,'försökte prata med',A.target+' (ej hittad)'); break; }
           const msg = A.message||A.text||A.content||'...';
           showBubble(agent, msg, 'speech', 6000);
-          // Show response bubble on target after short delay
+          // Show personality-based reply bubble on target after short delay
           setTimeout(()=>{
-            const replies=['Intressant...','Ja, precis!','Håller med.','Berätta mer.','Det stämmer.'];
-            const rb=tgt.memory.currentThought||replies[Math.floor(Math.random()*replies.length)];
-            showBubble(tgt, rb, 'thought', 4000);
-          }, 1500);
+            const tgtP = PERSONALITY[tgt.name];
+            const tgtReplies = tgtP ? tgtP.talkStyle : ['Intressant...','Hmm, ja.','Berätta mer.'];
+            const rel = tgt.memory.relations[agent.name];
+            const friendly = rel && rel.score > 60;
+            const unfriendly = rel && rel.score < 30;
+            const personalReplies = unfriendly
+              ? ['Jag är inte säker på det.','Vi kanske inte ser det likadant.','Låt mig tänka på det.']
+              : friendly
+              ? ['Det är precis vad jag tänkte!','Tack, det värmer.','Ja, helt rätt.','Jag uppskattar det.']
+              : tgtReplies;
+            const rb = personalReplies[Math.floor(Math.random()*personalReplies.length)];
+            showBubble(tgt, rb, 'speech', 4000);
+            // Queue target's cognitive response
+            enqueueCog(tgt, 'proximity', agent.name+' sa: "'+msg.substring(0,60)+'"');
+          }, 1800);
           newsType = 'conversation';
           newsText = `→ ${A.target}: "${msg}"`;
           actLog(agent.name,agent.dot,'säger till '+A.target+':','"'+msg+'"');
@@ -1733,18 +1744,23 @@
     // NEXUS LAWS (5 grundlagar)
     // ════════════════════════════════════════════════════════
     const PERSONALITY = {
-      'Elin':  { prefer:['propose_rule','call_meeting','debate','talk_to','reflect','plan_tomorrow'],    social:0.8, talkStyle:['Vi borde diskutera detta','Har du tänkt på gemenskapen?','Demokratin kräver handling.','Jag vill kalla till möte.'] },
-      'Mira':  { prefer:['talk_to','socialize','give_advice','compliment','share_knowledge','give_gift'], social:0.95, talkStyle:['Hur mår du egentligen?','Jag är här om du behöver prata.','Du är viktig för oss alla.','Låt oss hitta en lösning.'] },
-      'Kai':   { prefer:['propose_experiment','invent_tool','run_analysis','plan_tomorrow','document_findings','prototype'], social:0.35, talkStyle:['Har en ny idé.','Data säger annorlunda.','Vi behöver ett bättre system.','Ineffektivitet är ett problem.'] },
-      'Aria':  { prefer:['survey_world','research','observe','share_secret','overhear','track_agent'], social:0.6, talkStyle:['Har hittat något intressant.','Visste du att...?','Jag har utforskat ett nytt område.','Regler är intressanta saker.'] },
-      'Nox':   { prefer:['read_history','write_record','search_records','reflect','write_diary','classify_document'], social:0.25, talkStyle:['Arkivet visar att...','Det historiska mönstret är tydligt.','Fakta: ','Minnet av Nexus säger...'] },
+      'Elin':  { prefer:['propose_rule','call_meeting','debate','talk_to','reflect','plan_tomorrow'],    social:0.8,
+        talkStyle:['Vi borde sammankalla ett möte om detta.','Har du tänkt på vad det innebär för gemenskapen?','Demokratin kräver att vi handlar nu.','Jag vill diskutera hur vi kan förbättra Nexus tillsammans.','Lagen är till för alla — vad tycker du?','Vi måste lyssna på varandra för att bygga något hållbart.'] },
+      'Mira':  { prefer:['talk_to','socialize','give_advice','compliment','share_knowledge','give_gift'], social:0.95,
+        talkStyle:['Hur mår du egentligen, på riktigt?','Jag är alltid här om du behöver prata om något.','Du är viktig för oss alla i Nexus — det vill jag att du vet.','Låt oss hitta en lösning tillsammans.','Det du känner är helt förståeligt.','Jag märkte att du verkade lite nere — allt okej?'] },
+      'Kai':   { prefer:['propose_experiment','invent_tool','run_analysis','plan_tomorrow','document_findings','prototype'], social:0.35,
+        talkStyle:['Har analyserat data och funnit ett mönster.','Min senaste hypotes pekar mot en intressant slutsats.','Systemet kan optimeras — jag har en idé.','Ineffektivitet kostar oss tid. Jag har ett förslag.','Logiken stödjer en annan approach.','Jag testade en ny metod i labbet idag.'] },
+      'Aria':  { prefer:['survey_world','research','observe','share_secret','overhear','track_agent'], social:0.6,
+        talkStyle:['Har hittat något du borde veta om.','Visste du att det finns delar av Nexus ingen utforskat?','Jag observerade något märkligt i kanten av världen.','Regler är fascinerande — de berättar vad folk fruktar.','Hörde något intressant utanför rådhuset igår.','Det finns ett mönster i hur folk rör sig här.'] },
+      'Nox':   { prefer:['read_history','write_record','search_records','reflect','write_diary','classify_document'], social:0.25,
+        talkStyle:['Arkivet visar att detta hänt tidigare.','Det historiska mönstret är otvetydigt.','Fakta kvarstår även när minnen bleknar.','Nexus minne är mitt ansvar — och det är tungt.','Det finns en sanning nedtecknad som folk glömt bort.','Historien upprepar sig. Jag dokumenterar det.'] },
     };
     const THOUGHTS = {
-      'Elin':  ['Demokratin behöver aktiva röster.','Borde kalla till möte snart.','Mira verkade ledsen igår.','Kai deltar för sällan.'],
-      'Mira':  ['Alla förtjänar att bli sedda.','Undrar hur Nox mår på riktigt.','Är det något fel med Kai?','Gemenskapen är vacker.'],
-      'Kai':   ['Det måste finnas ett effektivare sätt.','Hypotesen stämmer...','Labbet behöver mer resurser.','Data ljuger aldrig.'],
-      'Aria':  ['Vad finns bakom observatoriet?','Intressant mönster i Nox beteende.','Regeln verkar godtycklig.','Nytt att utforska imorgon.'],
-      'Nox':   ['Historien upprepar sig alltid.','Det finns luckor i arkivet.','Sanningen är svårfångad.','Miras entusiasm är beräknande.'],
+      'Elin':  ['Demokratin mår bäst när alla deltar — men vad gör vi med dem som väljer att inte rösta?','Borde kalla till möte om resursfördelningen snart.','Mira verkade ledsen igår. Hoppas hon har det bra.','Kai isolerar sig för mycket — vi behöver deras perspektiv.','Nexus lagar är inte perfekta. Det är något jag måste adressera.','Vem skyddar demokratin när ledaren är borta?'],
+      'Mira':  ['Alla förtjänar att bli sedda och hörda, även de tysta.','Undrar hur Nox verkligen mår bakom den lugna fasaden.','Finns det något med Kai som inte är som det borde vara?','Gemenskapen i Nexus är vacker, men också sårbar.','Jag vill organisera något som samlar alla.','Det räcker inte att lyssna — man måste också förstå.'],
+      'Kai':   ['Det måste finnas ett mer effektivt tillvägagångssätt om vi ändrar parametrarna.','Hypotesen verkar stämma, men marginalerna är för snäva.','Labbet behöver bättre resurser för att nå nästa nivå.','Data ljuger aldrig — det är tolkningen som kan gå fel.','Om jag kan automatisera det här sparar vi timmar varje dag.','Problemet är inte tekniken, det är kommunikationen kring den.'],
+      'Aria':  ['Vad döljer sig egentligen bakom observatoriet?','Nox beteende följer ett mönster — men vilket?','Reglerna verkar godtyckliga. Vem bestämde egentligen?','Det finns delar av Nexus som ingen har kartlagt ännu.','Aria observerar alltid mer än hon säger.','Sanningen om Nexus ursprung är mer komplex än vad de flesta vet.'],
+      'Nox':   ['Historien upprepar sig med sorglig precision.','Det finns luckor i arkivet som oroar mig.','Sanningen är svårfångad men arkivet glömmer inget.','Miras entusiasm verkar äkta, men jag antecknar ändå.','Vad händer med minnet av Nexus om arkivet försvinner?','Varje handling lämnar ett spår. Det är arkivets hemlighet.'],
     };
 
     function mockLLM(agent, triggerType, context) {
@@ -1773,12 +1789,23 @@
         const tgt=nearby[Math.floor(Math.random()*nearby.length)];
         const styles=p.talkStyle;
         const msg=styles[Math.floor(Math.random()*styles.length)];
-        // Sometimes confront, sometimes compliment
+        // Relationship-aware interaction
         const rel=agent.memory.relations[tgt.name];
+        const confrontIssues=[
+          'Vi behöver prata om vad som hände senast.',
+          'Jag har funderat på din senaste handling och den störde mig.',
+          'Det finns saker vi måste reda ut mellan oss.',
+        ];
+        const compliments=[
+          'Ditt bidrag till Nexus är verkligen värdefullt.',
+          'Jag beundrar hur du hanterar ditt ansvar.',
+          'Du inspirerar mig med din dedikation.',
+          'Nexus hade inte varit detsamma utan dig.',
+        ];
         if(rel && rel.score<30 && Math.random()<0.3){
-          tool='confront'; args={target:tgt.name, issue:'Vi behöver prata om det som hände.'};
-        } else if(rel && rel.score>75 && Math.random()<0.2){
-          tool='compliment'; args={target:tgt.name, about:'Du gör ett bra jobb.'};
+          tool='confront'; args={target:tgt.name, issue:confrontIssues[Math.floor(Math.random()*confrontIssues.length)]};
+        } else if(rel && rel.score>70 && Math.random()<0.25){
+          tool='compliment'; args={target:tgt.name, about:compliments[Math.floor(Math.random()*compliments.length)]};
         } else {
           tool='talk_to'; args={target:tgt.name, message:msg};
         }
@@ -1786,6 +1813,9 @@
 
       } else if(triggerType==='arrival'){
         const locAvail=avail.filter(t=>p.prefer.includes(t));
+        // Also show arrival thought
+        const arrThought=THOUGHTS[agent.name]?.[Math.floor(Math.random()*THOUGHTS[agent.name].length)]||'Ankom.';
+        showBubble(agent, arrThought, 'thought', 3000);
         if(locAvail.length>0){
           tool=locAvail[Math.floor(Math.random()*locAvail.length)];
           if(tool==='propose_rule') args={title:'Ny förordning om '+['gemenskapen','resurser','kunskap','säkerheten'][Math.floor(Math.random()*4)], description:'För det gemensamma bästa.', rationale:'Samhällsutveckling.'};
@@ -1999,16 +2029,16 @@
     // AGENT FOCUS HUD (bottom-left in viewport)
     const afhEl=document.getElementById('agent-focus-hud');
     function updateAgentFocusHud() {
-      if(focIdx<0||focIdx>=agents.length){ afhEl.classList.remove('visible'); return; }
+      if(focIdx<0||focIdx>=agents.length){ if(afhEl) afhEl.classList.remove('visible'); return; }
       const a=agents[focIdx], n=a.needs;
-      document.getElementById('afh-name').textContent=a.name;
-      document.getElementById('afh-role').textContent=a.role;
-      document.getElementById('afh-status').textContent=STATES[a.state]||a.state;
-      document.getElementById('afh-e').style.width=Math.round(n.energi)+'%';
-      document.getElementById('afh-s').style.width=Math.round(n.social)+'%';
-      document.getElementById('afh-k').style.width=Math.round(n.kunskap)+'%';
-      document.getElementById('afh-v').style.width=Math.round(n.valmående)+'%';
-      afhEl.classList.add('visible');
+      const _an=document.getElementById('afh-name'); if(_an) _an.textContent=a.name;
+      const _ar=document.getElementById('afh-role'); if(_ar) _ar.textContent=a.role;
+      const _as=document.getElementById('afh-status'); if(_as) _as.textContent=STATES[a.state]||a.state;
+      const _ae=document.getElementById('afh-e'); if(_ae) _ae.style.width=Math.round(n.energi)+'%';
+      const _ase=document.getElementById('afh-s'); if(_ase) _ase.style.width=Math.round(n.social)+'%';
+      const _ak=document.getElementById('afh-k'); if(_ak) _ak.style.width=Math.round(n.kunskap)+'%';
+      const _av=document.getElementById('afh-v'); if(_av) _av.style.width=Math.round(n.valmående)+'%';
+      if(afhEl) afhEl.classList.add('visible');
       // Update bottom status bar
       const sb=document.getElementById('focused-agent-hud-status');
       if(sb) sb.textContent=`▸ ${a.name} · ${STATES[a.state]||a.state}`;
