@@ -1809,7 +1809,7 @@
     // ════════════════════════════════════════════════════════
     // TOOL EXECUTOR
     // ════════════════════════════════════════════════════════
-    function executeTool(agent, toolName, args) {
+    async function executeTool(agent, toolName, args) {
       const A = args || {};
       // Normalize field names from LLM variations
       if (!A.message && (A.content || A.text || A.speech)) A.message = A.content || A.text || A.speech;
