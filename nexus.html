@@ -1682,7 +1682,7 @@
     function getAgentLocation(agent) {
       const pos = agent.mesh.position;
       if (pos.distanceTo(agent.home) < 6) return 'hemma';
-      if (Math.sqrt(pos.x*pos.x+pos.z*pos.z) < 13) return 'plaza';
+      if (Math.sqrt(pos.x*pos.x+pos.z*pos.z) < 13) return 'torget';
       const blocs = {
         rådhuset:[0,-20], biblioteket:[-20,-14], arkivet:[-26,8], forskningshuset:[45,10],
         polisen:[22,-16], labbet:[28,6], observatoriet:[-15,32], kliniken:[20,28]
@@ -1690,7 +1690,28 @@
       for (const [loc,[bx2,bz2]] of Object.entries(blocs)) {
         if (Math.sqrt((pos.x-bx2)**2+(pos.z-bz2)**2) < 10) return loc;
       }
-      return 'ute';
+      return 'ute i Vara';
+    }
+
+    // Beskriver vad agenten gör på platsen just nu
+    function getLocationActivity(agent) {
+      const loc = getAgentLocation(agent);
+      const state = agent.state;
+      const activities = {
+        'hemma': { SLEEPING:'sover', WAKING:'vaknar och förbereder sig', RESTING_HOME:'vilar och slappnar av', WANDERING:'funderar på att ge sig ut', default:'är hemma' },
+        'torget': { PLAZA_SOCIAL:'sitter vid fontänen och iakttar folk', WANDERING:'promenerar över torget', default:'befinner sig på torget' },
+        'rådhuset': { AT_PRIMARY:'sitter i rådssal och arbetar med demokratifrågor', AT_DESK:'arbetar vid skrivbordet', default:'är på rådhuset' },
+        'biblioteket': { AT_PRIMARY:'läser och forskar bland hyllorna', WANDERING:'bläddrar i böcker', default:'är på biblioteket' },
+        'arkivet': { AT_PRIMARY:'granskar dokument och register', WANDERING:'letar i arkiven', default:'är på arkivet' },
+        'labbet': { AT_PRIMARY:'utför experiment och analyser', WANDERING:'inspekterar utrustningen', default:'är i labbet' },
+        'observatoriet': { AT_PRIMARY:'studerar stjärnhimlen och gör observationer', WANDERING:'tittar i teleskopet', default:'är på observatoriet' },
+        'kliniken': { AT_PRIMARY:'arbetar med vård och forskning', WANDERING:'rör sig i korridorerna', default:'är på kliniken' },
+        'polisen': { AT_PRIMARY:'arbetar med ordning och säkerhet', WANDERING:'patrullerar', default:'är på polisstationen' },
+        'forskningshuset': { AT_PRIMARY:'arbetar med forskning och data', WANDERING:'studerar skärmar och resultat', default:'är på forskningshuset' },
+        'ute i Vara': { WANDERING:'promenerar längs gatorna i Vara', default:'är ute och rör sig' },
+      };
+      const locActs = activities[loc] || { default:'rör sig i Vara' };
+      return locActs[state] || locActs['default'];
     }
 
     function getAvailableTools(location) {
@@ -2311,18 +2332,18 @@
       ].join('\n');
       const h=getH();
       const n=agent.needs;
+      const activity = getLocationActivity(agent);
       const usrp=[
-        `TID: ${fmt(h)} | PLATS: ${loc} | STATUS: ${STATES[agent.state]||agent.state}`,
+        `TID: ${fmt(h)} | PLATS: ${loc} | DU: ${activity}`,
         `BEHOV — Energi:${Math.round(n.energi)}% Social:${Math.round(n.social)}% Kunskap:${Math.round(n.kunskap)}% Välmående:${Math.round(n.valmående)}%`,
-        `${nbStr?'NÄRA: '+nbStr:'(Ensam på platsen)'}`,
+        nbStr?`NÄRA DIG: ${nbStr}`:'Du är ensam här just nu.',
         diary,
         `SENASTE MINNEN: ${agent.memory.episodes.slice(0,4).map(e=>e.t+': '+e.text).join(' | ')||'inga'}`,
-        `RELATIONER: ${Object.entries(agent.memory.relations).map(([n2,r])=>n2+':'+r.score).join(', ')||'inga'}`,
+        `RELATIONER: ${Object.entries(agent.memory.relations).map(([n2,r])=>n2+'('+r.score+')').join(', ')||'inga'}`,
         agent.memory.tomorrowGoal?`DITT MÅL: ${agent.memory.tomorrowGoal}`:'',
         `TRIGGER: ${triggerType==='addressed'?'DIREKT TILLTAL — du MÅSTE svara med talk_to':triggerType}${context?' ('+context+')':''}`,
-        triggerType==='addressed'?`SVAR PÅ TILLTAL: Välj tool=talk_to och svara på vad som sades.`:''
-        ``,
-        `Vad gör du och tänker du NU? Välj ett tool som passar situationen.`
+        triggerType==='addressed'?`SVAR PÅ TILLTAL: Välj tool=talk_to och svara direkt på vad som sades.`:'',
+        `Agera som ${agent.name} som just nu ${activity}. Välj ett tool som passar platsen och situationen exakt.`
       ].filter(Boolean).join('\n');
 
       try {
@@ -2398,7 +2419,7 @@
 
         // ARRIVAL at building
         const loc=getAgentLocation(agent);
-        if(loc!=='ute'&&loc!==agent.lastLocation){
+        if(loc!=='ute i Vara'&&loc!==agent.lastLocation){
           agent.lastLocation=loc;
           enqueueCog(agent,'arrival','Anländer till '+loc);
           agentCooldown[agent.name]=now; return;
