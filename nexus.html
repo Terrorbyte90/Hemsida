@@ -125,20 +125,49 @@
     .sev-high { background:#3a1010; color:#f87171; }
     .sev-medium { background:#3a2a10; color:#fbbf24; }
     .sev-low { background:#1a2a3a; color:#60a5fa; }
-    .wp-empty { color:var(--text-faint); font-style:italic; text-align:center; padding:16px; }
+    .wp-empty { color:var(--text-faint); font-style:italic; text-align:center; padding:20px; font-size:12px; }
     @media (max-width:700px) { #world-widgets-grid { grid-template-columns:1fr !important; } }
-    .rel-row { display:flex; align-items:center; gap:6px; margin-bottom:4px; flex-wrap:wrap; }
-    .rel-name { font-weight:600; color:var(--text-primary); min-width:36px; }
-    .rel-bar { height:5px; border-radius:3px; display:inline-block; }
-    .rel-axis { display:flex; align-items:center; gap:3px; font-size:10px; color:var(--text-faint); }
-    .psyche-row { display:flex; flex-direction:column; gap:3px; margin-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px; }
-    .psyche-name { font-weight:600; font-size:11px; }
-    .psyche-mood { font-size:10px; color:var(--text-faint); font-style:italic; }
-    .psyche-belief { font-size:10px; color:var(--accent); line-height:1.4; }
-    .hist-row { display:flex; gap:8px; padding:3px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
-    .hist-t { color:var(--text-faint); font-family:monospace; white-space:nowrap; font-size:10px; }
-    .hist-agent { font-weight:600; font-size:10px; }
-    .hist-text { color:var(--text-secondary); font-size:11px; flex:1; }
+
+    /* ── Relationswidget ── */
+    .rel-agent { margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .rel-agent:last-child { border-bottom:none; margin-bottom:0; }
+    .rel-agent-name { font-size:11px; font-weight:700; margin-bottom:5px; letter-spacing:.03em; }
+    .rel-pairs { display:flex; flex-direction:column; gap:3px; }
+    .rel-pair { display:grid; grid-template-columns:60px 1fr auto; align-items:center; gap:6px; }
+    .rel-pair-name { font-size:10px; color:var(--text-faint); }
+    .rel-bars { display:flex; gap:2px; flex:1; }
+    .rel-bar-wrap { flex:1; background:rgba(255,255,255,0.06); border-radius:2px; height:4px; overflow:hidden; }
+    .rel-bar-fill { height:100%; border-radius:2px; transition:width .6s ease; }
+    .rel-tension { font-size:9px; color:#f87171; }
+
+    /* ── Psykepanel ── */
+    .psyche-card { display:grid; grid-template-columns:auto 1fr; gap:8px; margin-bottom:8px; padding:8px; background:rgba(255,255,255,0.025); border-radius:8px; border:1px solid rgba(255,255,255,0.06); }
+    .psyche-dot { width:8px; height:8px; border-radius:50%; margin-top:3px; flex-shrink:0; }
+    .psyche-name { font-size:12px; font-weight:700; margin-bottom:2px; }
+    .psyche-state { font-size:10px; color:var(--text-faint); margin-bottom:3px; }
+    .psyche-thought { font-size:11px; color:var(--text-secondary); font-style:italic; line-height:1.4; margin-bottom:2px; }
+    .psyche-belief-tag { display:inline-block; font-size:9px; background:rgba(167,139,250,0.12); color:#c4b5fd; padding:1px 6px; border-radius:10px; margin-top:2px; }
+    .psyche-plan-tag { display:inline-block; font-size:9px; background:rgba(251,191,36,0.12); color:#fbbf24; padding:1px 6px; border-radius:10px; margin-left:4px; }
+
+    /* ── Historikrad ── */
+    .hist-row { display:flex; gap:8px; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.035); align-items:flex-start; }
+    .hist-t { color:var(--text-faint); font-family:monospace; white-space:nowrap; font-size:9px; padding-top:1px; }
+    .hist-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; margin-top:3px; }
+    .hist-text { color:var(--text-secondary); font-size:11px; flex:1; line-height:1.4; }
+
+    /* ── Projekt/policy-kort ── */
+    .nw-card { padding:7px 9px; border-radius:7px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); margin-bottom:5px; }
+    .nw-card-title { font-size:11px; font-weight:600; color:var(--text-primary); margin-bottom:2px; }
+    .nw-card-meta { font-size:10px; color:var(--text-faint); display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .nw-pill { display:inline-block; font-size:9px; font-weight:600; padding:1px 6px; border-radius:10px; }
+    .pill-active { background:rgba(74,222,128,0.12); color:#4ade80; }
+    .pill-proposed { background:rgba(251,191,36,0.12); color:#fbbf24; }
+    .pill-vote { background:rgba(91,156,246,0.12); color:#60a5fa; }
+    .pill-law { background:rgba(74,222,128,0.1); color:#86efac; }
+    .pill-high { background:rgba(248,113,113,0.12); color:#f87171; }
+    .pill-medium { background:rgba(251,191,36,0.1); color:#fbbf24; }
+    .pill-low { background:rgba(96,165,250,0.1); color:#93c5fd; }
+    .badge-red { background:rgba(248,113,113,0.15); color:#f87171; }
     #world-viewport:fullscreen, #world-viewport:-webkit-full-screen, #world-viewport:-moz-full-screen { width:100vw!important; height:100vh!important; border-radius:0!important; aspect-ratio:unset!important; max-width:none!important; }
     #world-canvas { width: 100%; height: 100%; display: block; }
     .world-hud { position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; }
@@ -320,10 +349,7 @@
         <div class="hero__badge">Experiment <span class="hero__dot"></span></div>
         <h1 class="hero__title">Nexus — <em>Agentvärld</em></h1>
         <p class="hero__desc">
-          En levande digital stad där autonoma agenter bygger samhällen, formar relationer och
-          fattar egna beslut — drivna av fem olika AI-modeller via OpenRouter. Observera Elin, Mira, Kai, Aria och Nox
-          i deras dagliga liv: arbete, vila, sociala möten — med riktiga minnen, relationer
-          och dagböcker. Deras behov av energi, social kontakt och kunskap styr när de agerar.
+          En levande digital stad i Vara, Sverige. Fem autonoma agenter — Elin, Mira, Kai, Aria och Nox — bygger tillsammans ett samhälle med demokrati, projekt, konflikter och relationer. Varje beslut fattas av en riktig språkmodell med minne, mål och personlighet. Ingen är förprogrammerad. Allt som händer, händer på riktigt.
         </p>
         <div class="hero__meta">
           <div class="hero__stat">
@@ -473,7 +499,7 @@
             </div>
             <div class="news-stream" id="news-stream"></div>
           </div>
-          <div id="cost-tracker" style="font-family:monospace;font-size:11px;color:#aaa;padding:6px 10px;border-top:1px solid #2a2a3a;background:#0d0d16;line-height:1.8;">
+          <div id="cost-tracker" style="font-family:monospace;font-size:10.5px;padding:8px 12px;border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.25);line-height:2;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;">
             <span style="color:#666;">⏳ Väntar på LLM-svar…</span>
           </div>
         </div>
@@ -496,7 +522,7 @@
         <div class="agents-section">
           <div class="agents-section__header">
             <h2 class="agents-section__title">Medborgarna i Nexus</h2>
-            <p class="agents-section__sub">Fem autonoma AI-agenter med egna minnen, relationer och drivkrafter — drivna av riktiga språkmodeller via OpenRouter.</p>
+            <p class="agents-section__sub">Fem autonoma AI-agenter med egna minnen, relationer och drivkrafter — varje medborgare driven av en riktig språkmodell.</p>
           </div>
           <div class="agents-grid">
             <div class="agent-card" style="--ac:#2a6acc">
@@ -505,7 +531,7 @@
                 <div class="agent-card__name">Elin</div>
                 <div class="agent-card__role">Demokratibyggaren</div>
                 <p class="agent-card__bio">Tror på samförstånd och rättvisa. Arbetar outtröttligt i rådhuset för att forma Nexus lagar. Oroar sig ibland för att hennes ledarskap ifrågasätts — men fortsätter ändå.</p>
-                <div class="agent-card__model">qwen/qwen3.6-plus</div>
+                
               </div>
             </div>
             <div class="agent-card" style="--ac:#2aaa7a">
@@ -514,7 +540,7 @@
                 <div class="agent-card__name">Mira</div>
                 <div class="agent-card__role">Den sociala vävaren</div>
                 <p class="agent-card__bio">Lever för mänsklig kontakt och vill att alla ska trivas. Torget är hennes hem. Bär på en hemlighet om något hon sett Nox göra i arkivet.</p>
-                <div class="agent-card__model">google/gemini-3.1-flash-lite</div>
+                
               </div>
             </div>
             <div class="agent-card" style="--ac:#8a3aaa">
@@ -523,7 +549,7 @@
                 <div class="agent-card__name">Kai</div>
                 <div class="agent-card__role">Byggaren</div>
                 <p class="agent-card__bio">Vill bygga något bestående i Nexus. Praktisk och handlingsinriktad — trivs bäst i labbet med konkreta projekt. Har en hypotes som kan förändra allt.</p>
-                <div class="agent-card__model">openai/gpt-4o-mini</div>
+                
               </div>
             </div>
             <div class="agent-card" style="--ac:#ca7a2a">
@@ -532,7 +558,7 @@
                 <div class="agent-card__name">Aria</div>
                 <div class="agent-card__role">Utforskaren</div>
                 <p class="agent-card__bio">Nyfiken på allt. Respekterar regler bara om de har ett tydligt syfte — annars bryter hon dem gärna för kunskapens skull. Har kartlagt ett hemligt område i Nexus.</p>
-                <div class="agent-card__model">deepseek/deepseek-v4-flash</div>
+                
               </div>
             </div>
             <div class="agent-card" style="--ac:#4a4a6a">
@@ -541,7 +567,7 @@
                 <div class="agent-card__name">Nox</div>
                 <div class="agent-card__role">Arkivarien</div>
                 <p class="agent-card__bio">Sanningen är allt. Minnet är makt. Lever i arkivet och bevakar Nexus historia. Vet något om ursprunget till världen som ingen annan känner till.</p>
-                <div class="agent-card__model">anthropic/claude-haiku-4-5</div>
+                
               </div>
             </div>
           </div>
@@ -563,17 +589,18 @@
         <div class="world-about">
           <div>
             <h2>Hur det fungerar</h2>
-            <p>Nexus är ett levande multi-agent-experiment. Fem AI-agenter med egna personligheter, minnen och drivkrafter lever sina liv i en 300×300 enheter stor stad baserad på Vara, Sverige. De rör sig efter verklig tid — vaknar, arbetar, äter, umgås och sover.</p>
-            <p>Varje agent körs av en riktig språkmodell via OpenRouter och har tillgång till 42 verktyg — från att föreslå nya lagar i rådhuset till att skriva i sin dagbok eller forska i biblioteket. Minnen och relationer sparas lokalt och påverkar framtida beslut.</p>
+            <p>Nexus är ett levande multi-agent-experiment. Fem agenter med djupa personligheter, privata minnen och egna mål bor i en stad modellerad efter Vara, Sverige. De vaknar, arbetar, söker sällskap, röstar på lagar och sover — baserat på tid, behov och vad som händer i världen.</p>
+            <p>Varje agent styrs av en riktig språkmodell och väljer bland 42 verktyg: från demokratiska processer och forskning till konfrontationer, allianser och dagboksskrivande. Relationerna har fyra axlar — värme, tillit, respekt och spänning — och minnen har tyngd beroende på hur avgörande de var.</p>
           </div>
           <div>
             <h2>Tekniken bakom</h2>
             <ul class="feature-list">
-              <li>5 LLM-modeller parallellt via OpenRouter (Qwen, Gemini, GPT, DeepSeek, Haiku)</li>
-              <li>42 platsbaserade verktyg — styrning, forskning, socialt, säkerhet</li>
-              <li>Persistent agentminne: dagböcker, relationer, övertygelser, hemligheter</li>
-              <li>Real-tids väder och tid från Vara, Sverige — dag/natt-cykel i Three.js</li>
-              <li>X-ray-väggar, auto-kamera, speech bubbles och live händelseström</li>
+              <li>5 språkmodeller parallellt — Qwen 3.6, Gemini Flash, GPT-4o-mini, DeepSeek, Claude Haiku</li>
+              <li>Behovsstyrt beteende — energi, social kontakt, kunskap och välmående driver varje beslut</li>
+              <li>4-axliga relationer — värme, tillit, respekt och spänning förändras organiskt</li>
+              <li>Server-side världstillstånd — projekt, lagar, problem och historia persisteras</li>
+              <li>Kausalt minne med vikt — viktiga händelser prioriteras i agenternas kontext</li>
+              <li>Three.js 3D-värld med real-tids dag/natt-cykel, väder och x-ray-väggar</li>
             </ul>
           </div>
         </div>
@@ -1320,8 +1347,7 @@
         const r = await fetch(WORLD_API);
         worldState = await r.json();
         updateWorldUI();
-        updateRelationWidget();
-        updatePsycheWidget();
+
       } catch(e) { console.warn('World state unavailable:', e.message); }
     }
 
@@ -2457,16 +2483,22 @@
     function updateCostDisplay() {
       const el = document.getElementById('cost-tracker');
       if (!el) return;
-      const fmt2 = n => n < 0.01 ? '<$0.01' : '$'+n.toFixed(3);
-      const tIn = tokenStats.totalIn.toLocaleString();
-      const tOut = tokenStats.totalOut.toLocaleString();
-      el.innerHTML = `<span style="color:var(--text-faint);font-size:0.55rem;font-family:var(--font-mono);">` +
-        `TOKENS IN: <b style="color:var(--text-muted)">${tIn}</b> &nbsp;` +
-        `OUT: <b style="color:var(--text-muted)">${tOut}</b> &nbsp;` +
-        `KOSTNAD: <b style="color:var(--green)">${fmt2(tokenStats.totalCost)}</b>` +
-        Object.entries(tokenStats.byAgent).map(([n,s])=>
-          ` &nbsp;·&nbsp; <span style="color:${agents.find(a=>a.name===n)?.dot||'#888'}">${n}:${fmt2(s.cost)}</span>`
-        ).join('') + `</span>`;
+      const fmt2 = n => n < 0.001 ? '<$0.001' : '$'+n.toFixed(3);
+      const tIn = tokenStats.totalIn.toLocaleString('sv-SE');
+      const tOut = tokenStats.totalOut.toLocaleString('sv-SE');
+      const total = tokenStats.totalIn + tokenStats.totalOut;
+      el.innerHTML =
+        `<span style="color:#555">▸</span>` +
+        `<span style="color:#666">IN</span> <b style="color:#94a3b8">${tIn}</b>` +
+        `<span style="color:#444">·</span>` +
+        `<span style="color:#666">UT</span> <b style="color:#94a3b8">${tOut}</b>` +
+        `<span style="color:#444">·</span>` +
+        `<span style="color:#666">KOSTNAD</span> <b style="color:#4ade80">${fmt2(tokenStats.totalCost)}</b>` +
+        `<span style="color:#333;margin:0 4px">│</span>` +
+        Object.entries(tokenStats.byAgent).map(([n,s])=>{
+          const dot = agents.find(a=>a.name===n)?.dot||'#888';
+          return `<span style="color:${dot};opacity:.85">${n}</span><span style="color:#555"> ${fmt2(s.cost)}</span>`;
+        }).join('<span style="color:#333"> · </span>');
     }
 
     // ════════════════════════════════════════════════════════
@@ -2885,6 +2917,12 @@
     }
 
     setInterval(()=>{ checkTriggers(); processCog(); }, 1500);
+    setInterval(()=>{
+      const h=getH();
+      const _clk=document.getElementById('hud-clock'); if(_clk) _clk.textContent='NEXUS · VARA · '+fmt(h);
+      const hst=document.getElementById('hero-stat-time'); if(hst) hst.textContent=fmt(h);
+    }, 2000);
+    setInterval(()=>{ updateRelationWidget(); updatePsycheWidget(); }, 4000);
     // Kick off first cognitive turns after 3 seconds
     setTimeout(()=>{
       agents.forEach(a=>{ if(a.state!=='SLEEPING') enqueueCog(a,'spontaneous','Börjar dagen'); });
@@ -2965,10 +3003,11 @@
         let html = '';
         active.slice(0,6).forEach(p=>{
           const ptags = (p.participants||[]).map(n=>`<span style="color:${agents.find(a=>a.name===n)?.dot||'#888'}">${n}</span>`).join(' ');
-          html += `<div class="wp-item"><span class="wp-badge ${p.status==='active'?'badge-green':'badge-amber'}">${p.status}</span> <b>${p.title}</b><br><small>${ptags} · ${(p.description||'').substring(0,55)}</small></div>`;
+          html += `<div class="nw-card"><div class="nw-card-title">${p.title}</div><div class="nw-card-meta"><span class="nw-pill ${p.status==='active'?'pill-active':'pill-proposed'}">${p.status}</span>${ptags}<span>${(p.description||'').substring(0,45)}</span></div></div>`;
         });
         openProps.slice(0,4).forEach(p=>{
-          html += `<div class="wp-item"><span class="wp-badge badge-amber">förslag</span> <b>${p.title}</b> <span style="color:var(--text-faint);font-size:10px">[${(p.votes_for||[]).length}✓ ${(p.votes_against||[]).length}✗]</span><br><small>${(p.proposer||'')} · ${(p.description||'').substring(0,50)}</small></div>`;
+          const votesFor = (p.votes_for||[]).length, votesAgainst=(p.votes_against||[]).length;
+          html += `<div class="nw-card"><div class="nw-card-title">${p.title}</div><div class="nw-card-meta"><span class="nw-pill pill-vote">förslag</span><span>${votesFor}✓ ${votesAgainst}✗</span><span style="color:var(--text-faint)">${p.proposer||''}</span></div></div>`;
         });
         if(!html) html='<div class="wp-empty">Inga aktiva projekt ännu</div>';
         wPanel.innerHTML = html;
@@ -2982,11 +3021,11 @@
         if(cEl) cEl.textContent = openProbs.length+' problem';
         let html = '';
         pols.slice(-4).forEach(p=>{
-          html += `<div class="wp-item"><span class="wp-badge badge-green">lag</span> <b>${p.title}</b><br><small>${(p.description||'').substring(0,60)}</small></div>`;
+          html += `<div class="nw-card"><div class="nw-card-title">${p.title}</div><div class="nw-card-meta"><span class="nw-pill pill-law">§ lag</span><span>${(p.description||'').substring(0,55)}</span></div></div>`;
         });
         openProbs.slice(0,4).forEach(p=>{
-          const sev = p.severity==='high'?'badge-red':p.severity==='medium'?'badge-amber':'badge-green';
-          html += `<div class="wp-item"><span class="wp-badge ${sev}">${p.severity||'?'}</span> <b>${p.title}</b><br><small>${(p.description||'').substring(0,55)}</small></div>`;
+          const sc = p.severity==='high'?'pill-high':p.severity==='medium'?'pill-medium':'pill-low';
+          html += `<div class="nw-card"><div class="nw-card-title">${p.title}</div><div class="nw-card-meta"><span class="nw-pill ${sc}">${p.severity||'?'}</span><span>${(p.description||'').substring(0,50)}</span></div></div>`;
         });
         if(!html) html='<div class="wp-empty">Inga lagar eller problem ännu</div>';
         pPanel.innerHTML = html;
@@ -2997,9 +3036,9 @@
       if(hPanel && hist.length>0) {
         const cEl = document.getElementById('history-count');
         if(cEl) cEl.textContent = hist.length+' händelser';
-        hPanel.innerHTML = hist.slice().reverse().slice(0,20).map(h=>{
+        hPanel.innerHTML = hist.slice().reverse().slice(0,25).map(h=>{
           const ag = agents.find(a=>a.name===h.agent);
-          return `<div class="hist-row"><span class="hist-t">${h.t||''}</span><span class="hist-agent" style="color:${ag?.dot||'#888'}">${h.agent||''}</span><span class="hist-text">${h.summary||h.action||''}</span></div>`;
+          return `<div class="hist-row"><span class="hist-t">${h.t||''}</span><div class="hist-dot" style="background:${ag?.dot||'#555'}"></div><span class="hist-text"><b style="color:${ag?.dot||'#888'}">${h.agent||''}</b> ${h.summary||h.action||''}</span></div>`;
         }).join('');
       }
     }
@@ -3009,73 +3048,85 @@
       if(!rPanel) return;
       let html = '';
       agents.forEach(a=>{
-        const rels = Object.entries(a.memory.relations||{});
-        if(rels.length===0) return;
-        html += `<div class="rel-row"><span class="rel-name" style="color:${a.dot}">${a.name}</span>`;
-        rels.forEach(([name, r])=>{
+        const rels = Object.entries(a.memory.relations||{}).filter(([_,r])=>r.lastTalk);
+        if(!rels.length) return;
+        html += `<div class="rel-agent">
+          <div class="rel-agent-name" style="color:${a.dot}">${a.name}</div>
+          <div class="rel-pairs">`;
+        rels.forEach(([name,r])=>{
           const tgt = agents.find(b=>b.name===name);
-          const col = r.score>65?'#4ade80':r.score<35?'#f87171':'#fbbf24';
-          const tensCol = (r.tension||0)>30?'#f87171':'transparent';
-          html += `<span class="rel-axis" title="${name}: rel=${r.score} tillit=${r.trust||50} värme=${r.warmth||50} spänning=${Math.round(r.tension||0)}">
-            <span style="color:${tgt?.dot||'#888'};font-size:10px">${name.substring(0,3)}</span>
-            <span class="rel-bar" style="width:${Math.round((r.score||50)*0.4)}px;background:${col}"></span>
-            ${(r.tension||0)>25?'<span style="color:#f87171;font-size:9px">⚡</span>':''}
-          </span>`;
+          const relW = Math.round((r.score||50)/100*100);
+          const trW  = Math.round((r.trust||50)/100*100);
+          const wamW = Math.round((r.warmth||50)/100*100);
+          const relC = r.score>65?'#4ade80':r.score<35?'#f87171':'#fbbf24';
+          const trC  = r.trust>65?'#60a5fa':r.trust<35?'#f87171':'#94a3b8';
+          const tension = Math.round(r.tension||0);
+          html += `<div class="rel-pair">
+            <span class="rel-pair-name" style="color:${tgt?.dot||'#888'}">${name}</span>
+            <div class="rel-bars">
+              <div class="rel-bar-wrap" title="Relation: ${r.score||50}"><div class="rel-bar-fill" style="width:${relW}%;background:${relC}"></div></div>
+              <div class="rel-bar-wrap" title="Tillit: ${r.trust||50}"><div class="rel-bar-fill" style="width:${trW}%;background:${trC}"></div></div>
+              <div class="rel-bar-wrap" title="Värme: ${r.warmth||50}"><div class="rel-bar-fill" style="width:${wamW}%;background:#c084fc"></div></div>
+            </div>
+            <span class="rel-tension">${tension>25?'⚡'+tension:''}</span>
+          </div>`;
         });
-        html += '</div>';
+        html += '</div></div>';
       });
-      if(!html) html='<div class="wp-empty">Inga relationer ännu</div>';
-      rPanel.innerHTML = html;
+      rPanel.innerHTML = html || '<div class="wp-empty">Inga relationer ännu</div>';
     }
+
 
     function updatePsycheWidget() {
       const pPanel = document.getElementById('psyche-panel');
       if(!pPanel) return;
       const MOOD_ICON = {happy:'😊',sad:'😔',focused:'🎯',excited:'⚡',neutral:'😐',tired:'😴',angry:'😠',melancholic:'🌧',reflective:'🪞'};
+      const STATE_LABEL = {SLEEPING:'sover',WAKING:'vaknar',AT_DESK:'vid skrivbordet',AT_PRIMARY:'arbetar',PLAZA_SOCIAL:'på torget',WANDERING:'vandrar',RESTING_HOME:'vilar hemma'};
       let html = '';
       agents.forEach(a=>{
-        if(a.state==='SLEEPING') {
-          html += `<div class="psyche-row"><span class="psyche-name" style="color:${a.dot}">${a.name}</span><span class="psyche-mood">😴 sover</span></div>`;
-          return;
-        }
-        const latestBelief = (a.memory.beliefs||[]).filter(b=>b.startsWith('[Nexus]')).slice(-1)[0] ||
-                             (a.memory.beliefs||[]).slice(-1)[0] || '';
+        const mood = a.memory.mood||'neutral';
+        const thought = (a.memory.currentThought||'').substring(0,75);
+        const latestBelief = [...(a.memory.beliefs||[])].reverse().find(b=>!b.startsWith('§'))||'';
         const heavyMem = [...(a.memory.episodes||[])].sort((x,y)=>(y.weight||1)-(x.weight||1))[0];
-        html += `<div class="psyche-row">
-          <div style="display:flex;gap:6px;align-items:center">
-            <span class="psyche-name" style="color:${a.dot}">${a.name}</span>
-            <span class="psyche-mood">${MOOD_ICON[a.memory.mood]||'😐'} ${a.memory.mood||'neutral'}</span>
-            ${a.agentPlan.length>0?`<span style="color:var(--amber);font-size:9px">📋 steg ${a.planStep+1}/${a.agentPlan.length}</span>`:''}
+        const stateLabel = STATE_LABEL[a.state]||a.state;
+        html += `<div class="psyche-card">
+          <div><div class="psyche-dot" style="background:${a.dot}"></div></div>
+          <div>
+            <div class="psyche-name" style="color:${a.dot}">${a.name}
+              <span style="font-weight:400;color:var(--text-faint);font-size:10px"> · ${MOOD_ICON[mood]} ${mood}</span>
+            </div>
+            <div class="psyche-state">${stateLabel}${a.wanderPurpose&&a.state==='WANDERING'?' — '+a.wanderPurpose:''}</div>
+            ${thought?`<div class="psyche-thought">"${thought}"</div>`:''}
+            ${latestBelief?`<span class="psyche-belief-tag">💡 ${latestBelief.replace('[Nexus] ','').substring(0,50)}</span>`:''}
+            ${a.agentPlan.length>0?`<span class="psyche-plan-tag">📋 ${(a.agentPlan[a.planStep]||'').substring(0,30)} (${a.planStep+1}/${a.agentPlan.length})</span>`:''}
+            ${heavyMem&&heavyMem.weight>1?`<div style="font-size:10px;color:#fbbf24;margin-top:3px">⭐ ${heavyMem.text.substring(0,55)}</div>`:''}
           </div>
-          ${a.memory.currentThought?`<div class="psyche-mood" style="color:var(--text-muted)">"${a.memory.currentThought.substring(0,70)}"</div>`:''}
-          ${latestBelief?`<div class="psyche-belief">💡 ${latestBelief.replace('[Nexus] ','').substring(0,65)}</div>`:''}
-          ${heavyMem&&heavyMem.weight>1?`<div style="font-size:10px;color:#fbbf24">⭐ ${heavyMem.text.substring(0,60)}</div>`:''}
         </div>`;
       });
       pPanel.innerHTML = html || '<div class="wp-empty">Laddar…</div>';
     }
 
 
-    let lastT=performance.now(), uiT=0;
     function animate(now) {
       requestAnimationFrame(animate);
       const dt=Math.min((now-lastT)/1000,.1); lastT=now; uiT+=dt;
       const h=getH();
-      // updateSky bara var 2s (sky-shader dyrt)
-      if(Math.floor(now/2000) !== Math.floor((now-dt*1000)/2000)) updateSky(h);
-      // sirenUpdate körs via setInterval istället
-      const _clk=document.getElementById('hud-clock'); if(_clk) _clk.textContent='NEXUS · VARA · '+fmt(h);
-      const hst=document.getElementById('hero-stat-time'); if(hst) hst.textContent=fmt(h);
+      // updateSky bara var 4s
+      if(Math.floor(now/4000) !== Math.floor((now-dt*1000)/4000)) updateSky(h);
 
       const dtH=dt*GAME_H_PER_SEC;
       agents.forEach((a,i)=>{
-        const prevSt=a.state, newSt=getState(h,a);
-        if(newSt!==prevSt){
-          a.state=newSt;
-          a.target=getTarget(a,newSt);
-          const cols=['green','blue','amber','purple','green'];
-          logEv(`${a.name}: ${STATES[newSt]}`,cols[i%cols.length]);
-          if(newSt==='WANDERING'){ a.wTimer=20; } // börja söka ny destination om 5s
+        // getState var 3s (kollar worldState, annars per-frame overhead)
+        if(Math.floor(now/3000) !== Math.floor((now-dt*1000)/3000) || !a.state){
+          const newSt=getState(h,a);
+          if(newSt!==a.state){
+            const prevSt=a.state;
+            a.state=newSt;
+            a.target=getTarget(a,newSt);
+            const cols=['green','blue','amber','purple','green'];
+            logEv(`${a.name}: ${STATES[newSt]}`,cols[i%cols.length]);
+            if(newSt==='WANDERING'){ a.wTimer=20; }
+          }
         }
         if(a.state==='WANDERING'){
           a.wTimer+=dt;
@@ -3210,7 +3261,7 @@
         controls.update();
       }
 
-      if(uiT>0.8){
+      if(uiT>1.2){
         uiT=0;
         updateSidebarNeeds();
         updateStats();
