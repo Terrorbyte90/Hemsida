@@ -819,6 +819,29 @@
     });
 
     // AGENTS
+
+    const OPENROUTER_KEY = true; // Key is on server, not in source
+
+    // ════════════════════════════════════════════════════════
+    // COST TRACKER
+    // ════════════════════════════════════════════════════════
+    const MODEL_PRICING = {
+      'qwen/qwen3.6-plus':            { in: 0.325/1e6, out: 1.95/1e6 },
+      'google/gemini-3.1-flash-lite': { in: 0.25/1e6,  out: 1.5/1e6  },
+      'openai/gpt-5-nano':            { in: 0.05/1e6,  out: 0.4/1e6   },
+      'deepseek/deepseek-v4-flash':   { in: 0.09/1e6,  out: 0.18/1e6  },
+      'anthropic/claude-haiku-4-5':   { in: 1.0/1e6,   out: 5.0/1e6   },
+    };
+    const tokenStats = { totalIn:0, totalOut:0, totalCost:0, byAgent:{} };
+
+    const NEXUS_LAWS = [
+      '§1 Alla medborgare har rätt till frihet, trygghet och deltagande i demokratin.',
+      '§2 Ingen får skada en annan medborgare fysiskt eller psykiskt med avsikt.',
+      '§3 Kunskapen tillhör alla — biblioteket och arkivet är öppna för samtliga.',
+      '§4 Beslut som rör hela Nexus fattas i rådhuset med minst tre röster för.',
+      '§5 Arkivets register är heligt — inga dokument får förstöras utan demokratisk omröstning.',
+    ];
+
     const AGENT_SOULS = {
       'Elin':  { soul: 'Tror på samförstånd och rättvisa. Räds att demokratin ska falla samman utan engagemang.',  secret: 'Orolig att hennes ledarskap ifrågasätts bakom ryggen.' },
       'Mira':  { soul: 'Lever för mänsklig kontakt. Räds djup ensamhet och att bli bortglömd.',                    secret: 'Har sett Nox ta bort ett dokument ur arkivet utan att berätta för någon.' },
@@ -1519,20 +1542,6 @@
     // ════════════════════════════════════════════════════════
     // MOCK LLM (personality-driven, deterministic)
     // ════════════════════════════════════════════════════════
-    const OPENROUTER_KEY = true; // Key is on server, not in source
-
-    // ════════════════════════════════════════════════════════
-    // COST TRACKER
-    // ════════════════════════════════════════════════════════
-    const MODEL_PRICING = {
-      'qwen/qwen3.6-plus':            { in: 0.325/1e6, out: 1.95/1e6 },
-      'google/gemini-3.1-flash-lite': { in: 0.25/1e6,  out: 1.5/1e6  },
-      'openai/gpt-5-nano':            { in: 0.05/1e6,  out: 0.4/1e6   },
-      'deepseek/deepseek-v4-flash':   { in: 0.09/1e6,  out: 0.18/1e6  },
-      'anthropic/claude-haiku-4-5':   { in: 1.0/1e6,   out: 5.0/1e6   },
-    };
-    const tokenStats = { totalIn:0, totalOut:0, totalCost:0, byAgent:{} };
-
     function trackTokens(agentName, model, inTokens, outTokens) {
       const p = MODEL_PRICING[model] || { in:0.001/1e6, out:0.005/1e6 };
       const cost = inTokens*p.in + outTokens*p.out;
@@ -1564,14 +1573,6 @@
     // ════════════════════════════════════════════════════════
     // NEXUS LAWS (5 grundlagar)
     // ════════════════════════════════════════════════════════
-    const NEXUS_LAWS = [
-      '§1 Alla medborgare har rätt till frihet, trygghet och deltagande i demokratin.',
-      '§2 Ingen får skada en annan medborgare fysiskt eller psykiskt med avsikt.',
-      '§3 Kunskapen tillhör alla — biblioteket och arkivet är öppna för samtliga.',
-      '§4 Beslut som rör hela Nexus fattas i rådhuset med minst tre röster för.',
-      '§5 Arkivets register är heligt — inga dokument får förstöras utan demokratisk omröstning.',
-    ];
-
     const PERSONALITY = {
       'Elin':  { prefer:['propose_rule','call_meeting','debate','talk_to','reflect','plan_tomorrow'],    social:0.8, talkStyle:['Vi borde diskutera detta','Har du tänkt på gemenskapen?','Demokratin kräver handling.','Jag vill kalla till möte.'] },
       'Mira':  { prefer:['talk_to','socialize','give_advice','compliment','share_knowledge','give_gift'], social:0.95, talkStyle:['Hur mår du egentligen?','Jag är här om du behöver prata.','Du är viktig för oss alla.','Låt oss hitta en lösning.'] },
