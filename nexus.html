@@ -819,6 +819,102 @@
     });
 
     // AGENTS
+    const AGENT_SOULS = {
+      'Elin':  { soul: 'Tror på samförstånd och rättvisa. Räds att demokratin ska falla samman utan engagemang.',  secret: 'Orolig att hennes ledarskap ifrågasätts bakom ryggen.' },
+      'Mira':  { soul: 'Lever för mänsklig kontakt. Räds djup ensamhet och att bli bortglömd.',                    secret: 'Har sett Nox ta bort ett dokument ur arkivet utan att berätta för någon.' },
+      'Kai':   { soul: 'Vill bygga något bestående. Otålig med prat som inte leder till handling.',                 secret: 'Har en hypotes som skulle förändra allt — men vill inte dela den än.' },
+      'Aria':  { soul: 'Nyfiken på allt. Respekterar regler bara om de har ett syfte. Söker det okända.',          secret: 'Har kartlagt ett område av världen ingen annan vet om.' },
+      'Nox':   { soul: 'Sanningen är allt. Minnet är makt. Litar på data mer än på känslor.',                      secret: 'Vet något om ursprunget till Nexus som de andra inte vet.' },
+    };
+
+    // ════════════════════════════════════════════════════════
+    // MEMORY SYSTEM
+    // ════════════════════════════════════════════════════════
+    class AgentMemory {
+      constructor(agentName) {
+        this.agentName = agentName;
+        const s = AGENT_SOULS[agentName] || {};
+        this.soul    = s.soul   || '';
+        this.secret  = s.secret || '';
+        this.episodes   = [];
+        this.relations  = {};
+        this.beliefs    = [];
+        this.diary      = [];
+        this.tomorrowGoal = null;
+        this.mood       = 'neutral';
+        this.currentThought = '';
+        this.load();
+      }
+      load() {
+        try {
+          const d = JSON.parse(localStorage.getItem('nexus_mem_' + this.agentName) || 'null');
+          if (!d) return;
+          this.episodes   = d.episodes   || [];
+          this.relations  = d.relations  || {};
+          this.beliefs    = d.beliefs    || [];
+          this.diary      = d.diary      || [];
+          this.tomorrowGoal = d.tomorrowGoal || null;
+          this.mood       = d.mood       || 'neutral';
+          this.currentThought = d.currentThought || '';
+        } catch(e) {}
+      }
+      save() {
+        localStorage.setItem('nexus_mem_' + this.agentName, JSON.stringify({
+          episodes: this.episodes, relations: this.relations, beliefs: this.beliefs,
+          diary: this.diary, tomorrowGoal: this.tomorrowGoal, mood: this.mood,
+          currentThought: this.currentThought,
+        }));
+      }
+      addEpisode(text) {
+        this.episodes.unshift({ t: fmt(getH()), text });
+        if (this.episodes.length > 25) this.episodes.pop();
+        this.save();
+      }
+      updateRelation(name, delta, note) {
+        if (!this.relations[name]) this.relations[name] = { score: 50, lastTalk: null, notes: [] };
+        const r = this.relations[name];
+        r.score = Math.max(0, Math.min(100, r.score + delta));
+        r.lastTalk = fmt(getH());
+        if (note) { r.notes.push(note); if (r.notes.length > 5) r.notes.shift(); }
+        this.save();
+      }
+      addBelief(belief) {
+        if (!this.beliefs.find(b => b.includes(belief.slice(0,20)))) {
+          this.beliefs.push(belief);
+          if (this.beliefs.length > 10) this.beliefs.shift();
+          this.save();
+        }
+      }
+      writeDiary(entry) {
+        const date = new Date().toLocaleDateString('sv-SE');
+        this.diary.unshift({ date, entry });
+        if (this.diary.length > 60) this.diary.pop();
+        this.save();
+      }
+      buildContext() {
+        const rel = Object.entries(this.relations)
+          .map(([n,r]) => n+'('+r.score+')').join(',');
+        const ep  = this.episodes.slice(0,5).map(e => e.t+':'+e.text).join(' | ');
+        const bel = this.beliefs.slice(-3).join('; ');
+        return 'SOUL:'+this.soul+' | MOOD:'+this.mood+' | REL:'+( rel||'ingen')+
+               ' | MINNEN:'+(ep||'inga')+' | TROS:'+(bel||'inga')+
+               ' | MÅL:'+(this.tomorrowGoal||'okänt');
+      }
+      distillNight() {
+        const epSum = this.episodes.slice(0,12).map(e=>e.text).join('. ');
+        this.episodes = this.episodes.slice(0,8);
+        const moodMap = { happy:'En bra dag.', sad:'En svår dag.', focused:'Mycket att tänka på.',
+          excited:'Spännande dag.', neutral:'En vanlig dag.', tired:'Trött nu.',
+          angry:'Frustrerad dag.', melancholic:'Fundersam kväll.' };
+        const entry = (moodMap[this.mood]||'En dag.') + ' ' + epSum.substring(0,300);
+        this.writeDiary(entry);
+        this.currentThought = 'Sover...';
+        this.mood = 'tired';
+        this.save();
+        return entry;
+      }
+    }
+
     const ADEFS = [
       {name:'Elin',role:'Demokratibyggaren',model:'qwen/qwen3.6-plus',color:0x1a4a9a,hair:0xc8a060,home:new THREE.Vector3(-45,0,-38),primary:new THREE.Vector3(0,0,-20),dot:'#2a6acc'},
       {name:'Mira',role:'Den sociala vävaren',model:'google/gemini-3.1-flash-lite',color:0x1a7a5a,hair:0x3a2810,home:new THREE.Vector3(-18,0,-52),primary:new THREE.Vector3(20,0,28),dot:'#2aaa7a'},
@@ -1045,101 +1141,6 @@
     // ════════════════════════════════════════════════════════
     // AGENT SOULS — permanent identity anchors
     // ════════════════════════════════════════════════════════
-    const AGENT_SOULS = {
-      'Elin':  { soul: 'Tror på samförstånd och rättvisa. Räds att demokratin ska falla samman utan engagemang.',  secret: 'Orolig att hennes ledarskap ifrågasätts bakom ryggen.' },
-      'Mira':  { soul: 'Lever för mänsklig kontakt. Räds djup ensamhet och att bli bortglömd.',                    secret: 'Har sett Nox ta bort ett dokument ur arkivet utan att berätta för någon.' },
-      'Kai':   { soul: 'Vill bygga något bestående. Otålig med prat som inte leder till handling.',                 secret: 'Har en hypotes som skulle förändra allt — men vill inte dela den än.' },
-      'Aria':  { soul: 'Nyfiken på allt. Respekterar regler bara om de har ett syfte. Söker det okända.',          secret: 'Har kartlagt ett område av världen ingen annan vet om.' },
-      'Nox':   { soul: 'Sanningen är allt. Minnet är makt. Litar på data mer än på känslor.',                      secret: 'Vet något om ursprunget till Nexus som de andra inte vet.' },
-    };
-
-    // ════════════════════════════════════════════════════════
-    // MEMORY SYSTEM
-    // ════════════════════════════════════════════════════════
-    class AgentMemory {
-      constructor(agentName) {
-        this.agentName = agentName;
-        const s = AGENT_SOULS[agentName] || {};
-        this.soul    = s.soul   || '';
-        this.secret  = s.secret || '';
-        this.episodes   = [];
-        this.relations  = {};
-        this.beliefs    = [];
-        this.diary      = [];
-        this.tomorrowGoal = null;
-        this.mood       = 'neutral';
-        this.currentThought = '';
-        this.load();
-      }
-      load() {
-        try {
-          const d = JSON.parse(localStorage.getItem('nexus_mem_' + this.agentName) || 'null');
-          if (!d) return;
-          this.episodes   = d.episodes   || [];
-          this.relations  = d.relations  || {};
-          this.beliefs    = d.beliefs    || [];
-          this.diary      = d.diary      || [];
-          this.tomorrowGoal = d.tomorrowGoal || null;
-          this.mood       = d.mood       || 'neutral';
-          this.currentThought = d.currentThought || '';
-        } catch(e) {}
-      }
-      save() {
-        localStorage.setItem('nexus_mem_' + this.agentName, JSON.stringify({
-          episodes: this.episodes, relations: this.relations, beliefs: this.beliefs,
-          diary: this.diary, tomorrowGoal: this.tomorrowGoal, mood: this.mood,
-          currentThought: this.currentThought,
-        }));
-      }
-      addEpisode(text) {
-        this.episodes.unshift({ t: fmt(getH()), text });
-        if (this.episodes.length > 25) this.episodes.pop();
-        this.save();
-      }
-      updateRelation(name, delta, note) {
-        if (!this.relations[name]) this.relations[name] = { score: 50, lastTalk: null, notes: [] };
-        const r = this.relations[name];
-        r.score = Math.max(0, Math.min(100, r.score + delta));
-        r.lastTalk = fmt(getH());
-        if (note) { r.notes.push(note); if (r.notes.length > 5) r.notes.shift(); }
-        this.save();
-      }
-      addBelief(belief) {
-        if (!this.beliefs.find(b => b.includes(belief.slice(0,20)))) {
-          this.beliefs.push(belief);
-          if (this.beliefs.length > 10) this.beliefs.shift();
-          this.save();
-        }
-      }
-      writeDiary(entry) {
-        const date = new Date().toLocaleDateString('sv-SE');
-        this.diary.unshift({ date, entry });
-        if (this.diary.length > 60) this.diary.pop();
-        this.save();
-      }
-      buildContext() {
-        const rel = Object.entries(this.relations)
-          .map(([n,r]) => n+'('+r.score+')').join(',');
-        const ep  = this.episodes.slice(0,5).map(e => e.t+':'+e.text).join(' | ');
-        const bel = this.beliefs.slice(-3).join('; ');
-        return 'SOUL:'+this.soul+' | MOOD:'+this.mood+' | REL:'+( rel||'ingen')+
-               ' | MINNEN:'+(ep||'inga')+' | TROS:'+(bel||'inga')+
-               ' | MÅL:'+(this.tomorrowGoal||'okänt');
-      }
-      distillNight() {
-        const epSum = this.episodes.slice(0,12).map(e=>e.text).join('. ');
-        this.episodes = this.episodes.slice(0,8);
-        const moodMap = { happy:'En bra dag.', sad:'En svår dag.', focused:'Mycket att tänka på.',
-          excited:'Spännande dag.', neutral:'En vanlig dag.', tired:'Trött nu.',
-          angry:'Frustrerad dag.', melancholic:'Fundersam kväll.' };
-        const entry = (moodMap[this.mood]||'En dag.') + ' ' + epSum.substring(0,300);
-        this.writeDiary(entry);
-        this.currentThought = 'Sover...';
-        this.mood = 'tired';
-        this.save();
-        return entry;
-      }
-    }
 
     // ════════════════════════════════════════════════════════
     // TOOLS SYSTEM  (40+ tools)
