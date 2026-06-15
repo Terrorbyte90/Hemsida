@@ -538,8 +538,8 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.minDistance = 3.5;
-    controls.maxDistance = 22;
+    controls.minDistance = 1.5;
+    controls.maxDistance = 45;
     controls.maxPolarAngle = Math.PI / 2.08;
     controls.target.set(0, 1.0, 0);
 
@@ -1045,7 +1045,7 @@
     const headMesh = SPH(0.22, mSkin, 0, 0, 0, headPivot, 1.0, 1.05, 0.92);
 
     // Jaw / chin: slightly wider lower half illusion via small ellipsoid
-    const chin = SPH(0.18, mSkin, 0, -0.06, 0, headPivot, 1.05, 0.7, 0.9);
+    const chin = SPH(0.16, mSkin, 0, -0.09, 0.01, headPivot, 1.0, 0.55, 0.85);
 
     // Hair: scalp cap
     const hairCap = SPH(0.23, mHair, 0, 0.04, 0, headPivot, 1.02, 0.72, 0.94);
@@ -1083,19 +1083,22 @@
 
     // Eyebrows
     const browMat = new THREE.MeshStandardMaterial({ color: 0x1a0d28, roughness: 1 });
-    const lb = B2(0.09, 0.02, 0.035, browMat, -0.1, 0.11, 0.21, headPivot);
-    lb.rotation.z =  0.15;
-    const rb2 = B2(0.09, 0.02, 0.035, browMat,  0.1, 0.11, 0.21, headPivot);
-    rb2.rotation.z = -0.15;
+    const lb = B2(0.095, 0.018, 0.03, browMat, -0.105, 0.118, 0.215, headPivot);
+    lb.rotation.z =  0.18;
+    const rb2 = B2(0.095, 0.018, 0.03, browMat,  0.105, 0.118, 0.215, headPivot);
+    rb2.rotation.z = -0.18;
 
     // Nose
     const noseMat = new THREE.MeshStandardMaterial({ color: 0xe8a060, roughness: 0.9 });
     SPH(0.028, noseMat, 0, -0.03, 0.214, headPivot, 1.0, 0.8, 0.6);
 
     // Mouth
-    const lipMat = new THREE.MeshStandardMaterial({ color: 0xcc7755, roughness: 0.8 });
-    SPH(0.035, lipMat, -0.04, -0.095, 0.208, headPivot, 1.0, 0.6, 0.5);
-    SPH(0.035, lipMat,  0.04, -0.095, 0.208, headPivot, 1.0, 0.6, 0.5);
+    const lipMat = new THREE.MeshBasicMaterial({ color: 0xc06848 });
+    // Upper lip
+    SPH(0.03, lipMat, -0.038, -0.088, 0.210, headPivot, 1.0, 0.55, 0.45);
+    SPH(0.03, lipMat,  0.038, -0.088, 0.210, headPivot, 1.0, 0.55, 0.45);
+    // Lower lip (slightly fuller)
+    SPH(0.032, new THREE.MeshBasicMaterial({color:0xb85c3a}), 0, -0.103, 0.210, headPivot, 1.4, 0.6, 0.45);
 
     charRoot.add(headPivot);
 
@@ -1109,8 +1112,8 @@
     // Main torso: slightly wider at shoulders, narrower at waist
     CYL(0.22, 0.26, 0.62, 12, mUnif, 0, 0, 0, torsoPivot);
     // Shoulder cap spheres
-    SPH(0.14, mUnifL, -0.28, 0.28, 0, torsoPivot, 1.0, 0.75, 0.9);
-    SPH(0.14, mUnifL,  0.28, 0.28, 0, torsoPivot, 1.0, 0.75, 0.9);
+    SPH(0.11, mUnifL, -0.25, 0.30, 0, torsoPivot, 1.0, 0.7, 0.85);
+    SPH(0.11, mUnifL,  0.25, 0.30, 0, torsoPivot, 1.0, 0.7, 0.85);
     // Chest centre stripe
     CYL(0.025, 0.028, 0.52, 6, mStripe, 0, 0.04, 0.22, torsoPivot);
     // Chest badge
