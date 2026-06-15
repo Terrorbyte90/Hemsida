@@ -446,7 +446,7 @@
                 <div class="agent-card__name">Kai</div>
                 <div class="agent-card__role">Byggaren</div>
                 <p class="agent-card__bio">Vill bygga något bestående i Nexus. Praktisk och handlingsinriktad — trivs bäst i labbet med konkreta projekt. Har en hypotes som kan förändra allt.</p>
-                <div class="agent-card__model">openai/gpt-5-nano</div>
+                <div class="agent-card__model">openai/gpt-4o-mini</div>
               </div>
             </div>
             <div class="agent-card" style="--ac:#ca7a2a">
@@ -627,14 +627,14 @@
       pl.position.set(wx, wy, wz);
       scene.add(pl);
     }
-    addBldgLight(0, 3, -20, 0xfff0d0, 8, 16);    // Rådhuset
-    addBldgLight(-20, 2.5, -14, 0xfff8e8, 7, 14); // Biblioteket
-    addBldgLight(-26, 3, 8, 0xaabbff, 6, 12);      // Arkivet
-    addBldgLight(22, 2.5, -16, 0xd0e8ff, 7, 12);  // Polisen
-    addBldgLight(28, 3, 6, 0xccffee, 7, 14);       // Labbet
-    addBldgLight(-15, 4, 32, 0x8899cc, 6, 16);     // Observatoriet
-    addBldgLight(20, 2.5, 28, 0xffffff, 8, 14);    // Kliniken
-    addBldgLight(45, 3, 10, 0xaaddff, 8, 16);      // Forskningshuset
+    addBldgLight(0, 3, -20, 0xfff0d0, 18, 20);    // Rådhuset
+    addBldgLight(-20, 2.5, -14, 0xfff8e8, 16, 18); // Biblioteket
+    addBldgLight(-26, 3, 8, 0xaabbff, 14, 16);      // Arkivet
+    addBldgLight(22, 2.5, -16, 0xd0e8ff, 16, 16);  // Polisen
+    addBldgLight(28, 3, 6, 0xccffee, 16, 18);       // Labbet
+    addBldgLight(-15, 4, 32, 0x8899cc, 14, 20);     // Observatoriet
+    addBldgLight(20, 2.5, 28, 0xffffff, 18, 18);    // Kliniken
+    addBldgLight(45, 3, 10, 0xaaddff, 18, 20);      // Forskningshuset
     // Home lights
     [[-45,2,-38],[-18,2,-52],[38,2,-46],[58,2,-24],[-58,2,4]].forEach(([x,y,z])=>addBldgLight(x,y,z,0xffd580,5,10));
 
@@ -959,7 +959,7 @@
     const MODEL_PRICING = {
       'qwen/qwen3.6-plus':            { in: 0.325/1e6, out: 1.95/1e6 },
       'google/gemini-3.1-flash-lite': { in: 0.25/1e6,  out: 1.5/1e6  },
-      'openai/gpt-5-nano':            { in: 0.05/1e6,  out: 0.4/1e6   },
+      'openai/gpt-4o-mini':            { in: 0.15/1e6,  out: 0.6/1e6   },
       'deepseek/deepseek-v4-flash':   { in: 0.09/1e6,  out: 0.18/1e6  },
       'anthropic/claude-haiku-4-5':   { in: 1.0/1e6,   out: 5.0/1e6   },
     };
@@ -1072,7 +1072,7 @@
     const ADEFS = [
       {name:'Elin',role:'Demokratibyggaren',model:'qwen/qwen3.6-plus',color:0x1a4a9a,hair:0xc8a060,home:new THREE.Vector3(-45,0,-38),primary:new THREE.Vector3(0,0,-20),dot:'#2a6acc'},
       {name:'Mira',role:'Den sociala vävaren',model:'google/gemini-3.1-flash-lite',color:0x1a7a5a,hair:0x3a2810,home:new THREE.Vector3(-18,0,-52),primary:new THREE.Vector3(20,0,28),dot:'#2aaa7a'},
-      {name:'Kai', role:'Byggaren',model:'openai/gpt-5-nano',color:0x6a2a8a,hair:0x111111,home:new THREE.Vector3(38,0,-46),primary:new THREE.Vector3(28,0,6),dot:'#8a3aaa'},
+      {name:'Kai', role:'Byggaren',model:'openai/gpt-4o-mini',color:0x6a2a8a,hair:0x111111,home:new THREE.Vector3(38,0,-46),primary:new THREE.Vector3(28,0,6),dot:'#8a3aaa'},
       {name:'Aria',role:'Utforskaren',model:'deepseek/deepseek-v4-flash',color:0x9a5a1a,hair:0xff9a40,home:new THREE.Vector3(58,0,-24),primary:new THREE.Vector3(-15,0,32),dot:'#ca7a2a'},
       {name:'Nox', role:'Arkivarien',model:'anthropic/claude-haiku-4-5',color:0x2a2a4a,hair:0x888888,home:new THREE.Vector3(-58,0,4),primary:new THREE.Vector3(-26,0,8),dot:'#4a4a6a'},
     ];
@@ -1147,6 +1147,47 @@
       kliniken:     [new THREE.Vector3(20,0,29.2), new THREE.Vector3(18.5,0,28.5), new THREE.Vector3(21.5,0,27.5)],
       forskningshuset:[new THREE.Vector3(42,0,8), new THREE.Vector3(44,0,12), new THREE.Vector3(47,0,9), new THREE.Vector3(43,0,10)],
     };
+    // DÖRR-POSITIONER — agenter går till dörren innan de går inomhus
+    const DOOR_APPROACH = {
+      rådhuset:      new THREE.Vector3(0,0,-14.5),
+      biblioteket:   new THREE.Vector3(-20,0,-10),
+      arkivet:       new THREE.Vector3(-26,0,12),
+      polisen:       new THREE.Vector3(22,0,-11.5),
+      labbet:        new THREE.Vector3(28,0,9.5),
+      observatoriet: new THREE.Vector3(-15,0,26),
+      kliniken:      new THREE.Vector3(20,0,31.5),
+      forskningshuset: new THREE.Vector3(45,0,15),
+    };
+
+    // HINDERHINDER: Byggnadscirklar för vandring
+    const NAV_OBSTACLES = [
+      {x:0,z:-20,r:6},{x:-20,z:-14,r:7},{x:-26,z:8,r:5},
+      {x:22,z:-16,r:5},{x:28,z:6,r:5.5},{x:-15,z:32,r:6.5},
+      {x:20,z:28,r:5},{x:45,z:10,r:6.5},
+      {x:0,z:0,r:3.5}, // fontän
+    ];
+
+    function avoidObstacles(pos, target) {
+      // Returnerar ett justerat mål som undviker hinder
+      for(const obs of NAV_OBSTACLES) {
+        const dx2=pos.x-obs.x, dz2=pos.z-obs.z;
+        const d=Math.sqrt(dx2*dx2+dz2*dz2);
+        if(d<obs.r+1.5 && d>0.1) {
+          // Skjut ut agenten ur hindret
+          return pos.clone().add(new THREE.Vector3(dx2/d*(obs.r+2-d), 0, dz2/d*(obs.r+2-d)));
+        }
+      }
+      return null; // Inga kollisioner
+    }
+
+    function isInsideBuilding(pos) {
+      return Object.entries({
+        rådhuset:[0,-20,5.5,4.5], biblioteket:[-20,-14,6.5,3.5], arkivet:[-26,8,4.5,3.5],
+        polisen:[22,-16,4.5,3.5], labbet:[28,6,5,3.5], observatoriet:[-15,32,6,6],
+        kliniken:[20,28,4.5,3.5], forskningshuset:[45,10,6,5],
+      }).find(([_,[cx2,cz2,hw,hd]])=>Math.abs(pos.x-cx2)<hw&&Math.abs(pos.z-cz2)<hd)?.[0]||null;
+    }
+
     const agentSeatIdx = {}; // assigns a specific seat per agent per location
     function getSeat(agent, loc) {
       if (!SEATS[loc]) return null;
@@ -1155,12 +1196,11 @@
       return SEATS[loc][agentSeatIdx[key]];
     }
     function getTarget(a, state) {
+      a.navQueue = []; // rensa kö vid ny state
       if(state==='SLEEPING'||state==='WAKING') {
-        // Lie in bed — offset inside home
         return a.home.clone().add(new THREE.Vector3(-1.2,0,-1));
       }
       if(state==='AT_DESK'||state==='RESTING_HOME') {
-        // Sit at table inside home
         return a.home.clone().add(new THREE.Vector3(1.3,0,1));
       }
       if(state==='AT_PRIMARY') {
@@ -1168,13 +1208,28 @@
           const s = SEATS[l][0];
           return s && a.primary.distanceTo(s) < 15;
         });
-        if(loc) { const seat=getSeat(a,loc); if(seat) return seat.clone(); }
+        if(loc && DOOR_APPROACH[loc]) {
+          const seat = getSeat(a,loc);
+          if(seat) {
+            // Gå till dörren FÖRST, sedan till stolen
+            a.navQueue = [seat.clone()];
+            return DOOR_APPROACH[loc].clone();
+          }
+        }
         return a.primary.clone();
       }
       if(state==='PLAZA_SOCIAL') {
-        return PLAZA.clone().add(new THREE.Vector3((a.home.x>0?2.5:-2.5),0,(a.home.z>0?2.5:-2.5)));
+        // Gå till torgkanten, inte rakt igenom fontänen
+        const angle = Math.random()*Math.PI*2;
+        return new THREE.Vector3(Math.cos(angle)*5, 0, Math.sin(angle)*5);
       }
-      return WSPOT[Math.floor(Math.random()*WSPOT.length)].clone();
+      // Vandring: plocka WSPOT som inte är för nära en byggnad
+      let attempts=0, wspot;
+      do {
+        wspot = WSPOT[Math.floor(Math.random()*WSPOT.length)].clone();
+        attempts++;
+      } while(isInsideBuilding(wspot) && attempts<8);
+      return wspot;
     }
 
 
@@ -1189,7 +1244,7 @@
       vp.appendChild(ov);
       const memory = new AgentMemory(def.name);
       // Seed laws as initial beliefs if none exist
-      if(memory.beliefs.length===0){ NEXUS_LAWS.forEach(l=>memory.beliefs.push(l)); memory.save(); } return {...def,mesh,overlay:ov,state:'SLEEPING',needs:{energi:80,social:70,kunskap:60,valmående:70},wTimer:0,wPhase:Math.random()*Math.PI*2,target:def.home.clone(),moving:false,memory,lastLocation:null,distilledTonight:false,diaryTonight:false};
+      if(memory.beliefs.length===0){ NEXUS_LAWS.forEach(l=>memory.beliefs.push(l)); memory.save(); } return {...def,mesh,overlay:ov,state:'SLEEPING',needs:{energi:80,social:70,kunskap:60,valmående:70},wTimer:0,wPhase:Math.random()*Math.PI*2,target:def.home.clone(),moving:false,memory,lastLocation:null,distilledTonight:false,diaryTonight:false,navQueue:[]};
     });
 
     // NEEDS
@@ -1434,8 +1489,9 @@
               : tgtReplies;
             const rb = personalReplies[Math.floor(Math.random()*personalReplies.length)];
             showBubble(tgt, rb, 'speech', 4000);
-            // Queue target's cognitive response
-            enqueueCog(tgt, 'proximity', agent.name+' sa: "'+msg.substring(0,60)+'"');
+            // Agenten som tilltalades svarar alltid (bypass cooldown)
+            agentCooldown[tgt.name] = 0; // nollställ cooldown för att garantera svar
+            enqueueCog(tgt, 'addressed', agent.name+' sa till dig: "'+msg.substring(0,80)+'"');
           }, 1800);
           newsType = 'conversation';
           newsText = `→ ${A.target}: "${msg}"`;
@@ -1866,7 +1922,7 @@
         const ep=agent.memory.episodes.slice(0,3).map(e=>e.text).join(' ');
         args={entry:(dMood[agent.memory.mood]||'En dag. ')+ep.substring(0,200)};
 
-      } else if(triggerType==='proximity' && nearby.length>0 && Math.random()<p.social){
+      } else if((triggerType==='addressed'||(triggerType==='proximity'&&Math.random()<p.social)) && nearby.length>0){
         const tgt=nearby[Math.floor(Math.random()*nearby.length)];
         const styles=p.talkStyle;
         const msg=styles[Math.floor(Math.random()*styles.length)];
@@ -1929,7 +1985,8 @@
         }
       }
 
-      return { tool, args, thought:args.thought||args.entry||('Väljer att '+tool.replace(/_/g,' ')),
+      const thtsArr=THOUGHTS[agent.name]||['Funderar...']; const fallbackThought=thtsArr[Math.floor(Math.random()*thtsArr.length)];
+      return { tool, args, thought:args.thought||args.entry||args.message||args.insight||fallbackThought,
                moodUpdate:mood, relationUpdate:relUp, memoryNote:memNote };
     }
 
@@ -1996,7 +2053,8 @@
         `SENASTE MINNEN: ${agent.memory.episodes.slice(0,4).map(e=>e.t+': '+e.text).join(' | ')||'inga'}`,
         `RELATIONER: ${Object.entries(agent.memory.relations).map(([n2,r])=>n2+':'+r.score).join(', ')||'inga'}`,
         agent.memory.tomorrowGoal?`DITT MÅL: ${agent.memory.tomorrowGoal}`:'',
-        `TRIGGER: ${triggerType}${context?' ('+context+')':''}`,
+        `TRIGGER: ${triggerType==='addressed'?'DIREKT TILLTAL — du MÅSTE svara med talk_to':triggerType}${context?' ('+context+')':''}`,
+        triggerType==='addressed'?`SVAR PÅ TILLTAL: Välj tool=talk_to och svara på vad som sades.`:''
         ``,
         `Vad gör du och tänker du NU? Välj ett tool som passar situationen.`
       ].filter(Boolean).join('\n');
@@ -2110,7 +2168,7 @@
         const agentInside = ap && Math.abs(ap.x-b.cx)<b.hw+0.5 && Math.abs(ap.z-b.cz)<b.hd+0.5;
         const camNear = Math.abs(cp.x-b.cx)<b.hw+3 && Math.abs(cp.z-b.cz)<b.hd+3;
         const inside = agentInside || (autoCam && camNear);
-        const tgtOp = inside ? 0.0 : 1.0;
+        const tgtOp = inside ? 0.12 : 1.0;
         b.group.traverse(c=>{
           if(!c.isMesh) return;
           const base=c.userData.baseOp!==undefined?c.userData.baseOp:1;
@@ -2171,11 +2229,11 @@
           a.target=getTarget(a,newSt);
           const cols=['green','blue','amber','purple','green'];
           logEv(`${a.name}: ${STATES[newSt]}`,cols[i%cols.length]);
-          if(newSt==='WANDERING') a.wTimer=0;
+          if(newSt==='WANDERING'){ a.wTimer=20; } // börja söka ny destination om 5s
         }
         if(a.state==='WANDERING'){
           a.wTimer+=dt;
-          if(a.wTimer>25){
+          if(a.wTimer>22){
             a.wTimer=0;
             // Social-seeking: låg social → gå mot närmaste vaken agent
             if(a.needs.social<35){
@@ -2192,13 +2250,13 @@
           }
         }
 
-        // Sleep pose — lie down when sleeping
+        // Sleep pose — ligg ner när sover
         if(a.state==='SLEEPING'){
-          a.mesh.rotation.x = Math.PI/2;
+          a.mesh.rotation.x = THREE.MathUtils.lerp(a.mesh.rotation.x, Math.PI/2, 0.1);
           a.mesh.position.y = 0.35;
         } else {
-          if(a.mesh.rotation.x !== 0) a.mesh.rotation.x = 0;
-          if(a.mesh.position.y !== 0) a.mesh.position.y = 0;
+          a.mesh.rotation.x = THREE.MathUtils.lerp(a.mesh.rotation.x, 0, 0.15);
+          a.mesh.position.y = 0; // alltid y=0 när ej sover
         }
 
         // Sittande/arbetande pose
@@ -2215,14 +2273,24 @@
           }
         }
 
+        // Processera navQueue (dörr → stol)
+        if(a.navQueue&&a.navQueue.length>0){
+          const curTgt=a.target;
+          const distToTgt=a.mesh.position.distanceTo(curTgt);
+          if(distToTgt<1.5){ a.target=a.navQueue.shift(); }
+        }
+
         // Move
         const pos=a.mesh.position;
         const tgt=a.target.clone(); tgt.y=(a.state==='SLEEPING')?0.12:0;
         const dx=tgt.x-pos.x, dz=tgt.z-pos.z;
         const dist2=Math.sqrt(dx*dx+dz*dz);
-        a.moving=dist2>1.0;
+        a.moving=dist2>0.8;
         if(a.moving&&a.state!=='SLEEPING'){
-          const spd=3.0, step=Math.min(spd*dt,dist2), n2=1/dist2;
+          // Hinder-avvikelse: skjut ut agenten ur väggar/fontän
+          const pushed=avoidObstacles(pos, a.target);
+          if(pushed){ pos.x=pushed.x; pos.z=pushed.z; }
+          const spd=2.8, step=Math.min(spd*dt,dist2), n2=1/dist2;
           pos.x+=dx*n2*step; pos.z+=dz*n2*step;
           a.mesh.rotation.y=Math.atan2(dx,dz);
         }
