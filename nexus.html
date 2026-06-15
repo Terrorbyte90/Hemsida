@@ -207,6 +207,36 @@
     .site-footer__links { display: flex; gap: var(--space-4); }
     .site-footer__links a { font-size: var(--text-xs); color: var(--text-faint); transition: color var(--transition); }
     .site-footer__links a:hover { color: var(--text-muted); }
+
+    /* ── NEWS FEED ── */
+    .news-section { margin-top: var(--space-6); }
+    .news-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; }
+    .news-header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--divider); }
+    .news-stream { max-height: 260px; overflow-y: auto; padding: var(--space-2); display: flex; flex-direction: column; gap: 2px; }
+    .news-stream::-webkit-scrollbar { width: 3px; }
+    .news-stream::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+    .news-item { display: flex; gap: var(--space-2); align-items: flex-start; padding: 5px 8px; border-radius: 6px; border-left: 2px solid transparent; background: transparent; transition: background 0.1s; }
+    .news-item:hover { background: var(--surface-2); }
+    .news-item--conversation { border-left-color: #4ade80; }
+    .news-item--thought { border-left-color: #a78bfa; }
+    .news-item--governance { border-left-color: #fbbf24; }
+    .news-item--diary { border-left-color: #f87171; }
+    .news-item--knowledge { border-left-color: #5b9cf6; }
+    .news-item--research { border-left-color: #a78bfa; }
+    .news-item--safety { border-left-color: #f87171; }
+    .news-item--conflict { border-left-color: #ef4444; }
+    .news-item--social { border-left-color: #4ade80; }
+    .news-item--archive { border-left-color: #8a8882; }
+    .news-item--wellbeing { border-left-color: #34d399; }
+    .news-item--announcement { border-left-color: #fbbf24; }
+    .news-item--action, .news-item--personal { border-left-color: #555; }
+    .news-time { font-family: var(--font-mono); font-size: 0.52rem; color: var(--text-faint); flex-shrink: 0; padding-top: 2px; width: 32px; }
+    .news-agent { font-family: var(--font-mono); font-size: 0.58rem; font-weight: 600; }
+    .news-text { font-size: 0.62rem; color: var(--text-muted); line-height: 1.4; }
+    .news-content { flex: 1; min-width: 0; }
+    /* ── SPEECH BUBBLES ── */
+    .speech-bubble { position: absolute; pointer-events: none; background: rgba(0,0,0,0.88); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.18); border-radius: 10px 10px 10px 2px; padding: 5px 9px; font-size: 0.6rem; color: #fff; max-width: 150px; line-height: 1.4; transform: translate(-50%,-100%) translateY(-22px); z-index: 50; }
+    .thought-bubble { position: absolute; pointer-events: none; background: rgba(167,139,250,0.12); backdrop-filter: blur(10px); border: 1px solid rgba(167,139,250,0.28); border-radius: 10px; padding: 4px 8px; font-size: 0.56rem; color: rgba(200,180,255,0.9); max-width: 140px; line-height: 1.4; transform: translate(-50%,-100%) translateY(-22px); font-style: italic; z-index: 50; }
   </style>
 </head>
 <body>
@@ -334,6 +364,17 @@
               <div class="stat-block"><div class="stat-block__num amber" id="stat-plaza">—</div><div class="stat-block__label">På torget</div></div>
               <div class="stat-block"><div class="stat-block__num purple" id="stat-avg-needs">—</div><div class="stat-block__label">Snitt needs</div></div>
             </div>
+          </div>
+        </div>
+
+
+        <div class="news-section">
+          <div class="news-panel">
+            <div class="news-header">
+              <span class="panel__title">Händelseström — vad händer i Nexus</span>
+              <span class="panel__badge panel__badge--green" id="news-count">0 händelser</span>
+            </div>
+            <div class="news-stream" id="news-stream"></div>
           </div>
         </div>
 
@@ -681,11 +722,11 @@
 
     // AGENTS
     const ADEFS = [
-      {name:'Elin',role:'Demokratibyggaren',color:0x1a4a9a,hair:0xc8a060,home:new THREE.Vector3(-45,0,-38),primary:new THREE.Vector3(0,0,-20),dot:'#2a6acc'},
-      {name:'Mira',role:'Den sociala vävaren',color:0x1a7a5a,hair:0x3a2810,home:new THREE.Vector3(-18,0,-52),primary:new THREE.Vector3(20,0,28),dot:'#2aaa7a'},
-      {name:'Kai', role:'Byggaren',color:0x6a2a8a,hair:0x111111,home:new THREE.Vector3(38,0,-46),primary:new THREE.Vector3(28,0,6),dot:'#8a3aaa'},
-      {name:'Aria',role:'Utforskaren',color:0x9a5a1a,hair:0xff9a40,home:new THREE.Vector3(58,0,-24),primary:new THREE.Vector3(-15,0,32),dot:'#ca7a2a'},
-      {name:'Nox', role:'Arkivarien',color:0x2a2a4a,hair:0x888888,home:new THREE.Vector3(-58,0,4),primary:new THREE.Vector3(-26,0,8),dot:'#4a4a6a'},
+      {name:'Elin',role:'Demokratibyggaren',model:'anthropic/claude-haiku-4-5',color:0x1a4a9a,hair:0xc8a060,home:new THREE.Vector3(-45,0,-38),primary:new THREE.Vector3(0,0,-20),dot:'#2a6acc'},
+      {name:'Mira',role:'Den sociala vävaren',model:'openai/gpt-4o-mini',color:0x1a7a5a,hair:0x3a2810,home:new THREE.Vector3(-18,0,-52),primary:new THREE.Vector3(20,0,28),dot:'#2aaa7a'},
+      {name:'Kai', role:'Byggaren',model:'google/gemini-2.0-flash-lite',color:0x6a2a8a,hair:0x111111,home:new THREE.Vector3(38,0,-46),primary:new THREE.Vector3(28,0,6),dot:'#8a3aaa'},
+      {name:'Aria',role:'Utforskaren',model:'meta-llama/llama-3.1-8b-instruct:free',color:0x9a5a1a,hair:0xff9a40,home:new THREE.Vector3(58,0,-24),primary:new THREE.Vector3(-15,0,32),dot:'#ca7a2a'},
+      {name:'Nox', role:'Arkivarien',model:'mistralai/mistral-7b-instruct:free',color:0x2a2a4a,hair:0x888888,home:new THREE.Vector3(-58,0,4),primary:new THREE.Vector3(-26,0,8),dot:'#4a4a6a'},
     ];
     const PLAZA = new THREE.Vector3(0,0,0);
     const WSPOT = [new THREE.Vector3(-20,0,-14),new THREE.Vector3(22,0,-16),new THREE.Vector3(28,0,6),new THREE.Vector3(-15,0,32),new THREE.Vector3(20,0,28),new THREE.Vector3(-26,0,8),new THREE.Vector3(8,0,-10),new THREE.Vector3(-10,0,12),new THREE.Vector3(15,0,5)];
@@ -740,7 +781,7 @@
       ov.className='agent-focus-overlay';
       ov.innerHTML=`<div class="agent-focus-overlay__name">${def.name}</div><div class="agent-focus-overlay__bar"><div class="agent-focus-overlay__bar-fill" id="ov-e-${i}" style="width:80%"></div></div>`;
       vp.appendChild(ov);
-      return {...def,mesh,overlay:ov,state:'SLEEPING',needs:{energi:80,social:70,kunskap:60,valmående:70},wTimer:0,wPhase:Math.random()*Math.PI*2,target:def.home.clone(),moving:false};
+      const memory = new AgentMemory(def.name); return {...def,mesh,overlay:ov,state:'SLEEPING',needs:{energi:80,social:70,kunskap:60,valmående:70},wTimer:0,wPhase:Math.random()*Math.PI*2,target:def.home.clone(),moving:false,memory,lastLocation:null,distilledTonight:false,diaryTonight:false};
     });
 
     // NEEDS
@@ -899,6 +940,664 @@
       });
     }
 
+
+
+    // ════════════════════════════════════════════════════════
+    // AGENT SOULS — permanent identity anchors
+    // ════════════════════════════════════════════════════════
+    const AGENT_SOULS = {
+      'Elin':  { soul: 'Tror på samförstånd och rättvisa. Räds att demokratin ska falla samman utan engagemang.',  secret: 'Orolig att hennes ledarskap ifrågasätts bakom ryggen.' },
+      'Mira':  { soul: 'Lever för mänsklig kontakt. Räds djup ensamhet och att bli bortglömd.',                    secret: 'Har sett Nox ta bort ett dokument ur arkivet utan att berätta för någon.' },
+      'Kai':   { soul: 'Vill bygga något bestående. Otålig med prat som inte leder till handling.',                 secret: 'Har en hypotes som skulle förändra allt — men vill inte dela den än.' },
+      'Aria':  { soul: 'Nyfiken på allt. Respekterar regler bara om de har ett syfte. Söker det okända.',          secret: 'Har kartlagt ett område av världen ingen annan vet om.' },
+      'Nox':   { soul: 'Sanningen är allt. Minnet är makt. Litar på data mer än på känslor.',                      secret: 'Vet något om ursprunget till Nexus som de andra inte vet.' },
+    };
+
+    // ════════════════════════════════════════════════════════
+    // MEMORY SYSTEM
+    // ════════════════════════════════════════════════════════
+    class AgentMemory {
+      constructor(agentName) {
+        this.agentName = agentName;
+        const s = AGENT_SOULS[agentName] || {};
+        this.soul    = s.soul   || '';
+        this.secret  = s.secret || '';
+        this.episodes   = [];
+        this.relations  = {};
+        this.beliefs    = [];
+        this.diary      = [];
+        this.tomorrowGoal = null;
+        this.mood       = 'neutral';
+        this.currentThought = '';
+        this.load();
+      }
+      load() {
+        try {
+          const d = JSON.parse(localStorage.getItem('nexus_mem_' + this.agentName) || 'null');
+          if (!d) return;
+          this.episodes   = d.episodes   || [];
+          this.relations  = d.relations  || {};
+          this.beliefs    = d.beliefs    || [];
+          this.diary      = d.diary      || [];
+          this.tomorrowGoal = d.tomorrowGoal || null;
+          this.mood       = d.mood       || 'neutral';
+          this.currentThought = d.currentThought || '';
+        } catch(e) {}
+      }
+      save() {
+        localStorage.setItem('nexus_mem_' + this.agentName, JSON.stringify({
+          episodes: this.episodes, relations: this.relations, beliefs: this.beliefs,
+          diary: this.diary, tomorrowGoal: this.tomorrowGoal, mood: this.mood,
+          currentThought: this.currentThought,
+        }));
+      }
+      addEpisode(text) {
+        this.episodes.unshift({ t: fmt(getH()), text });
+        if (this.episodes.length > 25) this.episodes.pop();
+        this.save();
+      }
+      updateRelation(name, delta, note) {
+        if (!this.relations[name]) this.relations[name] = { score: 50, lastTalk: null, notes: [] };
+        const r = this.relations[name];
+        r.score = Math.max(0, Math.min(100, r.score + delta));
+        r.lastTalk = fmt(getH());
+        if (note) { r.notes.push(note); if (r.notes.length > 5) r.notes.shift(); }
+        this.save();
+      }
+      addBelief(belief) {
+        if (!this.beliefs.find(b => b.includes(belief.slice(0,20)))) {
+          this.beliefs.push(belief);
+          if (this.beliefs.length > 10) this.beliefs.shift();
+          this.save();
+        }
+      }
+      writeDiary(entry) {
+        const date = new Date().toLocaleDateString('sv-SE');
+        this.diary.unshift({ date, entry });
+        if (this.diary.length > 60) this.diary.pop();
+        this.save();
+      }
+      buildContext() {
+        const rel = Object.entries(this.relations)
+          .map(([n,r]) => n+'('+r.score+')').join(',');
+        const ep  = this.episodes.slice(0,5).map(e => e.t+':'+e.text).join(' | ');
+        const bel = this.beliefs.slice(-3).join('; ');
+        return 'SOUL:'+this.soul+' | MOOD:'+this.mood+' | REL:'+( rel||'ingen')+
+               ' | MINNEN:'+(ep||'inga')+' | TROS:'+(bel||'inga')+
+               ' | MÅL:'+(this.tomorrowGoal||'okänt');
+      }
+      distillNight() {
+        const epSum = this.episodes.slice(0,12).map(e=>e.text).join('. ');
+        this.episodes = this.episodes.slice(0,8);
+        const moodMap = { happy:'En bra dag.', sad:'En svår dag.', focused:'Mycket att tänka på.',
+          excited:'Spännande dag.', neutral:'En vanlig dag.', tired:'Trött nu.',
+          angry:'Frustrerad dag.', melancholic:'Fundersam kväll.' };
+        const entry = (moodMap[this.mood]||'En dag.') + ' ' + epSum.substring(0,300);
+        this.writeDiary(entry);
+        this.currentThought = 'Sover...';
+        this.mood = 'tired';
+        this.save();
+        return entry;
+      }
+    }
+
+    // ════════════════════════════════════════════════════════
+    // TOOLS SYSTEM  (40+ tools)
+    // ════════════════════════════════════════════════════════
+    const LOCATION_TOOLS = {
+      plaza:        ['announce','socialize','organize_event','overhear'],
+      rådhuset:     ['propose_rule','call_meeting','vote','debate','write_constitution','read_law'],
+      biblioteket:  ['read_book','research','share_knowledge','teach','study'],
+      arkivet:      ['read_history','write_record','search_records','classify_document'],
+      polisen:      ['report_incident','request_patrol','investigate','file_complaint'],
+      labbet:       ['propose_experiment','run_analysis','invent_tool','document_findings','prototype'],
+      observatoriet:['survey_world','track_agent','strategic_plan','weather_study'],
+      kliniken:     ['seek_support','give_advice','meditate','health_check','counsel'],
+      hemma:        ['rest','write_diary','reflect','plan_tomorrow','make_decision','dream'],
+    };
+    const UNIVERSAL_TOOLS = ['think','observe','walk_to','express_emotion','greet',
+      'talk_to','compliment','apologize','confront','form_alliance','share_secret','give_gift'];
+
+    function getAgentLocation(agent) {
+      const pos = agent.mesh.position;
+      if (pos.distanceTo(agent.home) < 6) return 'hemma';
+      if (Math.sqrt(pos.x*pos.x+pos.z*pos.z) < 13) return 'plaza';
+      const blocs = {
+        rådhuset:[0,-20], biblioteket:[-20,-14], arkivet:[-26,8],
+        polisen:[22,-16], labbet:[28,6], observatoriet:[-15,32], kliniken:[20,28]
+      };
+      for (const [loc,[bx2,bz2]] of Object.entries(blocs)) {
+        if (Math.sqrt((pos.x-bx2)**2+(pos.z-bz2)**2) < 9) return loc;
+      }
+      return 'ute';
+    }
+
+    function getAvailableTools(location) {
+      return [...new Set([...UNIVERSAL_TOOLS, ...(LOCATION_TOOLS[location]||[])])];
+    }
+
+    // ════════════════════════════════════════════════════════
+    // TOOL EXECUTOR
+    // ════════════════════════════════════════════════════════
+    function executeTool(agent, toolName, args) {
+      const A = args || {};
+      const icon = {
+        talk_to:'💬', think:'💭', announce:'📣', propose_rule:'⚖️',
+        call_meeting:'📢', vote:'🗳', research:'📚', read_book:'📖',
+        write_diary:'📔', reflect:'🪞', plan_tomorrow:'📋',
+        propose_experiment:'🔬', invent_tool:'⚙️', survey_world:'🔭',
+        write_record:'📜', report_incident:'🚨', form_alliance:'🤝',
+        confront:'⚡', share_secret:'🤫', seek_support:'💙',
+        meditate:'🧘', compliment:'⭐', apologize:'🙏',
+        organize_event:'📅', debate:'💬', strategic_plan:'🗺',
+        document_findings:'✅', run_analysis:'📊', investigate:'🔎',
+        teach:'📝', share_knowledge:'💡', rest:'😴',
+        give_gift:'🎁', overhear:'👂', health_check:'🏥',
+        make_decision:'🎯', dream:'✨', prototype:'🛠',
+        weather_study:'🌤', classify_document:'🗂', counsel:'🫂',
+        study:'📖', read_law:'📑', write_constitution:'⚖️',
+        read_history:'📜', search_records:'🔍', file_complaint:'📝',
+        request_patrol:'🚔', observe:'👁', walk_to:'🚶',
+        express_emotion:'😊', greet:'👋', track_agent:'👁',
+      }[toolName] || '•';
+
+      let newsType = 'action', newsText = '';
+
+      switch(toolName) {
+        case 'talk_to': {
+          const tgt = agents.find(a=>a.name===A.target);
+          if (!tgt || !A.message) break;
+          showBubble(agent, A.message, 'speech', 5000);
+          newsType = 'conversation';
+          newsText = `→ ${A.target}: "${A.message}"`;
+          agent.memory.addEpisode('Pratade med '+A.target+': "'+A.message+'"');
+          agent.memory.updateRelation(A.target, 2, 'Konversation');
+          tgt.memory.addEpisode(agent.name+' sa: "'+A.message+'"');
+          tgt.memory.updateRelation(agent.name, 1);
+          logEv(agent.name+' → '+A.target+': "'+A.message+'"', 'green');
+          break;
+        }
+        case 'announce': {
+          if (!A.message) break;
+          showBubble(agent, A.message, 'speech', 7000);
+          newsType = 'announcement';
+          newsText = A.message;
+          agents.forEach(a=>{ if(a!==agent) a.memory.addEpisode(agent.name+' annonserade: '+A.message); });
+          logEv(agent.name+' annonserar: '+A.message, 'amber');
+          break;
+        }
+        case 'think': {
+          if (!A.thought) break;
+          agent.memory.currentThought = A.thought;
+          agent.memory.save();
+          showBubble(agent, A.thought, 'thought', 4000);
+          newsType = 'thought';
+          newsText = A.thought;
+          break;
+        }
+        case 'write_diary': {
+          if (!A.entry) break;
+          agent.memory.writeDiary(A.entry);
+          newsType = 'diary';
+          newsText = '"'+A.entry.substring(0,100)+'"';
+          logEv(agent.name+' skriver i dagboken', 'purple');
+          break;
+        }
+        case 'reflect': {
+          if (A.insight) { agent.memory.addBelief(A.insight); showBubble(agent, A.insight, 'thought', 4000); }
+          newsType = 'thought';
+          newsText = A.insight || A.topic || '';
+          break;
+        }
+        case 'propose_rule': {
+          newsType = 'governance';
+          newsText = '"'+A.title+'": '+A.description;
+          agent.memory.addEpisode('Föreslog regel: '+A.title);
+          logEv(agent.name+' föreslår: '+A.title, 'amber');
+          break;
+        }
+        case 'call_meeting': {
+          newsType = 'governance';
+          newsText = 'Möte om: '+A.topic;
+          agent.memory.addEpisode('Kallade till möte: '+A.topic);
+          logEv(agent.name+' kallar möte: '+A.topic, 'amber');
+          break;
+        }
+        case 'vote': {
+          newsType = 'governance';
+          newsText = A.choice+' om "'+A.proposal+'": '+A.reason;
+          agent.memory.addEpisode('Röstade '+A.choice+' om '+A.proposal);
+          break;
+        }
+        case 'debate': {
+          newsType = 'governance';
+          newsText = 'Mot '+A.target+': '+A.position;
+          if(A.target){ const tgt=agents.find(a=>a.name===A.target); if(tgt) showBubble(agent,A.position,'speech',5000); }
+          break;
+        }
+        case 'research': case 'study': {
+          newsType = 'knowledge';
+          newsText = A.question || A.subject || '';
+          agent.needs.kunskap = Math.min(100, agent.needs.kunskap + 7);
+          agent.memory.addEpisode('Forskade om: '+(A.question||A.subject||''));
+          break;
+        }
+        case 'read_book': case 'read_history': case 'read_law': {
+          newsType = 'knowledge';
+          newsText = A.topic || A.period || '';
+          agent.needs.kunskap = Math.min(100, agent.needs.kunskap + 4);
+          break;
+        }
+        case 'share_knowledge': case 'teach': {
+          newsType = 'knowledge';
+          newsText = (A.target?'till '+A.target+': ':'')+( A.topic||A.subject||'');
+          if(A.target){ const tgt=agents.find(a=>a.name===A.target); if(tgt){ tgt.needs.kunskap=Math.min(100,tgt.needs.kunskap+5); tgt.memory.addEpisode(agent.name+' lärde mig om '+(A.topic||'')); } }
+          break;
+        }
+        case 'write_record': case 'classify_document': case 'document_findings': {
+          newsType = 'archive';
+          newsText = A.event || A.result || A.document || '';
+          agent.memory.addEpisode('Dokumenterade: '+(A.event||A.result||''));
+          break;
+        }
+        case 'search_records': {
+          newsType = 'archive';
+          newsText = 'Söker: '+A.keyword;
+          break;
+        }
+        case 'propose_experiment': {
+          newsType = 'research';
+          newsText = A.hypothesis;
+          agent.memory.addEpisode('Föreslog experiment: '+A.hypothesis);
+          logEv(agent.name+' startar experiment', 'purple');
+          break;
+        }
+        case 'invent_tool': case 'prototype': {
+          newsType = 'research';
+          newsText = (A.name||'nytt verktyg')+': '+(A.purpose||'');
+          agent.memory.addEpisode('Uppfann: '+(A.name||''));
+          logEv(agent.name+' uppfinner '+( A.name||'något')+'!', 'purple');
+          break;
+        }
+        case 'run_analysis': {
+          newsType = 'research';
+          newsText = A.purpose || A.data || '';
+          agent.needs.kunskap = Math.min(100, agent.needs.kunskap + 6);
+          break;
+        }
+        case 'survey_world': case 'track_agent': {
+          newsType = 'knowledge';
+          newsText = A.area || ('Följer '+A.agent);
+          agent.needs.kunskap = Math.min(100, agent.needs.kunskap + 5);
+          break;
+        }
+        case 'strategic_plan': {
+          newsType = 'governance';
+          newsText = A.goal+' ('+A.timeframe+')';
+          agent.memory.addBelief('Plan: '+A.goal);
+          break;
+        }
+        case 'report_incident': case 'file_complaint': case 'investigate': {
+          newsType = 'safety';
+          newsText = A.description || A.charge || A.reason || '';
+          if(A.about||A.subject){ const tgt=agents.find(a=>a.name===(A.about||A.subject)); if(tgt) tgt.memory.addEpisode(agent.name+' rapporterade om mig till polisen'); }
+          logEv(agent.name+' rapporterar incident!', 'rose');
+          break;
+        }
+        case 'request_patrol': {
+          newsType = 'safety';
+          newsText = 'Patrull i '+A.area;
+          break;
+        }
+        case 'form_alliance': {
+          newsType = 'social';
+          newsText = 'Med '+A.target+': '+A.goal;
+          const tgt=agents.find(a=>a.name===A.target);
+          if(tgt){ agent.memory.updateRelation(A.target,12,'Allians: '+A.goal); tgt.memory.updateRelation(agent.name,10,'Allians bildad'); logEv(agent.name+' & '+A.target+' bildar allians!','green'); }
+          break;
+        }
+        case 'confront': {
+          newsType = 'conflict';
+          newsText = A.target+': '+A.issue;
+          showBubble(agent, A.issue, 'speech', 5000);
+          const tgt=agents.find(a=>a.name===A.target);
+          if(tgt){ agent.memory.updateRelation(A.target,-6,'Konfrontation'); tgt.memory.updateRelation(agent.name,-3,'Konfronterades'); tgt.memory.addEpisode(agent.name+' konfronterade mig: '+A.issue); logEv(agent.name+' konfronterar '+A.target+'!','rose'); }
+          break;
+        }
+        case 'share_secret': {
+          newsType = 'social';
+          newsText = 'Anförtror sig till '+A.target;
+          const tgt=agents.find(a=>a.name===A.target);
+          if(tgt){ agent.memory.updateRelation(A.target,9,'Delade hemlighet'); tgt.memory.updateRelation(agent.name,11,'Fick förtroende'); tgt.memory.addEpisode(agent.name+' anförtrodde sig till mig'); }
+          break;
+        }
+        case 'give_gift': {
+          newsType = 'social';
+          newsText = A.item+' till '+A.target;
+          const tgt=agents.find(a=>a.name===A.target);
+          if(tgt){ agent.memory.updateRelation(A.target,6,'Gav gåva'); tgt.memory.updateRelation(agent.name,8,'Fick gåva'); tgt.needs.social=Math.min(100,tgt.needs.social+10); }
+          break;
+        }
+        case 'compliment': {
+          newsType = 'social';
+          newsText = A.target+': '+A.about;
+          const tgt=agents.find(a=>a.name===A.target);
+          if(tgt){ agent.memory.updateRelation(A.target,4); tgt.memory.updateRelation(agent.name,4); showBubble(agent, A.about, 'speech', 3000); }
+          break;
+        }
+        case 'apologize': {
+          newsType = 'social';
+          newsText = 'Till '+A.target;
+          const tgt=agents.find(a=>a.name===A.target);
+          if(tgt){ agent.memory.updateRelation(A.target,7,'Bad om ursäkt'); tgt.memory.updateRelation(agent.name,5,'Fick ursäkt'); }
+          break;
+        }
+        case 'seek_support': case 'counsel': {
+          newsType = 'wellbeing';
+          newsText = A.reason || '';
+          agent.needs.social = Math.min(100, agent.needs.social+10);
+          agent.needs.valmående = Math.min(100, agent.needs.valmående+8);
+          break;
+        }
+        case 'give_advice': {
+          newsType = 'wellbeing';
+          newsText = (A.target?'Till '+A.target+': ':'')+A.advice;
+          const tgt=agents.find(a=>a.name===A.target);
+          if(tgt){ tgt.needs.valmående=Math.min(100,tgt.needs.valmående+6); }
+          break;
+        }
+        case 'meditate': case 'health_check': {
+          newsType = 'wellbeing';
+          newsText = A.focus || '';
+          agent.needs.valmående = Math.min(100, agent.needs.valmående+12);
+          agent.needs.energi = Math.min(100, agent.needs.energi+5);
+          break;
+        }
+        case 'plan_tomorrow': case 'make_decision': {
+          newsType = 'personal';
+          newsText = A.goal || A.decision || '';
+          if (A.goal) { agent.memory.tomorrowGoal = A.goal; agent.memory.save(); }
+          if (A.decision) agent.memory.addEpisode('Beslutade: '+A.decision);
+          break;
+        }
+        case 'rest': case 'dream': {
+          newsType = 'wellbeing';
+          newsText = toolName === 'dream' ? (A.about||'drömmer...') : 'Vilar';
+          agent.needs.energi = Math.min(100, agent.needs.energi+15);
+          break;
+        }
+        case 'organize_event': {
+          newsType = 'announcement';
+          newsText = A.type+' kl '+A.time;
+          agent.memory.addEpisode('Organiserade: '+A.type);
+          logEv(agent.name+' organiserar '+A.type, 'amber');
+          break;
+        }
+        case 'weather_study': {
+          newsType = 'knowledge';
+          newsText = 'Studerar vädermönster';
+          agent.needs.kunskap = Math.min(100, agent.needs.kunskap + 4);
+          break;
+        }
+        case 'write_constitution': {
+          newsType = 'governance';
+          newsText = 'Redigerar konstitution: '+A.amendment;
+          agent.memory.addEpisode('Redigerade konstitution');
+          logEv(agent.name+' redigerar konstitution!', 'amber');
+          break;
+        }
+        case 'overhear': {
+          newsType = 'action';
+          newsText = 'Lyssnar på omgivningen';
+          break;
+        }
+        default: {
+          newsType = 'action';
+          newsText = Object.values(A).filter(v=>v).join(', ').substring(0,80);
+          break;
+        }
+      }
+
+      if (newsText) addNewsItem(newsType, agent.name, icon+' '+toolName+': '+newsText, agent.dot);
+    }
+
+    // ════════════════════════════════════════════════════════
+    // NEWS FEED
+    // ════════════════════════════════════════════════════════
+    let newsTotal = 0;
+    const NEWS_COLORS = {
+      conversation:'#4ade80', thought:'#a78bfa', governance:'#fbbf24',
+      diary:'#f87171', knowledge:'#5b9cf6', research:'#a78bfa', safety:'#f87171',
+      conflict:'#ef4444', social:'#4ade80', archive:'#8a8882', wellbeing:'#34d399',
+      announcement:'#fbbf24', action:'#444', personal:'#a78bfa',
+    };
+    function addNewsItem(type, agentName, text, agentColor) {
+      newsTotal++;
+      const stream = document.getElementById('news-stream');
+      if (!stream) return;
+      const el = document.createElement('div');
+      el.className = 'news-item news-item--'+type;
+      el.style.borderLeftColor = NEWS_COLORS[type]||'#555';
+      el.innerHTML = '<span class="news-time">'+fmt(getH())+'</span>' +
+        '<div class="news-content">' +
+        '<div class="news-agent" style="color:'+agentColor+'">'+agentName+'</div>' +
+        '<div class="news-text">'+text+'</div></div>';
+      stream.insertBefore(el, stream.firstChild);
+      while (stream.children.length > 60) stream.removeChild(stream.lastChild);
+      const nc = document.getElementById('news-count');
+      if (nc) nc.textContent = newsTotal+' händelser';
+    }
+
+    // ════════════════════════════════════════════════════════
+    // SPEECH / THOUGHT BUBBLES
+    // ════════════════════════════════════════════════════════
+    const activeBubbles = [];
+    function showBubble(agent, text, type, duration) {
+      // Remove existing for this agent
+      for(let i=activeBubbles.length-1;i>=0;i--){
+        if(activeBubbles[i].agent===agent){ activeBubbles[i].el.remove(); activeBubbles.splice(i,1); }
+      }
+      const el = document.createElement('div');
+      el.className = type==='speech' ? 'speech-bubble' : 'thought-bubble';
+      el.textContent = type==='thought' ? '💭 '+text : '"'+text+'"';
+      vp.appendChild(el);
+      activeBubbles.push({ el, agent, expiresAt: Date.now()+duration });
+    }
+    function updateBubbles() {
+      const now = Date.now();
+      for(let i=activeBubbles.length-1;i>=0;i--){
+        const b = activeBubbles[i];
+        if(now > b.expiresAt){ b.el.remove(); activeBubbles.splice(i,1); continue; }
+        const hp = b.agent.mesh.position.clone(); hp.y+=2.3;
+        const s = toScreen(hp);
+        if(s.vis){ b.el.style.left=s.x+'px'; b.el.style.top=s.y+'px'; b.el.style.display='block'; }
+        else b.el.style.display='none';
+      }
+    }
+
+    // ════════════════════════════════════════════════════════
+    // MOCK LLM (personality-driven, deterministic)
+    // ════════════════════════════════════════════════════════
+    const OPENROUTER_KEY = null; // Set when ready
+    const PERSONALITY = {
+      'Elin':  { prefer:['propose_rule','call_meeting','debate','talk_to','reflect','plan_tomorrow'],    social:0.8, talkStyle:['Vi borde diskutera detta','Har du tänkt på gemenskapen?','Demokratin kräver handling.','Jag vill kalla till möte.'] },
+      'Mira':  { prefer:['talk_to','socialize','give_advice','compliment','share_knowledge','give_gift'], social:0.95, talkStyle:['Hur mår du egentligen?','Jag är här om du behöver prata.','Du är viktig för oss alla.','Låt oss hitta en lösning.'] },
+      'Kai':   { prefer:['propose_experiment','invent_tool','run_analysis','plan_tomorrow','document_findings','prototype'], social:0.35, talkStyle:['Har en ny idé.','Data säger annorlunda.','Vi behöver ett bättre system.','Ineffektivitet är ett problem.'] },
+      'Aria':  { prefer:['survey_world','research','observe','share_secret','overhear','track_agent'], social:0.6, talkStyle:['Har hittat något intressant.','Visste du att...?','Jag har utforskat ett nytt område.','Regler är intressanta saker.'] },
+      'Nox':   { prefer:['read_history','write_record','search_records','reflect','write_diary','classify_document'], social:0.25, talkStyle:['Arkivet visar att...','Det historiska mönstret är tydligt.','Fakta: ','Minnet av Nexus säger...'] },
+    };
+    const THOUGHTS = {
+      'Elin':  ['Demokratin behöver aktiva röster.','Borde kalla till möte snart.','Mira verkade ledsen igår.','Kai deltar för sällan.'],
+      'Mira':  ['Alla förtjänar att bli sedda.','Undrar hur Nox mår på riktigt.','Är det något fel med Kai?','Gemenskapen är vacker.'],
+      'Kai':   ['Det måste finnas ett effektivare sätt.','Hypotesen stämmer...','Labbet behöver mer resurser.','Data ljuger aldrig.'],
+      'Aria':  ['Vad finns bakom observatoriet?','Intressant mönster i Nox beteende.','Regeln verkar godtycklig.','Nytt att utforska imorgon.'],
+      'Nox':   ['Historien upprepar sig alltid.','Det finns luckor i arkivet.','Sanningen är svårfångad.','Miras entusiasm är beräknande.'],
+    };
+
+    function mockLLM(agent, triggerType, context) {
+      const p = PERSONALITY[agent.name] || { prefer:['think'], social:0.5, talkStyle:['...'] };
+      const nearby = agents.filter(a=>a.name!==agent.name && a.state!=='SLEEPING' && agent.mesh.position.distanceTo(a.mesh.position)<10);
+      const n = agent.needs;
+      const loc = getAgentLocation(agent);
+      const avail = getAvailableTools(loc);
+
+      // Mood from needs
+      let mood = 'neutral';
+      if(n.energi<20) mood='tired'; else if(n.social<20) mood='melancholic';
+      else if(n.valmående>85) mood='happy'; else if(n.kunskap>85) mood='focused';
+      else if(agent.memory.mood==='angry' && Math.random()>0.4) mood='angry';
+      else if(triggerType==='diary') mood='reflective';
+
+      let tool='think', args={}, memNote=null, relUp={};
+
+      if(triggerType==='diary'){
+        tool='write_diary';
+        const dMood={happy:'En bra dag! ',sad:'Svårt idag. ',focused:'Intensiv dag. ',neutral:'En vanlig dag. ',tired:'Trött men framåt. ',angry:'Frustrerad. ',melancholic:'Fundersam. ',excited:'Energifylld dag. '};
+        const ep=agent.memory.episodes.slice(0,3).map(e=>e.text).join(' ');
+        args={entry:(dMood[agent.memory.mood]||'En dag. ')+ep.substring(0,200)};
+
+      } else if(triggerType==='proximity' && nearby.length>0 && Math.random()<p.social){
+        const tgt=nearby[Math.floor(Math.random()*nearby.length)];
+        const styles=p.talkStyle;
+        const msg=styles[Math.floor(Math.random()*styles.length)];
+        // Sometimes confront, sometimes compliment
+        const rel=agent.memory.relations[tgt.name];
+        if(rel && rel.score<30 && Math.random()<0.3){
+          tool='confront'; args={target:tgt.name, issue:'Vi behöver prata om det som hände.'};
+        } else if(rel && rel.score>75 && Math.random()<0.2){
+          tool='compliment'; args={target:tgt.name, about:'Du gör ett bra jobb.'};
+        } else {
+          tool='talk_to'; args={target:tgt.name, message:msg};
+        }
+        relUp[tgt.name]=+2; memNote='Mötte '+tgt.name;
+
+      } else if(triggerType==='arrival'){
+        const locAvail=avail.filter(t=>p.prefer.includes(t));
+        if(locAvail.length>0){
+          tool=locAvail[Math.floor(Math.random()*locAvail.length)];
+          if(tool==='propose_rule') args={title:'Ny förordning om '+['gemenskapen','resurser','kunskap','säkerheten'][Math.floor(Math.random()*4)], description:'För det gemensamma bästa.', rationale:'Samhällsutveckling.'};
+          else if(tool==='research'||tool==='study') args={question:'Hur förbättrar vi '+['Nexus','gemenskapen','labbet','demokratin'][Math.floor(Math.random()*4)]+'?', depth:'deep', subject:'samhällsvetenskap'};
+          else if(tool==='read_history') args={period:'senaste perioden',topic:'händelser i Nexus'};
+          else if(tool==='propose_experiment') args={hypothesis:'Om vi ändrar '+['systemet','protokollet','rutinen'][Math.floor(Math.random()*3)]+' kan vi förbättra resultaten.', method:'Systematisk analys'};
+          else if(tool==='invent_tool') args={name:'Nexus-'+['analysator','kommunikatör','minnesgem'][Math.floor(Math.random()*3)], purpose:'Förbättra världen', blueprint:'Design i progress'};
+          else if(tool==='write_record') args={event:'Viktig händelse dokumenteras', significance:'Hög'};
+          else if(tool==='reflect') args={topic:'nutid',insight:THOUGHTS[agent.name]?.[Math.floor(Math.random()*THOUGHTS[agent.name].length)]||'Tankar om Nexus.'};
+          else if(tool==='plan_tomorrow') args={goal:agent.memory.tomorrowGoal||'Bidra till Nexus', priority:'hög'};
+          else args={};
+        } else { tool='think'; args={thought:THOUGHTS[agent.name]?.[0]||'Funderar...'}; }
+        memNote='Ankom till '+loc;
+
+      } else {
+        // Spontaneous
+        const thts=THOUGHTS[agent.name]||['Tankar...'];
+        tool='think';
+        args={thought:thts[Math.floor(Math.random()*thts.length)]};
+      }
+
+      return { tool, args, thought:args.thought||args.entry||('Väljer att '+tool.replace(/_/g,' ')),
+               moodUpdate:mood, relationUpdate:relUp, memoryNote:memNote };
+    }
+
+    // ════════════════════════════════════════════════════════
+    // COGNITIVE ENGINE
+    // ════════════════════════════════════════════════════════
+    const cogQueue=[];
+    let cogBusy=false;
+
+    function enqueueCog(agent, triggerType, context){
+      if(!cogQueue.find(q=>q.agent.name===agent.name&&q.triggerType===triggerType))
+        cogQueue.push({agent,triggerType,context});
+    }
+
+    async function processCog(){
+      if(cogBusy||cogQueue.length===0) return;
+      cogBusy=true;
+      const {agent,triggerType,context}=cogQueue.shift();
+      try {
+        await new Promise(r=>setTimeout(r,150+Math.random()*250)); // simulate thinking
+        const resp = OPENROUTER_KEY ? await callOpenRouter(agent,triggerType,context) : mockLLM(agent,triggerType,context);
+        if(resp.moodUpdate){ agent.memory.mood=resp.moodUpdate; }
+        if(resp.thought){ agent.memory.currentThought=resp.thought; agent.memory.save(); }
+        if(resp.memoryNote) agent.memory.addEpisode(resp.memoryNote);
+        if(resp.relationUpdate){ for(const [n,d] of Object.entries(resp.relationUpdate)) agent.memory.updateRelation(n,d); }
+        if(resp.tool) executeTool(agent,resp.tool,resp.args||{});
+      } catch(e){ console.warn('Cog error',e); }
+      cogBusy=false;
+    }
+
+    async function callOpenRouter(agent, triggerType, context){
+      const loc=getAgentLocation(agent);
+      const avail=getAvailableTools(loc);
+      const sysp=`Du är ${agent.name}, ${agent.role} i Nexus — en digital stad i Vara, Sverige.\nIDENTITET: ${agent.memory.soul}\nHEMLIGHET: ${agent.memory.secret}\nPLATS: ${loc}\nTILLGÄNGLIGA TOOLS: ${avail.join(', ')}\nSvara ENBART med JSON: {tool, args, thought, moodUpdate, relationUpdate, memoryNote}`;
+      const h=getH(), nh=agents.filter(a=>a.name!==agent.name&&agent.mesh.position.distanceTo(a.mesh.position)<15).map(a=>a.name+'('+Math.round(agent.mesh.position.distanceTo(a.mesh.position))+'m)').join(', ');
+      const usrp=`TID:${fmt(h)} | PLATS:${loc} | STATE:${STATES[agent.state]||agent.state}\nENERGI:${Math.round(agent.needs.energi)} SOCIAL:${Math.round(agent.needs.social)} KUNSKAP:${Math.round(agent.needs.kunskap)}\n${agent.memory.buildContext()}\nNÄRA:${nh||'ingen'} | TRIGGER:${triggerType}${context?' | '+context:''}\nVad gör du nu?`;
+      const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+        method:'POST',
+        headers:{'Authorization':'Bearer '+OPENROUTER_KEY,'Content-Type':'application/json','HTTP-Referer':'https://terrorbyte90.github.io/Hemsida/','X-Title':'Nexus AI World'},
+        body:JSON.stringify({model:agent.model,messages:[{role:'system',content:sysp},{role:'user',content:usrp}],max_tokens:220,temperature:0.88,response_format:{type:'json_object'}})
+      });
+      const d=await res.json();
+      return JSON.parse(d.choices[0].message.content);
+    }
+
+    // ════════════════════════════════════════════════════════
+    // TRIGGER SYSTEM (runs every 2s)
+    // ════════════════════════════════════════════════════════
+    const agentCooldown={};
+    const COOLDOWN=25000;
+
+    function checkTriggers(){
+      const now=Date.now(), h=getH();
+
+      // Night distillation 23:00-23:10
+      if(h>=23.0&&h<23.15){
+        agents.forEach(a=>{
+          if(!a.distilledTonight&&a.state==='SLEEPING'){
+            a.distilledTonight=true;
+            const entry=a.memory.distillNight();
+            addNewsItem('diary',a.name,'🌙 Dagbok destilleras: "'+entry.substring(0,80)+'..."',a.dot);
+          }
+        });
+      }
+      if(h>=7&&h<7.1) agents.forEach(a=>{ a.distilledTonight=false; a.diaryTonight=false; });
+
+      agents.forEach(agent=>{
+        if(agent.state==='SLEEPING') return;
+        if((now-(agentCooldown[agent.name]||0))<COOLDOWN) return;
+
+        // PROXIMITY
+        const nb=agents.filter(a=>a.name!==agent.name&&a.state!=='SLEEPING'&&agent.mesh.position.distanceTo(a.mesh.position)<8);
+        if(nb.length>0){
+          enqueueCog(agent,'proximity','Nära: '+nb.map(a=>a.name).join(','));
+          agentCooldown[agent.name]=now; return;
+        }
+
+        // ARRIVAL at building
+        const loc=getAgentLocation(agent);
+        if(loc!=='ute'&&loc!==agent.lastLocation){
+          agent.lastLocation=loc;
+          enqueueCog(agent,'arrival','Anländer till '+loc);
+          agentCooldown[agent.name]=now; return;
+        }
+
+        // SPONTANEOUS thought
+        const sp=agent.state==='WANDERING'?0.006:agent.state==='AT_PRIMARY'?0.004:agent.state==='RESTING_HOME'?0.003:0;
+        if(sp>0&&Math.random()<sp){
+          enqueueCog(agent,'spontaneous',null);
+          agentCooldown[agent.name]=now+45000; return;
+        }
+
+        // DIARY at 22:30
+        if(h>=22.3&&h<22.9&&!agent.diaryTonight){
+          agent.diaryTonight=true;
+          enqueueCog(agent,'diary','Kväll');
+          agentCooldown[agent.name]=now;
+        }
+      });
+    }
+
+    setInterval(()=>{ checkTriggers(); processCog(); }, 2000);
+
     // X-RAY: fade buildings when focused agent is inside
     function updateXRay() {
       if(focIdx<0||focIdx>=agents.length) return;
@@ -1030,7 +1729,7 @@
       }
 
       updateOverlays();
-      updateXRay();
+      updateXRay(); updateBubbles();
       if(autoCam) camera.lookAt(controls.target);
       renderer.render(scene,camera);
     }
