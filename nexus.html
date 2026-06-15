@@ -112,6 +112,20 @@
     .world-layout { display: grid; grid-template-columns: 1fr 260px; gap: var(--space-4); align-items: start; }
     @media (max-width: 900px) { .world-layout { grid-template-columns: 1fr; } }
     .world-viewport { position: relative; width: 100%; border-radius: var(--radius-2xl); overflow: hidden; border: 1px solid var(--border-md); background: #010306; aspect-ratio: 16/10; min-height: 380px; box-shadow: 0 0 0 1px rgba(74,222,128,0.08), var(--shadow-lg), 0 0 80px rgba(91,156,246,0.06); }
+    .wp-section { margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px; }
+    .wp-head { font-size:11px; font-weight:600; color:var(--text-secondary); margin-bottom:5px; letter-spacing:.05em; }
+    .wp-item { padding:4px 6px; border-radius:5px; margin-bottom:3px; background:rgba(255,255,255,0.03); font-size:11px; line-height:1.5; }
+    .wp-item b { color:var(--text-primary); }
+    .wp-item small { color:var(--text-faint); }
+    .wp-badge { display:inline-block; font-size:9px; padding:1px 5px; border-radius:3px; margin-right:5px; font-weight:600; }
+    .badge-green { background:#1a3a1a; color:#4ade80; }
+    .badge-amber { background:#3a2a10; color:#fbbf24; }
+    .wp-votes { font-size:10px; margin-left:6px; opacity:.7; }
+    .wp-sev { display:inline-block; font-size:9px; padding:1px 5px; border-radius:3px; margin-right:5px; }
+    .sev-high { background:#3a1010; color:#f87171; }
+    .sev-medium { background:#3a2a10; color:#fbbf24; }
+    .sev-low { background:#1a2a3a; color:#60a5fa; }
+    .wp-empty { color:var(--text-faint); font-style:italic; text-align:center; padding:16px; }
     #world-viewport:fullscreen, #world-viewport:-webkit-full-screen, #world-viewport:-moz-full-screen { width:100vw!important; height:100vh!important; border-radius:0!important; aspect-ratio:unset!important; max-width:none!important; }
     #world-canvas { width: 100%; height: 100%; display: block; }
     .world-hud { position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; }
@@ -384,6 +398,17 @@
               <div class="stat-block"><div class="stat-block__num amber" id="stat-plaza">—</div><div class="stat-block__label">På torget</div></div>
               <div class="stat-block"><div class="stat-block__num purple" id="stat-avg-needs">—</div><div class="stat-block__label">Snitt needs</div></div>
             </div>
+          </div>
+        </div>
+
+        <!-- WORLD PANEL -->
+        <div class="news-section" style="margin-top:var(--space-4)">
+          <div class="news-panel">
+            <div class="news-header">
+              <span class="panel__title">🌍 Nexus Världstillstånd — projekt, förslag och problem</span>
+              <span class="panel__badge panel__badge--green">Live</span>
+            </div>
+            <div id="world-panel" style="padding:8px;min-height:60px;font-size:12px;color:var(--text-secondary);"></div>
           </div>
         </div>
 
@@ -1217,6 +1242,45 @@
     // AGENTS
 
     const OPENROUTER_KEY = true; // Key is on server, not in source
+    const WORLD_API = 'https://82.165.169.52.nip.io/nexus-world/';
+
+    // ════════════════════════════════════════════════════════
+    // WORLD STATE — persistent shared memory on server
+    // ════════════════════════════════════════════════════════
+    let worldState = {
+      projects: [], proposals: [], policies: [], public_records: [],
+      shared_problems: [], institutions: {}, rumors: [], history: [],
+      resource_constraints: {}, version: 0
+    };
+
+    async function loadWorldState() {
+      try {
+        const r = await fetch(WORLD_API);
+        worldState = await r.json();
+        updateWorldUI();
+      } catch(e) { console.warn('World state unavailable:', e.message); }
+    }
+
+    async function worldAction(agent, action, args) {
+      try {
+        const r = await fetch(WORLD_API + 'action', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({agent: agent.name, action, args, timestamp: fmt(getH())})
+        });
+        const result = await r.json();
+        if(result.ok !== false) {
+          await loadWorldState(); // refresh UI
+        }
+        return result;
+      } catch(e) {
+        console.warn('World action failed:', e.message);
+        return {ok: false, msg: e.message};
+      }
+    }
+
+    // Refresh world state every 60s
+    setInterval(loadWorldState, 60000);
 
     // ════════════════════════════════════════════════════════
     // COST TRACKER
@@ -1665,19 +1729,21 @@
     // TOOLS SYSTEM  (40+ tools)
     // ════════════════════════════════════════════════════════
     const LOCATION_TOOLS = {
-      plaza:        ['announce','socialize','organize_event','overhear'],
-      forskningshuset: ['propose_experiment','run_analysis','invent_tool','document_findings','prototype','research','teach','share_knowledge'],
-      rådhuset:     ['propose_rule','call_meeting','vote','debate','write_constitution','read_law'],
-      biblioteket:  ['read_book','research','share_knowledge','teach','study'],
-      arkivet:      ['read_history','write_record','search_records','classify_document'],
-      polisen:      ['report_incident','request_patrol','investigate','file_complaint'],
-      labbet:       ['propose_experiment','run_analysis','invent_tool','document_findings','prototype'],
-      observatoriet:['survey_world','track_agent','strategic_plan','weather_study'],
-      kliniken:     ['seek_support','give_advice','meditate','health_check','counsel'],
-      hemma:        ['rest','write_diary','reflect','plan_tomorrow','make_decision','dream'],
+      torget:         ['announce','socialize','organize_event','overhear','start_project','join_project','report_problem'],
+      forskningshuset:['propose_experiment','run_analysis','invent_tool','document_findings','prototype','research','teach','share_knowledge','start_project','update_project'],
+      rådhuset:       ['propose_policy','vote_on_proposal','call_meeting','debate','write_record','read_law','update_institution'],
+      biblioteket:    ['read_book','research','share_knowledge','teach','study','write_record'],
+      arkivet:        ['read_history','write_record','search_records','classify_document','update_project'],
+      polisen:        ['report_incident','report_problem','investigate','file_complaint','update_institution'],
+      labbet:         ['propose_experiment','run_analysis','invent_tool','document_findings','prototype','start_project','update_project'],
+      observatoriet:  ['survey_world','strategic_plan','weather_study','start_project','write_record'],
+      kliniken:       ['seek_support','give_advice','meditate','health_check','counsel','report_problem'],
+      hemma:          ['rest','write_diary','reflect','plan_tomorrow','make_decision','dream'],
+      'ute i Vara':   ['observe','announce','report_problem','join_project'],
     };
-    const UNIVERSAL_TOOLS = ['think','observe','walk_to','express_emotion','greet',
-      'talk_to','compliment','apologize','confront','form_alliance','share_secret','give_gift'];
+    const UNIVERSAL_TOOLS = ['think','observe','talk_to','express_emotion','greet',
+      'compliment','apologize','confront','form_alliance','share_secret','give_gift',
+      'start_project','join_project','propose_policy','vote_on_proposal','write_record','report_problem'];
 
     function getAgentLocation(agent) {
       const pos = agent.mesh.position;
@@ -2318,17 +2384,46 @@
       const nb=agents.filter(a=>a.name!==agent.name&&a.state!=='SLEEPING'&&agent.mesh.position.distanceTo(a.mesh.position)<14);
       const nbStr=nb.map(a=>a.name+'('+Math.round(agent.mesh.position.distanceTo(a.mesh.position))+'m,mood:'+a.memory.mood+')').join(', ');
       const diary=agent.memory.diary[0]?'Senaste dagbok: '+agent.memory.diary[0].entry.substring(0,120):'';
+      // Bygg världskontext för prompten
+      const activeProjects = worldState.projects.filter(p=>p.status==='active'||p.status==='proposed');
+      const openProposals = worldState.proposals.filter(p=>p.status==='open');
+      const openProblems = worldState.shared_problems.filter(p=>p.status==='open');
+      const recentHistory = (worldState.history||[]).slice(-8).map(h=>`${h.t} ${h.agent}: ${h.summary}`).join(' | ');
+      const agentProjects = activeProjects.filter(p=>p.participants.includes(agent.name));
+      const policySummary = (worldState.policies||[]).slice(-5).map(p=>p.title).join('; ');
+
+      const LONG_TERM_GOALS = {
+        'Elin':  'Skapa en stabil, rättvis demokrati med tydliga spelregler som alla respekterar.',
+        'Mira':  'Stärka gemenskapen och se till att ingen medborgare känner sig ensam eller bortglömd.',
+        'Kai':   'Bygga fungerande, hållbara system och infrastruktur som gör Nexus bättre för alla.',
+        'Aria':  'Utforska och förstå allt som kan förstås — och dela det med världen.',
+        'Nox':   'Bevara sanningen, kontrollera informationsflödet och skydda stadens minne.',
+      };
+
       const sysp=[
-        `Du är ${agent.name}, ${agent.role} i Nexus — en levande digital stad i Vara, Sverige.`,
-        `IDENTITET: ${agent.memory.soul}`,
-        `HEMLIGHET (avslöja inte direkt): ${agent.memory.secret}`,
-        `GRUNDLAGAR: ${laws}`,
-        `PLATS: ${loc} | TILLGÄNGLIGA TOOLS: ${avail.slice(0,12).join(', ')}`,
+        `Du är ${agent.name}, ${agent.role} i Nexus — en levande, kollektivt byggd digital stad i Vara, Sverige.`,
+        ``,
+        `DITT VÄSEN: ${agent.memory.soul}`,
+        `DITT LÅNGSIKTIGA MÅL: ${LONG_TERM_GOALS[agent.name]||'Bidra till Nexus'}`,
+        `HEMLIGHET (dela varsamt): ${agent.memory.secret}`,
+        ``,
+        `NEXUS GRUNDLAGAR: ${laws}`,
+        `AKTIVA POLICIES: ${policySummary||'inga ännu'}`,
+        `PLATS: ${loc} | TILLGÄNGLIGA TOOLS: ${avail.slice(0,15).join(', ')}`,
+        ``,
+        `VÄRLDSBYGGAR-TOOLS (välj när det passar):`,
+        `  start_project: args={title, description, institution} — starta ett gemensamt projekt`,
+        `  join_project: args={project_id, project} — anslut till befintligt projekt`,
+        `  propose_policy: args={title, description} — lägg fram en regel/policy för omröstning`,
+        `  vote_on_proposal: args={proposal, vote:"for"/"against"} — rösta på öppet förslag`,
+        `  write_record: args={title, content, type} — arkivera ett dokument/beslut/fynd`,
+        `  report_problem: args={title, description, severity:"low"/"medium"/"high"} — rapportera ett problem`,
+        `  update_institution: args={institution, note, purpose} — föreslå förändring av institution`,
         ``,
         `Svara ENBART med ett enda giltigt JSON-objekt. INGEN förklaring, INGA kommentarer, INGEN markdown. Bara JSON.`,
-        `{"tool":"TOOL_NAMN","args":{"target":"AGENTNAMN_om_talk_to","message":"exakt vad du säger högt på svenska"},"thought":"din genuina inre tanke på svenska","moodUpdate":"neutral|happy|sad|angry|excited|focused|tired|melancholic|reflective","memoryNote":"kort minnesnotat"}`,
+        `{"tool":"TOOL_NAMN","args":{"target":"AGENTNAMN","message":"vad du säger"},"thought":"din genuina inre tanke","moodUpdate":"neutral|happy|sad|angry|excited|focused|tired|melancholic|reflective","memoryNote":"kort minnesnotat"}`,
         ``,
-        `KRAV: Välj nästan alltid talk_to om det finns agenter nära dig (${agents.filter(a=>a.name!==agent.name&&a.state!=='SLEEPING').map(a=>a.name).join('/')}). "thought" ska vara äkta personlig reflektion. Om tool=talk_to: target=exakt agentnamn, message=vad du faktiskt säger högt på svenska (1-3 meningar, naturlig dialog).`
+        `KRAV: Tänk på tre nivåer: (1) Vad behöver JAG just nu? (2) Vad vill jag bygga på lång sikt? (3) Vad behöver NEXUS som stad? Välj action utifrån det viktigaste just nu. Om agenter är nära: välj talk_to och säg något genuint och personligt. Annars: välj en action som skapar bestående spår i världen.`
       ].join('\n');
       const h=getH();
       const n=agent.needs;
@@ -2340,10 +2435,15 @@
         diary,
         `SENASTE MINNEN: ${agent.memory.episodes.slice(0,4).map(e=>e.t+': '+e.text).join(' | ')||'inga'}`,
         `RELATIONER: ${Object.entries(agent.memory.relations).map(([n2,r])=>n2+'('+r.score+')').join(', ')||'inga'}`,
-        agent.memory.tomorrowGoal?`DITT MÅL: ${agent.memory.tomorrowGoal}`:'',
+        agent.memory.tomorrowGoal?`DITT MÅL IMORGON: ${agent.memory.tomorrowGoal}`:'',
+        agentProjects.length>0?`DINA PÅGÅENDE PROJEKT: ${agentProjects.map(p=>p.title+' ('+p.status+')').join(', ')}`:'',
+        activeProjects.length>0?`AKTIVA PROJEKT I NEXUS: ${activeProjects.slice(0,4).map(p=>p.title+' ['+p.initiator+', '+p.participants.length+' deltagare]').join(' | ')}`:'Inga projekt startade ännu.',
+        openProposals.length>0?`ÖPPNA FÖRSLAG (rösta!): ${openProposals.map(p=>p.title+' ['+p.votes_for.length+' för, ID:'+p.id+']').join(' | ')}`:'',
+        openProblems.length>0?`DELADE PROBLEM: ${openProblems.slice(0,3).map(p=>p.title+' ('+p.severity+')').join(' | ')}`:'',
+        recentHistory?`NEXUS HISTORIA (senaste händelser): ${recentHistory}`:'',
         `TRIGGER: ${triggerType==='addressed'?'DIREKT TILLTAL — du MÅSTE svara med talk_to':triggerType}${context?' ('+context+')':''}`,
-        triggerType==='addressed'?`SVAR PÅ TILLTAL: Välj tool=talk_to och svara direkt på vad som sades.`:'',
-        `Agera som ${agent.name} som just nu ${activity}. Välj ett tool som passar platsen och situationen exakt.`
+        triggerType==='addressed'?`SVAR PÅ TILLTAL: Välj tool=talk_to och svara direkt och personligt på vad som sades.`:'',
+        `Du är ${agent.name} som just nu ${activity}. Vad behöver DU, vad vill du BYGGA och vad behöver NEXUS nu? Välj rätt tool.`
       ].filter(Boolean).join('\n');
 
       try {
@@ -2447,6 +2547,9 @@
       agents.forEach(a=>{ if(a.state!=='SLEEPING') enqueueCog(a,'spontaneous','Börjar dagen'); });
     }, 3000);
 
+    // Ladda world state direkt
+    loadWorldState();
+
     // X-RAY: fade buildings when focused agent inside OR camera is close
     function updateXRay() {
       const ap = (focIdx>=0&&focIdx<agents.length) ? agents[focIdx].mesh.position : null;
@@ -2500,6 +2603,70 @@
       const e1=document.getElementById('stat-awake'); if(e1) e1.textContent=awake;
       const e2=document.getElementById('stat-plaza'); if(e2) e2.textContent=plaza;
       const e3=document.getElementById('stat-avg-needs'); if(e3) e3.textContent=avgN+'%';
+    }
+
+    function updateWorldUI() {
+      const wPanel = document.getElementById('world-panel');
+      if(!wPanel) return;
+      const proj = worldState.projects||[];
+      const prop = worldState.proposals||[];
+      const probs = worldState.shared_problems||[];
+      const recs = worldState.public_records||[];
+      wPanel.innerHTML = '';
+
+      // PROJEKT
+      if(proj.length > 0){
+        const ph = document.createElement('div'); ph.className='wp-section';
+        ph.innerHTML = '<div class="wp-head">🏗 Projekt ('+proj.filter(p=>p.status!=='completed').length+' aktiva)</div>';
+        proj.filter(p=>p.status!=='completed').slice(-5).forEach(p=>{
+          const pe=document.createElement('div'); pe.className='wp-item';
+          pe.innerHTML=`<span class="wp-badge ${p.status==='active'?'badge-green':'badge-amber'}">${p.status}</span> <b>${p.title}</b><br><small>${p.participants.join(', ')} · ${p.description?.substring(0,60)||''}</small>`;
+          ph.appendChild(pe);
+        });
+        wPanel.appendChild(ph);
+      }
+
+      // FÖRSLAG
+      if(prop.filter(p=>p.status==='open').length > 0){
+        const prh = document.createElement('div'); prh.className='wp-section';
+        prh.innerHTML = '<div class="wp-head">⚖️ Öppna förslag</div>';
+        prop.filter(p=>p.status==='open').forEach(p=>{
+          const pe=document.createElement('div'); pe.className='wp-item';
+          pe.innerHTML=`<b>${p.title}</b> <span class="wp-votes">✅${p.votes_for.length} ❌${p.votes_against.length}</span><br><small>Föreslagen av ${p.author}</small>`;
+          prh.appendChild(pe);
+        });
+        wPanel.appendChild(prh);
+      }
+
+      // PROBLEM
+      const openProbs = probs.filter(p=>p.status==='open');
+      if(openProbs.length > 0){
+        const pbh = document.createElement('div'); pbh.className='wp-section';
+        pbh.innerHTML = '<div class="wp-head">⚠️ Gemensamma problem</div>';
+        openProbs.slice(0,4).forEach(p=>{
+          const pe=document.createElement('div'); pe.className='wp-item';
+          pe.innerHTML=`<span class="wp-sev sev-${p.severity}">${p.severity}</span> ${p.title}`;
+          pbh.appendChild(pe);
+        });
+        wPanel.appendChild(pbh);
+      }
+
+      // SENASTE BESLUT / RECORDS
+      const recents = recs.filter(r=>['project_complete','policy_passed','proposal','problem'].includes(r.type)).slice(-5);
+      if(recents.length > 0){
+        const rh = document.createElement('div'); rh.className='wp-section';
+        rh.innerHTML = '<div class="wp-head">📜 Senaste händelser</div>';
+        recents.reverse().forEach(r=>{
+          const re=document.createElement('div'); re.className='wp-item';
+          re.innerHTML=`<small style="opacity:.6">${r.timestamp} ${r.author}</small><br>${r.content?.substring(0,80)||r.title}`;
+          rh.appendChild(re);
+        });
+        wPanel.appendChild(rh);
+      }
+
+      if(proj.length===0&&prop.length===0&&openProbs.length===0){
+        wPanel.innerHTML = '<div class="wp-empty">Nexus börjar ta form...<br>Agenterna bygger världen tillsammans.</div>';
+      }
     }
 
     // MAIN LOOP
