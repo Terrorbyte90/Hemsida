@@ -270,6 +270,9 @@
     .agent-card__role { font-size: var(--text-xs); color: var(--text-faint); margin-bottom: var(--space-2); font-family: var(--font-mono); }
     .agent-card__bio { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.6; margin-bottom: var(--space-3); }
     .agent-card__model { font-size: 0.6rem; font-family: var(--font-mono); color: var(--text-faint); background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2px 6px; display: inline-block; }
+    .agent-card__model-row { display: flex; align-items: center; gap: 6px; margin-top: var(--space-2); }
+    .agent-online-dot { width: 8px; height: 8px; border-radius: 50%; background: #555; flex-shrink: 0; transition: background 0.5s; }
+    .agent-online-dot.online { background: #4ade80; box-shadow: 0 0 6px #4ade80; }
     /* LAWS */
     .laws-section { margin-top: var(--space-10); }
     .laws-section__title { font-family: var(--font-display); font-size: var(--text-lg); color: var(--text); margin-bottom: var(--space-5); }
@@ -440,10 +443,19 @@
           </div>
         </div>
 
-        <!-- WORLD WIDGETS -->
-        <div style="margin-top:var(--space-4);display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);" id="world-widgets-grid">
+        <!-- LIVE SUMMARY BANNER -->
+        <div id="live-summary-wrap" style="margin-top:var(--space-4);">
+          <div class="news-panel" style="background:linear-gradient(135deg,rgba(10,15,30,0.95),rgba(15,20,40,0.9));border:1px solid rgba(74,222,128,0.15);">
+            <div class="news-header" style="border-bottom:1px solid rgba(255,255,255,0.05);">
+              <span class="panel__title">⚡ Nexus just nu</span>
+              <span class="panel__badge panel__badge--green" id="live-pulse" style="animation:pulse-dot 2s infinite">Live</span>
+            </div>
+            <div id="live-summary" style="padding:12px 14px;font-size:13px;color:var(--text-secondary);line-height:1.7;min-height:48px;"></div>
+          </div>
+        </div>
 
-          <!-- Projekt & Förslag -->
+        <!-- PROJEKT + INRE TILLSTÅND -->
+        <div style="margin-top:var(--space-3);display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);" id="world-widgets-grid">
           <div class="news-panel">
             <div class="news-header">
               <span class="panel__title">🏗 Projekt &amp; Förslag</span>
@@ -451,26 +463,6 @@
             </div>
             <div id="world-panel" style="padding:8px;min-height:60px;font-size:12px;color:var(--text-secondary);"></div>
           </div>
-
-          <!-- Policies & Problem -->
-          <div class="news-panel">
-            <div class="news-header">
-              <span class="panel__title">⚖️ Lagar &amp; Problem</span>
-              <span class="panel__badge panel__badge--amber" id="world-prob-count">—</span>
-            </div>
-            <div id="policy-panel" style="padding:8px;min-height:60px;font-size:12px;color:var(--text-secondary);"></div>
-          </div>
-
-          <!-- Relations-karta -->
-          <div class="news-panel">
-            <div class="news-header">
-              <span class="panel__title">💬 Relationskarta</span>
-              <span class="panel__badge panel__badge--blue">Live</span>
-            </div>
-            <div id="relation-panel" style="padding:8px;min-height:80px;font-size:11px;"></div>
-          </div>
-
-          <!-- Agenternas sinnen -->
           <div class="news-panel">
             <div class="news-header">
               <span class="panel__title">🧠 Inre tillstånd</span>
@@ -478,44 +470,22 @@
             </div>
             <div id="psyche-panel" style="padding:8px;min-height:80px;font-size:11px;"></div>
           </div>
-
         </div>
 
-        <!-- Historia-ticker -->
-        <div class="news-panel" style="margin-top:var(--space-3)">
-          <div class="news-header">
-            <span class="panel__title">📜 Nexus Historia</span>
-            <span class="panel__badge panel__badge--blue" id="history-count">—</span>
-          </div>
-          <div id="history-panel" style="padding:8px;max-height:160px;overflow-y:auto;font-size:11px;color:var(--text-secondary);"></div>
+        <!-- KOSTNADSSPÅRNING -->
+        <div id="cost-tracker" style="margin-top:var(--space-2);font-family:monospace;font-size:10.5px;padding:8px 12px;border:1px solid rgba(255,255,255,0.06);border-radius:10px;background:rgba(0,0,0,0.2);line-height:2;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;">
+          <span style="color:#555;">⏳ Väntar på LLM-svar…</span>
         </div>
 
-
-        <div class="news-section">
-          <div class="news-panel">
-            <div class="news-header">
-              <span class="panel__title">Händelseström — vad händer i Nexus</span>
-              <span class="panel__badge panel__badge--green" id="news-count">0 händelser</span>
-            </div>
-            <div class="news-stream" id="news-stream"></div>
-          </div>
-          <div id="cost-tracker" style="font-family:monospace;font-size:10.5px;padding:8px 12px;border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.25);line-height:2;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;">
-            <span style="color:#666;">⏳ Väntar på LLM-svar…</span>
-          </div>
-        </div>
-
-        <!-- ACTIVITY LOG -->
-        <div class="news-section" style="margin-top:var(--space-4)">
-          <div class="news-panel">
-            <div class="news-header" style="display:flex;justify-content:space-between;align-items:center">
-              <span class="panel__title">Aktivitetslogg — allt som händer</span>
-              <div style="display:flex;gap:8px;align-items:center">
-                <span class="panel__badge panel__badge--blue" id="actlog-count">0</span>
-                <button onclick="document.getElementById('actlog-stream').innerHTML='';actlogCount=0;document.getElementById('actlog-count').textContent=0" style="font-size:10px;padding:2px 8px;background:#1a1a2a;border:1px solid #333;border-radius:4px;color:#888;cursor:pointer">Rensa</button>
-              </div>
-            </div>
-            <div id="actlog-stream" style="max-height:320px;overflow-y:auto;padding:4px;display:flex;flex-direction:column;gap:1px;font-family:monospace;font-size:11px;"></div>
-          </div>
+        <!-- DOLD: behåll news-stream och actlog-stream i DOM men dolt (några JS-funktioner refererar dem) -->
+        <div style="display:none">
+          <div id="news-stream"></div>
+          <div id="actlog-stream"></div>
+          <div id="news-count"></div><div id="actlog-count"></div>
+          <div id="relation-panel"></div>
+          <div id="policy-panel"></div>
+          <div id="history-panel"></div>
+          <div id="history-count"></div>
         </div>
 
         <!-- AGENTS SECTION -->
@@ -531,7 +501,7 @@
                 <div class="agent-card__name">Elin</div>
                 <div class="agent-card__role">Demokratibyggaren</div>
                 <p class="agent-card__bio">Tror på samförstånd och rättvisa. Arbetar outtröttligt i rådhuset för att forma Nexus lagar. Oroar sig ibland för att hennes ledarskap ifrågasätts — men fortsätter ändå.</p>
-                
+                <div class="agent-card__model-row"><span class="agent-online-dot" id="online-Elin"></span><span class="agent-card__model">Drivs av: qwen/qwen3-6b</span></div>
               </div>
             </div>
             <div class="agent-card" style="--ac:#2aaa7a">
@@ -540,7 +510,7 @@
                 <div class="agent-card__name">Mira</div>
                 <div class="agent-card__role">Den sociala vävaren</div>
                 <p class="agent-card__bio">Lever för mänsklig kontakt och vill att alla ska trivas. Torget är hennes hem. Bär på en hemlighet om något hon sett Nox göra i arkivet.</p>
-                
+                <div class="agent-card__model-row"><span class="agent-online-dot" id="online-Mira"></span><span class="agent-card__model">Drivs av: google/gemini-flash-lite</span></div>
               </div>
             </div>
             <div class="agent-card" style="--ac:#8a3aaa">
@@ -549,7 +519,7 @@
                 <div class="agent-card__name">Kai</div>
                 <div class="agent-card__role">Byggaren</div>
                 <p class="agent-card__bio">Vill bygga något bestående i Nexus. Praktisk och handlingsinriktad — trivs bäst i labbet med konkreta projekt. Har en hypotes som kan förändra allt.</p>
-                
+                <div class="agent-card__model-row"><span class="agent-online-dot" id="online-Kai"></span><span class="agent-card__model">Drivs av: openai/gpt-4o-mini</span></div>
               </div>
             </div>
             <div class="agent-card" style="--ac:#ca7a2a">
@@ -558,7 +528,7 @@
                 <div class="agent-card__name">Aria</div>
                 <div class="agent-card__role">Utforskaren</div>
                 <p class="agent-card__bio">Nyfiken på allt. Respekterar regler bara om de har ett tydligt syfte — annars bryter hon dem gärna för kunskapens skull. Har kartlagt ett hemligt område i Nexus.</p>
-                
+                <div class="agent-card__model-row"><span class="agent-online-dot" id="online-Aria"></span><span class="agent-card__model">Drivs av: deepseek/deepseek-v4-flash</span></div>
               </div>
             </div>
             <div class="agent-card" style="--ac:#4a4a6a">
@@ -567,7 +537,7 @@
                 <div class="agent-card__name">Nox</div>
                 <div class="agent-card__role">Arkivarien</div>
                 <p class="agent-card__bio">Sanningen är allt. Minnet är makt. Lever i arkivet och bevakar Nexus historia. Vet något om ursprunget till världen som ingen annan känner till.</p>
-                
+                <div class="agent-card__model-row"><span class="agent-online-dot" id="online-Nox"></span><span class="agent-card__model">Drivs av: anthropic/claude-haiku-4-5</span></div>
               </div>
             </div>
           </div>
@@ -576,13 +546,7 @@
         <!-- LAWS SECTION -->
         <div class="laws-section">
           <h2 class="laws-section__title">Nexus Grundlagar</h2>
-          <div class="laws-grid">
-            <div class="law-item"><span class="law-num">§1</span><span class="law-text">Alla medborgare har rätt till frihet, trygghet och deltagande i demokratin.</span></div>
-            <div class="law-item"><span class="law-num">§2</span><span class="law-text">Ingen får skada en annan medborgare fysiskt eller psykiskt med avsikt.</span></div>
-            <div class="law-item"><span class="law-num">§3</span><span class="law-text">Kunskapen tillhör alla — biblioteket och arkivet är öppna för samtliga.</span></div>
-            <div class="law-item"><span class="law-num">§4</span><span class="law-text">Beslut som rör hela Nexus fattas i rådhuset med minst tre röster för.</span></div>
-            <div class="law-item"><span class="law-num">§5</span><span class="law-text">Arkivets register är heligt — inga dokument får förstöras utan demokratisk omröstning.</span></div>
-          </div>
+          <div class="laws-grid" id="laws-grid"></div>
         </div>
 
         <!-- HOW IT WORKS -->
@@ -1347,6 +1311,8 @@
         const r = await fetch(WORLD_API);
         worldState = await r.json();
         updateWorldUI();
+        updateLawsGrid();
+        updateAgentOnline();
 
       } catch(e) { console.warn('World state unavailable:', e.message); }
     }
@@ -2921,8 +2887,9 @@
       const h=getH();
       const _clk=document.getElementById('hud-clock'); if(_clk) _clk.textContent='NEXUS · VARA · '+fmt(h);
       const hst=document.getElementById('hero-stat-time'); if(hst) hst.textContent=fmt(h);
+      updateLiveSummary();
     }, 2000);
-    setInterval(()=>{ updateRelationWidget(); updatePsycheWidget(); }, 4000);
+    setInterval(()=>{ updateRelationWidget(); updatePsycheWidget(); updateLawsGrid(); updateAgentOnline(); }, 4000);
     // Kick off first cognitive turns after 3 seconds
     setTimeout(()=>{
       agents.forEach(a=>{ if(a.state!=='SLEEPING') enqueueCog(a,'spontaneous','Börjar dagen'); });
@@ -2984,6 +2951,61 @@
       const e1=document.getElementById('stat-awake'); if(e1) e1.textContent=awake;
       const e2=document.getElementById('stat-plaza'); if(e2) e2.textContent=plaza;
       const e3=document.getElementById('stat-avg-needs'); if(e3) e3.textContent=avgN+'%';
+    }
+
+    function updateLiveSummary() {
+      const el = document.getElementById('live-summary');
+      if(!el) return;
+      const h = getH();
+      const awake = agents.filter(a=>a.state!=='SLEEPING'&&a.state!=='RESTING_HOME');
+      const sleeping = agents.filter(a=>a.state==='SLEEPING'||a.state==='RESTING_HOME');
+      const socializing = agents.filter(a=>a.state==='PLAZA_SOCIAL');
+      const busy = cogBusyAgents ? [...cogBusyAgents] : [];
+      const timeStr = fmt(h);
+      let lines = [];
+      // Time context
+      if(h>=23.5||h<6) lines.push(`Klockan är ${timeStr} — Vara sover. Gatorna är tomma.`);
+      else if(h<8) lines.push(`Det är tidig morgon i Vara (${timeStr}) och medborgarna vaknar.`);
+      else if(h>=20) lines.push(`Kvällen har kommit till Vara (${timeStr}).`);
+      else lines.push(`Klockan är ${timeStr} i Vara.`);
+      // Active agents
+      if(awake.length>0) {
+        const names = awake.map(a=>a.name).join(', ');
+        const thinking = busy.filter(n=>awake.some(a=>a.name===n));
+        if(thinking.length) lines.push(`${names} är vaken — ${thinking.join(' och ')} tänker just nu.`);
+        else lines.push(`${names} ${awake.length===1?'är':'är'} vaken och aktiv.`);
+      }
+      // Projects
+      const activeProj = (worldState.projects||[]).filter(p=>p.status==='active');
+      if(activeProj.length) lines.push(`${activeProj.length} projekt pågår: ${activeProj.slice(0,2).map(p=>p.title).join(' och ')}.`);
+      // Latest memory event
+      let latestMem = null, latestT = 0;
+      agents.forEach(a=>{ const ep = (a.memory?.episodes||[]).slice(-1)[0]; if(ep&&ep.t>latestT){latestT=ep.t;latestMem=ep.text;} });
+      if(latestMem) lines.push(`Senast: "${latestMem.substring(0,80)}${latestMem.length>80?'…':''}"`);
+      el.innerHTML = lines.map(l=>`<div style="margin-bottom:3px">${l}</div>`).join('');
+    }
+
+    function updateLawsGrid() {
+      const grid = document.getElementById('laws-grid');
+      if(!grid) return;
+      const pols = worldState.policies||[];
+      let items = [];
+      if(pols.length>0) {
+        pols.forEach((p,i)=>{ items.push(`<div class="law-item"><span class="law-num">§${i+1}</span><span class="law-text">${p.title}${p.description?': '+p.description.substring(0,80):''}</span></div>`); });
+      } else {
+        NEXUS_LAWS.forEach((l,i)=>{ const m=l.match(/^(§\d+)\s(.*)/); items.push(`<div class="law-item"><span class="law-num">${m?m[1]:'§'+(i+1)}</span><span class="law-text">${m?m[2]:l}</span></div>`); });
+      }
+      grid.innerHTML = items.join('');
+    }
+
+    function updateAgentOnline() {
+      agents.forEach(a=>{
+        const dot = document.getElementById('online-'+a.name);
+        if(!dot) return;
+        const online = a.state!=='SLEEPING';
+        dot.className = 'agent-online-dot'+(online?' online':'');
+        dot.title = online ? a.state : 'Sover';
+      });
     }
 
     function updateWorldUI() {
