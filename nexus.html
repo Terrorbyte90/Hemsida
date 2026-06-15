@@ -137,7 +137,8 @@
       overflow: hidden;
       border: 1px solid var(--border-md);
       background: #010306;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 4 / 3;
+      min-height: 420px;
       box-shadow: 0 0 0 1px rgba(74,222,128,0.08), var(--shadow-lg), 0 0 80px rgba(91,156,246,0.06);
     }
     #world-canvas { width: 100%; height: 100%; display: block; }
@@ -497,7 +498,7 @@
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 2.2;
 
     function resize() {
       const w = viewport.clientWidth, h = viewport.clientHeight;
@@ -510,11 +511,11 @@
     // ── SCENE ─────────────────────────────────────────────────
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x010306);
-    scene.fog = new THREE.FogExp2(0x010810, 0.028);
+    scene.fog = new THREE.FogExp2(0x010810, 0.022);
 
     // ── CAMERA ────────────────────────────────────────────────
     const camera = new THREE.PerspectiveCamera(55, 16/9, 0.1, 200);
-    camera.position.set(7, 5.5, 9);
+    camera.position.set(6, 4.5, 8);
 
     // ── CONTROLS ──────────────────────────────────────────────
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -528,13 +529,13 @@
     // ── POST-PROCESSING ───────────────────────────────────────
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    const bloom = new UnrealBloomPass(new THREE.Vector2(1280, 720), 0.7, 0.35, 0.88);
+    const bloom = new UnrealBloomPass(new THREE.Vector2(1280, 720), 1.2, 0.5, 0.75);
     composer.addPass(bloom);
 
     // ── LIGHTING ──────────────────────────────────────────────
-    scene.add(new THREE.AmbientLight(0x0d1a2e, 3));
+    scene.add(new THREE.AmbientLight(0x1a3a6a, 8));
 
-    const moon = new THREE.DirectionalLight(0x4466aa, 1.8);
+    const moon = new THREE.DirectionalLight(0x88aadd, 4.5);
     moon.position.set(-8, 14, -4);
     moon.castShadow = true;
     moon.shadow.mapSize.set(2048, 2048);
@@ -544,7 +545,10 @@
     moon.shadow.camera.right = moon.shadow.camera.top = 14;
     scene.add(moon);
 
-    const fillLight = new THREE.PointLight(0x5b9cf6, 2.5, 18);
+    const fillLight = new THREE.PointLight(0x5b9cf6, 6, 25);
+    const groundFill = new THREE.PointLight(0x2244aa, 3, 20);
+    groundFill.position.set(0, 0.5, 3);
+    scene.add(groundFill);
     fillLight.position.set(0, 7, 0);
     scene.add(fillLight);
 
@@ -861,7 +865,7 @@
     character.add(rightLegGroup);
 
     // Character point light (aura)
-    const charLight = new THREE.PointLight(0x5b9cf6, 1.5, 4);
+    const charLight = new THREE.PointLight(0x7ab4ff, 4, 6);
     charLight.position.set(0, 1.2, 0);
     character.add(charLight);
 
