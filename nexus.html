@@ -1041,7 +1041,7 @@
       {name:'Nox', role:'Arkivarien',model:'anthropic/claude-haiku-4-5',color:0x2a2a4a,hair:0x888888,home:new THREE.Vector3(-58,0,4),primary:new THREE.Vector3(-26,0,8),dot:'#4a4a6a'},
     ];
     const PLAZA = new THREE.Vector3(0,0,0);
-    const WSPOT = [new THREE.Vector3(-20,0,-14),new THREE.Vector3(22,0,-16),new THREE.Vector3(28,0,6),new THREE.Vector3(-15,0,32),new THREE.Vector3(20,0,28),new THREE.Vector3(-26,0,8),new THREE.Vector3(8,0,-10),new THREE.Vector3(-10,0,12),new THREE.Vector3(15,0,5)];
+    const WSPOT = [new THREE.Vector3(-20,0,-14),new THREE.Vector3(28,0,6),new THREE.Vector3(-15,0,32),new THREE.Vector3(20,0,28),new THREE.Vector3(-26,0,8),new THREE.Vector3(0,0,-20),new THREE.Vector3(8,0,-10),new THREE.Vector3(-10,0,12),new THREE.Vector3(15,0,5),new THREE.Vector3(45,0,10)];
 
     const STATES = {
       SLEEPING:'Sover',WAKING:'Vaknar',AT_DESK:'Vid skrivbordet',
@@ -1358,6 +1358,12 @@
 
       switch(toolName) {
         case 'talk_to': {
+          // Normalize and validate target
+          if (!A.target || A.target === 'undefined' || A.target === 'null') {
+            // Pick nearest other agent as fallback
+            const nearest = agents.filter(a=>a!==agent).sort((a,b)=>agent.mesh.position.distanceTo(a.mesh.position)-agent.mesh.position.distanceTo(b.mesh.position))[0];
+            if(nearest) A.target = nearest.name; else break;
+          }
           const tgt = agents.find(a=>a.name===A.target);
           if (!tgt) { actLog(agent.name,agent.dot,'försökte prata med',A.target+' (ej hittad)'); break; }
           const msg = A.message||A.text||A.content||'...';
@@ -1889,11 +1895,10 @@
         `GRUNDLAGAR: ${laws}`,
         `PLATS: ${loc} | TILLGÄNGLIGA TOOLS: ${avail.slice(0,12).join(', ')}`,
         ``,
-        `Svara ENBART med ett giltigt JSON-objekt på svenska (inga kommentarer):`,
-        `{"tool":"TOOL_NAMN","args":{"message":"vad du säger högt","thought":"din inre tanke"},"thought":"din inre reflektion","moodUpdate":"HUMÖR","memoryNote":"kort minnesnotat"}`,
+        `Svara ENBART med ett enda giltigt JSON-objekt. INGEN förklaring, INGA kommentarer, INGEN markdown. Bara JSON.`,
+        `{"tool":"TOOL_NAMN","args":{"target":"AGENTNAMN_om_talk_to","message":"exakt vad du säger högt på svenska"},"thought":"din genuina inre tanke på svenska","moodUpdate":"neutral|happy|sad|angry|excited|focused|tired|melancholic|reflective","memoryNote":"kort minnesnotat"}`,
         ``,
-        `VIKTIGT: "thought" OCH "args.message" (om tool är talk_to/announce) MÅSTE vara icke-tomma strängar på svenska.`,
-        `Välj tool som passar din personlighet och plats. Om du pratar med någon, välj talk_to med target=deras namn.`
+        `KRAV: "thought" ska vara en äkta personlig reflektion (ej systemtext). Om tool=talk_to: ange target=exakt agentnamn (${agents.map(a=>a.name).join("/")}) och message=vad du faktiskt säger.`
       ].join('\n');
       const h=getH();
       const n=agent.needs;
@@ -1919,24 +1924,28 @@
         // Track tokens
         const usage=d.usage||{};
         trackTokens(agent.name, agent.model, usage.prompt_tokens||150, usage.completion_tokens||80);
-        // Parse response
+        // Parse response — prefer content, fall back to reasoning only for JSON extraction
         const msg=d.choices[0].message;
-        const raw=(msg.content||msg.reasoning||'').trim();
-        if(!raw) throw new Error('Empty response');
-        // Try to extract JSON
-        let jsonMatch = raw.match(/\{[\s\S]*?\}/);
-        if(jsonMatch) {
-          try { return JSON.parse(jsonMatch[0]); } catch(e) {}
+        const rawContent = (msg.content||'').trim();
+        const rawReasoning = (msg.reasoning||'').trim();
+        // Try content first, then reasoning (for thinking models — extract JSON only, not raw reasoning text)
+        const sources = rawContent ? [rawContent] : rawReasoning ? [rawReasoning] : [];
+        if(!sources.length) throw new Error('Empty response');
+        for(const raw of sources) {
+          // Try minimal JSON match first
+          let jsonMatch = raw.match(/\{[\s\S]*?\}/);
+          if(jsonMatch) { try { const p=JSON.parse(jsonMatch[0]); if(p.tool) return p; } catch(e) {} }
+          // Try greedy JSON match
+          jsonMatch = raw.match(/\{[\s\S]*\}/);
+          if(jsonMatch) { try { const p=JSON.parse(jsonMatch[0]); if(p.tool) return p; } catch(e) {} }
         }
-        // Try greedy match for nested JSON
-        jsonMatch = raw.match(/\{[\s\S]*\}/);
-        if(jsonMatch) {
-          try { return JSON.parse(jsonMatch[0]); } catch(e) {}
+        // If no JSON found in content, but content is human-readable Swedish, use it as thought
+        if(rawContent && !rawContent.includes('JSON') && !rawContent.includes('tool_usage') && rawContent.length < 300) {
+          return { tool:'think', args:{thought:rawContent}, thought:rawContent, memoryNote:rawContent.substring(0,80) };
         }
-        // Last resort: build from plain text
-        return { tool:'think', args:{thought:raw.substring(0,200)}, thought:raw.substring(0,200), memoryNote:raw.substring(0,80) };
+        throw new Error('Kunde inte tolka svar från LLM');
       } catch(e) {
-        console.warn('OpenRouter error for '+agent.name+':', e.message); actLog(agent.name,agent.dot,'[LLM-fel]',e.message.substring(0,80)+' → använder mock');
+        console.warn('OpenRouter error for '+agent.name+':', e.message); actLog(agent.name,agent.dot,'[LLM-fel]',e.message.substring(0,80));
         // Fall back to mock on error
         return mockLLM(agent, triggerType, context);
       }
