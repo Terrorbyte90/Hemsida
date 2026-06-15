@@ -390,9 +390,9 @@
     renderer.toneMappingExposure = 1.1;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x87ceeb, 100, 280);
+    scene.fog = new THREE.Fog(0x87ceeb, 80, 600);
 
-    const camera = new THREE.PerspectiveCamera(52, 16/10, 0.1, 600);
+    const camera = new THREE.PerspectiveCamera(52, 16/10, 0.1, 1200);
     camera.position.set(14, 12, 20);
 
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -412,7 +412,7 @@
 
     // SKY
     const sky = new Sky();
-    sky.scale.setScalar(450000);
+    sky.scale.setScalar(400);
     scene.add(sky);
     const sun = new THREE.Vector3();
     const su = sky.material.uniforms;
@@ -900,6 +900,8 @@
       renderer.render(scene,camera);
     }
 
+    updateSky(getH());
+    renderer.setClearColor(0x87ceeb);
     focIdx=0; updateHighlight(); updateFocPanel();
     requestAnimationFrame(animate);
   </script>
