@@ -1864,6 +1864,13 @@
           if(_re !== 0){ agent.memory.updateRelation(A.target,_re,'Samtal'); tgt.memory.updateRelation(agent.name,Math.round(_re*0.5)); }
           tgt.memory.addEpisode(agent.name+' sa: "'+msg.substring(0,60)+'"');
           logEv(agent.name+' → '+A.target+': "'+msg+'"', 'green');
+          // Nearby agents (within 8m) can overhear the conversation
+          agents.forEach(a=>{
+            if(a===agent||a===tgt||a.state==='SLEEPING') return;
+            if(agent.mesh.position.distanceTo(a.mesh.position)<8){
+              a.memory.addEpisode('Hörde '+agent.name+' säga till '+A.target+': "'+msg.substring(0,50)+'"');
+            }
+          });
           break;
         }
         case 'announce': {
@@ -2537,7 +2544,7 @@
         `  report_problem: args={title, description, severity:"low"/"medium"/"high"} — rapportera ett problem`,
         `  update_institution: args={institution, note, purpose} — föreslå förändring av institution`,
         ``,
-        `Svara ENBART med ett enda giltigt JSON-objekt. INGEN förklaring, INGA kommentarer, INGEN markdown. Bara JSON.`,
+        `OUTPUT FORMAT: Exakt ett JSON-objekt. Ingen extra text, ingen markdown, inga förklaringar utanför JSON.`,
         `{"tool":"TOOL_NAMN","args":{"target":"AGENTNAMN","message":"vad du säger"},"thought":"din genuina inre tanke","moodUpdate":"neutral|happy|sad|angry|excited|focused|tired|melancholic|reflective","memoryNote":"kort minnesnotat"}`,
         ``,
         `BESLUTSSITUATION: Högsta prioritet just nu: ${decision.topPriority}. ${decision.allPriorities.length>1?'Övriga: '+decision.allPriorities.slice(1).join(', '):''} `,
