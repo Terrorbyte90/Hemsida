@@ -3056,6 +3056,7 @@
     }
 
 
+    let lastT=performance.now(), uiT=0;
     function animate(now) {
       requestAnimationFrame(animate);
       const dt=Math.min((now-lastT)/1000,.1); lastT=now; uiT+=dt;
