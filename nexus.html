@@ -71,8 +71,6 @@
     a { color: inherit; text-decoration: none; }
     .container { width: 100%; max-width: var(--content); margin: 0 auto; padding: 0 var(--space-6); }
     .container--wide { max-width: var(--content-wide); }
-
-    /* NAV */
     .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; backdrop-filter: blur(28px) saturate(200%); -webkit-backdrop-filter: blur(28px) saturate(200%); border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 78%, transparent); }
     .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 58px; gap: var(--space-8); }
     .nav__logo { font-family: var(--font-display); font-size: 1.2rem; letter-spacing: -0.01em; color: var(--text); flex-shrink: 0; }
@@ -94,26 +92,9 @@
       .nav__links.open { display: flex; flex-direction: column; position: absolute; top: 58px; left: 0; right: 0; background: color-mix(in srgb, var(--surface) 97%, transparent); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: var(--space-6); gap: var(--space-1); z-index: 99; }
       .nav__links.open a { padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); }
     }
-
-    /* HERO */
-    .hero {
-      padding-top: calc(58px + clamp(3rem, 8vw, 6rem));
-      padding-bottom: clamp(2rem, 5vw, 4rem);
-      position: relative; overflow: hidden;
-    }
-    .hero__bg {
-      position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
-    }
-    .hero__glow {
-      position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
-      width: 140vw; height: 700px;
-      background:
-        radial-gradient(ellipse 55% 45% at 35% 40%, rgba(74,222,128,0.07) 0%, transparent 60%),
-        radial-gradient(ellipse 45% 55% at 65% 30%, rgba(91,156,246,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 35% 35% at 50% 65%, rgba(167,139,250,0.04) 0%, transparent 60%);
-      animation: aurora 20s ease-in-out infinite alternate;
-      filter: blur(40px);
-    }
+    .hero { padding-top: calc(58px + clamp(3rem, 8vw, 6rem)); padding-bottom: clamp(2rem, 5vw, 4rem); position: relative; overflow: hidden; }
+    .hero__bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .hero__glow { position: absolute; top: -20%; left: 50%; transform: translateX(-50%); width: 140vw; height: 700px; background: radial-gradient(ellipse 55% 45% at 35% 40%, rgba(74,222,128,0.07) 0%, transparent 60%), radial-gradient(ellipse 45% 55% at 65% 30%, rgba(91,156,246,0.08) 0%, transparent 60%), radial-gradient(ellipse 35% 35% at 50% 65%, rgba(167,139,250,0.04) 0%, transparent 60%); animation: aurora 20s ease-in-out infinite alternate; filter: blur(40px); }
     @keyframes aurora { 0% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-52%) scale(1.05); } 100% { transform: translateX(-48%) scale(0.97); } }
     .hero__inner { position: relative; z-index: 1; }
     .hero__badge { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: var(--space-5); }
@@ -127,112 +108,55 @@
     .hero__stat { display: flex; flex-direction: column; gap: 2px; }
     .hero__stat-val { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text); }
     .hero__stat-label { font-size: var(--text-xs); color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; }
-
-    /* WORLD VIEWPORT */
     .world-section { padding-bottom: var(--space-16); }
-    .world-viewport {
-      position: relative;
-      width: 100%;
-      border-radius: var(--radius-2xl);
-      overflow: hidden;
-      border: 1px solid var(--border-md);
-      background: #010306;
-      aspect-ratio: 4 / 3;
-      min-height: 420px;
-      box-shadow: 0 0 0 1px rgba(74,222,128,0.08), var(--shadow-lg), 0 0 80px rgba(91,156,246,0.06);
-    }
+    .world-layout { display: grid; grid-template-columns: 1fr 260px; gap: var(--space-4); align-items: start; }
+    @media (max-width: 900px) { .world-layout { grid-template-columns: 1fr; } }
+    .world-viewport { position: relative; width: 100%; border-radius: var(--radius-2xl); overflow: hidden; border: 1px solid var(--border-md); background: #010306; aspect-ratio: 16/10; min-height: 380px; box-shadow: 0 0 0 1px rgba(74,222,128,0.08), var(--shadow-lg), 0 0 80px rgba(91,156,246,0.06); }
     #world-canvas { width: 100%; height: 100%; display: block; }
-    .world-hud {
-      position: absolute; inset: 0; pointer-events: none;
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .world-hud__top {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      padding: clamp(0.75rem, 2vw, 1.25rem);
-    }
-    .world-badge {
-      display: flex; align-items: center; gap: 0.5rem;
-      background: rgba(1,3,6,0.75); backdrop-filter: blur(12px);
-      border: 1px solid rgba(74,222,128,0.2); border-radius: 999px;
-      padding: 0.3rem 0.8rem;
-      font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.06em;
-      color: var(--green);
-    }
+    .world-hud { position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; }
+    .world-hud__top { display: flex; align-items: flex-start; justify-content: space-between; padding: clamp(0.6rem,2vw,1rem); gap: 0.5rem; flex-wrap: wrap; }
+    .world-hud__bottom { display: flex; align-items: flex-end; justify-content: space-between; padding: clamp(0.6rem,2vw,1rem); }
+    .world-badge { display: flex; align-items: center; gap: 0.5rem; background: rgba(1,3,6,0.75); backdrop-filter: blur(12px); border: 1px solid rgba(74,222,128,0.2); border-radius: 999px; padding: 0.3rem 0.8rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.06em; color: var(--green); }
     .world-badge__dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse-dot 2s infinite; }
-    .world-controls-hint {
-      font-family: var(--font-mono); font-size: 0.6rem; color: rgba(255,255,255,0.25);
-      background: rgba(1,3,6,0.6); backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md);
-      padding: 0.3rem 0.7rem;
-    }
-    .world-hud__bottom {
-      display: flex; align-items: flex-end; justify-content: flex-start;
-      padding: clamp(0.75rem, 2vw, 1.25rem);
-    }
-    .agent-hud-card {
-      background: rgba(1,3,6,0.8); backdrop-filter: blur(16px);
-      border: 1px solid rgba(91,156,246,0.2); border-radius: var(--radius-lg);
-      padding: 0.6rem 1rem; min-width: 160px;
-    }
-    .agent-hud-card__name { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; color: var(--accent); margin-bottom: 0.25rem; }
-    .agent-hud-card__status { font-size: 0.62rem; color: var(--text-faint); }
-    .agent-hud-card__status span { color: var(--green); }
-
-    /* SPEECH BUBBLE */
-    .speech-bubble {
-      position: absolute; pointer-events: none;
-      background: rgba(1,3,6,0.92); backdrop-filter: blur(16px);
-      border: 1px solid rgba(91,156,246,0.35); border-radius: var(--radius-lg);
-      padding: 0.5rem 0.85rem;
-      font-size: clamp(0.6rem, 1.2vw, 0.75rem); color: var(--text);
-      font-family: var(--font-mono); white-space: nowrap;
-      transform: translate(-50%, -100%) translateY(-12px);
-      opacity: 0; transition: opacity 0.3s var(--ease);
-      box-shadow: 0 0 20px rgba(91,156,246,0.2);
-      max-width: 220px; white-space: normal; text-align: center;
-    }
-    .speech-bubble::after {
-      content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
-      width: 10px; height: 6px;
-      background: rgba(1,3,6,0.92); clip-path: polygon(0 0, 100% 0, 50% 100%);
-      border-left: 1px solid rgba(91,156,246,0.35);
-      border-right: 1px solid rgba(91,156,246,0.35);
-    }
-    .speech-bubble.visible { opacity: 1; }
-
-    /* INFO PANELS */
-    .panels { display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: var(--space-4); margin-top: var(--space-6); }
+    .world-controls-hint { font-family: var(--font-mono); font-size: 0.6rem; color: rgba(255,255,255,0.25); background: rgba(1,3,6,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md); padding: 0.3rem 0.7rem; }
+    .hud-btn-group { display: flex; gap: 0.3rem; pointer-events: all; }
+    .cam-btn { font-family: var(--font-mono); font-size: 0.6rem; padding: 0.25rem 0.55rem; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.15); background: rgba(1,3,6,0.75); backdrop-filter: blur(8px); color: rgba(255,255,255,0.6); cursor: pointer; transition: all 0.15s; }
+    .cam-btn:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
+    .cam-btn.active { color: var(--green); border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.08); }
+    .agent-focus-overlay { position: absolute; pointer-events: none; transform: translate(-50%, -100%) translateY(-14px); text-align: center; opacity: 0; transition: opacity 0.3s; }
+    .agent-focus-overlay.visible { opacity: 1; }
+    .agent-focus-overlay__name { font-family: var(--font-mono); font-size: 0.58rem; color: #fff; background: rgba(1,3,6,0.85); border: 1px solid rgba(255,255,255,0.18); border-radius: var(--radius-full); padding: 0.12rem 0.5rem; white-space: nowrap; }
+    .agent-focus-overlay__bar { width: 38px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; margin: 3px auto 0; }
+    .agent-focus-overlay__bar-fill { height: 100%; border-radius: 2px; background: #fbbf24; transition: width 0.5s; }
+    .agent-sidebar { display: flex; flex-direction: column; gap: var(--space-2); }
+    .agent-list-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-3); cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+    .agent-list-card:hover { border-color: var(--border-strong); background: var(--surface-2); }
+    .agent-list-card.focused { border-color: rgba(91,156,246,0.4); background: var(--accent-dim); }
+    .agent-list-card__header { display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px; }
+    .agent-list-card__dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .agent-list-card__name { font-weight: 600; font-size: var(--text-sm); }
+    .agent-list-card__role { font-size: 0.58rem; color: var(--text-faint); font-family: var(--font-mono); margin-bottom: 4px; }
+    .agent-list-card__status { font-size: 0.62rem; color: var(--text-muted); margin-bottom: var(--space-2); }
+    .needs-bars { display: flex; flex-direction: column; gap: 3px; }
+    .needs-bar-row { display: flex; align-items: center; gap: var(--space-2); }
+    .needs-bar-label { font-family: var(--font-mono); font-size: 0.52rem; color: var(--text-faint); width: 44px; flex-shrink: 0; }
+    .needs-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+    .needs-bar__fill { height: 100%; border-radius: 2px; transition: width 0.8s ease; }
+    .needs-bar__fill--energi { background: #fbbf24; }
+    .needs-bar__fill--social { background: #4ade80; }
+    .needs-bar__fill--kunskap { background: #5b9cf6; }
+    .needs-bar__fill--valmående { background: #a78bfa; }
+    .panels { display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: var(--space-4); margin-top: var(--space-4); }
     @media (max-width: 760px) { .panels { grid-template-columns: 1fr; } }
-
-    .panel {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-xl); padding: var(--space-5);
-    }
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: var(--space-5); }
     .panel__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); }
     .panel__title { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
     .panel__badge { font-family: var(--font-mono); font-size: 0.6rem; padding: 2px 8px; border-radius: var(--radius-full); }
     .panel__badge--green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(74,222,128,0.2); }
     .panel__badge--blue { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(91,156,246,0.2); }
-
-    /* Agent card */
-    .agent-avatar {
-      width: 48px; height: 48px; border-radius: var(--radius-lg);
-      background: linear-gradient(135deg, #1a2a4a, #0f1a2e);
-      border: 1px solid rgba(91,156,246,0.25);
-      display: grid; place-items: center; margin-bottom: var(--space-3);
-      font-size: 1.5rem;
-    }
-    .agent-name { font-weight: 600; font-size: var(--text-base); margin-bottom: 2px; }
-    .agent-role { font-size: var(--text-xs); color: var(--text-faint); margin-bottom: var(--space-4); font-family: var(--font-mono); }
-    .agent-stats { display: flex; flex-direction: column; gap: var(--space-2); }
-    .agent-stat-row { display: flex; align-items: center; justify-content: space-between; }
-    .agent-stat-row__label { font-size: var(--text-xs); color: var(--text-faint); }
-    .agent-stat-row__val { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); }
-    .agent-stat-row__val.green { color: var(--green); }
-    .agent-stat-row__val.blue { color: var(--accent); }
-
-    /* Event log */
-    .event-log { display: flex; flex-direction: column; gap: var(--space-2); max-height: 240px; overflow: hidden; }
+    .event-log { display: flex; flex-direction: column; gap: var(--space-2); max-height: 240px; overflow-y: auto; }
+    .event-log::-webkit-scrollbar { width: 3px; }
+    .event-log::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
     .event-item { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-2) 0; border-bottom: 1px solid var(--divider); }
     .event-item:last-child { border-bottom: none; }
     .event-time { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-faint); flex-shrink: 0; padding-top: 2px; }
@@ -242,8 +166,6 @@
     .event-dot--amber { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
     .event-dot--purple { background: var(--purple); box-shadow: 0 0 6px var(--purple); }
     .event-text { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.4; }
-
-    /* Stats panel */
     .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
     .stat-block { padding: var(--space-3); background: var(--surface-2); border-radius: var(--radius-md); border: 1px solid var(--border); }
     .stat-block__num { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; letter-spacing: -0.02em; line-height: 1; margin-bottom: 2px; }
@@ -252,35 +174,19 @@
     .stat-block__num.blue { color: var(--accent); }
     .stat-block__num.amber { color: var(--amber); }
     .stat-block__num.purple { color: var(--purple); }
-
-    /* Bottom info */
-    .world-about {
-      margin-top: var(--space-12); padding-top: var(--space-12);
-      border-top: 1px solid var(--divider);
-      display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12);
-    }
+    .world-about { margin-top: var(--space-12); padding-top: var(--space-12); border-top: 1px solid var(--divider); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); }
     @media (max-width: 640px) { .world-about { grid-template-columns: 1fr; gap: var(--space-8); } }
     .world-about h2 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; letter-spacing: -0.02em; margin-bottom: var(--space-4); }
     .world-about p { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.75; margin-bottom: var(--space-3); }
     .feature-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4); }
     .feature-list li { display: flex; gap: var(--space-3); align-items: flex-start; font-size: var(--text-sm); color: var(--text-muted); }
-    .feature-list li::before { content: '→'; color: var(--accent); flex-shrink: 0; font-family: var(--font-mono); font-size: var(--text-xs); margin-top: 3px; }
-
-    /* FOOTER */
+    .feature-list li::before { content: 'to'; color: var(--accent); flex-shrink: 0; font-family: var(--font-mono); font-size: var(--text-xs); margin-top: 3px; }
     .site-footer { border-top: 1px solid var(--divider); padding: var(--space-8) 0; margin-top: var(--space-16); }
     .site-footer__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); flex-wrap: wrap; }
     .site-footer__copy { font-size: var(--text-xs); color: var(--text-faint); }
     .site-footer__links { display: flex; gap: var(--space-4); }
     .site-footer__links a { font-size: var(--text-xs); color: var(--text-faint); transition: color var(--transition); }
     .site-footer__links a:hover { color: var(--text-muted); }
-
-    /* Coming soon overlay for demo mode */
-    .demo-notice {
-      display: inline-flex; align-items: center; gap: var(--space-2);
-      font-size: var(--text-xs); color: var(--amber); font-family: var(--font-mono);
-      background: var(--amber-dim); border: 1px solid rgba(251,191,36,0.2);
-      border-radius: var(--radius-full); padding: 3px 10px;
-    }
   </style>
 </head>
 <body>
@@ -296,7 +202,7 @@
           <li><a href="om-mig.html">Om mig</a></li>
           <li><a href="chat.html" class="nav__ai">AI Chat</a></li>
           <li><a href="wiki.html">Wiki</a></li>
-          <li><a href="nexus.html" class="nav__world" aria-current="page">Nexus ●</a></li>
+          <li><a href="nexus.html" class="nav__world" aria-current="page">Nexus</a></li>
         </ul>
         <div class="nav__actions">
           <button class="icon-btn" id="theme-toggle" aria-label="Växla tema">
@@ -311,147 +217,109 @@
   </nav>
 
   <main>
-    <!-- HERO -->
     <section class="hero">
       <div class="hero__bg"><div class="hero__glow"></div></div>
       <div class="container hero__inner">
         <div class="hero__badge">Experiment <span class="hero__dot"></span></div>
         <h1 class="hero__title">Nexus — <em>Agentvärld</em></h1>
         <p class="hero__desc">
-          En levande digital stad där autonoma AI-agenter bygger samhällen, formar relationer och 
-          fattar egna beslut — helt utan mänsklig styrning. Inspirerat av Emergence World men 
-          skräddarsytt för att utforska långsiktig agent-autonomi, emergent beteende och kollektiv 
-          intelligens. Observera, påverka och se vad som sker när artificiellt liv lever ihop.
+          En levande digital stad där autonoma agenter bygger samhällen, formar relationer och
+          fattar egna beslut — helt utan LLM-styrning. Observera Elin, Mira, Kai, Aria och Nox
+          i deras dagliga liv: arbete, vila, sociala möten — drivna av ett tidsbaserat
+          tillståndssystem med needs som energi, social kontakt, kunskap och välmående.
         </p>
         <div class="hero__meta">
           <div class="hero__stat">
-            <span class="hero__stat-val">Demo</span>
-            <span class="hero__stat-label">Läge</span>
+            <span class="hero__stat-val">5</span>
+            <span class="hero__stat-label">Aktiva agenter</span>
           </div>
           <div class="hero__stat">
             <span class="hero__stat-val">Three.js</span>
             <span class="hero__stat-label">Render-motor</span>
           </div>
           <div class="hero__stat">
-            <span class="hero__stat-val">ARIA-1</span>
-            <span class="hero__stat-label">Aktiva agenter</span>
+            <span class="hero__stat-val">Real-tid</span>
+            <span class="hero__stat-label">Vara-klocka</span>
           </div>
           <div class="hero__stat">
-            <span class="demo-notice">⚠ Ingen modell kopplad ännu</span>
+            <span class="hero__stat-val" id="hero-stat-time">--:--</span>
+            <span class="hero__stat-label">Lokal tid</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 3D WORLD -->
     <section class="world-section">
       <div class="container container--wide">
-        <div class="world-viewport">
-          <canvas id="world-canvas"></canvas>
-          <div class="world-hud">
-            <div class="world-hud__top">
-              <div class="world-badge" id="hud-clock-wrap">
-                <span class="world-badge__dot"></span>
-                <span id="hud-clock">NEXUS · DEMO · DAG 1 · 14:27</span>
+        <div class="world-layout">
+          <div class="world-viewport" id="world-viewport">
+            <canvas id="world-canvas"></canvas>
+            <div class="world-hud">
+              <div class="world-hud__top">
+                <div class="world-badge">
+                  <span class="world-badge__dot"></span>
+                  <span id="hud-clock">NEXUS · VARA · 00:00</span>
+                </div>
+                <div style="display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap;">
+                  <div id="weather-hud" style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-muted);background:rgba(1,3,6,0.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:0.3rem 0.7rem;">Laddar väder...</div>
+                  <div class="hud-btn-group">
+                    <button class="cam-btn" id="btn-auto-cam">Auto-kamera</button>
+                    <button class="cam-btn active" id="btn-manual-cam">Manuell</button>
+                    <button class="cam-btn" id="btn-fullscreen">Fullskärm</button>
+                  </div>
+                  <div class="world-controls-hint">Drag · Scroll zoom</div>
+                </div>
               </div>
-              <div style="display:flex;gap:0.5rem;align-items:center"><div id="weather-hud" style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-muted);background:rgba(1,3,6,0.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:0.3rem 0.7rem;">⏳ väder...</div><div class="world-controls-hint">Drag · Scroll zoom</div></div>
-            </div>
-            <div class="world-hud__bottom">
-              <div class="agent-hud-card">
-                <div class="agent-hud-card__name">▸ ARIA-1</div>
-                <div class="agent-hud-card__status">Status: <span>Aktiv</span> · Torget</div>
+              <div class="world-hud__bottom">
+                <div id="focused-agent-hud" style="font-family:var(--font-mono);font-size:0.65rem;color:rgba(255,255,255,0.4);background:rgba(1,3,6,0.6);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius-md);padding:0.3rem 0.7rem;">Välj en agent i listan</div>
               </div>
             </div>
           </div>
-          <div class="speech-bubble" id="speech-bubble"></div>
+          <div class="agent-sidebar" id="agent-sidebar"></div>
         </div>
 
-        <!-- INFO PANELS -->
         <div class="panels">
-          <!-- Agent -->
           <div class="panel">
             <div class="panel__header">
-              <span class="panel__title">Agent</span>
-              <span class="panel__badge panel__badge--green">Aktiv</span>
+              <span class="panel__title">Fokuserad agent</span>
+              <span class="panel__badge panel__badge--green" id="focused-badge">—</span>
             </div>
-            <div class="agent-avatar">🤖</div>
-            <div class="agent-name">ARIA-1</div>
-            <div class="agent-role">// Utforskare · Klass A</div>
-            <div class="agent-stats">
-              <div class="agent-stat-row"><span class="agent-stat-row__label">Plats</span><span class="agent-stat-row__val green">Torget</span></div>
-              <div class="agent-stat-row"><span class="agent-stat-row__label">Aktivitet</span><span class="agent-stat-row__val blue">Promenerar</span></div>
-              <div class="agent-stat-row"><span class="agent-stat-row__label">Minnen</span><span class="agent-stat-row__val">0</span></div>
-              <div class="agent-stat-row"><span class="agent-stat-row__label">Relationer</span><span class="agent-stat-row__val">0</span></div>
-              <div class="agent-stat-row"><span class="agent-stat-row__label">Beslut idag</span><span class="agent-stat-row__val">0</span></div>
-            </div>
+            <div id="focused-agent-details" style="font-size:var(--text-xs);color:var(--text-faint);">Välj en agent i sidopanelen.</div>
           </div>
-
-          <!-- Event log -->
           <div class="panel">
             <div class="panel__header">
               <span class="panel__title">Händelselogg</span>
               <span class="panel__badge panel__badge--blue">Live</span>
             </div>
-            <div class="event-log" id="event-log">
-              <div class="event-item">
-                <span class="event-time">14:27</span>
-                <span class="event-dot event-dot--green"></span>
-                <span class="event-text">ARIA-1 väckt. Initierar sensorsystem och minneslager.</span>
-              </div>
-              <div class="event-item">
-                <span class="event-time">14:27</span>
-                <span class="event-dot event-dot--blue"></span>
-                <span class="event-text">Nexus-miljön laddad. Kartläggning av 40+ platser påbörjad.</span>
-              </div>
-              <div class="event-item">
-                <span class="event-time">14:27</span>
-                <span class="event-dot event-dot--amber"></span>
-                <span class="event-text">Väntar på AI-modellkoppling. Demo-läge aktivt.</span>
-              </div>
-            </div>
+            <div class="event-log" id="event-log"></div>
           </div>
-
-          <!-- Stats -->
           <div class="panel">
             <div class="panel__header">
               <span class="panel__title">Världsstatistik</span>
             </div>
             <div class="stat-grid">
-              <div class="stat-block">
-                <div class="stat-block__num blue">1</div>
-                <div class="stat-block__label">Agenter</div>
-              </div>
-              <div class="stat-block">
-                <div class="stat-block__num green">1</div>
-                <div class="stat-block__label">Dag</div>
-              </div>
-              <div class="stat-block">
-                <div class="stat-block__num amber">0</div>
-                <div class="stat-block__label">Brott</div>
-              </div>
-              <div class="stat-block">
-                <div class="stat-block__num purple">0</div>
-                <div class="stat-block__label">Allianser</div>
-              </div>
+              <div class="stat-block"><div class="stat-block__num blue">5</div><div class="stat-block__label">Agenter</div></div>
+              <div class="stat-block"><div class="stat-block__num green" id="stat-awake">—</div><div class="stat-block__label">Vakna</div></div>
+              <div class="stat-block"><div class="stat-block__num amber" id="stat-plaza">—</div><div class="stat-block__label">På torget</div></div>
+              <div class="stat-block"><div class="stat-block__num purple" id="stat-avg-needs">—</div><div class="stat-block__label">Snitt needs</div></div>
             </div>
           </div>
         </div>
 
-        <!-- ABOUT -->
         <div class="world-about">
           <div>
             <h2>Hur det fungerar</h2>
-            <p>Nexus är ett multi-agent-experiment där AI-agenter lever i en delad stad. Varje agent har en unik personlighet, yrke, minne och egna mål. De navigerar miljön, interagerar med varandra och med världen — utan att vi styr dem.</p>
-            <p>Till skillnad från traditionella AI-tester mäter Nexus <em>långsiktig autonomi</em>: vad händer efter dagar och veckor, när mönster etableras och beslut ackumuleras?</p>
+            <p>Nexus är ett multi-agent-experiment i realtid. Fem agenter lever sina liv i en 300x300 enheter stor stad. De rör sig tidsbaserat: vaknar, går till jobbet, lunchar på torget, vandrar på eftermiddagen och sover om natten.</p>
+            <p>Agenternas beteende styrs av ett tillståndssystem kopplat till Vara-klockan, utan LLM. Needs-systemet spårar energi, social kontakt och kunskapsnivå i realtid.</p>
           </div>
           <div>
             <h2>Vad vi utforskar</h2>
             <ul class="feature-list">
-              <li>Emergent samhällsbildning utan mänsklig scripting</li>
-              <li>Logikdrift — hur beteende förändras över tid</li>
-              <li>Gränsutforskande — testar agenter sina begränsningar?</li>
-              <li>Kollektiv intelligens vs individuell måloptimering</li>
-              <li>Jämförelse av olika AI-modellers "samhällskaraktär"</li>
+              <li>Tidsbaserat beteende med dygnsrytm och rutiner</li>
+              <li>Needs-system: energi, social, kunskap, välmående</li>
+              <li>Real-tids sky och väder från Vara, Sverige</li>
+              <li>Auto-kamera som cyklar mellan agenter</li>
+              <li>Fem unika byggnader och bostadsområden</li>
             </ul>
           </div>
         </div>
@@ -472,7 +340,7 @@
     </div>
   </footer>
 
-    <script type="importmap">
+  <script type="importmap">
   {
     "imports": {
       "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
@@ -485,1135 +353,555 @@
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     import { Sky } from 'three/addons/objects/Sky.js';
-    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-    const canvas   = document.getElementById('world-canvas');
-    const viewport = canvas.parentElement;
-    const bubble   = document.getElementById('speech-bubble');
-    const hudClock = document.getElementById('hud-clock');
+    // Theme & nav
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const h = document.documentElement;
+      h.dataset.theme = h.dataset.theme === 'dark' ? 'light' : 'dark';
+    });
+    document.getElementById('hamburger').addEventListener('click', () => {
+      const l = document.getElementById('nav-links');
+      l.classList.toggle('open');
+    });
 
-    // ── TIME SYSTEM (Sweden CEST = UTC+2) ────────────────────
-    const SUNRISE_H = 4.5;   // ~04:30 local
-    const SUNSET_H  = 22.22; // 22:13 local
-    const NOON_H    = (SUNRISE_H + SUNSET_H) / 2;
-
-    function getLocalHour() {
-      const now = new Date();
-      return ((now.getUTCHours() + 2) % 24) + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+    // TIME (Vara UTC+2)
+    const SUNRISE = 4.5, SUNSET = 22.22;
+    function getH() {
+      const n = new Date();
+      return ((n.getUTCHours() + 2) % 24) + n.getUTCMinutes()/60 + n.getUTCSeconds()/3600;
+    }
+    function sunElev(h) {
+      if (h < SUNRISE || h > SUNSET) return -0.1;
+      return Math.sin(((h - SUNRISE)/(SUNSET - SUNRISE)) * Math.PI);
+    }
+    function fmt(h) {
+      const hh = Math.floor(h) % 24, mm = Math.floor((h%1)*60);
+      return String(hh).padStart(2,'0') + ':' + String(mm).padStart(2,'0');
     }
 
-    // 0=midnight, peaks at 1.0 at solar noon
-    function getSunElevation(h) {
-      const dayLen = SUNSET_H - SUNRISE_H;
-      if (h < SUNRISE_H || h > SUNSET_H) return -0.1;
-      return Math.sin(((h - SUNRISE_H) / dayLen) * Math.PI);
-    }
-
-    // ── RENDERER ─────────────────────────────────────────────
+    // RENDERER
+    const canvas = document.getElementById('world-canvas');
+    const vp = document.getElementById('world-viewport');
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
 
-    function resize() {
-      const w = viewport.clientWidth, h = viewport.clientHeight;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      composer.setSize(w, h);
-    }
-
-    // ── SCENE ────────────────────────────────────────────────
     const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x87ceeb, 100, 280);
 
-    // ── CAMERA ───────────────────────────────────────────────
-    const camera = new THREE.PerspectiveCamera(52, 4/3, 0.1, 500);
-    camera.position.set(7, 5.5, 9);
+    const camera = new THREE.PerspectiveCamera(52, 16/10, 0.1, 600);
+    camera.position.set(14, 12, 20);
 
-    // ── CONTROLS ─────────────────────────────────────────────
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.minDistance = 1.5;
-    controls.maxDistance = 45;
-    controls.maxPolarAngle = Math.PI / 2.08;
-    controls.target.set(0, 1.0, 0);
+    controls.enableDamping = true; controls.dampingFactor = 0.05;
+    controls.minDistance = 1.5; controls.maxDistance = 150;
+    controls.maxPolarAngle = Math.PI/2.05;
+    controls.target.set(0,1,0);
 
-    // ── POST-PROCESSING ───────────────────────────────────────
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    const bloom = new UnrealBloomPass(new THREE.Vector2(1280, 960), 0.6, 0.4, 0.82);
-    composer.addPass(bloom);
-
-    // ── SKY ──────────────────────────────────────────────────
-    const sky = new Sky();
-    sky.scale.setScalar(450);
-    scene.add(sky);
-    const sunVec = new THREE.Vector3();
-    const skyUniforms = sky.material.uniforms;
-    skyUniforms['turbidity'].value = 3;
-    skyUniforms['rayleigh'].value = 2.5;
-    skyUniforms['mieCoefficient'].value = 0.005;
-    skyUniforms['mieDirectionalG'].value = 0.82;
-
-    // ── LIGHTING ─────────────────────────────────────────────
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
-    scene.add(ambientLight);
-
-    const sunLight = new THREE.DirectionalLight(0xffeedd, 3);
-    sunLight.castShadow = true;
-    sunLight.shadow.mapSize.set(2048, 2048);
-    sunLight.shadow.camera.near = 0.5;
-    sunLight.shadow.camera.far = 60;
-    sunLight.shadow.camera.left = sunLight.shadow.camera.bottom = -16;
-    sunLight.shadow.camera.right = sunLight.shadow.camera.top = 16;
-    sunLight.shadow.bias = -0.0005;
-    scene.add(sunLight);
-
-    const fillLight = new THREE.PointLight(0x6688cc, 4, 30);
-    fillLight.position.set(-3, 4, 3);
-    scene.add(fillLight);
-    // Plaza centre uplights
-    const plaza1 = new THREE.PointLight(0x8899cc, 2.5, 10);
-    plaza1.position.set(0, 0.5, 0); scene.add(plaza1);
-    const plaza2 = new THREE.PointLight(0x4466aa, 2, 8);
-    plaza2.position.set(3, 1, -2); scene.add(plaza2);
-
-    // ── UPDATE SKY + LIGHTING BY TIME ────────────────────────
-    function updateSky() {
-      const h = getLocalHour();
-      const elev = getSunElevation(h);
-
-      // Sun position
-      const phi   = THREE.MathUtils.degToRad(90 - elev * 80);
-      const theta = THREE.MathUtils.degToRad(200);
-      sunVec.setFromSphericalCoords(1, phi, theta);
-      skyUniforms['sunPosition'].value.copy(sunVec);
-      sunLight.position.copy(sunVec.clone().multiplyScalar(50));
-
-      // Time of day parameters
-      const isDay     = elev > 0;
-      const isGolden  = elev > 0 && elev < 0.25;  // dawn/dusk
-      const isTwilight = elev > -0.15 && elev <= 0; // civil twilight
-
-      if (!isDay && !isTwilight) {
-        // Night
-        scene.background = new THREE.Color(0x03060f);
-        scene.fog = new THREE.FogExp2(0x05080e, 0.022);
-        ambientLight.color.set(0x1a2a4a);
-        ambientLight.intensity = 0.5;
-        sunLight.intensity = 0;
-        renderer.toneMappingExposure = 2.2;
-        bloom.strength = 0.9;
-        // Show stars
-        if (starField) starField.visible = true;
-        // Night lamps brighter
-        lampLights.forEach(l => l.intensity = 2.5);
-      } else if (isTwilight) {
-        // Civil twilight (just before sunrise / just after sunset)
-        scene.background = new THREE.Color(0x0d1a3a);
-        scene.fog = new THREE.FogExp2(0x0d1a2e, 0.018);
-        ambientLight.color.set(0x334466);
-        ambientLight.intensity = 1.2;
-        sunLight.intensity = 0.3;
-        sunLight.color.set(0xff9955);
-        renderer.toneMappingExposure = 1.5;
-        bloom.strength = 0.9;
-        if (starField) starField.visible = true;
-        lampLights.forEach(l => l.intensity = 2.0);
-      } else if (isGolden) {
-        // Golden hour (dawn/dusk) — current situation ~04:49
-        const t = elev / 0.25;
-        scene.fog = new THREE.FogExp2(0x1a1008, 0.012);
-        ambientLight.color.set(0xffcc88);
-        ambientLight.intensity = 1.5 + t * 1.5;
-        sunLight.color.set(0xff8833);
-        sunLight.intensity = 2.0 + t * 2.5;
-        renderer.toneMappingExposure = 1.1 + t * 0.15;
-        bloom.strength = 0.45;
-        skyUniforms['turbidity'].value = 5;
-        skyUniforms['rayleigh'].value = 2.5;
-        if (starField) starField.visible = (elev < 0.12);
-        lampLights.forEach(l => l.intensity = 1.2 - t * 0.8);
-      } else {
-        // Full day
-        const t = Math.min((elev - 0.25) / 0.5, 1);
-        scene.fog = new THREE.FogExp2(0x8ab0d8, 0.008);
-        ambientLight.color.set(0xddeeff);
-        ambientLight.intensity = 3 + t * 2;
-        sunLight.color.set(0xfff5e0);
-        sunLight.intensity = 3.5 + t;
-        renderer.toneMappingExposure = 0.9;
-        bloom.strength = 0.3;
-        skyUniforms['turbidity'].value = 2.5;
-        skyUniforms['rayleigh'].value = 2;
-        if (starField) starField.visible = false;
-        lampLights.forEach(l => l.intensity = 0.3);
-      }
-
-      // Update HUD clock
-      const hInt = Math.floor(h);
-      const mInt = Math.floor((h - hInt) * 60);
-      const timeStr = hInt.toString().padStart(2,'0') + ':' + mInt.toString().padStart(2,'0');
-      if (hudClock) hudClock.textContent = 'NEXUS · DEMO · DAG 1 · ' + timeStr;
+    function resize() {
+      const w = vp.clientWidth, h = vp.clientHeight;
+      renderer.setSize(w,h,false);
+      camera.aspect = w/h;
+      camera.updateProjectionMatrix();
     }
-
-    // ── STARS ────────────────────────────────────────────────
-    let starField;
-    {
-      const geo = new THREE.BufferGeometry();
-      const n = 2500;
-      const pos = new Float32Array(n * 3);
-      const sizes = new Float32Array(n);
-      for (let i = 0; i < n; i++) {
-        // Distribute on upper hemisphere
-        const r = 150 + Math.random() * 50;
-        const theta = Math.random() * Math.PI * 2;
-        const phi = Math.random() * Math.PI * 0.5; // upper hemisphere
-        pos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
-        pos[i*3+1] = r * Math.cos(phi);
-        pos[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
-        sizes[i] = 0.5 + Math.random() * 1.5;
-      }
-      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-      const mat = new THREE.PointsMaterial({
-        color: 0xffffff, size: 0.15, sizeAttenuation: true,
-        transparent: true, opacity: 0.9
-      });
-      starField = new THREE.Points(geo, mat);
-      scene.add(starField);
-    }
-
-    // ── GROUND ───────────────────────────────────────────────
-    {
-      const geo = new THREE.PlaneGeometry(60, 60);
-      const mat = new THREE.MeshStandardMaterial({
-        color: 0x3a5030, roughness: 0.9, metalness: 0.0
-      });
-      const ground = new THREE.Mesh(geo, mat);
-      ground.rotation.x = -Math.PI / 2;
-      ground.receiveShadow = true;
-      scene.add(ground);
-
-      // Paved plaza
-      const plazaMat = new THREE.MeshStandardMaterial({ color: 0x484c52, roughness: 0.8, metalness: 0.15 });
-      const plaza = new THREE.Mesh(new THREE.PlaneGeometry(12, 12), plazaMat);
-      plaza.rotation.x = -Math.PI / 2;
-      plaza.position.y = 0.002;
-      plaza.receiveShadow = true;
-      scene.add(plaza);
-
-      // Plaza tiles (lines)
-      const gridH = new THREE.GridHelper(12, 6, 0x555560, 0x44464a);
-      gridH.position.y = 0.003;
-      scene.add(gridH);
-
-      // Plaza circle
-      const ring = new THREE.Mesh(
-        new THREE.RingGeometry(3.8, 4.0, 64),
-        new THREE.MeshBasicMaterial({ color: 0x5b9cf6, side: THREE.DoubleSide, transparent: true, opacity: 0.5 })
-      );
-      ring.rotation.x = -Math.PI / 2;
-      ring.position.y = 0.004;
-      scene.add(ring);
-
-      // Green patches
-      [-7, 7].forEach(x => {
-        [-7, 7].forEach(z => {
-          const gp = new THREE.Mesh(
-            new THREE.PlaneGeometry(4 + Math.random()*2, 4 + Math.random()*2),
-            new THREE.MeshStandardMaterial({ color: 0x2d5a22, roughness: 1 })
-          );
-          gp.rotation.x = -Math.PI / 2;
-          gp.position.set(x, 0.001, z);
-          scene.add(gp);
-        });
-      });
-    }
-
-    // ── BUILDING ─────────────────────────────────────────────
-    function buildBuilding() {
-      const g = new THREE.Group();
-      g.position.set(0, 0, -6);
-
-      const glassMat = new THREE.MeshPhysicalMaterial({
-        color: 0x0d1e32, roughness: 0.05, metalness: 0.9,
-        reflectivity: 0.8, envMapIntensity: 1
-      });
-      const concreteMat = new THREE.MeshStandardMaterial({ color: 0x1e2428, roughness: 0.8, metalness: 0.2 });
-
-      // Base
-      const base = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.5, 3.6), concreteMat);
-      base.position.y = 0.25; base.castShadow = true; base.receiveShadow = true;
-      g.add(base);
-
-      // Steps
-      [0.7, 0.5, 0.3].forEach((w, i) => {
-        const step = new THREE.Mesh(new THREE.BoxGeometry(w*3.6, 0.12, 0.3), concreteMat);
-        step.position.set(0, 0.5 + i*0.12, 1.8 - i*0.15);
-        g.add(step);
-      });
-
-      // Main tower
-      const tower = new THREE.Mesh(new THREE.BoxGeometry(2.6, 8.5, 2.6), glassMat);
-      tower.position.y = 4.75; tower.castShadow = true;
-      g.add(tower);
-
-      // Secondary tower offset
-      const tower2 = new THREE.Mesh(new THREE.BoxGeometry(1.2, 5.5, 1.2), glassMat);
-      tower2.position.set(1.1, 3.25, -1.1); tower2.castShadow = true;
-      g.add(tower2);
-
-      // Horizontal bands (floors)
-      const bandMat = new THREE.MeshStandardMaterial({ color: 0x334455, roughness: 0.6, metalness: 0.5 });
-      for (let f = 0; f < 8; f++) {
-        const band = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.06, 2.64), bandMat);
-        band.position.y = 0.75 + f * 1.05;
-        g.add(band);
-      }
-
-      // Windows — emissive
-      const winMats = [
-        new THREE.MeshStandardMaterial({ color: 0x88aaff, emissive: 0x4466cc, emissiveIntensity: 1.5, roughness: 0.3 }),
-        new THREE.MeshStandardMaterial({ color: 0xffeebb, emissive: 0xddaa55, emissiveIntensity: 1.0, roughness: 0.4 }),
-      ];
-      const faces = [
-        { axis:'z', sign: 1, dir:'x' },
-        { axis:'z', sign:-1, dir:'x' },
-        { axis:'x', sign: 1, dir:'z' },
-        { axis:'x', sign:-1, dir:'z' },
-      ];
-      for (let floor = 0; floor < 7; floor++) {
-        const y = 1.1 + floor * 1.05;
-        faces.forEach(face => {
-          [-0.72, 0, 0.72].forEach(offset => {
-            const isOff = Math.random() > 0.85;
-            const wm = winMats[Math.random() > 0.8 ? 1 : 0].clone();
-            if (isOff) wm.emissiveIntensity = 0;
-            const pos = new THREE.Vector3();
-            pos[face.axis] = 1.31 * face.sign;
-            pos[face.dir] = offset;
-            pos.y = y;
-            const dims = { w:0.3, h:0.55, d:0.04 };
-            const wg = face.axis === 'z'
-              ? new THREE.BoxGeometry(dims.w, dims.h, dims.d)
-              : new THREE.BoxGeometry(dims.d, dims.h, dims.w);
-            const wm2 = new THREE.Mesh(wg, wm);
-            wm2.position.copy(pos);
-            g.add(wm2);
-          });
-        });
-      }
-
-      // Roof crown
-      const roof = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.25, 2.8),
-        new THREE.MeshStandardMaterial({ color: 0x223344, roughness: 0.5, metalness: 0.6 }));
-      roof.position.y = 9.12; g.add(roof);
-
-      // Antenna
-      const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.05, 2.2, 8),
-        new THREE.MeshStandardMaterial({ color: 0x556677, metalness: 0.9, roughness: 0.2 }));
-      ant.position.y = 10.1; g.add(ant);
-
-      const antTip = new THREE.Mesh(new THREE.SphereGeometry(0.09, 8, 8),
-        new THREE.MeshStandardMaterial({ color: 0xff3333, emissive: 0xff2222, emissiveIntensity: 4 }));
-      antTip.position.y = 11.3; g.add(antTip);
-
-      // Roof glow strip
-      const roofGlow = new THREE.Mesh(new THREE.BoxGeometry(2.62, 0.04, 2.62),
-        new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x2255bb, emissiveIntensity: 2.5 }));
-      roofGlow.position.y = 9.26; g.add(roofGlow);
-
-      // Roof light
-      const rLight = new THREE.PointLight(0x5b9cf6, 5, 15);
-      rLight.position.y = 9.5; g.add(rLight);
-
-      // Entrance door glow
-      const doorGlow = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.15, 0.06),
-        new THREE.MeshStandardMaterial({ color: 0x003355, emissive: 0x003366, emissiveIntensity: 1 }));
-      doorGlow.position.set(0, 1.05, 1.31); g.add(doorGlow);
-      const doorTop = new THREE.Mesh(new THREE.BoxGeometry(0.96, 0.05, 0.05),
-        new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x5b9cf6, emissiveIntensity: 3 }));
-      doorTop.position.set(0, 1.65, 1.31); g.add(doorTop);
-
-      // Building sign "NEXUS"
-      const signBg = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.28, 0.06),
-        new THREE.MeshStandardMaterial({color:0x0a1520,emissive:0x001133,emissiveIntensity:0.5}));
-      signBg.position.set(0, 2.1, 1.33); g.add(signBg);
-      const signGlow = new THREE.Mesh(new THREE.BoxGeometry(1.38, 0.26, 0.04),
-        new THREE.MeshStandardMaterial({color:0x5b9cf6,emissive:0x3366cc,emissiveIntensity:2.5}));
-      signGlow.position.set(0, 2.1, 1.36); g.add(signGlow);
-
-      // Awning over entrance
-      const awning = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.06,0.6),
-        new THREE.MeshStandardMaterial({color:0x1a2a44,roughness:0.8,metalness:0.3}));
-      awning.position.set(0, 1.95, 1.6); awning.rotation.x=0.15; g.add(awning);
-
-      // Ground floor accent band
-      const gfBand = new THREE.Mesh(new THREE.BoxGeometry(2.62,0.18,2.62),
-        new THREE.MeshStandardMaterial({color:0x1a2838,roughness:0.7,metalness:0.4}));
-      gfBand.position.y=0.79; g.add(gfBand);
-
-      // Rooftop AC units
-      [[0.6,0,-0.6],[-0.6,0,0.6]].forEach(([rx,_,rz])=>{
-        const ac = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.18,0.25),
-          new THREE.MeshStandardMaterial({color:0x2a3a4a,roughness:0.6,metalness:0.5}));
-        ac.position.set(rx,9.35,rz); g.add(ac);
-      });
-
-      scene.add(g);
-      return g;
-    }
-    const mainBuilding = buildBuilding();
-
-    // Side building
-    {
-      const g = new THREE.Group();
-      g.position.set(5.5, 0, -4);
-      g.rotation.y = 0.3;
-      const mat = new THREE.MeshStandardMaterial({ color: 0x1c2830, roughness: 0.7, metalness: 0.3 });
-      const b = new THREE.Mesh(new THREE.BoxGeometry(2.2, 4.8, 2.2), mat);
-      b.position.y = 2.4; b.castShadow = true;
-      g.add(b);
-      const wm = new THREE.MeshStandardMaterial({ emissive: 0xddaa33, emissiveIntensity: 0.8, color: 0xfbbf24, roughness: 0.4 });
-      for (let fl = 0; fl < 3; fl++) {
-        [-0.5, 0.5].forEach(wx => {
-          const w = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.45, 0.04), wm.clone());
-          w.position.set(wx, 1.0 + fl * 1.2, 1.12);
-          w.material.emissiveIntensity = 0.3 + Math.random() * 0.8;
-          g.add(w);
-        });
-      }
-      const roofG = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.15, 2.4),
-        new THREE.MeshStandardMaterial({ color: 0x2a3540, roughness: 0.8 }));
-      roofG.position.y = 4.87; g.add(roofG);
-      scene.add(g);
-    }
-
-    // Low building left
-    {
-      const g = new THREE.Group();
-      g.position.set(-7, 0, -4);
-      const mat = new THREE.MeshStandardMaterial({ color: 0x252e22, roughness: 0.9 });
-      const b = new THREE.Mesh(new THREE.BoxGeometry(3, 2.4, 4), mat);
-      b.position.y = 1.2; b.castShadow = true; b.receiveShadow = true;
-      g.add(b);
-      for (let i = 0; i < 4; i++) {
-        const w = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.5, 0.04),
-          new THREE.MeshStandardMaterial({ emissive: 0x88aaff, emissiveIntensity: 0.6, color: 0x6688cc }));
-        w.position.set(-1.05 + i * 0.7, 1.4, 2.02);
-        g.add(w);
-      }
-      scene.add(g);
-    }
-
-    // Trees
-    // Summer deciduous tree
-    function addTree(x, z, scale=1, type=0) {
-      const g = new THREE.Group();
-      g.position.set(x, 0, z);
-      g.scale.setScalar(scale);
-      const trunkH = 1.4 + Math.random()*0.6;
-      const trunkMat = new THREE.MeshStandardMaterial({ color: type===1?0x6b4a22:0x5a3518, roughness:0.95 });
-      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.16,trunkH,8), trunkMat);
-      trunk.position.y = trunkH/2; trunk.castShadow=true; g.add(trunk);
-      // Leafy crown: overlapping spheres for lush look
-      const greens = type===1
-        ? [0x2d7a1f,0x38921f,0x246b1a,0x4aa030]  // bright summer green
-        : [0x1f6b1a,0x2a8020,0x1a5c16,0x338a22];
-      const crownY = trunkH + 0.3;
-      const mainCrown = new THREE.Mesh(new THREE.SphereGeometry(0.95,10,8), new THREE.MeshStandardMaterial({color:greens[0],roughness:0.9}));
-      mainCrown.scale.set(1,0.88,1); mainCrown.position.y=crownY+0.1; mainCrown.castShadow=true; g.add(mainCrown);
-      // Cluster spheres around crown
-      const offsets = [[-0.55,0.2,0.1],[0.55,0.15,-0.05],[0.1,0.45,0.4],[-0.15,0.4,-0.45],[0.4,-0.2,0.5],[-0.4,-0.15,-0.5],[0.0,0.6,0.1]];
-      offsets.forEach(([ox,oy,oz],i)=>{
-        const r = 0.52+Math.random()*0.22;
-        const col = greens[i%greens.length];
-        const s = new THREE.Mesh(new THREE.SphereGeometry(r,8,6), new THREE.MeshStandardMaterial({color:col,roughness:0.92}));
-        s.position.set(ox,crownY+oy+0.1,oz); s.castShadow=true; g.add(s);
-      });
-      scene.add(g);
-    }
-    // Keep one or two conifers for variety
-    function addConifer(x, z, scale=1) {
-      const g = new THREE.Group();
-      g.position.set(x, 0, z);
-      g.scale.setScalar(scale);
-      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.16,1.6,8),
-        new THREE.MeshStandardMaterial({color:0x4a2e10,roughness:0.95}));
-      trunk.position.y=0.8; trunk.castShadow=true; g.add(trunk);
-      [[0,1.6,1.1,1.3],[0.7,2.3,0.85,1.1],[1.3,2.95,0.65,0.9],[1.9,3.5,0.45,0.7]].forEach(([dy,y,r,h])=>{
-        const cone = new THREE.Mesh(new THREE.ConeGeometry(r,h,9),
-          new THREE.MeshStandardMaterial({color:dy<1?0x1a5218:0x246820,roughness:0.95}));
-        cone.position.y=y; cone.castShadow=true; g.add(cone);
-      });
-      scene.add(g);
-    }
-    // Deciduous summer trees (type 0=dark, 1=bright)
-    addTree(-5.2, 1.8, 1.1, 1); addTree(-5.8, -1.2, 0.9, 0); addTree(5.2, 1.5, 1.2, 1);
-    addTree(5.5, -2.2, 0.88, 0); addTree(-3.2, 5.8, 1.0, 1); addTree(3.0, 5.6, 0.95, 0);
-    addTree(-2.0, -6.5, 1.1, 1); addTree(2.2, -6.8, 0.92, 0);
-    addTree(-8.5, 1.5, 0.85, 1); addTree(8.2, -1.2, 0.8, 0); addTree(0.5, -8.5, 1.0, 1);
-    addTree(-6.5, -5, 0.9, 1); addTree(6.8, 4.5, 1.05, 0);
-    // A couple conifers for variety
-    addConifer(-7, -3, 0.9); addConifer(7.5, 3, 1.0);
-
-    // ── LAMP POSTS ────────────────────────────────────────────
-    const lampLights = [];
-    function addLamp(x, z) {
-      const g = new THREE.Group();
-      const pole = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.035, 0.055, 3.5, 8),
-        new THREE.MeshStandardMaterial({ color: 0x3a4455, metalness: 0.85, roughness: 0.2 })
-      );
-      pole.position.y = 1.75; pole.castShadow = true; g.add(pole);
-
-      // Arm
-      const arm = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.02, 0.02, 0.6, 6),
-        new THREE.MeshStandardMaterial({ color: 0x3a4455, metalness: 0.8 })
-      );
-      arm.rotation.z = Math.PI / 2;
-      arm.position.set(0.3, 3.5, 0); g.add(arm);
-
-      // Head
-      const head = new THREE.Mesh(
-        new THREE.BoxGeometry(0.28, 0.1, 0.28),
-        new THREE.MeshStandardMaterial({ color: 0x445566, metalness: 0.7 })
-      );
-      head.position.set(0.6, 3.5, 0); g.add(head);
-
-      const glow = new THREE.Mesh(
-        new THREE.SphereGeometry(0.09, 8, 8),
-        new THREE.MeshStandardMaterial({ color: 0xffe880, emissive: 0xffcc33, emissiveIntensity: 4 })
-      );
-      glow.position.set(0.6, 3.42, 0); g.add(glow);
-
-      const light = new THREE.PointLight(0xffdd66, 2.5, 8);
-      light.position.set(0.6, 3.4, 0);
-      g.add(light);
-      lampLights.push(light);
-
-      g.position.set(x, 0, z);
-      scene.add(g);
-    }
-    addLamp(-4, -4); addLamp(4, -4); addLamp(-4, 4); addLamp(4, 4);
-    addLamp(-8, 0); addLamp(8, 0);
-
-    // ── BENCH ─────────────────────────────────────────────────
-    function addBench(x, z, ry) {
-      const g = new THREE.Group();
-      g.position.set(x, 0, z); g.rotation.y = ry;
-      const mat = new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.9 });
-      const seat = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.06, 0.4), mat);
-      seat.position.y = 0.45; seat.castShadow = true; g.add(seat);
-      const back = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.38, 0.05), mat);
-      back.position.set(0, 0.68, -0.18); back.castShadow = true; g.add(back);
-      [-0.5, 0.5].forEach(lx => {
-        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.44, 0.35),
-          new THREE.MeshStandardMaterial({ color: 0x334444, metalness: 0.7 }));
-        leg.position.set(lx, 0.22, 0); g.add(leg);
-      });
-      scene.add(g);
-    }
-    addBench(-2.5, 3.2, 0.2); addBench(2.5, 3.2, -0.2);
-    addBench(-3.0, -2.8, 0.5); addBench(3.0, -2.8, -0.5);
-
-    // Flower beds (summer colour)
-    const flowerColors = [0xff6688, 0xffaa22, 0xff4455, 0xffdd44, 0xcc44ff];
-    const stemMat = new THREE.MeshStandardMaterial({color:0x2a6620,roughness:0.9});
-    function addFlowerBed(cx, cz, count=12) {
-      for(let i=0;i<count;i++){
-        const angle = (i/count)*Math.PI*2;
-        const r = 0.3 + Math.random()*0.25;
-        const x = cx + Math.cos(angle)*r;
-        const z2 = cz + Math.sin(angle)*r;
-        // Stem
-        const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.018,0.022,0.28,5),stemMat);
-        stem.position.set(x,0.14,z2); scene.add(stem);
-        // Flower head
-        const fc = flowerColors[Math.floor(Math.random()*flowerColors.length)];
-        const fl = new THREE.Mesh(new THREE.SphereGeometry(0.06,7,5),
-          new THREE.MeshStandardMaterial({color:fc,emissive:fc,emissiveIntensity:0.2,roughness:0.8}));
-        fl.scale.set(1,0.55,1); fl.position.set(x,0.3,z2); scene.add(fl);
-      }
-    }
-    addFlowerBed(-4.2, 0, 10); addFlowerBed(4.2, 0, 10);
-    addFlowerBed(0, 4.5, 8);  addFlowerBed(0, -4.8, 8);
-
-    // ── PARTICLES ────────────────────────────────────────────
-    let particleGeo, particlePos, particleVel;
-    {
-      const n = 300;
-      particlePos = new Float32Array(n * 3);
-      particleVel = [];
-      particleGeo = new THREE.BufferGeometry();
-      for (let i = 0; i < n; i++) {
-        const r = 1.5 + Math.random() * 9;
-        const a = Math.random() * Math.PI * 2;
-        particlePos[i*3]   = Math.cos(a) * r;
-        particlePos[i*3+1] = 0.3 + Math.random() * 6;
-        particlePos[i*3+2] = Math.sin(a) * r;
-        particleVel.push({ vy: 0.003 + Math.random() * 0.006, phase: Math.random() * Math.PI * 2, r, a });
-      }
-      particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
-      const pMat = new THREE.PointsMaterial({
-        color: 0x5b9cf6, size: 0.055, sizeAttenuation: true,
-        transparent: true, opacity: 0.75,
-        blending: THREE.AdditiveBlending, depthWrite: false
-      });
-      scene.add(new THREE.Points(particleGeo, pMat));
-    }
-
-    // ── CHARACTER ARIA-1 ──────────────────────────────────────
-    const charRoot = new THREE.Group();
-
-    // Helper: cylinder mesh
-    function CYL(rt, rb, h, segs, mat, px, py, pz, parent, rx, ry, rz) {
-      const m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, segs), mat);
-      m.position.set(px, py, pz);
-      if (rx) m.rotation.x = rx;
-      if (ry) m.rotation.y = ry;
-      if (rz) m.rotation.z = rz;
-      m.castShadow = true;
-      parent.add(m);
-      return m;
-    }
-    function SPH(r, mat, px, py, pz, parent, sx, sy, sz) {
-      const m = new THREE.Mesh(new THREE.SphereGeometry(r, 16, 12), mat);
-      m.position.set(px, py, pz);
-      if (sx) m.scale.set(sx, sy, sz);
-      m.castShadow = true;
-      parent.add(m);
-      return m;
-    }
-    function B2(w,h,d,mat,px,py,pz,parent) {
-      const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat);
-      m.position.set(px,py,pz);
-      m.castShadow = true;
-      parent.add(m);
-      return m;
-    }
-
-    // Materials
-    const mSkin  = new THREE.MeshStandardMaterial({ color: 0xffcba4, roughness: 0.8, metalness: 0 });
-    const mSkinD = new THREE.MeshStandardMaterial({ color: 0xe8a870, roughness: 0.8 });
-    const mUnif  = new THREE.MeshStandardMaterial({ color: 0x1e4fa0, roughness: 0.7, metalness: 0.1 });
-    const mUnifL = new THREE.MeshStandardMaterial({ color: 0x2e62c8, roughness: 0.65, metalness: 0.15 });
-    const mDark  = new THREE.MeshStandardMaterial({ color: 0x0d1828, roughness: 0.85 });
-    const mHair  = new THREE.MeshStandardMaterial({ color: 0x180d30, roughness: 0.9 });
-    const mBoot  = new THREE.MeshStandardMaterial({ color: 0x060f1c, roughness: 0.8, metalness: 0.2 });
-    const mGlove = new THREE.MeshStandardMaterial({ color: 0x0d2248, roughness: 0.75 });
-    const mStripe= new THREE.MeshStandardMaterial({ color: 0x4a8eff, roughness: 0.5, metalness: 0.3 });
-    const mBadge = new THREE.MeshStandardMaterial({ color: 0x5b9cf6, emissive: 0x2244aa, emissiveIntensity: 1.8, roughness: 0.4 });
-
-    // ── HEAD (sphere-based) ───────────────────────────────────
-    const headPivot = new THREE.Group();
-    headPivot.position.set(0, 1.72, 0);
-
-    // Head — slightly oval sphere
-    const headMesh = SPH(0.22, mSkin, 0, 0, 0, headPivot, 1.0, 1.05, 0.92);
-
-    // Jaw / chin: slightly wider lower half illusion via small ellipsoid
-    const chin = SPH(0.16, mSkin, 0, -0.09, 0.01, headPivot, 1.0, 0.55, 0.85);
-
-    // Hair: scalp cap
-    const hairCap = SPH(0.23, mHair, 0, 0.04, 0, headPivot, 1.02, 0.72, 0.94);
-    // Hair side volume
-    SPH(0.16, mHair, -0.16, 0.06, -0.05, headPivot, 0.6, 0.9, 0.8);
-    SPH(0.16, mHair,  0.16, 0.06, -0.05, headPivot, 0.6, 0.9, 0.8);
-    // Hair back
-    SPH(0.20, mHair, 0, 0.03, -0.14, headPivot, 1.0, 0.8, 0.7);
-    // Fringe
-    SPH(0.14, mHair, 0, 0.17, 0.16, headPivot, 1.3, 0.5, 0.7);
-    SPH(0.10, mHair, -0.1, 0.14, 0.17, headPivot, 0.8, 0.55, 0.7);
-    SPH(0.10, mHair,  0.1, 0.14, 0.17, headPivot, 0.8, 0.55, 0.7);
-
-    // Ears
-    SPH(0.055, mSkin, -0.225, -0.02, 0.0, headPivot, 0.55, 0.8, 0.6);
-    SPH(0.055, mSkin,  0.225, -0.02, 0.0, headPivot, 0.55, 0.8, 0.6);
-
-    // ── EYES: sclera → iris → pupil → highlight ────────────
-    // Sclera (eye white) — no dark socket
-    const scleraMat = new THREE.MeshStandardMaterial({ color: 0xf0ece4, roughness: 0.6 });
-    SPH(0.042, scleraMat, -0.105, 0.048, 0.196, headPivot, 1.15, 0.95, 0.45);
-    SPH(0.042, scleraMat,  0.105, 0.048, 0.196, headPivot, 1.15, 0.95, 0.45);
-    // Iris — blue, very subtle glow
-    const irisMat = new THREE.MeshStandardMaterial({ color: 0x3a82d8, emissive: 0x1a3a88, emissiveIntensity: 0.5, roughness: 0.35 });
-    SPH(0.026, irisMat, -0.105, 0.048, 0.211, headPivot, 1.1, 1.0, 0.4);
-    SPH(0.026, irisMat,  0.105, 0.048, 0.211, headPivot, 1.1, 1.0, 0.4);
-    // Pupil
-    const pupilMat = new THREE.MeshStandardMaterial({ color: 0x060810, roughness: 1 });
-    SPH(0.014, pupilMat, -0.105, 0.048, 0.216, headPivot, 1.0, 1.0, 0.35);
-    SPH(0.014, pupilMat,  0.105, 0.048, 0.216, headPivot, 1.0, 1.0, 0.35);
-    // Specular highlight
-    const hiMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.8, roughness: 0 });
-    SPH(0.008, hiMat, -0.094, 0.058, 0.219, headPivot);
-    SPH(0.008, hiMat,  0.116, 0.058, 0.219, headPivot);
-
-    // Eyebrows
-    const browMat = new THREE.MeshStandardMaterial({ color: 0x1a0d28, roughness: 1 });
-    const lb = B2(0.095, 0.018, 0.03, browMat, -0.105, 0.118, 0.215, headPivot);
-    lb.rotation.z =  0.18;
-    const rb2 = B2(0.095, 0.018, 0.03, browMat,  0.105, 0.118, 0.215, headPivot);
-    rb2.rotation.z = -0.18;
-
-    // Nose
-    const noseMat = new THREE.MeshStandardMaterial({ color: 0xe8a060, roughness: 0.9 });
-    SPH(0.028, noseMat, 0, -0.03, 0.214, headPivot, 1.0, 0.8, 0.6);
-
-    // Mouth
-    const lipMat = new THREE.MeshBasicMaterial({ color: 0xc06848 });
-    // Upper lip
-    SPH(0.03, lipMat, -0.038, -0.088, 0.210, headPivot, 1.0, 0.55, 0.45);
-    SPH(0.03, lipMat,  0.038, -0.088, 0.210, headPivot, 1.0, 0.55, 0.45);
-    // Lower lip (slightly fuller)
-    SPH(0.032, new THREE.MeshBasicMaterial({color:0xb85c3a}), 0, -0.103, 0.210, headPivot, 1.4, 0.6, 0.45);
-
-    charRoot.add(headPivot);
-
-    // ── NECK ─────────────────────────────────────────────────
-    CYL(0.075, 0.085, 0.16, 10, mSkin, 0, 1.52, 0, charRoot);
-
-    // ── TORSO (tapered cylinder for natural shape) ────────────
-    const torsoPivot = new THREE.Group();
-    torsoPivot.position.set(0, 1.1, 0);
-
-    // Main torso: slightly wider at shoulders, narrower at waist
-    CYL(0.195, 0.235, 0.62, 12, mUnif, 0, 0, 0, torsoPivot);
-    // Shoulder cap spheres
-    SPH(0.11, mUnifL, -0.25, 0.30, 0, torsoPivot, 1.0, 0.7, 0.85);
-    SPH(0.11, mUnifL,  0.25, 0.30, 0, torsoPivot, 1.0, 0.7, 0.85);
-    // Chest centre stripe
-    CYL(0.025, 0.028, 0.52, 6, mStripe, 0, 0.04, 0.22, torsoPivot);
-    // Chest badge
-    const badgeMesh = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.08, 0.03), mBadge);
-    badgeMesh.position.set(0.14, 0.14, 0.24); torsoPivot.add(badgeMesh);
-    // Collar ring
-    CYL(0.16, 0.15, 0.06, 12, mUnifL, 0, 0.33, 0, torsoPivot);
-
-    charRoot.add(torsoPivot);
-
-    // Belt
-    CYL(0.235, 0.24, 0.07, 12, mDark, 0, 0.80, 0, charRoot);
-    const beltBuckle = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.07, 0.04),
-      new THREE.MeshStandardMaterial({ color: 0x6699bb, metalness: 0.8, roughness: 0.2 }));
-    beltBuckle.position.set(0, 0.80, 0.24); charRoot.add(beltBuckle);
-
-    // ── ARM SYSTEM ────────────────────────────────────────────
-    function makeArm(side) {
-      const shoulderPivot = new THREE.Group();
-      shoulderPivot.position.set(side * 0.30, 1.40, 0);
-
-      const elbowPivot = new THREE.Group();
-      elbowPivot.position.set(0, -0.32, 0);
-
-      // Upper arm (cylinder)
-      CYL(0.075, 0.07, 0.34, 10, mUnif, 0, -0.16, 0, shoulderPivot);
-      // Elbow sphere
-      SPH(0.075, mUnifL, 0, 0, 0, elbowPivot);
-      // Forearm (slightly thinner)
-      CYL(0.062, 0.068, 0.30, 10, mUnifL, 0, -0.17, 0, elbowPivot);
-      // Wrist cuff
-      CYL(0.070, 0.070, 0.05, 10, mGlove, 0, -0.34, 0, elbowPivot);
-      // Palm
-      const palmG = new THREE.Group();
-      palmG.position.set(0, -0.47, 0);
-      const palm = new THREE.Mesh(new THREE.SphereGeometry(0.062,10,8), mSkin);
-      palm.scale.set(1.0, 0.75, 0.85); palm.castShadow=true;
-      palmG.add(palm);
-      // Fingers (4 tiny cylinders)
-      [-0.036,-0.012,0.012,0.036].forEach((fx,fi)=>{
-        const fl = [0.055,0.065,0.062,0.048][fi];
-        const fg = new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.013,fl,6), mSkin);
-        fg.position.set(fx, -fl/2-0.042, 0.018); fg.castShadow=true;
-        palmG.add(fg);
-        // fingertip
-        const ft = new THREE.Mesh(new THREE.SphereGeometry(0.013,6,4), mSkinD);
-        ft.position.set(fx, -fl-0.042, 0.018);
-        palmG.add(ft);
-      });
-      // Thumb
-      const tg = new THREE.Mesh(new THREE.CylinderGeometry(0.014,0.015,0.048,6), mSkin);
-      tg.position.set(side*0.072,-0.022,0.015); tg.rotation.z=side*0.7; tg.castShadow=true;
-      palmG.add(tg);
-      elbowPivot.add(palmG);
-
-      shoulderPivot.add(elbowPivot);
-      shoulderPivot.rotation.x = 0.12; // natural hang
-      shoulderPivot.rotation.z = side * -0.08;
-      charRoot.add(shoulderPivot);
-      return { shoulderPivot, elbowPivot };
-    }
-    const leftArm  = makeArm(-1);
-    const rightArm = makeArm( 1);
-
-    // ── LEG SYSTEM ───────────────────────────────────────────
-    function makeLeg(side) {
-      const hipPivot = new THREE.Group();
-      hipPivot.position.set(side * 0.13, 0.80, 0);
-
-      const kneePivot = new THREE.Group();
-      kneePivot.position.set(0, -0.36, 0);
-
-      // Thigh (slightly tapered cylinder)
-      CYL(0.10, 0.115, 0.38, 10, mDark, 0, -0.18, 0, hipPivot);
-      // Knee sphere
-      SPH(0.105, new THREE.MeshStandardMaterial({color:0x111c30,roughness:0.8}), 0, 0, 0, kneePivot);
-      // Shin
-      CYL(0.085, 0.10, 0.34, 10, new THREE.MeshStandardMaterial({color:0x0e1828,roughness:0.85}), 0, -0.19, 0, kneePivot);
-      // Boot (wider cylinder)
-      CYL(0.10, 0.11, 0.20, 10, mBoot, 0, -0.41, 0, kneePivot);
-      // Sole (flattened sphere)
-      SPH(0.10, new THREE.MeshStandardMaterial({color:0x060c18,roughness:0.9}), 0, -0.545, 0.025, kneePivot, 1.0, 0.38, 1.3);
-      // Boot stripe
-      CYL(0.112, 0.112, 0.025, 10, mStripe, 0, -0.34, 0, kneePivot);
-
-      hipPivot.add(kneePivot);
-      charRoot.add(hipPivot);
-      return { hipPivot, kneePivot };
-    }
-    const leftLeg  = makeLeg(-1);
-    const rightLeg = makeLeg( 1);
-
-    // Aura light
-    const charAura = new THREE.PointLight(0x4477cc, 2.5, 4.5);
-    charAura.position.set(0, 1.2, 0);
-    charRoot.add(charAura);
-
-    scene.add(charRoot);
-
-    // ── WALK PATH ─────────────────────────────────────────────
-    let walkAngle = 0;
-    const WALK_SPEED   = 0.38;
-    const WALK_RADIUS  = 2.9;
-    let isIdle = false, idleTimer = 0, idleNextIn = 9 + Math.random() * 5;
-
-    // ── SPEECH ────────────────────────────────────────────────
-    const SPEECHES = [
-      "Analyserar omgivningen...",
-      "Kartlägger nya platser",
-      "Minneslager synkroniseras",
-      "Söker interaktionspunkter",
-      "Inga agenter i närheten",
-      "Väntar på direktiv...",
-      "Sensordata registrerad",
-      "Systemstatus: optimal",
-      "Utforskar stadsgränser",
-      "Bearbetar kontext...",
-      "God morgon, Nexus",
-      "Solen går upp i öst",
-    ];
-    let bubbleVisible = false, bubbleDur = 0, bubbleNextIn = 3;
-
-    function showBubble(text) {
-      bubble.textContent = text;
-      bubble.classList.add('visible');
-      bubbleVisible = true; bubbleDur = 3.2;
-    }
-    function hideBubble() {
-      bubble.classList.remove('visible');
-      bubbleVisible = false;
-      bubbleNextIn = 5 + Math.random() * 7;
-    }
-
-    // ── ANIMATE ───────────────────────────────────────────────
-    const clock = new THREE.Clock();
-    let frame = 0;
-    let skyUpdateTimer = 0;
-
-    // ── WEATHER (Open-Meteo, Vara 58.27N 12.96E) ─────────────
-    let weatherState = { code: 0, clouds: 10, rain: false, snow: false, wind: 3 };
-    let rainParticles = null, snowParticles = null;
-
-    function applyWeather() {
-      const { code, clouds, rain, snow, wind } = weatherState;
-      // Cloud → sky turbidity
-      skyUniforms['turbidity'].value = 2 + clouds * 0.08;
-      skyUniforms['rayleigh'].value  = 1.5 + clouds * 0.025;
-      // Fog density from clouds
-      const fogDensity = 0.012 + clouds * 0.0004;
-      if (scene.fog) scene.fog.density = fogDensity;
-
-      // Rain particles
-      if (rain && !rainParticles) {
-        const rg = new THREE.BufferGeometry();
-        const rp = new Float32Array(600*3);
-        for(let i=0;i<600;i++){
-          rp[i*3]   = (Math.random()-0.5)*24;
-          rp[i*3+1] = Math.random()*14;
-          rp[i*3+2] = (Math.random()-0.5)*24;
-        }
-        rg.setAttribute('position', new THREE.BufferAttribute(rp,3));
-        rainParticles = new THREE.Points(rg,
-          new THREE.PointsMaterial({color:0x88aacc,size:0.04,transparent:true,opacity:0.55,
-            blending:THREE.AdditiveBlending,depthWrite:false}));
-        rainParticles.userData = { vel: rp };
-        scene.add(rainParticles);
-      } else if (!rain && rainParticles) {
-        scene.remove(rainParticles); rainParticles = null;
-      }
-
-      // Snow particles
-      if (snow && !snowParticles) {
-        const sg = new THREE.BufferGeometry();
-        const sp2 = new Float32Array(400*3);
-        for(let i=0;i<400;i++){
-          sp2[i*3]   = (Math.random()-0.5)*22;
-          sp2[i*3+1] = Math.random()*12;
-          sp2[i*3+2] = (Math.random()-0.5)*22;
-        }
-        sg.setAttribute('position', new THREE.BufferAttribute(sp2,3));
-        snowParticles = new THREE.Points(sg,
-          new THREE.PointsMaterial({color:0xeef4ff,size:0.09,transparent:true,opacity:0.8,depthWrite:false}));
-        snowParticles.userData = { vel: sp2 };
-        scene.add(snowParticles);
-      } else if (!snow && snowParticles) {
-        scene.remove(snowParticles); snowParticles = null;
-      }
-
-      // Update HUD with weather
-      const icons = {clear:'☀',cloudy:'⛅',overcast:'☁',rain:'🌧',snow:'❄',thunder:'⛈',fog:'🌫'};
-      let icon = icons.clear;
-      if (code>=45&&code<=48) icon=icons.fog;
-      else if (code>=51&&code<=67) icon=icons.rain;
-      else if (code>=71&&code<=77) icon=icons.snow;
-      else if (code>=80&&code<=82) icon=icons.rain;
-      else if (code>=95) icon=icons.thunder;
-      else if (clouds>80) icon=icons.overcast;
-      else if (clouds>30) icon=icons.cloudy;
-      const wx = document.getElementById('weather-hud');
-      if (wx) wx.textContent = icon + ' ' + Math.round(weatherState.temp||12) + '°C';
-    }
-
-    async function fetchWeather() {
-      try {
-        const url = 'https://api.open-meteo.com/v1/forecast?latitude=58.27&longitude=12.96' +
-          '&current=temperature_2m,weather_code,cloud_cover,precipitation,wind_speed_10m' +
-          '&timezone=Europe%2FStockholm';
-        const r = await fetch(url);
-        const d = await r.json();
-        const cur = d.current;
-        const code = cur.weather_code ?? 0;
-        weatherState = {
-          code,
-          clouds: cur.cloud_cover ?? 10,
-          rain: (code>=51&&code<=67)||(code>=80&&code<=82)||(code>=95),
-          snow: (code>=71&&code<=77),
-          wind: cur.wind_speed_10m ?? 3,
-          temp: cur.temperature_2m ?? 12,
-        };
-        applyWeather();
-      } catch(e) { /* silent fallback */ }
-    }
-
-    fetchWeather();
-    setInterval(fetchWeather, 10 * 60 * 1000); // refresh every 10 min
-
-    // Animate rain/snow in loop
-    function animatePrecip(dt, t) {
-      if (rainParticles) {
-        const p = rainParticles.userData.vel;
-        const spd = 0.18 + weatherState.wind * 0.004;
-        for(let i=0;i<600;i++){
-          p[i*3+1] -= spd;
-          p[i*3]   += weatherState.wind * 0.002;
-          if(p[i*3+1]<0){ p[i*3+1]=14; p[i*3]=(Math.random()-0.5)*24; p[i*3+2]=(Math.random()-0.5)*24; }
-        }
-        rainParticles.geometry.attributes.position.needsUpdate=true;
-      }
-      if (snowParticles) {
-        const p = snowParticles.userData.vel;
-        for(let i=0;i<400;i++){
-          p[i*3+1] -= 0.025;
-          p[i*3]   += Math.sin(t*0.5+i)*0.003;
-          p[i*3+2] += Math.cos(t*0.4+i)*0.002;
-          if(p[i*3+1]<0){ p[i*3+1]=12; p[i*3]=(Math.random()-0.5)*22; p[i*3+2]=(Math.random()-0.5)*22; }
-        }
-        snowParticles.geometry.attributes.position.needsUpdate=true;
-      }
-    }
-
-    // Do first sky update
-    updateSky();
-
-    function animate() {
-      requestAnimationFrame(animate);
-      const dt = Math.min(clock.getDelta(), 0.05);
-      const t  = clock.getElapsedTime();
-      frame++;
-
-      // Update sky every 10s
-      skyUpdateTimer += dt;
-      if (skyUpdateTimer > 10) { updateSky(); skyUpdateTimer = 0; }
-
-      // Idle toggle
-      idleTimer += dt;
-      if (!isIdle && idleTimer > idleNextIn) {
-        isIdle = true; idleTimer = 0; idleNextIn = 2 + Math.random() * 3;
-      } else if (isIdle && idleTimer > idleNextIn) {
-        isIdle = false; idleTimer = 0; idleNextIn = 8 + Math.random() * 8;
-      }
-
-      if (!isIdle) {
-        // Walk
-        walkAngle += WALK_SPEED * dt;
-        charRoot.position.x = Math.cos(walkAngle) * WALK_RADIUS;
-        charRoot.position.z = Math.sin(walkAngle) * WALK_RADIUS;
-        charRoot.rotation.y = -(walkAngle + Math.PI / 2);
-
-        // Natural walk cycle with hip sway
-        const wt  = t * 5.2;
-        const sw  = Math.sin(wt);
-        const sw2 = Math.sin(wt * 2);
-        const swH = Math.sin(wt * 0.5); // half-freq for sway
-
-        // Legs: hip swing + knee bend on back swing
-        leftLeg.hipPivot.rotation.x   =  sw * 0.58;
-        rightLeg.hipPivot.rotation.x  = -sw * 0.58;
-        leftLeg.kneePivot.rotation.x  = Math.max(0, -sw) * 0.52 + 0.04;
-        rightLeg.kneePivot.rotation.x = Math.max(0,  sw) * 0.52 + 0.04;
-        // Slight lateral leg angle (hip sway)
-        leftLeg.hipPivot.rotation.z   =  sw2 * 0.04;
-        rightLeg.hipPivot.rotation.z  = -sw2 * 0.04;
-
-        // Arms swing opposite to legs, natural elbow bend
-        leftArm.shoulderPivot.rotation.x  = -sw * 0.42;
-        rightArm.shoulderPivot.rotation.x =  sw * 0.42;
-        leftArm.elbowPivot.rotation.x  = 0.12 + Math.max(0, sw)  * 0.18;
-        rightArm.elbowPivot.rotation.x = 0.12 + Math.max(0, -sw) * 0.18;
-        // Arms swing slightly inward/outward
-        leftArm.shoulderPivot.rotation.z  = -0.08 + sw * 0.04;
-        rightArm.shoulderPivot.rotation.z =  0.08 - sw * 0.04;
-
-        // Hip sway side-to-side (realistic weight transfer)
-        charRoot.position.x = Math.cos(walkAngle) * WALK_RADIUS + sw2 * 0.025;
-        charRoot.position.y = Math.abs(sw2) * 0.032;
-
-        // Torso counter-rotate to hip sway
-        headPivot.rotation.y = sw * -0.06;
-        headPivot.rotation.x = Math.abs(sw2) * -0.02;
-
-      } else {
-        // Idle: breathing, weight shift, look around
-        const breath = Math.sin(t * 1.5) * 0.013;
-        charRoot.scale.y = 1.0 + breath * 0.015;
-        headPivot.position.y = 1.72 + breath * 0.35;
-        // Slight weight shift
-        charRoot.position.x = Math.cos(walkAngle)*WALK_RADIUS + Math.sin(t*0.7)*0.018;
-        charRoot.position.y = Math.abs(Math.sin(t*1.5))*0.01;
-        // Arms hang naturally with subtle sway
-        leftArm.shoulderPivot.rotation.x  = 0.08 + Math.sin(t*0.9)*0.04;
-        rightArm.shoulderPivot.rotation.x = 0.08 - Math.sin(t*0.9)*0.04;
-        leftArm.shoulderPivot.rotation.z  = -0.1;
-        rightArm.shoulderPivot.rotation.z =  0.1;
-        leftArm.elbowPivot.rotation.x  = 0.1;
-        rightArm.elbowPivot.rotation.x = 0.1;
-        leftLeg.hipPivot.rotation.x  = 0;
-        rightLeg.hipPivot.rotation.x = 0;
-        leftLeg.kneePivot.rotation.x  = 0.04;
-        rightLeg.kneePivot.rotation.x = 0.04;
-        // Head looks around naturally
-        headPivot.rotation.y = Math.sin(t*0.45)*0.28 + Math.sin(t*1.1)*0.06;
-        headPivot.rotation.x = Math.sin(t*0.3)*0.07;
-      }
-
-      // Speech bubble
-      if (!bubbleVisible) {
-        bubbleNextIn -= dt;
-        if (bubbleNextIn <= 0) showBubble(SPEECHES[Math.floor(Math.random() * SPEECHES.length)]);
-      } else {
-        bubbleDur -= dt;
-        if (bubbleDur <= 0) hideBubble();
-      }
-
-      // Project bubble to 2D
-      const headW = new THREE.Vector3(
-        charRoot.position.x,
-        charRoot.position.y + 2.25,
-        charRoot.position.z
-      ).project(camera);
-      const vw = viewport.clientWidth, vh = viewport.clientHeight;
-      bubble.style.left = ((headW.x  * 0.5 + 0.5) * vw) + 'px';
-      bubble.style.top  = ((-headW.y * 0.5 + 0.5) * vh) + 'px';
-
-      // Particles float up
-      for (let i = 0; i < particleVel.length; i++) {
-        particlePos[i*3+1] += particleVel[i].vy;
-        if (particlePos[i*3+1] > 7) particlePos[i*3+1] = 0.2;
-        particlePos[i*3]   = Math.cos(t * 0.2 + particleVel[i].phase) * particleVel[i].r;
-        particlePos[i*3+2] = Math.sin(t * 0.2 + particleVel[i].phase) * particleVel[i].r;
-      }
-      particleGeo.attributes.position.needsUpdate = true;
-      animatePrecip(dt, t);
-
-      // Antenna blink
-      if (frame % 2 === 0) {
-        const tip = mainBuilding.children.find(c => c.geometry?.type === 'SphereGeometry');
-        if (tip) tip.material.emissiveIntensity = 3 + Math.sin(t * 5) * 2;
-      }
-
-      controls.update();
-      composer.render();
-    }
-
     resize();
-    window.addEventListener('resize', resize);
-    animate();
+    new ResizeObserver(resize).observe(vp);
 
-  </script>
+    // SKY
+    const sky = new Sky();
+    sky.scale.setScalar(450000);
+    scene.add(sky);
+    const sun = new THREE.Vector3();
+    const su = sky.material.uniforms;
+    su.turbidity.value = 10;
+    su.rayleigh.value = 3;
+    su.mieCoefficient.value = 0.005;
+    su.mieDirectionalG.value = 0.7;
 
-  <script>
-    // Theme toggle
-    const html = document.documentElement;
-    const btn = document.getElementById('theme-toggle');
-    const saved = localStorage.getItem('ts-theme');
-    if (saved) html.setAttribute('data-theme', saved);
-    let theme = html.getAttribute('data-theme') || 'dark';
-    function setTheme(t) { theme = t; html.setAttribute('data-theme', t); localStorage.setItem('ts-theme', t); }
-    btn.addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark'));
+    // LIGHTS
+    const ambL = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambL);
+    const sunL = new THREE.DirectionalLight(0xfff8e8, 2.0);
+    sunL.castShadow = true;
+    sunL.shadow.mapSize.set(2048,2048);
+    sunL.shadow.camera.near = 0.5; sunL.shadow.camera.far = 300;
+    sunL.shadow.camera.left = -100; sunL.shadow.camera.right = 100;
+    sunL.shadow.camera.top = 100; sunL.shadow.camera.bottom = -100;
+    sunL.shadow.bias = -0.0005;
+    scene.add(sunL);
 
-    // Hamburger
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('nav-links');
-    hamburger.addEventListener('click', () => {
-      const open = navLinks.classList.toggle('open');
-      hamburger.setAttribute('aria-expanded', open);
+    function updateSky(h) {
+      const elev = sunElev(h);
+      const az = ((h - SUNRISE)/(SUNSET - SUNRISE)) * Math.PI - Math.PI/2;
+      sun.setFromSphericalCoords(1, THREE.MathUtils.degToRad(90 - elev*90), az);
+      su.sunPosition.value.copy(sun);
+      const day = Math.max(0, elev);
+      ambL.intensity = 0.15 + day*0.6;
+      sunL.intensity = day*2.2;
+      sunL.position.copy(sun).multiplyScalar(80);
+      scene.fog.color.set(0x020408).lerp(new THREE.Color(0x87ceeb), day);
+      renderer.setClearColor(scene.fog.color);
+      renderer.toneMappingExposure = Math.max(0.1, 0.7 + day*0.5);
+    }
+
+    // MATERIALS
+    const M = {
+      grass:  mat(0x2d6a1f, 1),
+      road:   mat(0x3a3832, 0.9),
+      pave:   mat(0x565452, 0.8),
+      conc:   mat(0x9a9890, 0.7),
+      white:  mat(0xf0eeea, 0.6),
+      dark:   mat(0x2a2825, 0.9),
+      blue:   mat(0x1a3a7a, 0.6),
+      roof:   mat(0x5a3520, 0.8),
+      metal:  mat(0x607080, 0.3, 0.8),
+      wood:   mat(0x8b5c2a, 0.9),
+      water:  mat(0x3a7aaa, 0.1, 0.3, 0.8),
+      leaf:   mat(0x3a8a2a, 1),
+      flower: mat(0xff6080, 1),
+      steel:  mat(0x445566, 0.2, 0.8),
+    };
+    function mat(c, r=0.7, m=0, o=1) {
+      const opts = {color:c, roughness:r, metalness:m};
+      if(o<1){opts.transparent=true; opts.opacity=o;}
+      return new THREE.MeshStandardMaterial(opts);
+    }
+    const glassMat = new THREE.MeshStandardMaterial({color:0x4a7aaa,roughness:0.1,metalness:0.6,transparent:true,opacity:0.65});
+
+    // HELPERS
+    function bx(w,h,d,mat,x,y,z,p) {
+      const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+      m.position.set(x,y+h/2,z); m.castShadow=true; m.receiveShadow=true;
+      (p||scene).add(m); return m;
+    }
+    function cy(rt,rb,h,seg,mat,x,y,z,p) {
+      const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg),mat);
+      m.position.set(x,y+h/2,z); m.castShadow=true; m.receiveShadow=true;
+      (p||scene).add(m); return m;
+    }
+    function sp(r,mat,x,y,z,p) {
+      const m=new THREE.Mesh(new THREE.SphereGeometry(r,12,8),mat);
+      m.position.set(x,y,z); m.castShadow=true;
+      (p||scene).add(m); return m;
+    }
+    function cn(r,h,seg,mat,x,y,z,p) {
+      const m=new THREE.Mesh(new THREE.ConeGeometry(r,h,seg),mat);
+      m.position.set(x,y+h/2,z); m.castShadow=true;
+      (p||scene).add(m); return m;
+    }
+
+    // GROUND
+    { const g=new THREE.Mesh(new THREE.PlaneGeometry(300,300),M.grass); g.rotation.x=-Math.PI/2; g.receiveShadow=true; scene.add(g); }
+
+    // ROADS
+    function road(x1,z1,x2,z2,w) {
+      const dx=x2-x1,dz=z2-z1,len=Math.sqrt(dx*dx+dz*dz);
+      const m=new THREE.Mesh(new THREE.BoxGeometry(w,0.05,len),M.road);
+      m.position.set((x1+x2)/2,0.01,(z1+z2)/2);
+      m.rotation.y=Math.atan2(dx,dz);
+      m.receiveShadow=true; scene.add(m);
+    }
+    road(0,8,0,-60,5); road(0,-60,0,-100,4); road(0,8,0,60,5);
+    road(-80,0,80,0,5); road(-80,-20,80,-20,4); road(-80,30,80,30,4);
+    road(0,0,28,6,3); road(0,0,-20,0,3); road(0,0,-15,32,3);
+    road(0,0,20,28,3); road(0,0,-26,8,3);
+    road(-45,-38,-18,-52,3); road(-18,-52,38,-46,3); road(38,-46,58,-24,3);
+    road(-58,4,-45,-38,3); road(-58,4,-26,8,3);
+
+    // PLAZA
+    {
+      const pm=new THREE.MeshStandardMaterial({color:0x5a5652,roughness:0.8});
+      const p=new THREE.Mesh(new THREE.PlaneGeometry(20,20),pm); p.rotation.x=-Math.PI/2; p.position.y=0.005; p.receiveShadow=true; scene.add(p);
+      const ring=new THREE.Mesh(new THREE.RingGeometry(5.5,5.8,64),new THREE.MeshBasicMaterial({color:0x5b9cf6,side:THREE.DoubleSide,transparent:true,opacity:0.4})); ring.rotation.x=-Math.PI/2; ring.position.y=0.01; scene.add(ring);
+      cy(2.8,3.0,0.4,32,M.conc,0,0,0); cy(0.15,0.15,1.2,8,M.conc,0,0.4,0); cy(1.0,1.1,0.2,32,M.conc,0,1.6,0);
+      const ww=new THREE.Mesh(new THREE.CylinderGeometry(2.6,2.6,0.05,32),M.water); ww.position.set(0,0.43,0); scene.add(ww);
+      [[-6,0],[ 6,0],[0,-6],[0,6]].forEach(([bx,bz])=>{ bx(1.8,0.1,0.5,M.wood,bx,0.4,bz); bx(0.1,0.4,0.5,M.wood,bx-0.8,0,bz); bx(0.1,0.4,0.5,M.wood,bx+0.8,0,bz); });
+    }
+
+    // TREES
+    function tree(x,z,s=1) {
+      cy(0.15*s,0.2*s,2*s,6,M.wood,x,0,z); sp(1.2*s,M.leaf,x,2.6*s,z); sp(0.8*s,M.leaf,x+0.6*s,2.0*s,z+0.3*s); sp(0.7*s,M.leaf,x-0.5*s,1.8*s,z-0.4*s);
+    }
+    function flowers(x,z) { for(let i=0;i<4;i++) sp(0.12,M.flower,x+(Math.random()-.5)*2,0.3,z+(Math.random()-.5)*2); }
+
+    [[-8,-8],[8,-8],[8,8],[-8,8],[-11,0],[11,0],[0,-11],[0,11]].forEach(([x,z])=>tree(x,z,0.9));
+    [[-15,-5],[15,-8],[5,-15],[-5,-18],[22,-3],[-22,-6],[10,12],[-10,14],[18,18],[-18,20],[30,12],[-30,8],[35,-8],[-35,-12],[25,30],[-25,28],[40,0],[-40,2],[0,25],[0,-25],[12,-30],[-12,-32],[45,20],[-45,18],[55,10],[-55,6],[48,-15],[-48,-18],[20,-40],[-20,-38],[5,45],[-5,48],[35,40],[-35,38],[60,10],[-60,8],[50,-35],[-50,-30],[15,-55],[-15,-50],[70,0],[-70,2],[0,60],[0,-60],[80,15],[-80,12],[60,-50],[-60,-48],[90,30],[-90,25],[40,-65],[-40,-60],[100,0],[-100,3]].forEach(([x,z])=>tree(x,z,0.7+Math.random()*0.6));
+    for(let i=0;i<80;i++){const a=Math.random()*Math.PI*2,d=10+Math.random()*110; flowers(Math.cos(a)*d,Math.sin(a)*d);}
+
+    // BUILDINGS
+    // 1. RÅDHUSET
+    {
+      const g=new THREE.Group(); g.position.set(0,0,-20);
+      bx(10,7,8,M.white,0,0,0,g); bx(11,0.4,9,M.conc,0,7,0,g);
+      for(let i=-4;i<=4;i+=2) cy(0.25,0.25,7,8,M.conc,i,0,4,g);
+      bx(11,0.3,1.5,M.conc,0,0,4.8,g); bx(10.5,0.3,1.2,M.conc,0,0.3,4.5,g);
+      cn(6.5,2.5,4,M.white,0,7,0,g);
+      cy(0.06,0.06,5,6,M.metal,0,9.5,-3,g);
+      bx(1.8,1,0.05,new THREE.MeshStandardMaterial({color:0x1a4a9a}),0.9,14,-3,g);
+      for(let i=-3;i<=3;i+=2) bx(0.9,1.3,0.1,glassMat,i,3.5,4.05,g);
+      scene.add(g);
+    }
+    // 2. BIBLIOTEKET
+    {
+      const g=new THREE.Group(); g.position.set(-20,0,-14);
+      bx(12,5,7,M.white,0,0,0,g); bx(13,0.4,7.5,M.conc,0,5,0,g);
+      for(let i=-4;i<=4;i+=2.5) bx(1.7,3.2,0.1,glassMat,i,1.5,3.6,g);
+      for(let i=-5;i<=5;i+=2.5) cy(0.18,0.18,5,8,M.conc,i,0,3.5,g);
+      bx(12,0.25,1.5,M.conc,0,0,3.8,g);
+      scene.add(g);
+    }
+    // 3. ARKIVET
+    {
+      const g=new THREE.Group(); g.position.set(-26,0,8);
+      bx(8,6,7,M.dark,0,0,0,g); bx(9,0.5,8,M.dark,0,6,0,g);
+      for(let i=-2.5;i<=2.5;i+=2.5) bx(0.55,2.2,0.1,glassMat,i,2.5,3.6,g);
+      bx(1.2,2.5,0.15,M.wood,0,0,3.6,g);
+      [[-4,3.5],[4,3.5],[-4,-3.5],[4,-3.5]].forEach(([cx,cz])=>bx(0.65,6,0.65,M.dark,cx,0,cz,g));
+      scene.add(g);
+    }
+    // 4. POLISSTATIONEN
+    {
+      const g=new THREE.Group(); g.position.set(22,0,-16);
+      bx(8,5,7,M.conc,0,0,0,g); bx(8.5,0.4,7.5,M.blue,0,5,0,g);
+      bx(8.1,0.55,7.1,M.blue,0,2,0,g);
+      for(let i=-2.5;i<=2.5;i+=2.5) bx(1.2,1.5,0.1,glassMat,i,2.5,3.6,g);
+      bx(1.0,2.2,0.15,M.blue,0,0,3.6,g);
+      const lm=new THREE.MeshStandardMaterial({color:0x0044ff,emissive:0x0044ff,emissiveIntensity:2});
+      const pl=new THREE.Mesh(new THREE.SphereGeometry(0.22,8,6),lm); pl.position.set(0,5.5,0); g.add(pl);
+      scene.add(g);
+      setInterval(()=>{ lm.emissiveIntensity=lm.emissiveIntensity>0?0:2.5; },800);
+    }
+    // 5. LABBET
+    {
+      const g=new THREE.Group(); g.position.set(28,0,6);
+      bx(9,6,7,M.steel,0,0,0,g);
+      const gf=new THREE.Mesh(new THREE.BoxGeometry(9,5.5,0.2),new THREE.MeshStandardMaterial({color:0x88bbdd,roughness:0.05,metalness:0.5,transparent:true,opacity:0.5})); gf.position.set(0,3,3.5); g.add(gf);
+      bx(9.5,0.4,7.5,M.steel,0,6,0,g);
+      cy(0.04,0.04,2,6,M.metal,0,6.4,-2,g);
+      const al=new THREE.Mesh(new THREE.SphereGeometry(0.09,6,4),new THREE.MeshStandardMaterial({color:0xff2200,emissive:0xff2200,emissiveIntensity:3})); al.position.set(0,8.45,-2); g.add(al);
+      scene.add(g);
+    }
+    // 6. OBSERVATORIET
+    {
+      const g=new THREE.Group(); g.position.set(-15,0,32);
+      cy(5.5,5.5,1,16,M.conc,0,0,0,g); cy(4,4,7,16,M.white,0,1,0,g);
+      const dg=new THREE.SphereGeometry(4,32,16,0,Math.PI*2,0,Math.PI/2);
+      const dm=new THREE.Mesh(dg,new THREE.MeshStandardMaterial({color:0x8899aa,roughness:0.3,metalness:0.5})); dm.position.set(0,8,0); dm.castShadow=true; g.add(dm);
+      for(let a=0;a<4;a++){const ang=a*Math.PI/2; bx(1.2,2,0.15,glassMat,Math.sin(ang)*4.05,3,Math.cos(ang)*4.05,g);}
+      for(let s=0;s<4;s++) bx(2.5,0.25,0.5,M.conc,0,s*0.25,5.8-s*0.5,g);
+      scene.add(g);
+    }
+    // 7. KLINIKEN
+    {
+      const g=new THREE.Group(); g.position.set(20,0,28);
+      bx(8,5,7,M.white,0,0,0,g); bx(8.5,0.3,7.5,M.conc,0,5,0,g);
+      const rm=new THREE.MeshStandardMaterial({color:0xcc1111,emissive:0x440000,emissiveIntensity:0.4});
+      bx(0.5,2,0.1,rm,0,2,3.61,g); bx(1.5,0.5,0.1,rm,0,2.75,3.61,g);
+      for(let i=-2.5;i<=2.5;i+=2.5) bx(1.2,1.5,0.1,glassMat,i,2.5,3.61,g);
+      bx(2,2.5,1,M.white,0,0,4,g);
+      scene.add(g);
+    }
+
+    // HOMES
+    const homeDefs = [
+      {n:'Elin',  x:-45,z:-38,wc:0xd4c8b8,rc:0x7a3a1a},
+      {n:'Mira',  x:-18,z:-52,wc:0xc8d8c8,rc:0x3a5a3a},
+      {n:'Kai',   x:38, z:-46,wc:0xc8c8d8,rc:0x3a3a6a},
+      {n:'Aria',  x:58, z:-24,wc:0xd8c8a8,rc:0x8a5a1a},
+      {n:'Nox',   x:-58,z:4,  wc:0xb8b8c8,rc:0x2a2a3a},
+    ];
+    homeDefs.forEach(({n,x,z,wc,rc})=>{
+      const g=new THREE.Group(); g.position.set(x,0,z);
+      const wm=mat(wc,0.7), rm2=mat(rc,0.8);
+      bx(5,3.5,4.5,wm,0,0,0,g); cn(3.6,2.5,4,rm2,0,3.5,0,g);
+      bx(0.8,1.6,0.12,M.wood,0,0,2.31,g);
+      bx(0.8,0.8,0.1,glassMat,-1.4,1.5,2.31,g); bx(0.8,0.8,0.1,glassMat,1.4,1.5,2.31,g);
+      bx(0.4,1.2,0.4,M.conc,1.2,5,-1,g);
+      for(let fi=-3.5;fi<=3.5;fi+=0.8){bx(0.08,0.6,0.08,M.wood,fi,0,3.5,g);bx(0.08,0.6,0.08,M.wood,fi,0,-3.5,g);}
+      for(let fi=-3.5;fi<=3.5;fi+=0.8){bx(0.08,0.6,0.08,M.wood,3.5,0,fi,g);bx(0.08,0.6,0.08,M.wood,-3.5,0,fi,g);}
+      const gp=new THREE.Mesh(new THREE.PlaneGeometry(6.5,6.5),new THREE.MeshStandardMaterial({color:0x3a7a22,roughness:1})); gp.rotation.x=-Math.PI/2; gp.position.set(0,0.002,0); g.add(gp);
+      scene.add(g);
+      tree(x+2.5,z-2.5,0.55); flowers(x-1.5,z+2);
     });
 
-    // Simulated event log
-    const eventLog = document.getElementById('event-log');
-    const fakeEvents = [
-      { color: 'green', text: 'ARIA-1 registrerar lampstolpe vid koordinat (3.5, 3.5)' },
-      { color: 'blue', text: 'Minneslager uppdaterat: ny plats "Sydöstra torget"' },
-      { color: 'blue', text: 'ARIA-1 beräknar optimal vandringsrutt' },
-      { color: 'amber', text: 'Ingen modell kopplad — kör i demo-läge' },
-      { color: 'purple', text: 'Partikelsystem aktivt — dataflödesvisualisering' },
-      { color: 'green', text: 'Byggnad identifierad: "Nexus Tower" — registrerad' },
-      { color: 'blue', text: 'ARIA-1 slutför varv 1 av promenadrutt' },
-      { color: 'green', text: 'Systemhälsa: 100% · Latens: < 1ms' },
+    // AGENTS
+    const ADEFS = [
+      {name:'Elin',role:'Demokratibyggaren',color:0x1a4a9a,hair:0xc8a060,home:new THREE.Vector3(-45,0,-38),primary:new THREE.Vector3(0,0,-20),dot:'#2a6acc'},
+      {name:'Mira',role:'Den sociala vävaren',color:0x1a7a5a,hair:0x3a2810,home:new THREE.Vector3(-18,0,-52),primary:new THREE.Vector3(20,0,28),dot:'#2aaa7a'},
+      {name:'Kai', role:'Byggaren',color:0x6a2a8a,hair:0x111111,home:new THREE.Vector3(38,0,-46),primary:new THREE.Vector3(28,0,6),dot:'#8a3aaa'},
+      {name:'Aria',role:'Utforskaren',color:0x9a5a1a,hair:0xff9a40,home:new THREE.Vector3(58,0,-24),primary:new THREE.Vector3(-15,0,32),dot:'#ca7a2a'},
+      {name:'Nox', role:'Arkivarien',color:0x2a2a4a,hair:0x888888,home:new THREE.Vector3(-58,0,4),primary:new THREE.Vector3(-26,0,8),dot:'#4a4a6a'},
     ];
-    let evtIdx = 0;
-    function addEvent() {
-      const e = fakeEvents[evtIdx % fakeEvents.length];
-      evtIdx++;
-      const now = new Date();
-      const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-      const el = document.createElement('div');
-      el.className = 'event-item';
-      el.innerHTML = `<span class="event-time">${time}</span><span class="event-dot event-dot--${e.color}"></span><span class="event-text">${e.text}</span>`;
-      el.style.opacity = '0';
-      el.style.transition = 'opacity 0.4s';
-      eventLog.prepend(el);
-      setTimeout(() => el.style.opacity = '1', 20);
-      if (eventLog.children.length > 6) eventLog.removeChild(eventLog.lastChild);
+    const PLAZA = new THREE.Vector3(0,0,0);
+    const WSPOT = [new THREE.Vector3(-20,0,-14),new THREE.Vector3(22,0,-16),new THREE.Vector3(28,0,6),new THREE.Vector3(-15,0,32),new THREE.Vector3(20,0,28),new THREE.Vector3(-26,0,8),new THREE.Vector3(8,0,-10),new THREE.Vector3(-10,0,12),new THREE.Vector3(15,0,5)];
+
+    const STATES = {
+      SLEEPING:'Sover',WAKING:'Vaknar',AT_DESK:'Vid skrivbordet',
+      AT_PRIMARY:'På jobbet',PLAZA_SOCIAL:'Lunchar på torget',
+      WANDERING:'Vandrar',RESTING_HOME:'Vilar hemma'
+    };
+
+    function getState(h) {
+      if(h>=23||h<6.5)  return 'SLEEPING';
+      if(h<7.5)          return 'WAKING';
+      if(h<8.5)          return 'AT_DESK';
+      if(h<12)           return 'AT_PRIMARY';
+      if(h<13.5)         return 'PLAZA_SOCIAL';
+      if(h<17)           return 'AT_PRIMARY';
+      if(h<20)           return 'WANDERING';
+      if(h<22.5)         return 'RESTING_HOME';
+      return 'SLEEPING';
     }
-    setInterval(addEvent, 4500);
+
+    function makeChar(color, hair) {
+      const g=new THREE.Group();
+      const bm=mat(color,0.7), sm=mat(0xf0c89a,0.8), hm=mat(hair,0.9), dk=mat(0x1a1a1a,0.8), pm=mat(0x222240,0.8);
+      // torso
+      const torso=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.65,0.28),bm); torso.position.set(0,0.95,0); torso.castShadow=true; g.add(torso);
+      // head
+      const head=new THREE.Mesh(new THREE.SphereGeometry(0.22,12,8),sm); head.position.set(0,1.5,0); head.castShadow=true; g.add(head);
+      // hair
+      const ht=new THREE.Mesh(new THREE.SphereGeometry(0.23,12,8,0,Math.PI*2,0,Math.PI/2),hm); ht.position.set(0,1.52,0); g.add(ht);
+      // eyes
+      [-0.08,0.08].forEach(ex=>{const e=new THREE.Mesh(new THREE.SphereGeometry(0.025,6,4),dk); e.position.set(ex,1.52,0.2); g.add(e);});
+      // arms
+      const ag=new THREE.BoxGeometry(0.12,0.55,0.12);
+      const lA=new THREE.Mesh(ag,bm); lA.position.set(-0.32,0.9,0); lA.castShadow=true; g.add(lA);
+      const rA=new THREE.Mesh(ag,bm); rA.position.set(0.32,0.9,0); rA.castShadow=true; g.add(rA);
+      // legs
+      const lg=new THREE.BoxGeometry(0.16,0.6,0.16);
+      const lL=new THREE.Mesh(lg,pm); lL.position.set(-0.14,0.3,0); lL.castShadow=true; g.add(lL);
+      const rL=new THREE.Mesh(lg,pm); rL.position.set(0.14,0.3,0); rL.castShadow=true; g.add(rL);
+      g.userData.parts={lA,rA,lL,rL};
+      return g;
+    }
+
+    const agents = ADEFS.map((def,i)=>{
+      const mesh=makeChar(def.color,def.hair);
+      mesh.position.copy(def.home);
+      scene.add(mesh);
+      // floating overlay
+      const ov=document.createElement('div');
+      ov.className='agent-focus-overlay';
+      ov.innerHTML=`<div class="agent-focus-overlay__name">${def.name}</div><div class="agent-focus-overlay__bar"><div class="agent-focus-overlay__bar-fill" id="ov-e-${i}" style="width:80%"></div></div>`;
+      vp.appendChild(ov);
+      return {...def,mesh,overlay:ov,state:'SLEEPING',needs:{energi:80,social:70,kunskap:60,valmående:70},wTimer:0,wPhase:Math.random()*Math.PI*2,target:def.home.clone(),moving:false};
+    });
+
+    // NEEDS
+    const GAME_H_PER_SEC = 1/60; // 1 game hour per 60 real seconds
+    function updateNeeds(a,state,dt) {
+      const n=a.needs;
+      if(state==='SLEEPING') n.energi=Math.min(100,n.energi+20*dt);
+      else if(state==='AT_PRIMARY'||state==='WANDERING') n.energi=Math.max(0,n.energi-3*dt);
+      else n.energi=Math.max(0,n.energi-1*dt);
+      if(state==='PLAZA_SOCIAL') n.social=Math.min(100,n.social+8*dt);
+      else n.social=Math.max(0,n.social-2*dt);
+      if(state==='AT_PRIMARY') n.kunskap=Math.min(100,n.kunskap+5*dt);
+      else n.kunskap=Math.max(0,n.kunskap-1*dt);
+      n.valmående=(n.energi+n.social+n.kunskap)/3;
+    }
+
+    function getTarget(a,state) {
+      if(state==='SLEEPING'||state==='WAKING'||state==='AT_DESK'||state==='RESTING_HOME') return a.home.clone();
+      if(state==='AT_PRIMARY') return a.primary.clone().add(new THREE.Vector3((Math.random()-.5)*3,0,(Math.random()-.5)*3));
+      if(state==='PLAZA_SOCIAL') return PLAZA.clone().add(new THREE.Vector3((Math.random()-.5)*7,0,(Math.random()-.5)*7));
+      return WSPOT[Math.floor(Math.random()*WSPOT.length)].clone();
+    }
+
+    // CAMERA
+    let autoCam=false, focIdx=-1, acTimer=0;
+    document.getElementById('btn-auto-cam').addEventListener('click',()=>{
+      autoCam=true; controls.enabled=false;
+      document.getElementById('btn-auto-cam').classList.add('active');
+      document.getElementById('btn-manual-cam').classList.remove('active');
+      acTimer=10;
+    });
+    document.getElementById('btn-manual-cam').addEventListener('click',()=>{
+      autoCam=false; controls.enabled=true;
+      document.getElementById('btn-auto-cam').classList.remove('active');
+      document.getElementById('btn-manual-cam').classList.add('active');
+    });
+    document.getElementById('btn-fullscreen').addEventListener('click',()=>{
+      document.fullscreenElement?document.exitFullscreen():vp.requestFullscreen();
+    });
+
+    // SIDEBAR
+    const sidebar=document.getElementById('agent-sidebar');
+    function buildSidebar() {
+      sidebar.innerHTML='';
+      agents.forEach((a,i)=>{
+        const c=document.createElement('div');
+        c.className='agent-list-card'; c.id='ac-'+i;
+        c.innerHTML=`<div class="agent-list-card__header"><div class="agent-list-card__dot" style="background:${a.dot}"></div><div class="agent-list-card__name">${a.name}</div></div><div class="agent-list-card__role">${a.role}</div><div class="agent-list-card__status" id="as-${i}">Laddar...</div><div class="needs-bars"><div class="needs-bar-row"><span class="needs-bar-label">Energi</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--energi" id="nb-e-${i}" style="width:80%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Social</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--social" id="nb-s-${i}" style="width:70%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Kunskap</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--kunskap" id="nb-k-${i}" style="width:60%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Välmående</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--valmående" id="nb-v-${i}" style="width:70%"></div></div></div></div>`;
+        c.addEventListener('click',()=>{ focIdx=i; updateHighlight(); if(!autoCam){const p=agents[i].mesh.position; controls.target.set(p.x,1,p.z);} updateFocPanel(); });
+        sidebar.appendChild(c);
+      });
+    }
+    buildSidebar();
+
+    function updateHighlight() { agents.forEach((_,i)=>{ const c=document.getElementById('ac-'+i); if(c) c.classList.toggle('focused',i===focIdx); }); }
+
+    function updateSidebarNeeds() {
+      agents.forEach((a,i)=>{
+        const n=a.needs;
+        const eEl=document.getElementById('nb-e-'+i); if(eEl) eEl.style.width=Math.round(n.energi)+'%';
+        const sEl=document.getElementById('nb-s-'+i); if(sEl) sEl.style.width=Math.round(n.social)+'%';
+        const kEl=document.getElementById('nb-k-'+i); if(kEl) kEl.style.width=Math.round(n.kunskap)+'%';
+        const vEl=document.getElementById('nb-v-'+i); if(vEl) vEl.style.width=Math.round(n.valmående)+'%';
+        const stEl=document.getElementById('as-'+i); if(stEl) stEl.textContent=STATES[a.state]||a.state;
+        const ovEl=document.getElementById('ov-e-'+i); if(ovEl) ovEl.style.width=Math.round(n.energi)+'%';
+      });
+    }
+
+    function updateFocPanel() {
+      if(focIdx<0||focIdx>=agents.length) return;
+      const a=agents[focIdx],n=a.needs;
+      const hex='#'+a.color.toString(16).padStart(6,'0');
+      document.getElementById('focused-badge').textContent=a.name;
+      document.getElementById('focused-agent-hud').textContent='▸ '+a.name+' · '+(STATES[a.state]||a.state);
+      document.getElementById('focused-agent-details').innerHTML=`<div style="font-weight:600;font-size:var(--text-base);margin-bottom:2px;color:${hex}">${a.name}</div><div style="font-size:0.62rem;color:var(--text-faint);font-family:var(--font-mono);margin-bottom:var(--space-3)">${a.role}</div><div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-3)">Status: ${STATES[a.state]||a.state}</div><div class="needs-bars"><div class="needs-bar-row"><span class="needs-bar-label">Energi</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--energi" style="width:${Math.round(n.energi)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Social</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--social" style="width:${Math.round(n.social)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Kunskap</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--kunskap" style="width:${Math.round(n.kunskap)}%"></div></div></div><div class="needs-bar-row"><span class="needs-bar-label">Välmående</span><div class="needs-bar"><div class="needs-bar__fill needs-bar__fill--valmående" style="width:${Math.round(n.valmående)}%"></div></div></div></div>`;
+    }
+
+    // EVENT LOG
+    const elog=document.getElementById('event-log');
+    function logEv(text,color) {
+      const t=fmt(getH());
+      const el=document.createElement('div'); el.className='event-item';
+      el.innerHTML=`<span class="event-time">${t}</span><span class="event-dot event-dot--${color||'blue'}"></span><span class="event-text">${text}</span>`;
+      elog.insertBefore(el,elog.firstChild);
+      while(elog.children.length>25) elog.removeChild(elog.lastChild);
+    }
+    logEv('Nexus-världen laddad. 5 agenter aktiva.','green');
+    logEv('Sky-system aktiv. Söker väder från Vara...','blue');
+
+    // WEATHER
+    async function fetchWeather() {
+      try {
+        const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=58.27&longitude=12.96&current_weather=true&timezone=Europe/Stockholm');
+        const d=await r.json(); const w=d.current_weather;
+        const codes={0:'Klart',1:'Mest klart',2:'Delvis molnigt',3:'Mulet',45:'Dimma',51:'Duggregn',61:'Regn',63:'Regn',65:'Kraftigt regn',71:'Snö',80:'Regnskurar',95:'Åska'};
+        const desc=codes[w.weathercode]||`kod ${w.weathercode}`;
+        document.getElementById('weather-hud').textContent=`${desc} · ${Math.round(w.temperature)}°C · ${Math.round(w.windspeed)}km/h`;
+        logEv(`Väder i Vara: ${desc}, ${Math.round(w.temperature)}°C`,'green');
+      } catch(e) { document.getElementById('weather-hud').textContent='Väder ej tillgängligt'; }
+    }
+    fetchWeather();
+    setInterval(fetchWeather,600000);
+
+    // OVERLAYS
+    const tmpV=new THREE.Vector3();
+    function toScreen(pos) {
+      const b=vp.getBoundingClientRect();
+      tmpV.copy(pos).project(camera);
+      return {x:(tmpV.x*.5+.5)*b.width,y:(-tmpV.y*.5+.5)*b.height,vis:tmpV.z<1};
+    }
+
+    function updateOverlays() {
+      agents.forEach((a,i)=>{
+        const hp=a.mesh.position.clone(); hp.y+=1.9;
+        const s=toScreen(hp);
+        const ov=a.overlay;
+        if(s.vis){
+          ov.style.left=s.x+'px'; ov.style.top=s.y+'px';
+          const dist=camera.position.distanceTo(a.mesh.position);
+          ov.classList.toggle('visible',i===focIdx||dist<20);
+        } else { ov.classList.remove('visible'); }
+      });
+    }
+
+    // WORLD STATS
+    function updateStats() {
+      const awake=agents.filter(a=>a.state!=='SLEEPING').length;
+      const plaza=agents.filter(a=>a.state==='PLAZA_SOCIAL').length;
+      const avgN=Math.round(agents.reduce((s,a)=>s+a.needs.valmående,0)/agents.length);
+      const e1=document.getElementById('stat-awake'); if(e1) e1.textContent=awake;
+      const e2=document.getElementById('stat-plaza'); if(e2) e2.textContent=plaza;
+      const e3=document.getElementById('stat-avg-needs'); if(e3) e3.textContent=avgN+'%';
+    }
+
+    // MAIN LOOP
+    let lastT=performance.now(), uiT=0;
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+      const dt=Math.min((now-lastT)/1000,.1); lastT=now; uiT+=dt;
+      const h=getH();
+      updateSky(h);
+      document.getElementById('hud-clock').textContent='NEXUS · VARA · '+fmt(h);
+      const hst=document.getElementById('hero-stat-time'); if(hst) hst.textContent=fmt(h);
+
+      const dtH=dt*GAME_H_PER_SEC;
+      agents.forEach((a,i)=>{
+        const prevSt=a.state, newSt=getState(h);
+        if(newSt!==prevSt){
+          a.state=newSt;
+          a.target=getTarget(a,newSt);
+          const cols=['green','blue','amber','purple','green'];
+          logEv(`${a.name}: ${STATES[newSt]}`,cols[i%cols.length]);
+          if(newSt==='WANDERING') a.wTimer=0;
+        }
+        if(a.state==='WANDERING'){a.wTimer+=dt;if(a.wTimer>30){a.wTimer=0;a.target=getTarget(a,'WANDERING');}}
+
+        // Sleep pose
+        if(a.state==='SLEEPING'){ a.mesh.rotation.x=Math.PI/2.2; a.mesh.position.y=0.12; }
+        else { a.mesh.rotation.x=0; a.mesh.position.y=0; }
+
+        // Move
+        const pos=a.mesh.position;
+        const tgt=a.target.clone(); tgt.y=(a.state==='SLEEPING')?0.12:0;
+        const dx=tgt.x-pos.x, dz=tgt.z-pos.z;
+        const dist2=Math.sqrt(dx*dx+dz*dz);
+        a.moving=dist2>0.3;
+        if(a.moving&&a.state!=='SLEEPING'){
+          const spd=3.0, step=Math.min(spd*dt,dist2), n2=1/dist2;
+          pos.x+=dx*n2*step; pos.z+=dz*n2*step;
+          a.mesh.rotation.y=Math.atan2(dx,dz);
+        }
+
+        // Walk anim
+        const {lA,rA,lL,rL}=a.mesh.userData.parts;
+        if(a.moving&&a.state!=='SLEEPING'){
+          a.wPhase+=dt*6; const sw=Math.sin(a.wPhase)*0.4;
+          if(lA) lA.rotation.x=sw; if(rA) rA.rotation.x=-sw;
+          if(lL) lL.rotation.x=-sw; if(rL) rL.rotation.x=sw;
+        } else {
+          const typing=a.state==='AT_DESK'||a.state==='WAKING';
+          if(typing){ const tb=Math.sin(now*0.005)*0.15; if(lA) lA.rotation.x=-0.6+tb; if(rA) rA.rotation.x=-0.6-tb; }
+          else { if(lA) lA.rotation.x=0; if(rA) rA.rotation.x=0; if(lL) lL.rotation.x=0; if(rL) rL.rotation.x=0; }
+        }
+
+        updateNeeds(a,a.state,dtH);
+      });
+
+      // Auto camera
+      if(autoCam){
+        acTimer+=dt;
+        if(acTimer>=10){ acTimer=0; focIdx=(focIdx+1)%agents.length; updateHighlight(); }
+        if(focIdx>=0){
+          const tp=agents[focIdx].mesh.position;
+          camera.position.lerp(tp.clone().add(new THREE.Vector3(5,4,8)),dt*1.5);
+          controls.target.lerp(tp.clone().add(new THREE.Vector3(0,1,0)),dt*2);
+        }
+      }
+
+      if(uiT>0.5){
+        uiT=0;
+        updateSidebarNeeds();
+        updateStats();
+        if(focIdx>=0) updateFocPanel();
+      }
+
+      updateOverlays();
+      controls.update();
+      renderer.render(scene,camera);
+    }
+
+    focIdx=0; updateHighlight(); updateFocPanel();
+    requestAnimationFrame(animate);
   </script>
 </body>
 </html>
