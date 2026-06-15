@@ -637,18 +637,7 @@
     addBldgLight(45, 3, 10, 0xaaddff, 8, 16);      // Forskningshuset
     // Home lights
     [[-45,2,-38],[-18,2,-52],[38,2,-46],[58,2,-24],[-58,2,4]].forEach(([x,y,z])=>addBldgLight(x,y,z,0xffd580,5,10));
-    // Gatulampor längs vägarna
-    function streetLamp(x,z) {
-      cy(0.08,0.08,3.5,6,M.metal,x,0,z);
-      bx(0.08,0.08,0.6,M.metal,x+0.3,3.5,z);
-      const lm2=new THREE.MeshStandardMaterial({color:0xffe8a0,emissive:0xffe8a0,emissiveIntensity:0});
-      const lb=new THREE.Mesh(new THREE.SphereGeometry(0.12,6,4),lm2); lb.position.set(x+0.6,3.5,z); scene.add(lb);
-      const pl2=new THREE.PointLight(0xffe8a0,0,8); pl2.position.set(x+0.6,3.2,z); scene.add(pl2);
-      // Register for night toggle
-      nightLights.push({lm:lm2,pl:pl2});
-    }
-    const nightLights=[];
-    [[-5,-12],[5,-12],[-5,-28],[5,-28],[0,-42],[-5,8],[5,8],[-5,22],[5,22],[12,-6],[-12,-6],[20,-6],[-20,-6],[22,0],[-22,0]].forEach(([x,z])=>streetLamp(x,z));
+
     fillL.position.set(-20, 10, -20);
     scene.add(fillL);
 
@@ -742,13 +731,27 @@
       (p||scene).add(m); return m;
     }
 
-    // STJÄRNOR (syns om natten)
+    // GROUND
+    { const g=new THREE.Mesh(new THREE.PlaneGeometry(300,300),M.grass); g.rotation.x=-Math.PI/2; g.receiveShadow=true; scene.add(g); }
+
+    // GATULAMPOR & NATT-EFFEKTER (efter M är definierat)
+    const nightLights=[];
+    function streetLamp(x,z) {
+      cy(0.08,0.08,3.5,6,M.metal,x,0,z);
+      bx(0.08,0.08,0.6,M.metal,x+0.3,3.5,z);
+      const lm2=new THREE.MeshStandardMaterial({color:0xffe8a0,emissive:0xffe8a0,emissiveIntensity:0});
+      const lb=new THREE.Mesh(new THREE.SphereGeometry(0.12,6,4),lm2); lb.position.set(x+0.6,3.5,z); scene.add(lb);
+      const pl2=new THREE.PointLight(0xffe8a0,0,8); pl2.position.set(x+0.6,3.2,z); scene.add(pl2);
+      nightLights.push({lm:lm2,pl:pl2});
+    }
+    [[-5,-12],[5,-12],[-5,-28],[5,-28],[0,-42],[-5,8],[5,8],[-5,22],[5,22],[12,-6],[-12,-6],[20,-6],[-20,-6],[22,0],[-22,0]].forEach(([x,z])=>streetLamp(x,z));
+    // STJÄRNOR — placerade här så nightLights är initierat
     {
       const starGeo = new THREE.BufferGeometry();
       const starCount = 800;
       const positions = new Float32Array(starCount * 3);
       for(let i=0;i<starCount;i++){
-        const theta=Math.random()*Math.PI*2, phi=Math.acos(Math.random()*0.5); // övre halvsfär
+        const theta=Math.random()*Math.PI*2, phi=Math.acos(Math.random()*0.5);
         const r=180+Math.random()*60;
         positions[i*3]=r*Math.sin(phi)*Math.cos(theta);
         positions[i*3+1]=r*Math.cos(phi);
@@ -756,13 +759,9 @@
       }
       starGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));
       const starMat=new THREE.PointsMaterial({color:0xffffff,size:0.6,sizeAttenuation:true,transparent:true,opacity:0});
-      const stars=new THREE.Points(starGeo,starMat); scene.add(stars);
-      // Registrera för natt-uppdatering
+      const starsMesh=new THREE.Points(starGeo,starMat); scene.add(starsMesh);
       nightLights.push({lm:{emissiveIntensity:0},pl:{intensity:0},starMat,isStars:true});
     }
-
-    // GROUND
-    { const g=new THREE.Mesh(new THREE.PlaneGeometry(300,300),M.grass); g.rotation.x=-Math.PI/2; g.receiveShadow=true; scene.add(g); }
 
     // ROADS
     function road(x1,z1,x2,z2,w) {
