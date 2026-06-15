@@ -518,7 +518,7 @@
       const ring=new THREE.Mesh(new THREE.RingGeometry(5.5,5.8,64),new THREE.MeshBasicMaterial({color:0x5b9cf6,side:THREE.DoubleSide,transparent:true,opacity:0.4})); ring.rotation.x=-Math.PI/2; ring.position.y=0.01; scene.add(ring);
       cy(2.8,3.0,0.4,32,M.conc,0,0,0); cy(0.15,0.15,1.2,8,M.conc,0,0.4,0); cy(1.0,1.1,0.2,32,M.conc,0,1.6,0);
       const ww=new THREE.Mesh(new THREE.CylinderGeometry(2.6,2.6,0.05,32),M.water); ww.position.set(0,0.43,0); scene.add(ww);
-      [[-6,0],[ 6,0],[0,-6],[0,6]].forEach(([bx,bz])=>{ bx(1.8,0.1,0.5,M.wood,bx,0.4,bz); bx(0.1,0.4,0.5,M.wood,bx-0.8,0,bz); bx(0.1,0.4,0.5,M.wood,bx+0.8,0,bz); });
+      [[-6,0],[6,0],[0,-6],[0,6]].forEach(([px,pz])=>{ bx(1.8,0.1,0.5,M.wood,px,0.4,pz); bx(0.1,0.4,0.5,M.wood,px-0.8,0,pz); bx(0.1,0.4,0.5,M.wood,px+0.8,0,pz); });
     }
 
     // TREES
