@@ -1950,7 +1950,7 @@
           if(A.target){ const tgt=agents.find(a=>a.name===A.target); if(tgt){ tgt.needs.kunskap=Math.min(100,tgt.needs.kunskap+5); tgt.memory.addEpisode(agent.name+' lärde mig om '+(A.topic||'')); } }
           break;
         }
-        case 'write_record': case 'classify_document': case 'document_findings': {
+        case 'document_findings': {
           newsType = 'archive';
           newsText = A.event || A.result || A.document || '';
           agent.memory.addEpisode('Dokumenterade: '+(A.event||A.result||''));
@@ -2135,6 +2135,66 @@
         case 'overhear': {
           newsType = 'action';
           newsText = 'Lyssnar på omgivningen';
+          break;
+        }
+        case 'start_project': {
+          newsType = 'governance';
+          newsText = A.title || '';
+          logEv(agent.name+' startar projekt: '+(A.title||''), 'amber');
+          agent.memory.addEpisode('Startade projekt: '+(A.title||''));
+          await worldAction(agent, 'start_project', {title:A.title, description:A.description, institution:A.institution});
+          break;
+        }
+        case 'join_project': {
+          newsType = 'governance';
+          newsText = A.project || A.project_id || '';
+          agent.memory.addEpisode('Anslöt till projekt: '+(A.project||''));
+          await worldAction(agent, 'join_project', {project_id:A.project_id||A.project||''});
+          break;
+        }
+        case 'update_project': {
+          newsType = 'governance';
+          newsText = A.status || A.update || '';
+          agent.memory.addEpisode('Uppdaterade projekt');
+          await worldAction(agent, 'update_project', {project_id:A.project_id||A.project||'', status:A.status, update:A.update});
+          break;
+        }
+        case 'propose_policy': {
+          newsType = 'governance';
+          newsText = A.title || '';
+          logEv(agent.name+' lämnar in förslag: '+(A.title||''), 'amber');
+          agent.memory.addEpisode('Föreslog policy: '+(A.title||''));
+          await worldAction(agent, 'propose', {title:A.title, description:A.description, proposer:agent.name});
+          break;
+        }
+        case 'vote_on_proposal': {
+          newsType = 'governance';
+          newsText = (A.vote==='for'?'Röstar för ':'Röstar mot ')+(A.proposal||'');
+          logEv(agent.name+' röstar '+(A.vote==='for'?'JA':'NEJ'), 'blue');
+          agent.memory.addEpisode('Röstade '+(A.vote==='for'?'för':'mot')+': '+(A.proposal||''));
+          await worldAction(agent, 'vote', {proposal_id:A.proposal||A.proposal_id||'', vote:A.vote, agent:agent.name});
+          break;
+        }
+        case 'write_record': case 'classify_document': case 'document_findings': {
+          newsType = 'archive';
+          newsText = A.title || A.content?.substring(0,60) || '';
+          agent.memory.addEpisode('Arkiverade: '+(A.title||''));
+          if(A.title) await worldAction(agent, 'write_record', {title:A.title, content:A.content||'', type:A.type||'general'});
+          break;
+        }
+        case 'report_problem': {
+          newsType = 'safety';
+          newsText = A.title || A.description || '';
+          logEv(agent.name+' rapporterar problem: '+(A.title||''), 'rose');
+          agent.memory.addEpisode('Rapporterade problem: '+(A.title||''));
+          await worldAction(agent, 'report_problem', {title:A.title, description:A.description, severity:A.severity||'medium'});
+          break;
+        }
+        case 'update_institution': {
+          newsType = 'governance';
+          newsText = (A.institution||'')+': '+(A.note||'');
+          agent.memory.addEpisode('Föreslog institutionsändring: '+(A.institution||''));
+          await worldAction(agent, 'update_institution', {institution:A.institution, note:A.note, purpose:A.purpose});
           break;
         }
         default: {
