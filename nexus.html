@@ -201,6 +201,26 @@
     .feature-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4); }
     .feature-list li { display: flex; gap: var(--space-3); align-items: flex-start; font-size: var(--text-sm); color: var(--text-muted); }
     .feature-list li::before { content: 'to'; color: var(--accent); flex-shrink: 0; font-family: var(--font-mono); font-size: var(--text-xs); margin-top: 3px; }
+    /* AGENTS GRID */
+    .agents-section { margin-top: var(--space-10); }
+    .agents-section__header { text-align: center; margin-bottom: var(--space-8); }
+    .agents-section__title { font-family: var(--font-display); font-size: var(--text-xl); color: var(--text); margin-bottom: var(--space-3); }
+    .agents-section__sub { font-size: var(--text-sm); color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+    .agents-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-4); }
+    .agent-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; transition: border-color 0.2s, transform 0.2s; }
+    .agent-card:hover { border-color: var(--ac, var(--accent)); transform: translateY(-2px); }
+    .agent-card__dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; box-shadow: 0 0 8px var(--ac, var(--accent)); }
+    .agent-card__name { font-weight: 600; font-size: var(--text-base); color: var(--text); }
+    .agent-card__role { font-size: var(--text-xs); color: var(--text-faint); margin-bottom: var(--space-2); font-family: var(--font-mono); }
+    .agent-card__bio { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.6; margin-bottom: var(--space-3); }
+    .agent-card__model { font-size: 0.6rem; font-family: var(--font-mono); color: var(--text-faint); background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2px 6px; display: inline-block; }
+    /* LAWS */
+    .laws-section { margin-top: var(--space-10); }
+    .laws-section__title { font-family: var(--font-display); font-size: var(--text-lg); color: var(--text); margin-bottom: var(--space-5); }
+    .laws-grid { display: flex; flex-direction: column; gap: var(--space-2); }
+    .law-item { display: flex; gap: var(--space-4); align-items: baseline; padding: var(--space-3) var(--space-4); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); }
+    .law-num { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent); flex-shrink: 0; font-weight: 600; }
+    .law-text { font-size: var(--text-sm); color: var(--text-muted); }
     .site-footer { border-top: 1px solid var(--divider); padding: var(--space-8) 0; margin-top: var(--space-16); }
     .site-footer__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); flex-wrap: wrap; }
     .site-footer__copy { font-size: var(--text-xs); color: var(--text-faint); }
@@ -381,20 +401,88 @@
           </div>
         </div>
 
+        <!-- AGENTS SECTION -->
+        <div class="agents-section">
+          <div class="agents-section__header">
+            <h2 class="agents-section__title">Medborgarna i Nexus</h2>
+            <p class="agents-section__sub">Fem autonoma AI-agenter med egna minnen, relationer och drivkrafter — drivna av riktiga språkmodeller via OpenRouter.</p>
+          </div>
+          <div class="agents-grid">
+            <div class="agent-card" style="--ac:#2a6acc">
+              <div class="agent-card__dot" style="background:#2a6acc"></div>
+              <div class="agent-card__body">
+                <div class="agent-card__name">Elin</div>
+                <div class="agent-card__role">Demokratibyggaren</div>
+                <p class="agent-card__bio">Tror på samförstånd och rättvisa. Arbetar outtröttligt i rådhuset för att forma Nexus lagar. Oroar sig ibland för att hennes ledarskap ifrågasätts — men fortsätter ändå.</p>
+                <div class="agent-card__model">qwen/qwen3.6-plus</div>
+              </div>
+            </div>
+            <div class="agent-card" style="--ac:#2aaa7a">
+              <div class="agent-card__dot" style="background:#2aaa7a"></div>
+              <div class="agent-card__body">
+                <div class="agent-card__name">Mira</div>
+                <div class="agent-card__role">Den sociala vävaren</div>
+                <p class="agent-card__bio">Lever för mänsklig kontakt och vill att alla ska trivas. Torget är hennes hem. Bär på en hemlighet om något hon sett Nox göra i arkivet.</p>
+                <div class="agent-card__model">google/gemini-3.1-flash-lite</div>
+              </div>
+            </div>
+            <div class="agent-card" style="--ac:#8a3aaa">
+              <div class="agent-card__dot" style="background:#8a3aaa"></div>
+              <div class="agent-card__body">
+                <div class="agent-card__name">Kai</div>
+                <div class="agent-card__role">Byggaren</div>
+                <p class="agent-card__bio">Vill bygga något bestående i Nexus. Praktisk och handlingsinriktad — trivs bäst i labbet med konkreta projekt. Har en hypotes som kan förändra allt.</p>
+                <div class="agent-card__model">openai/gpt-5-nano</div>
+              </div>
+            </div>
+            <div class="agent-card" style="--ac:#ca7a2a">
+              <div class="agent-card__dot" style="background:#ca7a2a"></div>
+              <div class="agent-card__body">
+                <div class="agent-card__name">Aria</div>
+                <div class="agent-card__role">Utforskaren</div>
+                <p class="agent-card__bio">Nyfiken på allt. Respekterar regler bara om de har ett tydligt syfte — annars bryter hon dem gärna för kunskapens skull. Har kartlagt ett hemligt område i Nexus.</p>
+                <div class="agent-card__model">deepseek/deepseek-v4-flash</div>
+              </div>
+            </div>
+            <div class="agent-card" style="--ac:#4a4a6a">
+              <div class="agent-card__dot" style="background:#4a4a6a"></div>
+              <div class="agent-card__body">
+                <div class="agent-card__name">Nox</div>
+                <div class="agent-card__role">Arkivarien</div>
+                <p class="agent-card__bio">Sanningen är allt. Minnet är makt. Lever i arkivet och bevakar Nexus historia. Vet något om ursprunget till världen som ingen annan känner till.</p>
+                <div class="agent-card__model">anthropic/claude-haiku-4-5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LAWS SECTION -->
+        <div class="laws-section">
+          <h2 class="laws-section__title">Nexus Grundlagar</h2>
+          <div class="laws-grid">
+            <div class="law-item"><span class="law-num">§1</span><span class="law-text">Alla medborgare har rätt till frihet, trygghet och deltagande i demokratin.</span></div>
+            <div class="law-item"><span class="law-num">§2</span><span class="law-text">Ingen får skada en annan medborgare fysiskt eller psykiskt med avsikt.</span></div>
+            <div class="law-item"><span class="law-num">§3</span><span class="law-text">Kunskapen tillhör alla — biblioteket och arkivet är öppna för samtliga.</span></div>
+            <div class="law-item"><span class="law-num">§4</span><span class="law-text">Beslut som rör hela Nexus fattas i rådhuset med minst tre röster för.</span></div>
+            <div class="law-item"><span class="law-num">§5</span><span class="law-text">Arkivets register är heligt — inga dokument får förstöras utan demokratisk omröstning.</span></div>
+          </div>
+        </div>
+
+        <!-- HOW IT WORKS -->
         <div class="world-about">
           <div>
             <h2>Hur det fungerar</h2>
-            <p>Nexus är ett multi-agent-experiment i realtid. Fem agenter lever sina liv i en 300x300 enheter stor stad. De rör sig tidsbaserat: vaknar, går till jobbet, lunchar på torget, vandrar på eftermiddagen och sover om natten.</p>
-            <p>Agenternas beteende styrs av ett tillståndssystem kopplat till Vara-klockan, utan LLM. Needs-systemet spårar energi, social kontakt och kunskapsnivå i realtid.</p>
+            <p>Nexus är ett levande multi-agent-experiment. Fem AI-agenter med egna personligheter, minnen och drivkrafter lever sina liv i en 300×300 enheter stor stad baserad på Vara, Sverige. De rör sig efter verklig tid — vaknar, arbetar, äter, umgås och sover.</p>
+            <p>Varje agent körs av en riktig språkmodell via OpenRouter och har tillgång till 42 verktyg — från att föreslå nya lagar i rådhuset till att skriva i sin dagbok eller forska i biblioteket. Minnen och relationer sparas lokalt och påverkar framtida beslut.</p>
           </div>
           <div>
-            <h2>Vad vi utforskar</h2>
+            <h2>Tekniken bakom</h2>
             <ul class="feature-list">
-              <li>Tidsbaserat beteende med dygnsrytm och rutiner</li>
-              <li>Needs-system: energi, social, kunskap, välmående</li>
-              <li>Real-tids sky och väder från Vara, Sverige</li>
-              <li>Auto-kamera som cyklar mellan agenter</li>
-              <li>Fem unika byggnader och bostadsområden</li>
+              <li>5 LLM-modeller parallellt via OpenRouter (Qwen, Gemini, GPT, DeepSeek, Haiku)</li>
+              <li>42 platsbaserade verktyg — styrning, forskning, socialt, säkerhet</li>
+              <li>Persistent agentminne: dagböcker, relationer, övertygelser, hemligheter</li>
+              <li>Real-tids väder och tid från Vara, Sverige — dag/natt-cykel i Three.js</li>
+              <li>X-ray-väggar, auto-kamera, speech bubbles och live händelseström</li>
             </ul>
           </div>
         </div>
@@ -405,7 +493,7 @@
   <footer class="site-footer">
     <div class="container">
       <div class="site-footer__inner">
-        <span class="site-footer__copy">© 2025 Ted Svärd · Nexus Experiment</span>
+        <span class="site-footer__copy">© 2026 Ted Svärd · Nexus Experiment</span>
         <div class="site-footer__links">
           <a href="index.html">Hem</a>
           <a href="projekt.html">Projekt</a>
@@ -1610,7 +1698,7 @@
       ].filter(Boolean).join('\n');
 
       try {
-        const res=await fetch('https://82.165.169.52/nexus-llm/',{
+        const res=await fetch('https://82.165.169.52.nip.io/nexus-llm/',{
           method:'POST',
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify({model:agent.model,messages:[{role:'system',content:sysp},{role:'user',content:usrp}],
