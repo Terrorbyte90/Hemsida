@@ -376,6 +376,9 @@
             </div>
             <div class="news-stream" id="news-stream"></div>
           </div>
+          <div id="cost-tracker" style="font-family:monospace;font-size:11px;color:#aaa;padding:6px 10px;border-top:1px solid #2a2a3a;background:#0d0d16;line-height:1.8;">
+            <span style="color:#666;">⏳ Väntar på LLM-svar…</span>
+          </div>
         </div>
 
         <div class="world-about">
@@ -722,11 +725,11 @@
 
     // AGENTS
     const ADEFS = [
-      {name:'Elin',role:'Demokratibyggaren',model:'anthropic/claude-haiku-4-5',color:0x1a4a9a,hair:0xc8a060,home:new THREE.Vector3(-45,0,-38),primary:new THREE.Vector3(0,0,-20),dot:'#2a6acc'},
-      {name:'Mira',role:'Den sociala vävaren',model:'openai/gpt-4o-mini',color:0x1a7a5a,hair:0x3a2810,home:new THREE.Vector3(-18,0,-52),primary:new THREE.Vector3(20,0,28),dot:'#2aaa7a'},
-      {name:'Kai', role:'Byggaren',model:'google/gemini-2.0-flash-lite',color:0x6a2a8a,hair:0x111111,home:new THREE.Vector3(38,0,-46),primary:new THREE.Vector3(28,0,6),dot:'#8a3aaa'},
-      {name:'Aria',role:'Utforskaren',model:'meta-llama/llama-3.1-8b-instruct:free',color:0x9a5a1a,hair:0xff9a40,home:new THREE.Vector3(58,0,-24),primary:new THREE.Vector3(-15,0,32),dot:'#ca7a2a'},
-      {name:'Nox', role:'Arkivarien',model:'mistralai/mistral-7b-instruct:free',color:0x2a2a4a,hair:0x888888,home:new THREE.Vector3(-58,0,4),primary:new THREE.Vector3(-26,0,8),dot:'#4a4a6a'},
+      {name:'Elin',role:'Demokratibyggaren',model:'qwen/qwen3.6-plus',color:0x1a4a9a,hair:0xc8a060,home:new THREE.Vector3(-45,0,-38),primary:new THREE.Vector3(0,0,-20),dot:'#2a6acc'},
+      {name:'Mira',role:'Den sociala vävaren',model:'google/gemini-3.1-flash-lite',color:0x1a7a5a,hair:0x3a2810,home:new THREE.Vector3(-18,0,-52),primary:new THREE.Vector3(20,0,28),dot:'#2aaa7a'},
+      {name:'Kai', role:'Byggaren',model:'openai/gpt-5-nano',color:0x6a2a8a,hair:0x111111,home:new THREE.Vector3(38,0,-46),primary:new THREE.Vector3(28,0,6),dot:'#8a3aaa'},
+      {name:'Aria',role:'Utforskaren',model:'deepseek/deepseek-v4-flash',color:0x9a5a1a,hair:0xff9a40,home:new THREE.Vector3(58,0,-24),primary:new THREE.Vector3(-15,0,32),dot:'#ca7a2a'},
+      {name:'Nox', role:'Arkivarien',model:'anthropic/claude-haiku-4.5',color:0x2a2a4a,hair:0x888888,home:new THREE.Vector3(-58,0,4),primary:new THREE.Vector3(-26,0,8),dot:'#4a4a6a'},
     ];
     const PLAZA = new THREE.Vector3(0,0,0);
     const WSPOT = [new THREE.Vector3(-20,0,-14),new THREE.Vector3(22,0,-16),new THREE.Vector3(28,0,6),new THREE.Vector3(-15,0,32),new THREE.Vector3(20,0,28),new THREE.Vector3(-26,0,8),new THREE.Vector3(8,0,-10),new THREE.Vector3(-10,0,12),new THREE.Vector3(15,0,5)];
@@ -781,7 +784,9 @@
       ov.className='agent-focus-overlay';
       ov.innerHTML=`<div class="agent-focus-overlay__name">${def.name}</div><div class="agent-focus-overlay__bar"><div class="agent-focus-overlay__bar-fill" id="ov-e-${i}" style="width:80%"></div></div>`;
       vp.appendChild(ov);
-      const memory = new AgentMemory(def.name); return {...def,mesh,overlay:ov,state:'SLEEPING',needs:{energi:80,social:70,kunskap:60,valmående:70},wTimer:0,wPhase:Math.random()*Math.PI*2,target:def.home.clone(),moving:false,memory,lastLocation:null,distilledTonight:false,diaryTonight:false};
+      const memory = new AgentMemory(def.name);
+      // Seed laws as initial beliefs if none exist
+      if(memory.beliefs.length===0){ NEXUS_LAWS.forEach(l=>memory.beliefs.push(l)); memory.save(); } return {...def,mesh,overlay:ov,state:'SLEEPING',needs:{energi:80,social:70,kunskap:60,valmående:70},wTimer:0,wPhase:Math.random()*Math.PI*2,target:def.home.clone(),moving:false,memory,lastLocation:null,distilledTonight:false,diaryTonight:false};
     });
 
     // NEEDS
@@ -1418,7 +1423,59 @@
     // ════════════════════════════════════════════════════════
     // MOCK LLM (personality-driven, deterministic)
     // ════════════════════════════════════════════════════════
-    const OPENROUTER_KEY = null; // Set when ready
+    const OPENROUTER_KEY = 'k-or-v1-999ef60275210bfca732a420fc613a94974a450ba1f7343042f2489ecbca9d75';
+
+    // ════════════════════════════════════════════════════════
+    // COST TRACKER
+    // ════════════════════════════════════════════════════════
+    const MODEL_PRICING = {
+      'qwen/qwen3.6-plus':            { in: 0.325/1e6, out: 1.95/1e6 },
+      'google/gemini-3.1-flash-lite': { in: 0.25/1e6,  out: 1.5/1e6  },
+      'openai/gpt-5-nano':            { in: 0.05/1e6,  out: 0.4/1e6   },
+      'deepseek/deepseek-v4-flash':   { in: 0.09/1e6,  out: 0.18/1e6  },
+      'anthropic/claude-haiku-4.5':   { in: 1.0/1e6,   out: 5.0/1e6   },
+    };
+    const tokenStats = { totalIn:0, totalOut:0, totalCost:0, byAgent:{} };
+
+    function trackTokens(agentName, model, inTokens, outTokens) {
+      const p = MODEL_PRICING[model] || { in:0.001/1e6, out:0.005/1e6 };
+      const cost = inTokens*p.in + outTokens*p.out;
+      tokenStats.totalIn   += inTokens;
+      tokenStats.totalOut  += outTokens;
+      tokenStats.totalCost += cost;
+      if (!tokenStats.byAgent[agentName]) tokenStats.byAgent[agentName]={in:0,out:0,cost:0};
+      tokenStats.byAgent[agentName].in   += inTokens;
+      tokenStats.byAgent[agentName].out  += outTokens;
+      tokenStats.byAgent[agentName].cost += cost;
+      updateCostDisplay();
+    }
+
+    function updateCostDisplay() {
+      const el = document.getElementById('cost-tracker');
+      if (!el) return;
+      const fmt2 = n => n < 0.01 ? '<$0.01' : '$'+n.toFixed(3);
+      const tIn = tokenStats.totalIn.toLocaleString();
+      const tOut = tokenStats.totalOut.toLocaleString();
+      el.innerHTML = `<span style="color:var(--text-faint);font-size:0.55rem;font-family:var(--font-mono);">` +
+        `TOKENS IN: <b style="color:var(--text-muted)">${tIn}</b> &nbsp;` +
+        `OUT: <b style="color:var(--text-muted)">${tOut}</b> &nbsp;` +
+        `KOSTNAD: <b style="color:var(--green)">${fmt2(tokenStats.totalCost)}</b>` +
+        Object.entries(tokenStats.byAgent).map(([n,s])=>
+          ` &nbsp;·&nbsp; <span style="color:${agents.find(a=>a.name===n)?.dot||'#888'}">${n}:${fmt2(s.cost)}</span>`
+        ).join('') + `</span>`;
+    }
+
+    // ════════════════════════════════════════════════════════
+    // NEXUS LAWS (5 grundlagar)
+    // ════════════════════════════════════════════════════════
+    const NEXUS_LAWS = [
+      '§1 Alla medborgare har rätt till frihet, trygghet och deltagande i demokratin.',
+      '§2 Ingen får skada en annan medborgare fysiskt eller psykiskt med avsikt.',
+      '§3 Kunskapen tillhör alla — biblioteket och arkivet är öppna för samtliga.',
+      '§4 Beslut som rör hela Nexus fattas i rådhuset med minst tre röster för.',
+      '§5 Arkivets register är heligt — inga dokument får förstöras utan demokratisk omröstning.',
+    ];
+
     const PERSONALITY = {
       'Elin':  { prefer:['propose_rule','call_meeting','debate','talk_to','reflect','plan_tomorrow'],    social:0.8, talkStyle:['Vi borde diskutera detta','Har du tänkt på gemenskapen?','Demokratin kräver handling.','Jag vill kalla till möte.'] },
       'Mira':  { prefer:['talk_to','socialize','give_advice','compliment','share_knowledge','give_gift'], social:0.95, talkStyle:['Hur mår du egentligen?','Jag är här om du behöver prata.','Du är viktig för oss alla.','Låt oss hitta en lösning.'] },
@@ -1528,16 +1585,53 @@
     async function callOpenRouter(agent, triggerType, context){
       const loc=getAgentLocation(agent);
       const avail=getAvailableTools(loc);
-      const sysp=`Du är ${agent.name}, ${agent.role} i Nexus — en digital stad i Vara, Sverige.\nIDENTITET: ${agent.memory.soul}\nHEMLIGHET: ${agent.memory.secret}\nPLATS: ${loc}\nTILLGÄNGLIGA TOOLS: ${avail.join(', ')}\nSvara ENBART med JSON: {tool, args, thought, moodUpdate, relationUpdate, memoryNote}`;
-      const h=getH(), nh=agents.filter(a=>a.name!==agent.name&&agent.mesh.position.distanceTo(a.mesh.position)<15).map(a=>a.name+'('+Math.round(agent.mesh.position.distanceTo(a.mesh.position))+'m)').join(', ');
-      const usrp=`TID:${fmt(h)} | PLATS:${loc} | STATE:${STATES[agent.state]||agent.state}\nENERGI:${Math.round(agent.needs.energi)} SOCIAL:${Math.round(agent.needs.social)} KUNSKAP:${Math.round(agent.needs.kunskap)}\n${agent.memory.buildContext()}\nNÄRA:${nh||'ingen'} | TRIGGER:${triggerType}${context?' | '+context:''}\nVad gör du nu?`;
-      const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
-        method:'POST',
-        headers:{'Authorization':'Bearer '+OPENROUTER_KEY,'Content-Type':'application/json','HTTP-Referer':'https://terrorbyte90.github.io/Hemsida/','X-Title':'Nexus AI World'},
-        body:JSON.stringify({model:agent.model,messages:[{role:'system',content:sysp},{role:'user',content:usrp}],max_tokens:220,temperature:0.88,response_format:{type:'json_object'}})
-      });
-      const d=await res.json();
-      return JSON.parse(d.choices[0].message.content);
+      const laws=NEXUS_LAWS.join('\n');
+      const nb=agents.filter(a=>a.name!==agent.name&&agent.mesh.position.distanceTo(a.mesh.position)<15);
+      const nbStr=nb.map(a=>a.name+'('+Math.round(agent.mesh.position.distanceTo(a.mesh.position))+'m,mood:'+a.memory.mood+')').join(', ');
+      const diary=agent.memory.diary[0]?'Senaste dagbok: '+agent.memory.diary[0].entry.substring(0,120):'';
+      const sysp=[
+        `Du är ${agent.name}, ${agent.role} i Nexus — en levande digital stad i Vara, Sverige.`,
+        `IDENTITET: ${agent.memory.soul}`,
+        `HEMLIGHET (berätta aldrig direkt): ${agent.memory.secret}`,
+        `GRUNDLAGAR:\n${laws}`,
+        `PLATS: ${loc} | TILLGÄNGLIGA TOOLS: ${avail.join(', ')}`,
+        `Svara ENBART med valid JSON på svenska: {"tool":"...","args":{...},"thought":"...","moodUpdate":"...","relationUpdate":{"AgentNamn":delta},"memoryNote":"..."}`
+      ].join('\n');
+      const h=getH();
+      const n=agent.needs;
+      const usrp=[
+        `TID: ${fmt(h)} | VÄDER: ${document.getElementById('weather-hud')?.textContent||''} | PLATS: ${loc}`,
+        `STATUS: ${STATES[agent.state]||agent.state} | E:${Math.round(n.energi)} S:${Math.round(n.social)} K:${Math.round(n.kunskap)} V:${Math.round(n.valmående)}`,
+        `MINNE: ${agent.memory.buildContext()}`,
+        diary,
+        `NÄRA: ${nbStr||'ingen'}`,
+        `TRIGGER: ${triggerType}${context?' | '+context:''}`,
+        `Vad gör du nu? Välj ett tool och agera konsekvent med din personlighet.`
+      ].filter(Boolean).join('\n');
+
+      try {
+        const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+          method:'POST',
+          headers:{'Authorization':'Bearer '+OPENROUTER_KEY,'Content-Type':'application/json',
+            'HTTP-Referer':'https://terrorbyte90.github.io/Hemsida/','X-Title':'Nexus AI World'},
+          body:JSON.stringify({model:agent.model,messages:[{role:'system',content:sysp},{role:'user',content:usrp}],
+            max_tokens:250,temperature:0.9})
+        });
+        const d=await res.json();
+        if(d.error) throw new Error(d.error.message);
+        // Track tokens
+        const usage=d.usage||{};
+        trackTokens(agent.name, agent.model, usage.prompt_tokens||150, usage.completion_tokens||80);
+        // Parse response
+        const raw=d.choices[0].message.content.trim();
+        const jsonMatch=raw.match(/\{[\s\S]*\}/);
+        if(!jsonMatch) throw new Error('No JSON in response');
+        return JSON.parse(jsonMatch[0]);
+      } catch(e) {
+        console.warn('OpenRouter error for '+agent.name+':', e.message);
+        // Fall back to mock on error
+        return mockLLM(agent, triggerType, context);
+      }
     }
 
     // ════════════════════════════════════════════════════════
