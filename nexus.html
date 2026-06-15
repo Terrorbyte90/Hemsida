@@ -1040,34 +1040,6 @@
       return g;
     }
 
-    const agents = ADEFS.map((def,i)=>{
-      const mesh=makeChar(def.color,def.hair);
-      mesh.position.copy(def.home);
-      scene.add(mesh);
-      // floating overlay
-      const ov=document.createElement('div');
-      ov.className='agent-focus-overlay';
-      ov.innerHTML=`<div class="agent-focus-overlay__name">${def.name}</div><div class="agent-focus-overlay__status" id="ov-status-${i}" style="font-size:0.45rem;color:rgba(255,255,255,0.55);font-family:monospace;margin-bottom:2px">Sover</div><div class="agent-focus-overlay__bar"><div class="agent-focus-overlay__bar-fill" id="ov-e-${i}" style="width:80%"></div></div>`;
-      vp.appendChild(ov);
-      const memory = new AgentMemory(def.name);
-      // Seed laws as initial beliefs if none exist
-      if(memory.beliefs.length===0){ NEXUS_LAWS.forEach(l=>memory.beliefs.push(l)); memory.save(); } return {...def,mesh,overlay:ov,state:'SLEEPING',needs:{energi:80,social:70,kunskap:60,valmående:70},wTimer:0,wPhase:Math.random()*Math.PI*2,target:def.home.clone(),moving:false,memory,lastLocation:null,distilledTonight:false,diaryTonight:false};
-    });
-
-    // NEEDS
-    const GAME_H_PER_SEC = 1/60; // 1 game hour per 60 real seconds
-    function updateNeeds(a,state,dt) {
-      const n=a.needs;
-      if(state==='SLEEPING') n.energi=Math.min(100,n.energi+20*dt);
-      else if(state==='AT_PRIMARY'||state==='WANDERING') n.energi=Math.max(0,n.energi-3*dt);
-      else n.energi=Math.max(0,n.energi-1*dt);
-      if(state==='PLAZA_SOCIAL') n.social=Math.min(100,n.social+8*dt);
-      else n.social=Math.max(0,n.social-2*dt);
-      if(state==='AT_PRIMARY') n.kunskap=Math.min(100,n.kunskap+5*dt);
-      else n.kunskap=Math.max(0,n.kunskap-1*dt);
-      n.valmående=(n.energi+n.social+n.kunskap)/3;
-    }
-
     // Furniture seats per location (world coords, inside buildings)
     const SEATS = {
       rådhuset:     [new THREE.Vector3(-1.8,0,-18.9), new THREE.Vector3(0,0,-18.9), new THREE.Vector3(1.8,0,-18.9), new THREE.Vector3(-1.8,0,-21.1), new THREE.Vector3(0,0,-21.1)],
@@ -1108,6 +1080,35 @@
       return WSPOT[Math.floor(Math.random()*WSPOT.length)].clone();
     }
 
+
+    const agents = ADEFS.map((def,i)=>{
+      const mesh=makeChar(def.color,def.hair);
+      mesh.position.copy(def.home);
+      scene.add(mesh);
+      // floating overlay
+      const ov=document.createElement('div');
+      ov.className='agent-focus-overlay';
+      ov.innerHTML=`<div class="agent-focus-overlay__name">${def.name}</div><div class="agent-focus-overlay__status" id="ov-status-${i}" style="font-size:0.45rem;color:rgba(255,255,255,0.55);font-family:monospace;margin-bottom:2px">Sover</div><div class="agent-focus-overlay__bar"><div class="agent-focus-overlay__bar-fill" id="ov-e-${i}" style="width:80%"></div></div>`;
+      vp.appendChild(ov);
+      const memory = new AgentMemory(def.name);
+      // Seed laws as initial beliefs if none exist
+      if(memory.beliefs.length===0){ NEXUS_LAWS.forEach(l=>memory.beliefs.push(l)); memory.save(); } return {...def,mesh,overlay:ov,state:'SLEEPING',needs:{energi:80,social:70,kunskap:60,valmående:70},wTimer:0,wPhase:Math.random()*Math.PI*2,target:def.home.clone(),moving:false,memory,lastLocation:null,distilledTonight:false,diaryTonight:false};
+    });
+
+    // NEEDS
+    const GAME_H_PER_SEC = 1/60; // 1 game hour per 60 real seconds
+    function updateNeeds(a,state,dt) {
+      const n=a.needs;
+      if(state==='SLEEPING') n.energi=Math.min(100,n.energi+20*dt);
+      else if(state==='AT_PRIMARY'||state==='WANDERING') n.energi=Math.max(0,n.energi-3*dt);
+      else n.energi=Math.max(0,n.energi-1*dt);
+      if(state==='PLAZA_SOCIAL') n.social=Math.min(100,n.social+8*dt);
+      else n.social=Math.max(0,n.social-2*dt);
+      if(state==='AT_PRIMARY') n.kunskap=Math.min(100,n.kunskap+5*dt);
+      else n.kunskap=Math.max(0,n.kunskap-1*dt);
+      n.valmående=(n.energi+n.social+n.kunskap)/3;
+    }
+
     // CAMERA
     let autoCam=false, focIdx=-1, acTimer=0;
     const btnAuto = document.getElementById('btn-auto-cam');
@@ -1124,38 +1125,31 @@
     btnAuto.addEventListener('click', ()=>setAutoMode(true));
     btnManual.addEventListener('click', ()=>{ setAutoMode(false); });
 
-    // Fake fullscreen — works on iOS
+    // Fullscreen — CSS fake-fs always works (iOS + desktop)
     let isFakeFs = false;
+    function enterFs() {
+      vp.classList.add('fake-fs'); isFakeFs=true;
+      btnFs.textContent='✕'; document.body.style.overflow='hidden';
+      setTimeout(resize, 80);
+    }
+    function exitFs() {
+      vp.classList.remove('fake-fs'); isFakeFs=false;
+      btnFs.textContent='⤢'; document.body.style.overflow='';
+      setTimeout(resize, 80);
+    }
     function toggleFullscreen() {
-      // Try native first (desktop), fall back to CSS fake fs
-      const native = vp.requestFullscreen || vp.webkitRequestFullscreen || vp.mozRequestFullScreen;
-      const nativeExit = document.exitFullscreen || document.webkitExitFullscreen;
-      const inNativeFs = document.fullscreenElement || document.webkitFullscreenElement;
-      if(inNativeFs) {
-        nativeExit.call(document);
-        return;
-      }
-      if(isFakeFs) {
-        vp.classList.remove('fake-fs');
-        isFakeFs=false;
-        btnFs.textContent='Fullskärm ⤢';
-        setTimeout(resize,50);
-      } else {
-        if(native && !/(iPhone|iPad|iPod)/i.test(navigator.userAgent)) {
-          native.call(vp).catch(()=>{ vp.classList.add('fake-fs'); isFakeFs=true; btnFs.textContent='Avsluta ✕'; setTimeout(resize,50); });
-        } else {
-          vp.classList.add('fake-fs');
-          isFakeFs=true;
-          btnFs.textContent='✕ Avsluta';
-          setTimeout(()=>{ resize(); }, 50);
-        }
-      }
+      if(isFakeFs){ exitFs(); return; }
+      const nativeFn = vp.requestFullscreen||vp.webkitRequestFullscreen;
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if(nativeFn && !isIOS){ nativeFn.call(vp).then(()=>{btnFs.textContent='✕';}).catch(enterFs); }
+      else enterFs();
     }
     btnFs.addEventListener('click', toggleFullscreen);
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape'&&isFakeFs) exitFs(); });
     ['fullscreenchange','webkitfullscreenchange'].forEach(ev=>{
       document.addEventListener(ev, ()=>{
-        if(!document.fullscreenElement && !document.webkitFullscreenElement) btnFs.textContent='Fullskärm ⤢';
-        setTimeout(resize,50);
+        if(!document.fullscreenElement&&!document.webkitFullscreenElement&&!isFakeFs){ btnFs.textContent='⤢'; document.body.style.overflow=''; }
+        setTimeout(resize,80);
       });
     });
 
