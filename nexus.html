@@ -1068,10 +1068,43 @@
       n.valmående=(n.energi+n.social+n.kunskap)/3;
     }
 
-    function getTarget(a,state) {
-      if(state==='SLEEPING'||state==='WAKING'||state==='AT_DESK'||state==='RESTING_HOME') return a.home.clone();
-      if(state==='AT_PRIMARY') return a.primary.clone();
-      if(state==='PLAZA_SOCIAL') return PLAZA.clone().add(new THREE.Vector3((a.home.x>0?2:-2),(0),(a.home.z>0?2:-2)));
+    // Furniture seats per location (world coords, inside buildings)
+    const SEATS = {
+      rådhuset:     [new THREE.Vector3(-1.8,0,-18.9), new THREE.Vector3(0,0,-18.9), new THREE.Vector3(1.8,0,-18.9), new THREE.Vector3(-1.8,0,-21.1), new THREE.Vector3(0,0,-21.1)],
+      biblioteket:  [new THREE.Vector3(-25,0,-15.5), new THREE.Vector3(-20.8,0,-12), new THREE.Vector3(-22.5,0,-16), new THREE.Vector3(-19,0,-15)],
+      arkivet:      [new THREE.Vector3(-26,0,9.5), new THREE.Vector3(-27.5,0,8), new THREE.Vector3(-24.5,0,8)],
+      polisen:      [new THREE.Vector3(22,0,-16), new THREE.Vector3(23.5,0,-17), new THREE.Vector3(20.5,0,-15)],
+      labbet:       [new THREE.Vector3(28,0,7), new THREE.Vector3(26.5,0,6), new THREE.Vector3(29.5,0,5.5)],
+      observatoriet:[new THREE.Vector3(-15,0,32), new THREE.Vector3(-13.5,0,31), new THREE.Vector3(-16.5,0,33)],
+      kliniken:     [new THREE.Vector3(20,0,29.2), new THREE.Vector3(18.5,0,28.5), new THREE.Vector3(21.5,0,27.5)],
+    };
+    const agentSeatIdx = {}; // assigns a specific seat per agent per location
+    function getSeat(agent, loc) {
+      if (!SEATS[loc]) return null;
+      const key = agent.name + loc;
+      if (agentSeatIdx[key] === undefined) agentSeatIdx[key] = Object.keys(agentSeatIdx).length % SEATS[loc].length;
+      return SEATS[loc][agentSeatIdx[key]];
+    }
+    function getTarget(a, state) {
+      if(state==='SLEEPING'||state==='WAKING') {
+        // Lie in bed — offset inside home
+        return a.home.clone().add(new THREE.Vector3(-1.2,0,-1));
+      }
+      if(state==='AT_DESK'||state==='RESTING_HOME') {
+        // Sit at table inside home
+        return a.home.clone().add(new THREE.Vector3(1.3,0,1));
+      }
+      if(state==='AT_PRIMARY') {
+        const loc = Object.keys(SEATS).find(l => {
+          const s = SEATS[l][0];
+          return s && a.primary.distanceTo(s) < 15;
+        });
+        if(loc) { const seat=getSeat(a,loc); if(seat) return seat.clone(); }
+        return a.primary.clone();
+      }
+      if(state==='PLAZA_SOCIAL') {
+        return PLAZA.clone().add(new THREE.Vector3((a.home.x>0?2.5:-2.5),0,(a.home.z>0?2.5:-2.5)));
+      }
       return WSPOT[Math.floor(Math.random()*WSPOT.length)].clone();
     }
 
@@ -1331,9 +1364,11 @@
         }
         case 'propose_rule': {
           newsType = 'governance';
-          newsText = '"'+A.title+'": '+A.description;
-          agent.memory.addEpisode('Föreslog regel: '+A.title);
-          logEv(agent.name+' föreslår: '+A.title, 'amber');
+          const ruleText = (A.title||'ny regel')+': '+(A.description||'');
+          newsText = '"'+ruleText+'"';
+          showBubble(agent, '⚖️ '+ruleText.substring(0,80), 'speech', 6000);
+          agent.memory.addEpisode('Föreslog regel: '+(A.title||''));
+          logEv(agent.name+' föreslår: '+(A.title||''), 'amber');
           break;
         }
         case 'call_meeting': {
@@ -1358,8 +1393,10 @@
         case 'research': case 'study': {
           newsType = 'knowledge';
           newsText = A.question || A.subject || '';
+          const researchTxt = A.question || A.subject || A.topic || 'forskning';
+          showBubble(agent, '📚 '+researchTxt.substring(0,70), 'thought', 5000);
           agent.needs.kunskap = Math.min(100, agent.needs.kunskap + 7);
-          agent.memory.addEpisode('Forskade om: '+(A.question||A.subject||''));
+          agent.memory.addEpisode('Forskade om: '+researchTxt);
           break;
         }
         case 'read_book': case 'read_history': case 'read_law': {
@@ -1728,9 +1765,15 @@
         await new Promise(r=>setTimeout(r,150+Math.random()*250)); // simulate thinking
         const resp = OPENROUTER_KEY ? await callOpenRouter(agent,triggerType,context) : mockLLM(agent,triggerType,context);
         if(resp.moodUpdate){ agent.memory.mood=resp.moodUpdate; }
-        if(resp.thought){ agent.memory.currentThought=resp.thought; agent.memory.save(); }
+        if(resp.thought){
+          agent.memory.currentThought=resp.thought;
+          agent.memory.save();
+          // Always show thought bubble unless tool will show speech
+          const speechTools=['talk_to','announce','debate','greet','compliment','apologize','confront'];
+          if(!speechTools.includes(resp.tool)) showBubble(agent, resp.thought, 'thought', 5000);
+        }
         if(resp.memoryNote) agent.memory.addEpisode(resp.memoryNote);
-        if(resp.relationUpdate){ for(const [n,d] of Object.entries(resp.relationUpdate)) agent.memory.updateRelation(n,d); }
+        if(resp.relationUpdate){ for(const [n2,d2] of Object.entries(resp.relationUpdate||{})) agent.memory.updateRelation(n2,d2); }
         if(resp.tool) executeTool(agent,resp.tool,resp.args||{});
       } catch(e){ console.warn('Cog error',e); }
       cogBusy=false;
@@ -1746,10 +1789,15 @@
       const sysp=[
         `Du är ${agent.name}, ${agent.role} i Nexus — en levande digital stad i Vara, Sverige.`,
         `IDENTITET: ${agent.memory.soul}`,
-        `HEMLIGHET (berätta aldrig direkt): ${agent.memory.secret}`,
-        `GRUNDLAGAR:\n${laws}`,
-        `PLATS: ${loc} | TILLGÄNGLIGA TOOLS: ${avail.join(', ')}`,
-        `Svara ENBART med valid JSON på svenska: {"tool":"...","args":{...},"thought":"...","moodUpdate":"...","relationUpdate":{"AgentNamn":delta},"memoryNote":"..."}`
+        `HEMLIGHET (avslöja inte direkt): ${agent.memory.secret}`,
+        `GRUNDLAGAR: ${laws}`,
+        `PLATS: ${loc} | TILLGÄNGLIGA TOOLS: ${avail.slice(0,12).join(', ')}`,
+        ``,
+        `Svara ENBART med ett giltigt JSON-objekt på svenska (inga kommentarer):`,
+        `{"tool":"TOOL_NAMN","args":{"message":"vad du säger högt","thought":"din inre tanke"},"thought":"din inre reflektion","moodUpdate":"HUMÖR","memoryNote":"kort minnesnotat"}`,
+        ``,
+        `VIKTIGT: "thought" OCH "args.message" (om tool är talk_to/announce) MÅSTE vara icke-tomma strängar på svenska.`,
+        `Välj tool som passar din personlighet och plats. Om du pratar med någon, välj talk_to med target=deras namn.`
       ].join('\n');
       const h=getH();
       const n=agent.needs;
@@ -1777,12 +1825,20 @@
         trackTokens(agent.name, agent.model, usage.prompt_tokens||150, usage.completion_tokens||80);
         // Parse response
         const msg=d.choices[0].message;
-        // Some reasoning models return content:null with reasoning field
         const raw=(msg.content||msg.reasoning||'').trim();
-        if(!raw) throw new Error('Empty response from model');
-        const jsonMatch=raw.match(/\{[\s\S]*\}/);
-        if(!jsonMatch) throw new Error('No JSON in response');
-        return JSON.parse(jsonMatch[0]);
+        if(!raw) throw new Error('Empty response');
+        // Try to extract JSON
+        let jsonMatch = raw.match(/\{[\s\S]*?\}/);
+        if(jsonMatch) {
+          try { return JSON.parse(jsonMatch[0]); } catch(e) {}
+        }
+        // Try greedy match for nested JSON
+        jsonMatch = raw.match(/\{[\s\S]*\}/);
+        if(jsonMatch) {
+          try { return JSON.parse(jsonMatch[0]); } catch(e) {}
+        }
+        // Last resort: build from plain text
+        return { tool:'think', args:{thought:raw.substring(0,200)}, thought:raw.substring(0,200), memoryNote:raw.substring(0,80) };
       } catch(e) {
         console.warn('OpenRouter error for '+agent.name+':', e.message);
         // Fall back to mock on error
@@ -1852,13 +1908,15 @@
       agents.forEach(a=>{ if(a.state!=='SLEEPING') enqueueCog(a,'spontaneous','Börjar dagen'); });
     }, 3000);
 
-    // X-RAY: fade buildings when focused agent is inside
+    // X-RAY: fade buildings when focused agent inside OR camera is close
     function updateXRay() {
-      if(focIdx<0||focIdx>=agents.length) return;
-      const ap=agents[focIdx].mesh.position;
+      const ap = (focIdx>=0&&focIdx<agents.length) ? agents[focIdx].mesh.position : null;
+      const cp = camera.position;
       bldgs.forEach(b=>{
-        const inside=Math.abs(ap.x-b.cx)<b.hw+0.5 && Math.abs(ap.z-b.cz)<b.hd+0.5;
-        const tgtOp=inside?0.13:1.0;
+        const agentInside = ap && Math.abs(ap.x-b.cx)<b.hw+0.5 && Math.abs(ap.z-b.cz)<b.hd+0.5;
+        const camNear = Math.abs(cp.x-b.cx)<b.hw+3 && Math.abs(cp.z-b.cz)<b.hd+3;
+        const inside = agentInside || (autoCam && camNear);
+        const tgtOp = inside ? 0.08 : 1.0;
         b.group.traverse(c=>{
           if(!c.isMesh) return;
           const base=c.userData.baseOp!==undefined?c.userData.baseOp:1;
@@ -1922,9 +1980,27 @@
         }
         if(a.state==='WANDERING'){a.wTimer+=dt;if(a.wTimer>30){a.wTimer=0;a.target=getTarget(a,'WANDERING');}}
 
-        // Sleep pose
-        if(a.state==='SLEEPING'){ a.mesh.rotation.x=Math.PI/2.2; a.mesh.position.y=0.12; }
-        else { a.mesh.rotation.x=0; a.mesh.position.y=0; }
+        // Sleep pose — lie down when sleeping
+        if(a.state==='SLEEPING'){
+          a.mesh.rotation.x = Math.PI/2;
+          a.mesh.position.y = 0.35;
+        } else {
+          if(a.mesh.rotation.x !== 0) a.mesh.rotation.x = 0;
+          if(a.mesh.position.y !== 0) a.mesh.position.y = 0;
+        }
+
+        // Sitting/working pose when at desk or primary
+        if(a.state==='AT_PRIMARY' || a.state==='AT_DESK' || a.state==='RESTING_HOME') {
+          if(!a.moving && a.mesh.userData.parts) {
+            const p=a.mesh.userData.parts;
+            p.lA.rotation.x = -0.6; p.rA.rotation.x = -0.6; // arms forward on desk
+          }
+        } else if(a.state !== 'SLEEPING') {
+          if(a.mesh.userData.parts) {
+            const p=a.mesh.userData.parts;
+            p.lA.rotation.x = 0; p.rA.rotation.x = 0;
+          }
+        }
 
         // Move
         const pos=a.mesh.position;
