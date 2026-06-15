@@ -1964,10 +1964,8 @@
           if(A.target){ const tgt=agents.find(a=>a.name===A.target); if(tgt){ tgt.needs.kunskap=Math.min(100,tgt.needs.kunskap+5); tgt.memory.addEpisode(agent.name+' lärde mig om '+(A.topic||'')); } }
           break;
         }
-        case 'document_findings': {
-          newsType = 'archive';
-          newsText = A.event || A.result || A.document || '';
-          agent.memory.addEpisode('Dokumenterade: '+(A.event||A.result||''));
+        case 'document_findings_local': {
+          // intentionally unreachable — document_findings now falls through to write_record worldAction case
           break;
         }
         case 'search_records': {
@@ -2064,7 +2062,8 @@
           if(tgt){
             agent.memory.updateRelation(A.target,7,'Bad om ursäkt');
             tgt.memory.updateRelation(agent.name,5,'Fick ursäkt');
-            setTimeout(()=>showBubble(tgt, 'Jag förstår. Tack för att du sa det.', 'speech', 4000), 1500);
+            tgt.memory.addEpisode(agent.name+' bad om ursäkt: "'+apMsg.substring(0,60)+'"');
+            setTimeout(()=>enqueueCog(tgt,'addressed',agent.name+' bad om ursäkt: "'+apMsg.substring(0,60)+'"'),800);
           }
           break;
         }
@@ -2151,6 +2150,43 @@
           newsText = 'Lyssnar på omgivningen';
           break;
         }
+        case 'socialize': {
+          newsType = 'social';
+          newsText = A.topic || A.activity || 'umgås';
+          agent.needs.social = Math.min(100, agent.needs.social + 8);
+          const socNb = agents.filter(b=>b!==agent&&b.state!=='SLEEPING'&&agent.mesh.position.distanceTo(b.mesh.position)<10);
+          socNb.forEach(b=>{ agent.memory.updateRelation(b.name,2,'Umgicks'); b.memory.updateRelation(agent.name,2,'Umgicks'); b.needs.social=Math.min(100,b.needs.social+4); });
+          break;
+        }
+        case 'observe': {
+          newsType = 'knowledge';
+          newsText = A.what || A.target || 'omgivningen';
+          agent.needs.kunskap = Math.min(100, agent.needs.kunskap+3);
+          agent.memory.addEpisode('Observerade: '+(A.what||A.target||'omgivningen'));
+          break;
+        }
+        case 'express_emotion': {
+          newsType = 'social';
+          newsText = A.emotion || A.feeling || '';
+          if(A.emotion) agent.memory.mood = A.emotion;
+          agent.needs.valmående = Math.min(100, agent.needs.valmående+5);
+          if(A.message) showBubble(agent, A.message, 'speech', 4000);
+          break;
+        }
+        case 'greet': {
+          newsType = 'social';
+          const greetMsg = A.message || 'Hej!';
+          newsText = (A.target?'Till '+A.target+': ':'')+greetMsg;
+          showBubble(agent, greetMsg, 'speech', 3000);
+          const greetTgt = agents.find(a=>a.name===A.target);
+          if(greetTgt){
+            agent.memory.updateRelation(A.target,1,'Hälsade');
+            greetTgt.memory.updateRelation(agent.name,1,'Hälsades på');
+            greetTgt.needs.social = Math.min(100,greetTgt.needs.social+3);
+            setTimeout(()=>enqueueCog(greetTgt,'addressed',agent.name+' hälsade: "'+greetMsg+'"'),600);
+          }
+          break;
+        }
         case 'start_project': {
           newsType = 'governance';
           newsText = A.title || '';
@@ -2219,6 +2255,14 @@
       }
 
       if (newsText) addNewsItem(newsType, agent.name, icon+' '+toolName+': '+newsText, agent.dot);
+      // Advance plan step when agent completes any non-think action
+      if(agent.agentPlan.length>0 && toolName!=='think' && toolName!=='observe') {
+        agent.planStep = Math.min(agent.planStep+1, agent.agentPlan.length);
+        if(agent.planStep >= agent.agentPlan.length) {
+          logEv(agent.name+' slutförde sin plan!', 'green');
+          agent.agentPlan=[]; agent.planStep=0;
+        }
+      }
     }
 
     // ════════════════════════════════════════════════════════
@@ -2474,7 +2518,7 @@
         }
         if(resp.memoryNote) agent.memory.addEpisode(resp.memoryNote);
         if(resp.relationUpdate){ for(const [n2,d2] of Object.entries(resp.relationUpdate||{})) agent.memory.updateRelation(n2,d2); }
-        if(resp.tool){ actLog(agent.name,agent.dot,'→',resp.tool+(resp.args?.target?' ▸ '+resp.args.target:'')); executeTool(agent,resp.tool,resp.args||{}); }
+        if(resp.tool){ actLog(agent.name,agent.dot,'→',resp.tool+(resp.args?.target?' ▸ '+resp.args.target:'')); await executeTool(agent,resp.tool,resp.args||{}); }
       } catch(e){ console.warn('Cog error',agent.name,e.message); }
     }
 
