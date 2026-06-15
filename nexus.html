@@ -126,6 +126,19 @@
     .sev-medium { background:#3a2a10; color:#fbbf24; }
     .sev-low { background:#1a2a3a; color:#60a5fa; }
     .wp-empty { color:var(--text-faint); font-style:italic; text-align:center; padding:16px; }
+    @media (max-width:700px) { #world-widgets-grid { grid-template-columns:1fr !important; } }
+    .rel-row { display:flex; align-items:center; gap:6px; margin-bottom:4px; flex-wrap:wrap; }
+    .rel-name { font-weight:600; color:var(--text-primary); min-width:36px; }
+    .rel-bar { height:5px; border-radius:3px; display:inline-block; }
+    .rel-axis { display:flex; align-items:center; gap:3px; font-size:10px; color:var(--text-faint); }
+    .psyche-row { display:flex; flex-direction:column; gap:3px; margin-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px; }
+    .psyche-name { font-weight:600; font-size:11px; }
+    .psyche-mood { font-size:10px; color:var(--text-faint); font-style:italic; }
+    .psyche-belief { font-size:10px; color:var(--accent); line-height:1.4; }
+    .hist-row { display:flex; gap:8px; padding:3px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+    .hist-t { color:var(--text-faint); font-family:monospace; white-space:nowrap; font-size:10px; }
+    .hist-agent { font-weight:600; font-size:10px; }
+    .hist-text { color:var(--text-secondary); font-size:11px; flex:1; }
     #world-viewport:fullscreen, #world-viewport:-webkit-full-screen, #world-viewport:-moz-full-screen { width:100vw!important; height:100vh!important; border-radius:0!important; aspect-ratio:unset!important; max-width:none!important; }
     #world-canvas { width: 100%; height: 100%; display: block; }
     .world-hud { position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; }
@@ -401,15 +414,54 @@
           </div>
         </div>
 
-        <!-- WORLD PANEL -->
-        <div class="news-section" style="margin-top:var(--space-4)">
+        <!-- WORLD WIDGETS -->
+        <div style="margin-top:var(--space-4);display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);" id="world-widgets-grid">
+
+          <!-- Projekt & Förslag -->
           <div class="news-panel">
             <div class="news-header">
-              <span class="panel__title">🌍 Nexus Världstillstånd — projekt, förslag och problem</span>
-              <span class="panel__badge panel__badge--green">Live</span>
+              <span class="panel__title">🏗 Projekt &amp; Förslag</span>
+              <span class="panel__badge panel__badge--green" id="world-proj-count">—</span>
             </div>
             <div id="world-panel" style="padding:8px;min-height:60px;font-size:12px;color:var(--text-secondary);"></div>
           </div>
+
+          <!-- Policies & Problem -->
+          <div class="news-panel">
+            <div class="news-header">
+              <span class="panel__title">⚖️ Lagar &amp; Problem</span>
+              <span class="panel__badge panel__badge--amber" id="world-prob-count">—</span>
+            </div>
+            <div id="policy-panel" style="padding:8px;min-height:60px;font-size:12px;color:var(--text-secondary);"></div>
+          </div>
+
+          <!-- Relations-karta -->
+          <div class="news-panel">
+            <div class="news-header">
+              <span class="panel__title">💬 Relationskarta</span>
+              <span class="panel__badge panel__badge--blue">Live</span>
+            </div>
+            <div id="relation-panel" style="padding:8px;min-height:80px;font-size:11px;"></div>
+          </div>
+
+          <!-- Agenternas sinnen -->
+          <div class="news-panel">
+            <div class="news-header">
+              <span class="panel__title">🧠 Inre tillstånd</span>
+              <span class="panel__badge panel__badge--purple">Live</span>
+            </div>
+            <div id="psyche-panel" style="padding:8px;min-height:80px;font-size:11px;"></div>
+          </div>
+
+        </div>
+
+        <!-- Historia-ticker -->
+        <div class="news-panel" style="margin-top:var(--space-3)">
+          <div class="news-header">
+            <span class="panel__title">📜 Nexus Historia</span>
+            <span class="panel__badge panel__badge--blue" id="history-count">—</span>
+          </div>
+          <div id="history-panel" style="padding:8px;max-height:160px;overflow-y:auto;font-size:11px;color:var(--text-secondary);"></div>
         </div>
 
 
@@ -592,7 +644,7 @@
     const canvas = document.getElementById('world-canvas');
     const vp = document.getElementById('world-viewport');
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-    renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+    renderer.setPixelRatio(Math.min(devicePixelRatio, window.innerWidth<1200?1.0:1.25));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -606,7 +658,7 @@
     camera.position.set(18, 22, 32);
 
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true; controls.dampingFactor = 0.06;
+    controls.enableDamping = false;
     controls.minDistance = 3; controls.maxDistance = 200;
     controls.maxPolarAngle = Math.PI/2.05;
     controls.target.set(0,1,0);
@@ -640,8 +692,8 @@
     sunL.castShadow = true;
     sunL.shadow.mapSize.set(1024,1024);
     sunL.shadow.camera.near = 0.5; sunL.shadow.camera.far = 300;
-    sunL.shadow.camera.left = -80; sunL.shadow.camera.right = 80;
-    sunL.shadow.camera.top = 80; sunL.shadow.camera.bottom = -80;
+    sunL.shadow.camera.left = -60; sunL.shadow.camera.right = 60;
+    sunL.shadow.camera.top = 60; sunL.shadow.camera.bottom = -60;
     sunL.shadow.bias = -0.0003;
     scene.add(sunL);
     // Fill light from opposite side (sky bounce)
@@ -1268,6 +1320,8 @@
         const r = await fetch(WORLD_API);
         worldState = await r.json();
         updateWorldUI();
+        updateRelationWidget();
+        updatePsycheWidget();
       } catch(e) { console.warn('World state unavailable:', e.message); }
     }
 
@@ -2895,77 +2949,119 @@
     }
 
     function updateWorldUI() {
-      const wPanel = document.getElementById('world-panel');
-      if(!wPanel) return;
       const proj = worldState.projects||[];
       const prop = worldState.proposals||[];
       const probs = worldState.shared_problems||[];
-      const recs = worldState.public_records||[];
-      wPanel.innerHTML = '';
+      const pols = worldState.policies||[];
+      const hist = worldState.history||[];
 
-      // PROJEKT
-      if(proj.length > 0){
-        const ph = document.createElement('div'); ph.className='wp-section';
-        ph.innerHTML = '<div class="wp-head">🏗 Projekt ('+proj.filter(p=>p.status!=='completed').length+' aktiva)</div>';
-        proj.filter(p=>p.status!=='completed').slice(-5).forEach(p=>{
-          const pe=document.createElement('div'); pe.className='wp-item';
-          pe.innerHTML=`<span class="wp-badge ${p.status==='active'?'badge-green':'badge-amber'}">${p.status}</span> <b>${p.title}</b><br><small>${p.participants.join(', ')} · ${p.description?.substring(0,60)||''}</small>`;
-          ph.appendChild(pe);
+      // ── Projekt & Förslag ──
+      const wPanel = document.getElementById('world-panel');
+      if(wPanel) {
+        const active = proj.filter(p=>p.status!=='completed');
+        const openProps = prop.filter(p=>p.status==='open');
+        const cEl = document.getElementById('world-proj-count');
+        if(cEl) cEl.textContent = active.length+' aktiva';
+        let html = '';
+        active.slice(0,6).forEach(p=>{
+          const ptags = (p.participants||[]).map(n=>`<span style="color:${agents.find(a=>a.name===n)?.dot||'#888'}">${n}</span>`).join(' ');
+          html += `<div class="wp-item"><span class="wp-badge ${p.status==='active'?'badge-green':'badge-amber'}">${p.status}</span> <b>${p.title}</b><br><small>${ptags} · ${(p.description||'').substring(0,55)}</small></div>`;
         });
-        wPanel.appendChild(ph);
+        openProps.slice(0,4).forEach(p=>{
+          html += `<div class="wp-item"><span class="wp-badge badge-amber">förslag</span> <b>${p.title}</b> <span style="color:var(--text-faint);font-size:10px">[${(p.votes_for||[]).length}✓ ${(p.votes_against||[]).length}✗]</span><br><small>${(p.proposer||'')} · ${(p.description||'').substring(0,50)}</small></div>`;
+        });
+        if(!html) html='<div class="wp-empty">Inga aktiva projekt ännu</div>';
+        wPanel.innerHTML = html;
       }
 
-      // FÖRSLAG
-      if(prop.filter(p=>p.status==='open').length > 0){
-        const prh = document.createElement('div'); prh.className='wp-section';
-        prh.innerHTML = '<div class="wp-head">⚖️ Öppna förslag</div>';
-        prop.filter(p=>p.status==='open').forEach(p=>{
-          const pe=document.createElement('div'); pe.className='wp-item';
-          pe.innerHTML=`<b>${p.title}</b> <span class="wp-votes">✅${p.votes_for.length} ❌${p.votes_against.length}</span><br><small>Föreslagen av ${p.author}</small>`;
-          prh.appendChild(pe);
+      // ── Lagar & Problem ──
+      const pPanel = document.getElementById('policy-panel');
+      if(pPanel) {
+        const openProbs = probs.filter(p=>p.status==='open');
+        const cEl = document.getElementById('world-prob-count');
+        if(cEl) cEl.textContent = openProbs.length+' problem';
+        let html = '';
+        pols.slice(-4).forEach(p=>{
+          html += `<div class="wp-item"><span class="wp-badge badge-green">lag</span> <b>${p.title}</b><br><small>${(p.description||'').substring(0,60)}</small></div>`;
         });
-        wPanel.appendChild(prh);
-      }
-
-      // PROBLEM
-      const openProbs = probs.filter(p=>p.status==='open');
-      if(openProbs.length > 0){
-        const pbh = document.createElement('div'); pbh.className='wp-section';
-        pbh.innerHTML = '<div class="wp-head">⚠️ Gemensamma problem</div>';
         openProbs.slice(0,4).forEach(p=>{
-          const pe=document.createElement('div'); pe.className='wp-item';
-          pe.innerHTML=`<span class="wp-sev sev-${p.severity}">${p.severity}</span> ${p.title}`;
-          pbh.appendChild(pe);
+          const sev = p.severity==='high'?'badge-red':p.severity==='medium'?'badge-amber':'badge-green';
+          html += `<div class="wp-item"><span class="wp-badge ${sev}">${p.severity||'?'}</span> <b>${p.title}</b><br><small>${(p.description||'').substring(0,55)}</small></div>`;
         });
-        wPanel.appendChild(pbh);
+        if(!html) html='<div class="wp-empty">Inga lagar eller problem ännu</div>';
+        pPanel.innerHTML = html;
       }
 
-      // SENASTE BESLUT / RECORDS
-      const recents = recs.filter(r=>['project_complete','policy_passed','proposal','problem'].includes(r.type)).slice(-5);
-      if(recents.length > 0){
-        const rh = document.createElement('div'); rh.className='wp-section';
-        rh.innerHTML = '<div class="wp-head">📜 Senaste händelser</div>';
-        recents.reverse().forEach(r=>{
-          const re=document.createElement('div'); re.className='wp-item';
-          re.innerHTML=`<small style="opacity:.6">${r.timestamp} ${r.author}</small><br>${r.content?.substring(0,80)||r.title}`;
-          rh.appendChild(re);
-        });
-        wPanel.appendChild(rh);
-      }
-
-      if(proj.length===0&&prop.length===0&&openProbs.length===0){
-        wPanel.innerHTML = '<div class="wp-empty">Nexus börjar ta form...<br>Agenterna bygger världen tillsammans.</div>';
+      // ── Historia ──
+      const hPanel = document.getElementById('history-panel');
+      if(hPanel && hist.length>0) {
+        const cEl = document.getElementById('history-count');
+        if(cEl) cEl.textContent = hist.length+' händelser';
+        hPanel.innerHTML = hist.slice().reverse().slice(0,20).map(h=>{
+          const ag = agents.find(a=>a.name===h.agent);
+          return `<div class="hist-row"><span class="hist-t">${h.t||''}</span><span class="hist-agent" style="color:${ag?.dot||'#888'}">${h.agent||''}</span><span class="hist-text">${h.summary||h.action||''}</span></div>`;
+        }).join('');
       }
     }
 
-    // MAIN LOOP
-    let lastT=performance.now(), uiT=0;
+    function updateRelationWidget() {
+      const rPanel = document.getElementById('relation-panel');
+      if(!rPanel) return;
+      let html = '';
+      agents.forEach(a=>{
+        const rels = Object.entries(a.memory.relations||{});
+        if(rels.length===0) return;
+        html += `<div class="rel-row"><span class="rel-name" style="color:${a.dot}">${a.name}</span>`;
+        rels.forEach(([name, r])=>{
+          const tgt = agents.find(b=>b.name===name);
+          const col = r.score>65?'#4ade80':r.score<35?'#f87171':'#fbbf24';
+          const tensCol = (r.tension||0)>30?'#f87171':'transparent';
+          html += `<span class="rel-axis" title="${name}: rel=${r.score} tillit=${r.trust||50} värme=${r.warmth||50} spänning=${Math.round(r.tension||0)}">
+            <span style="color:${tgt?.dot||'#888'};font-size:10px">${name.substring(0,3)}</span>
+            <span class="rel-bar" style="width:${Math.round((r.score||50)*0.4)}px;background:${col}"></span>
+            ${(r.tension||0)>25?'<span style="color:#f87171;font-size:9px">⚡</span>':''}
+          </span>`;
+        });
+        html += '</div>';
+      });
+      if(!html) html='<div class="wp-empty">Inga relationer ännu</div>';
+      rPanel.innerHTML = html;
+    }
+
+    function updatePsycheWidget() {
+      const pPanel = document.getElementById('psyche-panel');
+      if(!pPanel) return;
+      const MOOD_ICON = {happy:'😊',sad:'😔',focused:'🎯',excited:'⚡',neutral:'😐',tired:'😴',angry:'😠',melancholic:'🌧',reflective:'🪞'};
+      let html = '';
+      agents.forEach(a=>{
+        if(a.state==='SLEEPING') {
+          html += `<div class="psyche-row"><span class="psyche-name" style="color:${a.dot}">${a.name}</span><span class="psyche-mood">😴 sover</span></div>`;
+          return;
+        }
+        const latestBelief = (a.memory.beliefs||[]).filter(b=>b.startsWith('[Nexus]')).slice(-1)[0] ||
+                             (a.memory.beliefs||[]).slice(-1)[0] || '';
+        const heavyMem = [...(a.memory.episodes||[])].sort((x,y)=>(y.weight||1)-(x.weight||1))[0];
+        html += `<div class="psyche-row">
+          <div style="display:flex;gap:6px;align-items:center">
+            <span class="psyche-name" style="color:${a.dot}">${a.name}</span>
+            <span class="psyche-mood">${MOOD_ICON[a.memory.mood]||'😐'} ${a.memory.mood||'neutral'}</span>
+            ${a.agentPlan.length>0?`<span style="color:var(--amber);font-size:9px">📋 steg ${a.planStep+1}/${a.agentPlan.length}</span>`:''}
+          </div>
+          ${a.memory.currentThought?`<div class="psyche-mood" style="color:var(--text-muted)">"${a.memory.currentThought.substring(0,70)}"</div>`:''}
+          ${latestBelief?`<div class="psyche-belief">💡 ${latestBelief.replace('[Nexus] ','').substring(0,65)}</div>`:''}
+          ${heavyMem&&heavyMem.weight>1?`<div style="font-size:10px;color:#fbbf24">⭐ ${heavyMem.text.substring(0,60)}</div>`:''}
+        </div>`;
+      });
+      pPanel.innerHTML = html || '<div class="wp-empty">Laddar…</div>';
+    }
+
 
     function animate(now) {
       requestAnimationFrame(animate);
       const dt=Math.min((now-lastT)/1000,.1); lastT=now; uiT+=dt;
       const h=getH();
-      updateSky(h);
+      // updateSky bara var 2s (sky-shader dyrt)
+      if(Math.floor(now/2000) !== Math.floor((now-dt*1000)/2000)) updateSky(h);
       // sirenUpdate körs via setInterval istället
       const _clk=document.getElementById('hud-clock'); if(_clk) _clk.textContent='NEXUS · VARA · '+fmt(h);
       const hst=document.getElementById('hero-stat-time'); if(hst) hst.textContent=fmt(h);
@@ -3113,12 +3209,14 @@
         controls.update();
       }
 
-      if(uiT>0.5){
+      if(uiT>0.8){
         uiT=0;
         updateSidebarNeeds();
         updateStats();
         if(focIdx>=0) updateFocPanel();
         updateAgentFocusHud();
+        updateRelationWidget();
+        updatePsycheWidget();
         // Update status labels over all agents
         agents.forEach((a,i)=>{
           const st=document.getElementById('ov-status-'+i);
@@ -3142,15 +3240,15 @@
       }
 
       // Throttle ALLA tunga uppdateringar med timer-buckets
-      const _b80  = Math.floor(now/80);
-      const _b120 = Math.floor(now/120);
-      const _b200 = Math.floor(now/200);
-      const _prev80  = Math.floor((now-dt*1000)/80);
-      const _prev120 = Math.floor((now-dt*1000)/120);
-      const _prev200 = Math.floor((now-dt*1000)/200);
-      if(_b80  !== _prev80)  updateOverlays();
+      const _b80  = Math.floor(now/150);
+      const _b120 = Math.floor(now/220);
+      const _b200 = Math.floor(now/380);
+      const _prev80  = Math.floor((now-dt*1000)/150);
+      const _prev120 = Math.floor((now-dt*1000)/220);
+      const _prev200 = Math.floor((now-dt*1000)/380);
+      if(_b80  !== _prev80)  updateBubbles();
       if(_b120 !== _prev120) updateXRay();
-      if(_b200 !== _prev200) updateBubbles();
+      if(_b200 !== _prev200) updateOverlays();
       if(autoCam) camera.lookAt(controls.target);
       renderer.render(scene,camera);
     }
