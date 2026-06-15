@@ -1423,7 +1423,7 @@
     // ════════════════════════════════════════════════════════
     // MOCK LLM (personality-driven, deterministic)
     // ════════════════════════════════════════════════════════
-    const OPENROUTER_KEY = 'k-or-v1-999ef60275210bfca732a420fc613a94974a450ba1f7343042f2489ecbca9d75';
+    const OPENROUTER_KEY = true; // Key is on server, not in source
 
     // ════════════════════════════════════════════════════════
     // COST TRACKER
@@ -1610,10 +1610,9 @@
       ].filter(Boolean).join('\n');
 
       try {
-        const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+        const res=await fetch('https://82.165.169.52/nexus-llm/',{
           method:'POST',
-          headers:{'Authorization':'Bearer '+OPENROUTER_KEY,'Content-Type':'application/json',
-            'HTTP-Referer':'https://terrorbyte90.github.io/Hemsida/','X-Title':'Nexus AI World'},
+          headers:{'Content-Type':'application/json'},
           body:JSON.stringify({model:agent.model,messages:[{role:'system',content:sysp},{role:'user',content:usrp}],
             max_tokens:250,temperature:0.9})
         });
