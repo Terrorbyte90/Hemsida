@@ -1343,6 +1343,56 @@
       }
     }
 
+
+    // ════════════════════════════════════════════════════════
+    // SERVER SYNC — hämta agent-state från nexus-sim
+    // ════════════════════════════════════════════════════════
+    let lastAgentSyncTs = 0;
+    async function syncAgentState() {
+      try {
+        const r = await fetch(WORLD_API + 'agents');
+        const data = await r.json();
+        if(!data.ok || !data.agents) return;
+        if(data.ts === lastAgentSyncTs) return; // ingen förändring
+        lastAgentSyncTs = data.ts;
+        data.agents.forEach(srv => {
+          const a = agents.find(x => x.name === srv.name);
+          if(!a) return;
+          // Synka state & mood
+          if(srv.state && srv.state !== a.state) {
+            a.state = srv.state;
+          }
+          a.mood = srv.mood || a.mood;
+          // Synka position (smooth — använd som nytt target)
+          if(srv.pos) {
+            const sp = new THREE.Vector3(srv.pos.x, 0, srv.pos.z);
+            // Teleportera bara om mer än 15m bort (t.ex. vid reload)
+            if(a.mesh.position.distanceTo(sp) > 15) {
+              a.mesh.position.copy(sp);
+            }
+            // Synka target från servern
+            if(srv.target) {
+              a.target = new THREE.Vector3(srv.target.x, 0, srv.target.z);
+            }
+          }
+          // Synka needs
+          if(srv.needs) Object.assign(a.needs, srv.needs);
+          // Visa senaste tanke i overlay
+          if(srv.last_thought) {
+            const ov = document.getElementById('ov-status-' + agents.indexOf(a));
+            if(ov && srv.last_thought) ov.textContent = srv.last_thought.substring(0,60);
+          }
+          // Injicera minnen från servern
+          if(srv.memory && srv.memory.length > 0) {
+            srv.memory.forEach(m => {
+              if(!a.memory.episodes.includes(m)) a.memory.addEpisode(m);
+            });
+          }
+        });
+      } catch(e) { /* server ej tillgänglig */ }
+    }
+    setInterval(syncAgentState, 5000);
+
     // Refresh world state every 60s
     setInterval(loadWorldState, 60000);
 
