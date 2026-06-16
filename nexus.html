@@ -1673,18 +1673,22 @@
     ];
 
     function avoidObstacles(pos, target) {
-      // Returns steering vector to blend with movement direction
-      let sx=0, sz=0;
+      let sx=0, sz=0, hardPush=false;
       for(const obs of NAV_OBSTACLES) {
         const dx2=pos.x-obs.x, dz2=pos.z-obs.z;
         const d=Math.sqrt(dx2*dx2+dz2*dz2);
-        const margin=obs.r+2.0;
-        if(d<margin && d>0.1) {
-          const strength=(margin-d)/margin;
-          sx+=dx2/d*strength*4; sz+=dz2/d*strength*4;
+        if(d<obs.r && d>0.01) {
+          // Inne i byggnaden — hård teleport ut
+          const pushOut=(obs.r-d)+0.5;
+          pos.x+=dx2/d*pushOut; pos.z+=dz2/d*pushOut;
+          hardPush=true;
+        } else if(d<obs.r+2.5 && d>0.01) {
+          // Nära kanten — mjuk steering
+          const strength=(obs.r+2.5-d)/(obs.r+2.5)*6;
+          sx+=dx2/d*strength; sz+=dz2/d*strength;
         }
       }
-      return (sx!==0||sz!==0) ? {x:sx,z:sz} : null;
+      return (sx!==0||sz!==0||hardPush) ? {x:sx,z:sz} : null;
     }
 
     function isInsideBuilding(pos) {
