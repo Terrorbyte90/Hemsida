@@ -1602,6 +1602,18 @@
       forskningshuset: new THREE.Vector3(45,0,15),
     };
 
+    // Sätter rörelsemål med dörr-waypoint om destinationen är inuti en byggnad
+    function setNavTarget(agent, dest) {
+      const loc = isInsideBuilding(dest);
+      if(loc && DOOR_APPROACH[loc]) {
+        agent.navQueue = [dest.clone()];
+        agent.target = DOOR_APPROACH[loc].clone();
+      } else {
+        agent.target = dest.clone();
+      }
+      agent.moving = true;
+    }
+
     // HINDERHINDER: Byggnadscirklar för vandring
     const NAV_OBSTACLES = [
       {x:0,z:-20,r:6},{x:-20,z:-14,r:7},{x:-26,z:8,r:5},
@@ -1611,17 +1623,18 @@
     ];
 
     function avoidObstacles(pos, target) {
-      let push = null;
+      // Returns steering vector to blend with movement direction
+      let sx=0, sz=0;
       for(const obs of NAV_OBSTACLES) {
         const dx2=pos.x-obs.x, dz2=pos.z-obs.z;
         const d=Math.sqrt(dx2*dx2+dz2*dz2);
-        if(d<obs.r+1.2 && d>0.1) {
-          const strength=(obs.r+1.2-d)*0.25; // gradvis push, ej teleport
-          if(!push) push=new THREE.Vector3();
-          push.x+=dx2/d*strength; push.z+=dz2/d*strength;
+        const margin=obs.r+2.0;
+        if(d<margin && d>0.1) {
+          const strength=(margin-d)/margin;
+          sx+=dx2/d*strength*4; sz+=dz2/d*strength*4;
         }
       }
-      return push ? pos.clone().add(push) : null;
+      return (sx!==0||sz!==0) ? {x:sx,z:sz} : null;
     }
 
     function isInsideBuilding(pos) {
@@ -1948,7 +1961,7 @@
           const dist = agent.mesh.position.distanceTo(tgt.mesh.position);
           if(dist > 5) {
             const dir = tgt.mesh.position.clone().sub(agent.mesh.position).normalize();
-            agent.target = tgt.mesh.position.clone().sub(dir.multiplyScalar(2.5));
+            setNavTarget(agent, tgt.mesh.position.clone().sub(dir.multiplyScalar(2.5)));
             agent.moving = true;
           }
           showBubble(agent, msg, 'speech', 6000);
@@ -2235,7 +2248,7 @@
             'forskningshuset':new THREE.Vector3(45,0,10),'hemma':agent.home.clone(),
           };
           const target = destMap[dest.toLowerCase()] || destMap[Object.keys(destMap).find(k=>dest.toLowerCase().includes(k))];
-          if(target){ agent.target=target.clone(); agent.moving=true; }
+          if(target){ setNavTarget(agent, target); }
           newsType = 'action';
           newsText = dest ? 'Går till '+dest : 'Vandrar';
           if(dest) actLog(agent.name,agent.dot,'går till',dest);
@@ -3163,7 +3176,7 @@
                 .sort((b,c)=>a.mesh.position.distanceTo(b.mesh.position)-a.mesh.position.distanceTo(c.mesh.position));
               if(friends.length>0){
                 const tgt=friends[Math.floor(Math.random()*Math.min(2,friends.length))];
-                a.target=tgt.mesh.position.clone().add(new THREE.Vector3((Math.random()-.5)*4,0,(Math.random()-.5)*4));
+                setNavTarget(a, tgt.mesh.position.clone().add(new THREE.Vector3((Math.random()-.5)*4,0,(Math.random()-.5)*4)));
               } else a.target=getTarget(a,'WANDERING');
             } else if(a.needs.kunskap<40){
               // Gå till biblioteket eller arkivet
@@ -3236,11 +3249,12 @@
         const dist2=Math.sqrt(dx*dx+dz*dz);
         a.moving=dist2>0.8;
         if(a.moving&&a.state!=='SLEEPING'){
-          // Hinder-avvikelse: skjut ut agenten ur väggar/fontän
-          const pushed=avoidObstacles(pos, a.target);
-          if(pushed){ pos.x=pushed.x; pos.z=pushed.z; }
+          // Hinder-avvikelse: styrvektor blandas med rörelseriktning
+          const avoidance=avoidObstacles(pos, a.target);
           const spd=2.2, step=Math.min(spd*dt,dist2), n2=1/dist2;
-          pos.x+=dx*n2*step; pos.z+=dz*n2*step;
+          let mvX=dx*n2, mvZ=dz*n2;
+          if(avoidance){ mvX+=avoidance.x; mvZ+=avoidance.z; const mL=Math.sqrt(mvX*mvX+mvZ*mvZ); if(mL>0){mvX/=mL;mvZ/=mL;} }
+          pos.x+=mvX*step; pos.z+=mvZ*step;
           pos.y=0; // sätt direkt, ingen lerp
           a.mesh.rotation.y=Math.atan2(dx,dz);
         }
