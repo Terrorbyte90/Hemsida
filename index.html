@@ -479,55 +479,53 @@
         <!-- STATS -->
         <div class="stats" id="stats-section" aria-label="Nyckeltal">
           <div class="stat reveal">
-            <div class="stat__number" data-count="7" data-suffix="">0</div>
-            <div class="stat__label">Aktiva projekt</div>
+            <div class="stat__number" data-count="5" data-suffix="">0</div>
+            <div class="stat__label">iOS-appar</div>
             <div class="stat__bar"><div class="stat__bar-fill" data-width="85" style="background:var(--accent)"></div></div>
           </div>
           <div class="stat reveal reveal-delay-1">
-            <div class="stat__number" data-count="24" data-suffix="/7">0/7</div>
-            <div class="stat__label">Server-drift (dygn)</div>
+            <div class="stat__number" data-count="10" data-suffix="+">0+</div>
+            <div class="stat__label">År kodning</div>
             <div class="stat__bar"><div class="stat__bar-fill" data-width="60" style="background:var(--green)"></div></div>
           </div>
           <div class="stat reveal reveal-delay-2">
-            <div class="stat__number" data-count="15" data-suffix="+">0+</div>
-            <div class="stat__label">Tjänster på servern</div>
+            <div class="stat__number">Swift</div>
+            <div class="stat__label">Primärt språk</div>
             <div class="stat__bar"><div class="stat__bar-fill" data-width="100" style="background:var(--purple)"></div></div>
           </div>
           <div class="stat reveal reveal-delay-3">
-            <div class="stat__number">Swift</div>
-            <div class="stat__label">Primär plattform</div>
+            <div class="stat__number">Full</div>
+            <div class="stat__label">Stack</div>
             <div class="stat__bar"><div class="stat__bar-fill" data-width="90" style="background:var(--orange)"></div></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TERMINAL -->
-    <section class="terminal-wrap" aria-label="Live server-monitor">
+    <!-- TERMINAL — kodterminal som visar workflow -->
+    <section class="terminal-wrap" aria-label="Ted's utvecklings-workflow">
       <div class="container">
-        <div class="terminal reveal" role="region" aria-label="Ted-server — live monitor">
+        <div class="terminal reveal" role="region" aria-label="Utvecklingsterminal">
           <div class="terminal__bar">
             <div class="terminal__dots">
               <span class="terminal__dot terminal__dot--red"></span>
               <span class="terminal__dot terminal__dot--yellow"></span>
               <span class="terminal__dot terminal__dot--green"></span>
             </div>
-            <span class="terminal__title">ted-server — agent &amp; health monitor</span>
-            <span class="terminal__status">LIVE</span>
+            <span class="terminal__title">~/dev — workflow</span>
+            <span class="terminal__status">active</span>
           </div>
           <div class="terminal__body" id="terminal-body" aria-live="polite">
-            <div class="t-line"><span class="t-prompt">server &nbsp;›</span><span class="t-cmd">health-check: CPU 12% · MEM 2.1 GB · DISK 34%</span></div>
-            <div class="t-ok">&nbsp;&nbsp;&nbsp;✔ Alla tjänster aktiva — uptime 14d 7h 23m</div>
+            <div class="t-line"><span class="t-prompt">~/dev &nbsp;›</span><span class="t-cmd">swift build --target Corefall</span></div>
+            <div class="t-ok">&nbsp;&nbsp;&nbsp;✔ Build lyckades · 0 warnings</div>
             <br>
-            <div class="t-line"><span class="t-prompt">github &nbsp;›</span><span class="t-cmd">synkroniserar 10 repos…</span></div>
-            <div class="t-out">&nbsp;&nbsp;&nbsp;└─ Ikarus ✅ · BabyCare ✅ · Lunachat ✅</div>
-            <div class="t-out">&nbsp;&nbsp;&nbsp;└─ Lilla-jag-3 ✅ · Lifetoken ✅ · Lunachat ✅</div>
-            <div class="t-ok">&nbsp;&nbsp;&nbsp;✔ 10/10 repos synkroniserade</div>
+            <div class="t-line"><span class="t-prompt">~/dev &nbsp;›</span><span class="t-cmd">npm run dev</span></div>
+            <div class="t-out">&nbsp;&nbsp;&nbsp;Three.js · Nexus · localhost:5173</div>
             <br>
-            <div class="t-line"><span class="t-prompt">agent &nbsp;&nbsp;›</span><span class="t-cmd">Leia online — Leia v2 laddad, svarstid 1.4s</span></div>
-            <div class="t-ok">&nbsp;&nbsp;&nbsp;✔ Multi-provider routing aktiv (Claude, Grok, Gemini)</div>
+            <div class="t-line"><span class="t-prompt">~/dev &nbsp;›</span><span class="t-cmd">git push origin feature/nexus-sim</span></div>
+            <div class="t-ok">&nbsp;&nbsp;&nbsp;✔ 3 commits pushade</div>
             <br>
-            <div class="t-line"><span class="t-prompt">server &nbsp;›</span><span id="live-cmd" class="t-cmd"></span><span class="t-cursor" aria-hidden="true"></span></div>
+            <div class="t-line"><span class="t-prompt">~/dev &nbsp;›</span><span id="live-cmd" class="t-cmd"></span><span class="t-cursor" aria-hidden="true"></span></div>
           </div>
         </div>
       </div>
@@ -888,21 +886,21 @@
     // === TERMINAL ANIMATION ===
     (function () {
       var cmds = [
-        'health-check: CPU 12% · MEM 2.1 GB · DISK 34%',
-        'nexus-sim: agent-loop 5/5 aktiva — 24h uptime',
-        'corefall: sprite-rendering pipeline optimerad',
-        'Leia online — Hermes gateway svarstid 0.8s',
-        'server-os: 14 tjänster gröna · load 0.45',
-        'wiki: TedWiki uppdaterad — 11 sidor',
-        'github: 3 repos synkade · inga nya issues',
-        'voicebox: TTS-kluster redo · 5 röstprofiler',
-        'luna-hälsa: loggad till Notion ✅',
-        'nginx: 2.1M requests · 0 errors senaste timmen',
+        'swift test --filter Corefall — 42 passerade ✅',
+        'git status — 3 filer ändrade, redo att commit:a',
         'nexus: agenterna lever — Elin på torget, Mira i labbet',
-        'server: 8 core · 16 GB · 465 GB disk · uptime 14d',
-        'tailscale: mesh-nät — 3 peers online',
-        'TedWiki: 259k meddelanden indexerade',
-        'health-check: alla system gröna ✅'
+        'swift build --target Lunachat — OK (0.8s)',
+        'npm run build — Three.js bundle 284 kB',
+        'github: PR #12 — nexus-sim simulation 24/7',
+        'server-os: alla endpoints svarar under 200ms',
+        'corefall: sprite pipeline optimerad → 60 FPS',
+        'wiki: TedWiki uppdaterad — 11 sidor',
+        'voicebox: TTS — ny röstprofil klar (Nora)',
+        'luna-hälsa: loggad till Notion ✅',
+        'Leia online — Hermes gateway · deepseek-v4-flash',
+        'git log — senaste: nexus obstacle avoidance ✔',
+        'deploy: hemsida pushad till GitHub Pages',
+        'TedWiki: 259k meddelanden indexerade'
       ];
       var el = document.getElementById('live-cmd');
       if (!el) return;
