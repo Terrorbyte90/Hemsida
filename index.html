@@ -485,18 +485,18 @@
         <!-- STATS -->
         <div class="stats" id="stats-section" aria-label="Nyckeltal">
           <div class="stat reveal">
-            <div class="stat__number" data-count="8" data-suffix="+">0+</div>
-            <div class="stat__label">Appar byggda</div>
+            <div class="stat__number" data-count="7" data-suffix="">0</div>
+            <div class="stat__label">Aktiva projekt</div>
             <div class="stat__bar"><div class="stat__bar-fill" data-width="85" style="background:var(--accent)"></div></div>
           </div>
           <div class="stat reveal reveal-delay-1">
-            <div class="stat__number" data-count="3" data-suffix="">0</div>
-            <div class="stat__label">AI-agenter aktiva</div>
+            <div class="stat__number" data-count="24" data-suffix="/7">0/7</div>
+            <div class="stat__label">Server-drift (dygn)</div>
             <div class="stat__bar"><div class="stat__bar-fill" data-width="60" style="background:var(--green)"></div></div>
           </div>
           <div class="stat reveal reveal-delay-2">
-            <div class="stat__number" data-count="100" data-suffix="%">0%</div>
-            <div class="stat__label">On-device AI</div>
+            <div class="stat__number" data-count="15" data-suffix="+">0+</div>
+            <div class="stat__label">Tjänster på servern</div>
             <div class="stat__bar"><div class="stat__bar-fill" data-width="100" style="background:var(--purple)"></div></div>
           </div>
           <div class="stat reveal reveal-delay-3">
@@ -556,104 +556,104 @@
           </a>
         </div>
 
-        <!-- Featured: Ikarus spans full width -->
+        <!-- Featured: Nexus spans full width -->
         <div style="margin-bottom: var(--space-4)">
           <article class="project-card project-card--featured reveal">
             <div class="project-card__header">
               <div style="display:flex;align-items:center;gap:var(--space-3)">
-                <div class="project-card__icon" style="background:var(--accent-dim)">🤖</div>
+                <div class="project-card__icon" style="background:var(--purple-dim)">🌍</div>
                 <div>
-                  <div class="project-card__title">Ikarus</div>
-                  <div style="font-size:var(--text-xs);color:var(--text-muted);margin-top:2px;letter-spacing:0.03em">AI-agentplattform · Orchestrator/Worker-arkitektur</div>
+                  <div class="project-card__title">Nexus — AI-simulationsvärld</div>
+                  <div style="font-size:var(--text-xs);color:var(--text-muted);margin-top:2px;letter-spacing:0.03em">5 LLM-agenter · Three.js 3D-värld · Self-hosted</div>
                 </div>
               </div>
-              <span class="project-card__badge tag--accent" style="background:var(--accent-dim);color:var(--accent)">Flagship</span>
+              <span class="project-card__badge tag--purple" style="background:var(--purple-dim);color:var(--purple)">Flagship</span>
             </div>
-            <p class="project-card__desc" style="max-width:60ch">Avancerad AI-agentplattform med server-side Node.js-backend och persistenta agenter som läser/skriver filer, interagerar med GitHub via REST API och rapporterar stegvis via WebSocket-streaming. LLMCoordinator hanterar 50 req/min med max 6 simultana anrop. Multi-provider routing (Claude, Grok, OpenRouter) med automatisk failover och en inbyggd SwiftUI-klient för iOS och macOS.</p>
-            <!-- Mini architecture diagram -->
+            <p class="project-card__desc" style="max-width:60ch">En 3D multi-agent AI-simulationsvärld med fem LLM-styrda agenter (Elin, Mira, Kai, Aria, Nox) som lever, arbetar och interagerar i en gemensam värld. Three.js r158, realistisk dagscykel, behovssystem och server-side simulation som kör 24/7 på egen server.</p>
             <div class="arch-diagram" aria-hidden="true">
               <div>
-                <div class="arch-box arch-box--ios" style="margin-bottom:var(--space-2)">SwiftUI Client</div>
-                <div style="font-size:0.65rem;color:var(--text-faint);text-align:center">iOS / macOS</div>
+                <div class="arch-box arch-box--ios" style="margin-bottom:var(--space-2)">Three.js Frontend</div>
+                <div style="font-size:0.65rem;color:var(--text-faint);text-align:center">Webbläsare</div>
               </div>
-              <div class="arch-arrow">⟵ WS ⟶</div>
+              <div class="arch-arrow">⟵ API ⟶</div>
               <div>
-                <div class="arch-box arch-box--orchestrator" style="margin-bottom:var(--space-2)">Orchestrator</div>
+                <div class="arch-box arch-box--orchestrator" style="margin-bottom:var(--space-2)">Flask Backend</div>
                 <div class="arch-workers">
-                  <div class="arch-box arch-box--worker">File Worker</div>
-                  <div class="arch-box arch-box--worker">GitHub Worker</div>
-                  <div class="arch-box arch-box--worker">Build Worker</div>
+                  <div class="arch-box arch-box--worker">LLM-proxy</div>
+                  <div class="arch-box arch-box--worker">Sim-loop</div>
+                  <div class="arch-box arch-box--worker">OpenRouter</div>
                 </div>
               </div>
             </div>
             <div class="project-card__tags">
-              <span class="tag tag--accent">AI-agent</span>
-              <span class="tag">SwiftUI</span>
-              <span class="tag">Node.js</span>
-              <span class="tag">WebSocket</span>
-              <span class="tag">GitHub API</span>
-              <span class="tag">DigitalOcean</span>
+              <span class="tag tag--purple">AI-agenter</span>
+              <span class="tag">Three.js</span>
+              <span class="tag">Flask</span>
+              <span class="tag">OpenRouter</span>
+              <span class="tag">Self-hosted</span>
             </div>
           </article>
         </div>
 
         <!-- 2-col grid for rest -->
-        <div class="projects-grid projects-grid--featured">
-          <article class="project-card reveal">
-            <div class="project-card__header">
-              <div class="project-card__icon" style="background:var(--purple-dim)">💬</div>
-              <span class="tag tag--purple" style="font-size:0.62rem">TestFlight Live</span>
-            </div>
-            <div class="project-card__title">Lunachat</div>
-            <p class="project-card__desc">Social iOS-chattapp med AI-funktioner, WebSocket-streaming och multi-provider routing. Bilagsstöd, glasmorfistisk design.</p>
-            <div class="project-card__tags">
-              <span class="tag tag--purple">iOS</span>
-              <span class="tag">SwiftUI</span>
-              <span class="tag">WebSocket</span>
-              <span class="tag">AI</span>
-            </div>
-          </article>
+                <div class="projects-grid projects-grid--featured">
+                  <article class="project-card reveal">
+                    <div class="project-card__header">
+                      <div class="project-card__icon" style="background:var(--accent-dim)">⚔️</div>
+                      <span class="tag tag--accent" style="font-size:0.62rem">Swift/SpriteKit</span>
+                    </div>
+                    <div class="project-card__title">Corefall</div>
+                    <p class="project-card__desc">RTS-spel för iOS — mänskligheten vs en mystisk kristallin fiende. Swift 6, SpriteKit, SwiftData. Aktiv utveckling med grafikuppgraderingar.</p>
+                    <div class="project-card__tags">
+                      <span class="tag tag--accent">iOS</span>
+                      <span class="tag">SpriteKit</span>
+                      <span class="tag">Swift 6</span>
+                      <span class="tag">RTS</span>
+                    </div>
+                  </article>
 
-          <article class="project-card reveal reveal-delay-1">
-            <div class="project-card__header">
-              <div class="project-card__icon" style="background:var(--green-dim)">🧠</div>
-              <span class="tag tag--green" style="font-size:0.62rem">On-device</span>
-            </div>
-            <div class="project-card__title">Lilla Jag 3</div>
-            <p class="project-card__desc">Mental hälsoapp med Qwen3-1.7B på Neural Engine, 8 Plutchik-emotioner via CoreML, KBT-metodologi. Noll molnanrop.</p>
-            <div class="project-card__tags">
-              <span class="tag tag--green">Mental hälsa</span>
-              <span class="tag">CoreML</span>
-              <span class="tag">llama.cpp</span>
-            </div>
-          </article>
+                  <article class="project-card reveal reveal-delay-1">
+                    <div class="project-card__header">
+                      <div class="project-card__icon" style="background:var(--purple-dim)">💬</div>
+                      <span class="tag tag--purple" style="font-size:0.62rem">Aktiv</span>
+                    </div>
+                    <div class="project-card__title">Lunachat</div>
+                    <p class="project-card__desc">Social iOS-chattapp för familjen. AI-funktioner, WebSocket-streaming, bilagsstöd och ren design.</p>
+                    <div class="project-card__tags">
+                      <span class="tag tag--purple">iOS</span>
+                      <span class="tag">SwiftUI</span>
+                      <span class="tag">WebSocket</span>
+                    </div>
+                  </article>
 
-          <article class="project-card reveal reveal-delay-2">
-            <div class="project-card__header">
-              <div class="project-card__icon" style="background:var(--orange-dim)">📺</div>
-            </div>
-            <div class="project-card__title">Lunaflix v2</div>
-            <p class="project-card__desc">Personlig streamingplattform. Mux HLS, AVPlayer, hero-karusell, matched geometry transitions, offline-nedladdning.</p>
-            <div class="project-card__tags">
-              <span class="tag tag--orange">Streaming</span>
-              <span class="tag">Mux HLS</span>
-              <span class="tag">SwiftUI</span>
-            </div>
-          </article>
+                  <article class="project-card reveal reveal-delay-2">
+                    <div class="project-card__header">
+                      <div class="project-card__icon" style="background:var(--green-dim)">🖥️</div>
+                      <span class="tag tag--green" style="font-size:0.62rem">Self-hosted</span>
+                    </div>
+                    <div class="project-card__title">Server OS</div>
+                    <p class="project-card__desc">Webbaserad kontrollpanel för hela server-infran — realtidsövervakning, tjänstestatus, Nexus-agentvyer och modellhantering.</p>
+                    <div class="project-card__tags">
+                      <span class="tag tag--green">Flask</span>
+                      <span class="tag">nginx</span>
+                      <span class="tag">JWT</span>
+                    </div>
+                  </article>
 
-          <article class="project-card reveal reveal-delay-3">
-            <div class="project-card__header">
-              <div class="project-card__icon" style="background:var(--amber-dim)">⏳</div>
-            </div>
-            <div class="project-card__title">Lifetoken</div>
-            <p class="project-card__desc">Dystopiskt livs-RPG inspirerat av "In Time". HealthKit, 14 zoner, AI-genererad tidning, äkta permadeath.</p>
-            <div class="project-card__tags">
-              <span class="tag tag--amber">Gamification</span>
-              <span class="tag">HealthKit</span>
-              <span class="tag">AI-content</span>
-            </div>
-          </article>
-        </div>
+                  <article class="project-card reveal reveal-delay-3">
+                    <div class="project-card__header">
+                      <div class="project-card__icon" style="background:var(--orange-dim)">🪽</div>
+                      <span class="tag tag--orange" style="font-size:0.62rem">Vilande</span>
+                    </div>
+                    <div class="project-card__title">Ikarus</div>
+                    <p class="project-card__desc">iOS-app med CI/CD via GitHub Actions. För närvarande vilande men redo att återaktiveras.</p>
+                    <div class="project-card__tags">
+                      <span class="tag tag--orange">iOS</span>
+                      <span class="tag">Swift</span>
+                      <span class="tag">CI/CD</span>
+                    </div>
+                  </article>
+                </div>
       </div>
     </section>
 
@@ -722,24 +722,23 @@
             <p class="chat-teaser__label">Personlig AI — Skapad av Ted Svärd</p>
             <h2 class="chat-teaser__title">Prata med Leia</h2>
             <p class="chat-teaser__desc">
-              Leia är min egenbyggda AI-assistent — designad, tränad och driftsatt av mig.
-              Under huven kör hon en modell distillerad från Claude Opus 4.6, med ett
-              långtidsminne byggt på vektordatabas, kontextverifiering i Swift och ett
-              anpassat promptlager som gör henne expert på min kod och arkitektur.
+              Leia är min personliga AI-assistent — byggd på Hermes Agent, alltid online.
+              Tillgänglig via iMessage, Telegram och Discord. Serverkoll, kodning, Luna-hälsa
+              och minne över tid — allt på min egen VPS.
             </p>
             <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-4)">
               <span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-faint);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-full);padding:3px 10px;">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
-                Distillerad fr. Claude Opus 4.6
+                Hermes Agent
               </span>
               <span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-faint);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-full);padding:3px 10px;">
-                Vektordatabas (ChromaDB)
+                iMessage · Telegram · Discord
               </span>
               <span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-faint);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-full);padding:3px 10px;">
-                Swift-verifiering
+                Serverövervakning
               </span>
               <span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-faint);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-full);padding:3px 10px;">
-                On-premise · Privat
+                Self-hosted · VPS
               </span>
             </div>
             <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center">
@@ -773,8 +772,8 @@
           <h2 class="section__title">Ted Svärd</h2>
           <p class="section__desc">
             Självlärd iOS-utvecklare och AI-arkitekt. Jag bygger saker som faktiskt fungerar —
-            autonoma kodsystem, on-device mental hälsoapp med lokal LLM, personlig streamingtjänst
-            och dystopiska livs-RPG. Jag shippar, jag lär mig, jag bygger.
+            autonoma AI-simulationsvärldar, RTS-spel och server-infra som kör 24/7.
+            Från Three.js i webbläsaren till SwiftUI på iOS — allt byggt på egen server, med egna händer.
           </p>
           <div style="display:flex;gap:var(--space-3);flex-wrap:wrap">
             <a href="om-mig.html" class="btn btn--ghost">
@@ -895,21 +894,21 @@
     // === TERMINAL ANIMATION ===
     (function () {
       var cmds = [
-        'health-check: CPU 8% · MEM 1.9 GB · DISK 34%',
-        'synkroniserar repo: Lunachat…',
-        'navi-job: bygg SwiftUI-vy för BabyCare',
-        'Leia-svar OK — latens 1.1s · tokens 342',
-        'pusha commit: Lunaflix/hero-carousel fix',
-        'bygg-test: BabyCare — 42 tester passerade ✓',
-        'github: 3 nya issues auto-tilldelade',
-        'agent-minne: 12 sessioner sparade till disk',
-        'health-check: alla tjänster gröna ✅',
-        'navi-job: generera CoreML-modell för känslor',
-        'synkroniserar repo: Lilla-jag-3…',
-        'AI-routing: failover till OpenRouter aktiv',
-        'server: WebSocket-klienter anslutna: 3',
-        'pusha commit: Lifetoken/zone-balance patch',
-        'health-check: nätverk OK · API-svar 0.3s'
+        'health-check: CPU 12% · MEM 2.1 GB · DISK 34%',
+        'nexus-sim: agent-loop 5/5 aktiva — 24h uptime',
+        'corefall: sprite-rendering pipeline optimerad',
+        'Leia online — Hermes gateway svarstid 0.8s',
+        'server-os: 14 tjänster gröna · load 0.45',
+        'wiki: TedWiki uppdaterad — 11 sidor',
+        'github: 3 repos synkade · inga nya issues',
+        'voicebox: TTS-kluster redo · 5 röstprofiler',
+        'luna-hälsa: loggad till Notion ✅',
+        'nginx: 2.1M requests · 0 errors senaste timmen',
+        'nexus: agenterna lever — Elin på torget, Mira i labbet',
+        'server: 8 core · 16 GB · 465 GB disk · uptime 14d',
+        'tailscale: mesh-nät — 3 peers online',
+        'TedWiki: 259k meddelanden indexerade',
+        'health-check: alla system gröna ✅'
       ];
       var el = document.getElementById('live-cmd');
       if (!el) return;
