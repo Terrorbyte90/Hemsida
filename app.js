@@ -84,15 +84,21 @@
     }
   }
 
+  const PHASE_ICON = {
+    'läser systemkontext': '◎', 'tänker': '◈', 'sammanställer en rapport': '✎',
+    'kör ett kommando': '▸', 'läser en fil': '◎', 'skriver en fil': '✎',
+    'sammanställer resultatet': '◆',
+  };
+
   function renderMonitor(data) {
     const nowEl = document.querySelector('[data-now-task]');
+    const nowPhase = document.querySelector('[data-now-phase]');
     const nowElapsed = document.querySelector('[data-now-elapsed]');
     const activityEl = document.querySelector('[data-activity]');
     const pendingCount = document.querySelector('[data-pending-count]');
     const queueEl = document.querySelector('[data-queue]');
     const statusDot = document.querySelector('[data-status-dot]');
     const statusText = document.querySelector('[data-status-text]');
-    const tpsEl = document.querySelector('[data-tps]');
     if (!nowEl && !activityEl) return; // not on the monitor page
 
     if (!data || !data.alive) {
@@ -106,6 +112,11 @@
     if (nowEl) {
       nowEl.textContent = data.current ? data.current.narration : 'Ornith väntar på nästa uppgift.';
     }
+    if (nowPhase) {
+      const ph = data.current && data.current.phase;
+      nowPhase.textContent = ph ? (PHASE_ICON[ph] || '·') + ' ' + ph : '';
+      nowPhase.style.display = ph ? '' : 'none';
+    }
     if (nowElapsed && data.current) {
       nowElapsed.textContent = 'Pågått i ' + timeAgo(data.current.elapsed_s);
     } else if (nowElapsed) {
@@ -117,10 +128,8 @@
         <li class="activity-item">
           <span class="d"></span>
           <span class="txt">${r.narration}</span>
-          <span class="tag">${r.tps ? r.tps + ' t/s' : ''}</span>
+          <span class="tag">klart</span>
         </li>`).join('');
-      const withTps = data.recent.find(r => r.tps);
-      if (tpsEl && withTps) tpsEl.textContent = '~' + withTps.tps + ' tok/s';
     }
 
     if (pendingCount && data.queue) pendingCount.textContent = data.queue.pending ?? '–';
