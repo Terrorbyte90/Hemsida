@@ -1,1 +1,148 @@
-<!doctype html><html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Projekt — Ted Svärd</title><link rel="stylesheet" href="style.css"></head><body><div class="wrap"><header class="nav"><a class="brand" href="index.html">TED <i>SVÄRD</i></a><nav class="navlinks"><a href="index.html">Hem</a><a href="projekt.html" aria-current="page">Projekt</a><a href="forskning.html">Forskning</a><a href="podcasts.html">Arbete</a><a href="om-mig.html">Om mig</a><a href="chat.html">Console</a></nav><div class="nav-actions"><span class="dot"></span><button class="theme" aria-label="Växla tema">◐</button><button class="menu" aria-label="Öppna meny">☰</button></div></header><main><section class="page-hero"><div class="eyebrow">Selected work · 2022—2026</div><h1>Idéer som<br><em>klarar verkligheten.</em></h1><p class="lede">Produkter, prototyper och världar byggda från grunden — med fokus på relationen mellan system och människa.</p></section><section class="section"><article class="case reveal"><div><div class="case-meta">01 / ORNITH</div><h3>En assistent med initiativ</h3></div><div class="case-body"><p>Ornith är en produktvision för en AI som förstår riktning, sammanhang och när det är bättre att vänta. Arbetet rör sig mellan iOS, röst, agentlogik och mänskliga vanor.</p><div class="tags"><span class="tag">Product</span><span class="tag">iOS</span><span class="tag">AI agents</span></div></div></article><article class="case reveal"><div><div class="case-meta">02 / COREFALL</div><h3>System som känns levande</h3></div><div class="case-body"><p>Corefall är ett RTS-universum där enheter, resurser och relationer bildar en konsekvent värld. Målet är inte bara att vinna, utan att skapa en plats med minne.</p><div class="tags"><span class="tag">World design</span><span class="tag">SwiftUI</span><span class="tag">Simulation</span></div></div></article><article class="case reveal"><div><div class="case-meta">03 / EON</div><h3>Det lokala medvetandet</h3></div><div class="case-body"><p>Eon undersöker autonom intelligens utan molnberoende. Ett långsamt forskningsspår om minne, behov och subjektiv upplevelse.</p><div class="tags"><span class="tag">Research</span><span class="tag">On-device</span><span class="tag">Cognition</span></div></div></article></section></main><footer class="footer"><span>© 2026 Ted Svärd</span><a href="index.html">Tillbaka till början ↗</a></footer></div><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Projekt av Ted Svärd — Hermes, Lunachat, Corefall, OrnithAI och fler premium AI/iOS-system.">
+<title>Projekt — Ted Svärd</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Hem</a>
+      <a href="projekt.html" aria-current="page">Projekt</a>
+      <a href="ornith.html" class="nav-signal"><span class="pulse"></span>Ornith</a>
+      <a href="kurser.html">Kurser</a>
+      <a href="poddar.html">Poddar</a>
+      <a href="forskning.html">Forskning</a>
+      <a href="om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head wrap">
+  <div class="eyebrow">Utvalda system</div>
+  <h1>Åtta system, <em>en byggare</em>.</h1>
+  <p class="lede">Från självhostad AI-infrastruktur till premiumdesignade iOS-appar. Byggda från idé till fungerande produkt, av en person.</p>
+</header>
+
+<main class="wrap case-list">
+
+  <article class="case reveal">
+    <div>
+      <div class="meta">01 · Agent-plattform</div>
+      <div class="status"><span class="d"></span>Driftar dygnet runt</div>
+    </div>
+    <div>
+      <h3>Hermes</h3>
+      <p>En självhostad AI-agentplattform som kör på min egen server, Titan. Hermes tänker med en blandning av en lokal modell (Ornith-35B) och molnmodeller, minns via en egen minnesbank, researchar den öppna webben genom en privat sökmotor och når mig direkt över iMessage. Under huven: systemd-tjänster, autonoma bakgrundsagenter och en tydlig gräns mellan vad AI:n får göra själv och vad som kräver mitt godkännande.</p>
+      <div class="tags"><span>Python</span><span>Agent-arkitektur</span><span>Self-hosted LLM</span><span>Systemdrift</span></div>
+    </div>
+  </article>
+
+  <article class="case reveal">
+    <div>
+      <div class="meta">02 · Messenger</div>
+      <div class="status"><span class="d"></span>Aktiv utveckling</div>
+    </div>
+    <div>
+      <h3>Lunachat</h3>
+      <p>Ett meddelandeapp som tänker om vad en chatt kan vara — livet organiserat i swipebara, färgtemade "sfärer" (Privat, Jobb, Vänner, Familj), var och en med sin egen gradient och rörelse. Två AI-kontakter, Luna och Max, är vävda in bland vanliga samtal, var och en med en egen röst. Byggd i Swift 6 med strikt concurrency, ett fullständigt designtoken-system och egna bubblor, reaktioner och chattbakgrunder.</p>
+      <div class="tags"><span>Swift 6</span><span>SwiftUI</span><span>Design system</span><span>AI companions</span></div>
+    </div>
+  </article>
+
+  <article class="case reveal">
+    <div>
+      <div class="meta">03 · Spel</div>
+      <div class="status"><span class="d"></span>Aktiv utveckling</div>
+    </div>
+    <div>
+      <h3>Corefall</h3>
+      <p>Ett realtidsstrategispel byggt från grunden för iOS — det mest ambitiösa spelprojektet i portföljen. Enheter, resurser och relationer bildar en konsekvent värld; målet är inte bara att vinna utan att skapa en plats med minne. Touch-först RTS-UX, egen simuleringsmotor.</p>
+      <div class="tags"><span>Swift</span><span>Realtidssimulering</span><span>World design</span></div>
+    </div>
+  </article>
+
+  <article class="case reveal">
+    <div>
+      <div class="meta">04 · AI-assistent</div>
+      <div class="status"><span class="d"></span>Produktion</div>
+    </div>
+    <div>
+      <h3>OrnithAI</h3>
+      <p>Den mobila fronten för Ornith — en produktionsklar iOS-assistentapp med proaktiv hjälp och djup iOS-integration. Byggd för att förutse nästa steg snarare än att bara svara på frågor.</p>
+      <div class="tags"><span>Swift</span><span>iOS</span><span>Proaktiv AI</span></div>
+    </div>
+  </article>
+
+  <article class="case reveal">
+    <div>
+      <div class="meta">05 · Kontrollpanel</div>
+      <div class="status"><span class="d"></span>TestFlight</div>
+    </div>
+    <div>
+      <h3>Titan iOS</h3>
+      <p>En SwiftUI-companion till min egen server — ett riktigt operatörscockpit för en privat AI-backend. API-klient, enhetsmätning, push-notiser, flera konfigurerbara endpoints med bearer-auth, och handillustrerad konst för varje agent i systemet.</p>
+      <div class="tags"><span>SwiftUI</span><span>DevOps</span><span>Push</span></div>
+    </div>
+  </article>
+
+  <article class="case reveal">
+    <div>
+      <div class="meta">06 · Forskning</div>
+      <div class="status"><span class="d"></span>Pågående</div>
+    </div>
+    <div>
+      <h3>Eon-Y</h3>
+      <p>Ett långkörande forskningsspår i autonom kognition på-enheten — nu i sin femte iteration, med Qwen3-integration, en autonom webbläsare och en full kognitiv arkitektur. Ett långsamt spår om minne, initiativ och vad autonomi faktiskt kräver.</p>
+      <div class="tags"><span>Swift</span><span>On-device AI</span><span>Cognition</span></div>
+    </div>
+  </article>
+
+  <article class="case reveal">
+    <div>
+      <div class="meta">07 · Wellness</div>
+      <div class="status"><span class="d"></span>Shippad</div>
+    </div>
+    <div>
+      <h3>Lumvra</h3>
+      <p>En AI-driven sömncoach för iOS — ett fokuserat, polerat exempel på tillämpad AI i en tight, konsumentnära vertikal.</p>
+      <div class="tags"><span>Swift</span><span>AI coaching</span><span>Wellness</span></div>
+    </div>
+  </article>
+
+  <article class="case reveal">
+    <div>
+      <div class="meta">08 · Föräldraskap</div>
+      <div class="status"><span class="d"></span>Shippad</div>
+    </div>
+    <div>
+      <h3>BabyCare</h3>
+      <p>En komplett föräldraapp som spänner över graviditetsspårning, tillväxtkurvor och mat-/sömnloggar — ett bevis på att kunna designa datarika, vardagliga konsumentappar från idé till klar produkt.</p>
+      <div class="tags"><span>Swift</span><span>Data-rik UX</span></div>
+    </div>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener">GitHub</a>
+      <a href="ornith.html">Ornith — live</a>
+      <a href="poddar.html">Poddar</a>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

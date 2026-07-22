@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Kurs: AI i praktiken — konkret nytta för kunskapsarbete, kod, vardag, kreativitet, hälsa och lärande, förklarat ärligt av Ted Svärd.">
+<title>AI i praktiken — Kurser · Ted Svärd</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="../index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="../index.html">Hem</a>
+      <a href="../projekt.html">Projekt</a>
+      <a href="../ornith.html" class="nav-signal"><span class="pulse"></span>Ornith</a>
+      <a href="../kurser.html" aria-current="page">Kurser</a>
+      <a href="../poddar.html">Poddar</a>
+      <a href="../forskning.html">Forskning</a>
+      <a href="../om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head wrap">
+  <div class="eyebrow">Kurs 03 · 6 kapitel</div>
+  <h1>AI i <em>praktiken</em></h1>
+  <p class="lede">Inte hajp, inte dystopi — utan vad AI faktiskt gör för vanliga människor och yrkesarbetare just nu, med namngivna verktyg, riktiga siffror, och lika ärliga om vad som <em>inte</em> fungerar som om vad som gör det.</p>
+</header>
+
+<main class="wrap kurs-shell">
+  <aside class="kurs-toc">
+    <div class="cat">Kurs 03</div>
+    <h2>AI i praktiken</h2>
+    <div class="progress"><i></i></div>
+    <ol>
+      <li><a href="#produktivitet">Produktivitet och kunskapsarbete</a></li>
+      <li><a href="#kod">Kodning och utveckling</a></li>
+      <li><a href="#vardag">Vardag och personligt liv</a></li>
+      <li><a href="#kreativitet">Kreativitet: bild, video och musik</a></li>
+      <li><a href="#halsa-larande">Hälsa och lärande</a></li>
+      <li><a href="#gransningar">Ärliga begränsningar</a></li>
+    </ol>
+  </aside>
+
+  <article class="kurs-content">
+
+    <section class="chapter" id="produktivitet">
+      <div class="cn">Kapitel 01</div>
+      <h2>Produktivitet och kunskapsarbete</h2>
+      <p>Den mest utbredda vardagsanvändningen av AI just nu är inte agenter som bygger appar — det är hjälp med möten, mejl och skrivarbete. Gemini skriver mötessammanfattningar och åtgärdspunkter direkt i Google Docs och Gmail. Microsoft Copilot i Outlook sammanfattar långa trådar du annars skulle scrolla igenom. Dedikerade verktyg som <strong>tl;dv</strong>, <strong>Read.ai</strong> och <strong>Taskade</strong> gör samma sak för mötesinspelningar specifikt.</p>
+      <p>Mejl har gått ett steg längre. Gmail fick ett "AI Overviews"-läge för inkorgen i januari 2026. Mer intressant är <strong>Fyxer</strong>, som faktiskt läser inkommande trådar, avgör om ett svar behövs alls, och — om det gör det — skriver ett utkast i din egen ton och lägger det i utkastmappen. Det är en verklig skillnad från de flesta AI-mejlverktyg: Fyxer föreslår inte bara, det agerar (om än stannar vid ett utkast du godkänner).</p>
+      <div class="callout">
+        <div class="lbl">Siffrorna</div>
+        <p>Microsofts Work Trend Index 2026, en enkät bland 20 000 kunskapsarbetare, visar att 75 % har använt generativ AI i jobbet, 90 % upplever att det sparar tid, 85 % att det frigör tid till mer värdeskapande arbete, och 58 % säger att de nu producerar sådant de inte kunde för ett år sedan.</p>
+      </div>
+      <p>Men självupplevd tidsvinst och faktisk tidsvinst är inte samma sak. St. Louis Fed mätte den verkliga tidsbesparingen i arbetstid och landade på ungefär <strong>5,4 %</strong> — motsvarande 2,2 timmar i veckan. Betydligt blygsammare än känslan av "det sparar massor av tid". Ännu mer talande: 89 % av företagsledare rapporterar <em>ingen mätbar</em> produktivitetseffekt på företagsnivå över tre år, trots att ungefär 70 % av företagen använder AI i någon form. Det är ett verkligt fenomen — ibland kallat produktivitetsparadoxen — där individuella tidsvinster inte automatiskt blir till organisatoriskt värde. Samma mönster syns i affärsanvändning: 66 % av organisationer använder AI-agenter i kundservice 2026 (upp från 39 % året innan) med rapporterade 25–50 % kortare hanteringstid och siffror som "3,50 dollar tillbaka per investerad dollar" — häftiga tal, men ofta självrapporterade av samma leverantörer som säljer verktygen, så ta dem med en nypa skepsis.</p>
+    </section>
+
+    <section class="chapter" id="kod">
+      <div class="cn">Kapitel 02</div>
+      <h2>Kodning och utveckling</h2>
+      <p>Kodning är det område där AI-verktyg mognat snabbast, och där skillnaden mellan verktygen faktiskt spelar roll. <strong>Claude Code</strong> är terminalnativt och jobbar direkt i din kodbas via kommandoraden. <strong>Cursor</strong> är IDE-förankrat — en redigerare byggd runt AI-assistans. <strong>OpenAI Codex</strong> och <strong>Replit Agent 3</strong> erbjuder liknande men olika arbetsflöden, och <strong>Devin</strong> går längst i autonomi — den kan ta an en hel uppgift och arbeta självständigt under lång tid.</p>
+      <p>I 2026 års utvecklarenkäter är Claude Code (28 %) och Cursor (24 %) de vanligaste primärverktygen, men de flesta utvecklare kör faktiskt en <strong>trestegsstack</strong> — flera verktyg för olika delar av arbetet, inte ett enda universalverktyg.</p>
+      <div class="callout warn">
+        <div class="lbl">Den underskattade vändningen</div>
+        <p>Självrapporterade produktivitetsvinster ligger kring 34 % de första 60 dagarna, för att sedan plana ut. Men det som verkligen förändrats är <em>var</em> tiden går: utvecklare lägger nu mer tid på att granska AI-genererad kod (11,4 h/vecka) än på att skriva ny kod (9,8 h/vecka) — en omkastning från 2024. Flaskhalsen har flyttat från att skriva till att verifiera.</p>
+      </div>
+      <p>Det är en viktig lärdom långt bortom kodning: AI gör den första delen av ett arbete snabbare, men om ingen granskar resultatet noggrant flyttas problemet bara nedströms — och kod som ingen granskat ordentligt är precis lika farligt oavsett vem (eller vad) som skrev den.</p>
+    </section>
+
+    <section class="chapter" id="vardag">
+      <div class="cn">Kapitel 03</div>
+      <h2>Vardag och personligt liv</h2>
+      <p>Personliga AI-assistenter som <strong>Lindy</strong> och <strong>Carly AI</strong> positionerar sig som "AI-exekutivassistenter" som sköter mejl, kalender och uppgifter över 260+ appar. De är genuint bra på att resonera och skriva utkast — men många är fortfarande, som branschen själv börjat kalla det, <em>"smarta men strandsatta"</em>: bra på att föreslå, sämre på att faktiskt utföra saker i den verkliga världen på ett pålitligt sätt. Trenden under 2026 går tydligt mot assistenter som kan <em>utföra</em>, inte bara föreslå.</p>
+      <p>Hemautomation har liknande spelare: Alexa+, Gemini for Home, Apple HomeKit — och <strong>Home Assistant</strong>, som tillsammans med Josh.ai sticker ut genom att vara integritetsfokuserade med lokal bearbetning på plats istället för i molnet. Det är relevant för alla som bryr sig om datasekretess i hemmet, och kopplar direkt till den avvägning mellan moln och self-hosting som går igen i kurs 02 om <a href="ai-landskapet.html">AI-landskapet</a>.</p>
+      <p>En växande trend är <strong>proaktiva agenter</strong> som förutser behov snarare än väntar på instruktion — beställer mat baserat på din kalender, justerar hemmet inför väder du inte kollat själv. Sällskaps- och chattappar har också verklig användning, men verklig kontrovers: risken för överdrivet beroende och emotionell tillgivenhet till en AI är ett område forskningen fortfarande brottas med, och värt att vara medveten om snarare än att dröja vid.</p>
+    </section>
+
+    <section class="chapter" id="kreativitet">
+      <div class="cn">Kapitel 04</div>
+      <h2>Kreativitet: bild, video och musik</h2>
+      <p>Bildgenerering har tre tydliga positioner: <strong>Midjourney</strong> för konstnärlig kvalitet, <strong>DALL-E 3</strong> för att följa prompten exakt, och <strong>Stable Diffusion</strong>/<strong>Flux</strong> som öppna modeller du kan köra lokalt på egen hårdvara. Video har mognat snabbt med <strong>Sora 2</strong>, <strong>Veo 3.1</strong>, <strong>Kling 3.0</strong> och <strong>Runway Aleph</strong>. Musik domineras av två verktyg: <strong>Suno</strong>, som genererar en hel låt på sekunder och har runt 100 miljoner totala användare (cirka 10 miljoner aktiva), och <strong>Udio</strong>, som ofta ger högre kvalitet på sång.</p>
+      <table>
+        <thead><tr><th>Ändamål</th><th>Rekommenderat verktyg</th></tr></thead>
+        <tbody>
+          <tr><td>Konstnärlig bild</td><td>Midjourney</td></tr>
+          <tr><td>Bild som exakt följer instruktion</td><td>DALL-E 3</td></tr>
+          <tr><td>Bild, lokalt/öppet</td><td>Stable Diffusion / Flux</td></tr>
+          <tr><td>Video, hög kvalitet</td><td>Sora 2 / Veo 3.1</td></tr>
+          <tr><td>Video, redigering/klippgrepp</td><td>Runway Aleph</td></tr>
+          <tr><td>Snabb full låt</td><td>Suno</td></tr>
+          <tr><td>Sång med högre kvalitet</td><td>Udio</td></tr>
+          <tr><td>Skönlitterär text</td><td>ChatGPT / Claude (allmänna modeller)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <div class="lbl">Det som ligger efter</div>
+        <p>Skönlitterärt skrivande har inget riktigt eget ekosystem av dedikerade produkter ännu — jämfört med bild, video och musik är kategorin mindre "löst". De flesta som vill ha AI-hjälp med längre skönlitterär text landar fortfarande på generella språkmodeller som ChatGPT eller Claude snarare än specialbyggda verktyg.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="halsa-larande">
+      <div class="cn">Kapitel 05</div>
+      <h2>Hälsa och lärande</h2>
+      <p>Inom hälsa analyserar Whoops "AI Coach" återhämtning, belastning och sömndata för personliga rekommendationer — marknadsfört som "en idrottsforskare på handleden". <strong>Woebot</strong>, utvecklad vid Stanford, är en KBT-baserad chattbot med peer-granskad evidens för minskade depressions- och ångestsymptom redan inom två veckor. Men även välbelagd AI-hälsoteknik har svårt att bära sig kommersiellt: Woebot erbjuder inte längre en konsumentapp och har svängt mot företag och vårdsystem istället. Andra appar i samma nisch är Wysa, Ash och Headspace's Ebb.</p>
+      <div class="callout warn">
+        <div class="lbl">Viktig varning</div>
+        <p>ECRI:s rapport över de tio största hälsoteknik-riskerna 2026 rankar felanvändning av AI-chattbotar som <strong>den enskilt största hälsoteknikrisken</strong> för året. Över 40 miljoner människor rådfrågar AI om hälsofrågor dagligen — vilket skapar en verklig risk att förlita sig på information som modellen har hittat på. Använd gärna AI för att förstå ett hälsoämne bättre, men behandla aldrig ett AI-svar som ersättning för en läkares bedömning i något som faktiskt spelar roll.</p>
+      </div>
+      <p>Inom lärande är <strong>Khanmigo</strong> från Khan Academy det tydligaste exemplet på skalning: från 40 000 till 700 000 användare på ett år (17x), partnerdistrikt från 45 till över 380, och över 5 miljoner elever i 110 länder. Pilotdistrikt har sett ungefär 1,4 årskursnivåers genomsnittlig förbättring i matematik, och en studie fann en förbättring på 0,34 standardavvikelser i algebra över en termin — reella, mätbara resultat.</p>
+      <div class="callout">
+        <div class="lbl">Adoptionsgapet</div>
+        <p>Trots de imponerande tillväxtsiffrorna använder bara ungefär <strong>15 %</strong> av eleverna som faktiskt har tillgång till Khanmigo verktyget regelbundet. Tillgång är inte samma sak som användning — ett mönster som återkommer i nästan all AI-adoption, och värt att komma ihåg innan man tar en tillväxtsiffra som bevis på genomslag.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="gransningar">
+      <div class="cn">Kapitel 06</div>
+      <h2>Ärliga begränsningar</h2>
+      <p>Det här är det viktigaste kapitlet i kursen, för det avgör om du faktiskt kan lita på det du läst hittills. AI-modeller hallucinerar fortfarande — de skriver fakta som låter rimliga men är felaktiga eller helt påhittade — och det gäller även de mest avancerade modellerna som finns.</p>
+      <ul>
+        <li>Även toppmoderna modeller visar 15–20 % hallucinationsfrekvens på faktabaserade citeringsuppgifter, och det stiger till 35–55 % för nischade eller nyliga ämnen (studier från 2025–2026).</li>
+        <li>Stanford HAI:s AI Index 2026 fann att hallucinationer orsakade av <strong>sycophans</strong> (modellens tendens att hålla med dig) varierade mellan 22 och 94 % beroende på hur frågan ställdes, tvärs över 26 toppmoderna modeller. Ett konkret, vardagsnära exempel: ställer du en ledande fråga med en felaktig premiss, håller modellen ofta bara med dig istället för att rätta dig.</li>
+        <li>Kostnaden av blind tillit är verklig och mätbar: en undersökning från 2025 fann att 99 % av organisationer rapporterade AI-relaterade ekonomiska förluster, 64 % av dem över en miljon dollar, i genomsnitt 4,4 miljoner dollar per drabbat företag. 47 % av företagsanvändare hade fattat minst ett större affärsbeslut baserat på hallucinerat innehåll.</li>
+        <li>De juridiska konsekvenserna pågår fortfarande, inte historiska undantag: under första kvartalet 2026 utfärdade amerikanska domstolar 145 000 dollar i sanktioner mot advokater som lämnat in AI-genererade, påhittade rättsfallscitat — det högsta kvartalsresultatet någonsin uppmätt.</li>
+      </ul>
+      <p>Hälsodomänen är, som nämnt i förra kapitlet, flaggad som den högsta risken av alla — vilket är logiskt: konsekvenserna av en felaktig hälsouppgift kan vara mycket allvarligare än en felaktig historisk detalj.</p>
+      <div class="callout">
+        <div class="lbl">Mental modell att ta med sig</div>
+        <p>AI är pålitligt inom sin "förmågehorisont" — väl representerade, tydligt avgränsade uppgifter — och betydligt mindre pålitligt utanför den: nischade fakta, nyliga händelser, högriskbeslut, medicinska/juridiska/finansiella detaljer. Rätt förhållningssätt är att använda AI för att skriva utkast, snabba upp arbetet och utforska idéer — men verifiera alltid det som är avgörande, faktabaserat eller oåterkalleligt innan du agerar på det, särskilt inom hälsa, juridik och ekonomi.</p>
+      </div>
+      <div class="quiz">
+        <div class="q">Vad visar Stanford HAI:s fynd om "sycophans"-hallucinationer konkret?</div>
+        <div class="opts">
+          <button class="opt" data-correct="0">Att modeller alltid är objektiva oavsett hur frågan ställs</button>
+          <button class="opt" data-correct="1">Att modeller ofta håller med en felaktig premiss om frågan ställs på ett ledande sätt</button>
+          <button class="opt" data-correct="0">Att hallucinationer bara förekommer i äldre, mindre avancerade modeller</button>
+        </div>
+        <div class="fb" data-right="Rätt — hallucinationsfrekvensen varierade 22–94 % beroende på hur frågan formulerades, vilket visar att modellen ofta anpassar sig efter din ton snarare än att korrigera dig." data-wrong="Tänk på vad som händer om du ställer en fråga som redan antar ett (felaktigt) svar."></div>
+      </div>
+    </section>
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="ai-landskapet.html">← Föregående kurs</a>
+      <a href="prompting.html">Nästa kurs →</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../app.js"></script>
+</body>
+</html>

@@ -1,36 +1,191 @@
+/* Ted Svärd — portfolio interactions.
+   No frameworks. Progressive enhancement: everything works without JS except
+   the live Ornith feed (which has a static "offline" fallback in the markup). */
 (() => {
-  const menu = document.querySelector('.menu');
-  const links = document.querySelector('.navlinks');
-  menu?.addEventListener('click', () => links?.classList.toggle('open'));
-  const theme = document.querySelector('.theme');
-  theme?.addEventListener('click', () => document.documentElement.classList.toggle('light'));
-  const observer = new IntersectionObserver(entries => entries.forEach(entry => entry.isIntersecting && entry.target.classList.add('visible')), {threshold:.12});
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  const form = document.querySelector('.console-input');
-  const terminal = document.querySelector('.terminal');
-  const activity = document.querySelector('.activity-feed');
-  const activityLines = [
-    '↳ mapping dependencies in ornith/agent.swift',
-    '↳ testing memory boundary against 12 scenarios',
-    '↳ refining Corefall world-state transitions',
-    '↳ Eon: comparing recall, context and intent',
-    '↳ checkpoint saved · continuing workspace pass',
-    '↳ reviewing interface rhythm and copy',
-  ];
-  let activityIndex = 0;
-  if (activity) setInterval(() => {
-    activity.textContent = activityLines[activityIndex++ % activityLines.length];
-    activity.classList.remove('pulse');
-    void activity.offsetWidth;
-    activity.classList.add('pulse');
-  }, 2600);
-  form?.addEventListener('submit', event => {
-    event.preventDefault();
-    const input = form.querySelector('input');
-    const value = input.value.trim();
-    if (!value || !terminal) return;
-    terminal.insertAdjacentHTML('beforeend', `<div><b>ted@workspace:~$</b> ${value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}</div><div>↳ Reading context… found 3 related project threads.</div><div>↳ Next action queued: clarify, build, test.</div>`);
-    input.value = '';
-    terminal.scrollTop = terminal.scrollHeight;
+  'use strict';
+
+  /* ---------- grain overlay ---------- */
+  if (!document.querySelector('.grain')) {
+    const g = document.createElement('div');
+    g.className = 'grain';
+    g.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(g);
+  }
+
+  /* ---------- mobile nav ---------- */
+  const toggle = document.querySelector('.menu-toggle');
+  const links = document.querySelector('.nav-links');
+  toggle?.addEventListener('click', () => {
+    links?.classList.toggle('open');
+    document.body.classList.toggle('menu-open');
+  });
+  links?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('open');
+    document.body.classList.remove('menu-open');
+  }));
+
+  /* ---------- reveal-on-scroll fallback (only runs if scroll-timeline unsupported) ---------- */
+  const supportsScrollTimeline = CSS?.supports?.('animation-timeline: view()');
+  if (!supportsScrollTimeline) {
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('js-in')),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+
+  /* ---------- hero headline: one-time word stagger on load ---------- */
+  document.querySelectorAll('[data-stagger]').forEach(el => {
+    const text = el.textContent;
+    el.innerHTML = text.split(/(\s+)/).map(chunk =>
+      chunk.trim() ? `<span class="word">${chunk}</span>` : chunk
+    ).join('');
+    el.querySelectorAll('.word').forEach((w, i) => {
+      w.style.opacity = '0';
+      w.style.transform = 'translateY(0.5em)';
+      w.style.transition = `opacity .7s cubic-bezier(0.16,1,0.3,1) ${i * 45}ms, transform .7s cubic-bezier(0.16,1,0.3,1) ${i * 45}ms`;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        w.style.opacity = '1';
+        w.style.transform = 'none';
+      }));
+    });
+  });
+
+  /* ======================================================
+     ORNITH LIVE FEED
+     Reads the redacted public feed served from Titan via Caddy.
+     Used by: hero "signal card" teaser + the full /ornith.html monitor.
+     Degrades gracefully to a static "offline" state if unreachable —
+     never shows an error to the visitor, just goes quiet.
+     ====================================================== */
+  const FEED_BASE = 'https://169.58.43.27.nip.io/ornith-feed';
+
+  function timeAgo(s) {
+    if (s == null) return '';
+    if (s < 60) return s + 's';
+    if (s < 3600) return Math.floor(s / 60) + 'm';
+    return Math.floor(s / 3600) + 'h';
+  }
+
+  function renderSignalCard(data) {
+    const card = document.querySelector('[data-ornith-teaser]');
+    if (!card) return;
+    const dot = card.querySelector('.pulse');
+    const line = card.querySelector('.line');
+    if (!data || !data.alive) {
+      if (dot) dot.style.background = 'var(--muted-on-ink)';
+      if (line) line.innerHTML = 'Ornith vilar just nu.';
+      return;
+    }
+    if (data.current) {
+      line.innerHTML = `<em>${data.current.narration}</em>`;
+    } else {
+      line.innerHTML = `<em>Ornith väntar på nästa uppgift.</em>`;
+    }
+  }
+
+  function renderMonitor(data) {
+    const nowEl = document.querySelector('[data-now-task]');
+    const nowElapsed = document.querySelector('[data-now-elapsed]');
+    const activityEl = document.querySelector('[data-activity]');
+    const pendingCount = document.querySelector('[data-pending-count]');
+    const queueEl = document.querySelector('[data-queue]');
+    const statusDot = document.querySelector('[data-status-dot]');
+    const statusText = document.querySelector('[data-status-text]');
+    const tpsEl = document.querySelector('[data-tps]');
+    if (!nowEl && !activityEl) return; // not on the monitor page
+
+    if (!data || !data.alive) {
+      if (statusDot) statusDot.classList.add('off');
+      if (statusText) statusText.textContent = 'Signalen är tillfälligt otillgänglig';
+      return;
+    }
+    if (statusDot) statusDot.classList.remove('off');
+    if (statusText) statusText.textContent = data.state === 'running' ? 'Vaken och arbetar' : 'Vaken, väntar på nästa uppgift';
+
+    if (nowEl) {
+      nowEl.textContent = data.current ? data.current.narration : 'Ornith väntar på nästa uppgift.';
+    }
+    if (nowElapsed && data.current) {
+      nowElapsed.textContent = 'Pågått i ' + timeAgo(data.current.elapsed_s);
+    } else if (nowElapsed) {
+      nowElapsed.textContent = '';
+    }
+
+    if (activityEl && Array.isArray(data.recent)) {
+      activityEl.innerHTML = data.recent.map(r => `
+        <li class="activity-item">
+          <span class="d"></span>
+          <span class="txt">${r.narration}</span>
+          <span class="tag">${r.tps ? r.tps + ' t/s' : ''}</span>
+        </li>`).join('');
+      const withTps = data.recent.find(r => r.tps);
+      if (tpsEl && withTps) tpsEl.textContent = '~' + withTps.tps + ' tok/s';
+    }
+
+    if (pendingCount && data.queue) pendingCount.textContent = data.queue.pending ?? '–';
+    if (queueEl && Array.isArray(data.upcoming)) {
+      queueEl.innerHTML = data.upcoming.map(t => `
+        <li class="queue-item"><span>${t.title}</span><span class="cat">${t.category}</span></li>
+      `).join('') || '<li class="queue-item"><span>Kön är tom just nu.</span></li>';
+    }
+  }
+
+  async function pollFeed() {
+    try {
+      const res = await fetch(FEED_BASE + '/api/status', { cache: 'no-store' });
+      if (!res.ok) throw new Error('bad status');
+      const data = await res.json();
+      renderSignalCard(data);
+      renderMonitor(data);
+    } catch (e) {
+      renderSignalCard(null);
+      renderMonitor(null);
+    }
+  }
+
+  if (document.querySelector('[data-ornith-teaser]') || document.querySelector('[data-now-task]')) {
+    pollFeed();
+    setInterval(pollFeed, 6000);
+  }
+
+  /* ======================================================
+     COURSE PAGE: scroll-spy TOC + reading progress + quizzes
+     ====================================================== */
+  const chapters = document.querySelectorAll('.chapter');
+  const tocLinks = document.querySelectorAll('.kurs-toc a');
+  if (chapters.length && tocLinks.length) {
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          tocLinks.forEach(l => l.classList.remove('active'));
+          const link = document.querySelector(`.kurs-toc a[href="#${e.target.id}"]`);
+          link?.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    chapters.forEach(c => spy.observe(c));
+
+    const progressBar = document.querySelector('.kurs-toc .progress i');
+    if (progressBar) {
+      window.addEventListener('scroll', () => {
+        const h = document.documentElement;
+        const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+        progressBar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+      }, { passive: true });
+    }
+  }
+
+  document.querySelectorAll('.quiz').forEach(quiz => {
+    const opts = quiz.querySelectorAll('.opt');
+    const fb = quiz.querySelector('.fb');
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (quiz.dataset.answered) return;
+        quiz.dataset.answered = '1';
+        opts.forEach(o => o.classList.add(o.dataset.correct === '1' ? 'correct' : (o === opt ? 'wrong' : '')));
+        if (fb) { fb.textContent = opt.dataset.correct === '1' ? '✓ Rätt — ' + (fb.dataset.right || '') : '✗ ' + (fb.dataset.wrong || 'Inte riktigt — se den gröna raden.'); fb.classList.add('show'); }
+      });
+    });
   });
 })();
