@@ -288,11 +288,13 @@ em,i{ font-family:var(--serif); font-style:italic; }
 .monitor-panel{ background:var(--ink); color:var(--paper); border-radius:14px; padding:8px 0 8px; overflow:hidden; }
 .monitor-panel .ph{ display:flex; align-items:center; justify-content:space-between; padding:18px 24px 14px; border-bottom:1px solid var(--line-on-ink); }
 .monitor-panel .ph .t{ font-family:var(--mono); font-size:.76rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted-on-ink); }
-.monitor-panel .ph .tps{ font-family:var(--mono); font-size:.76rem; color:var(--signal-soft); }
-
 .now-playing{ padding:22px 24px 24px; border-bottom:1px solid var(--line-on-ink); }
 .now-playing .cat{ font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--signal-soft); }
 .now-playing .txt{ margin-top:10px; font-family:var(--serif); font-style:italic; font-weight:400; font-size:clamp(1.3rem,2.6vw,1.8rem); line-height:1.25; }
+.now-playing .phase{
+  margin-top:14px; display:inline-flex; align-items:center; gap:.5em; font-family:var(--mono); font-size:.78rem;
+  color:var(--alive); background:rgba(63,174,116,.12); border-radius:99px; padding:5px 12px 5px 10px;
+}
 .now-playing .elapsed{ margin-top:12px; font-family:var(--mono); font-size:.78rem; color:var(--muted-on-ink); }
 
 .activity{ padding:18px 24px 26px; display:flex; flex-direction:column; gap:0; max-height:520px; overflow:auto; }
