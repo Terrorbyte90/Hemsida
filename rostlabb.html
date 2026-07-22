@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Röst-labb — en visualisering av hur AI-röster, research och manus blir ett färdigt poddavsnitt hos Ted Svärd.">
+<title>Röst-labb — Ted Svärd</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Hem</a>
+      <a href="projekt.html">Projekt</a>
+      <a href="ornith.html" class="nav-signal"><span class="pulse"></span>Ornith</a>
+      <a href="kurser.html">Kurser</a>
+      <a href="poddar.html">Poddar</a>
+      <a href="rostlabb.html" aria-current="page">Röst-labb</a>
+      <a href="forskning.html">Forskning</a>
+      <a href="om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head wrap">
+  <div class="eyebrow">Konceptvisualisering</div>
+  <h1>Så blir research till <em>ett röstat avsnitt</em>.</h1>
+  <p class="lede">En visualisering av mitt AI-poddflöde — från ämnesval och research, via manus och röstval, till granskning och publicering. Inget här är en live-anslutning till en riktig produktionskörning; det är en koreograferad bild av samma steg jag faktiskt använder för att göra Övervakad och AI-Zonen.</p>
+</header>
+
+<main class="wrap">
+  <div class="lab-stepper" data-lab-stepper></div>
+  <div class="lab-stage" data-lab-stage></div>
+
+  <section class="rail-head reveal" style="margin-top:120px">
+    <h2>Möt rösterna</h2>
+  </section>
+  <p style="margin-top:14px;max-width:70ch;color:var(--muted)">Tre av rösterna som faktiskt används i mina poddar. Riktiga röstprover, genererade med samma verktyg som resten av produktionen.</p>
+
+  <section class="voice-hero-grid reveal">
+    <article class="voice-hero">
+      <div class="avatar">E</div>
+      <h3>Träffa Evelina</h3>
+      <p>Lugn, tydlig och eftertänksam. Bär de flesta av de lugnare partierna i Övervakad.</p>
+      <button class="play" data-voice-play="assets/voices/evelina.mp3">▸ Lyssna</button>
+    </article>
+    <article class="voice-hero">
+      <div class="avatar">N</div>
+      <h3>Träffa Nova</h3>
+      <p>Skarp och pigg — den röst som oftast guidar genom AI-Zonens ämnen.</p>
+      <button class="play" data-voice-play="assets/voices/nova.mp3">▸ Lyssna</button>
+    </article>
+    <article class="voice-hero">
+      <div class="avatar">A</div>
+      <h3>Träffa Anna</h3>
+      <p>Varm och driven — dyker upp i båda poddarna beroende på ton och tempo.</p>
+      <button class="play" data-voice-play="assets/voices/anna.mp3">▸ Lyssna</button>
+    </article>
+  </section>
+
+  <section class="rail-head reveal" style="margin-top:90px">
+    <h2>Röstbiblioteket</h2>
+  </section>
+  <p style="margin-top:14px;max-width:70ch;color:var(--muted)">Fler röster i rotation, för olika avsnittstyper och stämningar.</p>
+  <div class="voice-lib reveal">
+    <span>Evelina</span><span>Nova</span><span>Anna</span><span>Elin Nilsson</span><span>Sanna Hartfield</span>
+    <span>Berättarröst (kvinnlig)</span><span>Berättarröst (manlig)</span><span>Svensk nyhetsankare</span>
+    <span>Professor Krumelur</span><span>Lugn manlig röst</span>
+  </div>
+
+  <section class="ornith-note reveal" style="margin-top:80px">
+    Ärligt sagt: den här sidan kör ingen riktig research eller röstgenerering i bakgrunden — det vore både långsamt och dyrt att visa upp live. Det du ser är en noga koreograferad visualisering av samma pipeline jag faktiskt använder: sökning, manusval, röstval, granskning och publicering. Rösterna i "Möt rösterna" ovan är däremot helt riktiga klipp, genererade med samma verktyg.
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener">GitHub</a>
+      <a href="poddar.html">Poddar</a>
+      <a href="ornith.html">Ornith — live</a>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script src="rostlabb.js"></script>
+</body>
+</html>
