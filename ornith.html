@@ -81,7 +81,7 @@
     <div>
       <p>Ornith-35B är en <strong>Mixture-of-Experts-modell</strong> (qwen35moe-arkitektur) — istället för att ett enda gigantiskt nätverk hanterar varje token på samma sätt, innehåller den 256 mindre "expert"-nätverk och en router som väljer ut åtta av dem för varje enskild token. Det gör att modellen kan ha ett mycket stort totalt parameterantal utan att behöva aktivera allt samtidigt, ungefär som ett stort sjukhus där en triage-sköterska skickar varje patient till bara de specialister som faktiskt behövs.</p>
       <p>Den kör helt lokalt på min server, Titan — <strong>ingen GPU</strong>, ren CPU-inferens via ik_llama.cpp, en variant av llama.cpp optimerad för just MoE-modeller och kvantiserade vikter. Modellen är kvantiserad till IQ4_XS (cirka 18,8 GB på disk) för att rymmas och köra rimligt snabbt på processorn.</p>
-      <p>Jag kör den med <strong>full kvalitet</strong> — inga reducerade experter, ingen genväg för hastighet. Flaskhalsen är serverns minnesbandbredd, inte antalet trådar; efter noggrann trimning (trådantal, minneslåsning, transparenta hugepages) landar den på omkring 7 tokens per sekund i generering. Långsammare än ett moln-API, men den är min, kör dygnet runt, och skickar aldrig en enda token till någon annans server.</p>
+      <p>Jag kör den med <strong>full kvalitet</strong> — inga reducerade experter, ingen genväg för hastighet. Flaskhalsen är serverns minnesbandbredd, inte antalet trådar; efter noggrann trimning (trådantal, minneslåsning, transparenta hugepages) går den stabilt och förutsägbart i generering. Långsammare än ett moln-API, men den är min, kör dygnet runt, och skickar aldrig en enda token till någon annans server.</p>
     </div>
     <div class="about-facts">
       <dl>
@@ -90,7 +90,7 @@
         <dt>Lager</dt><dd>40</dd>
         <dt>Kvantisering</dt><dd>IQ4_XS (~18,8 GB)</dd>
         <dt>Kontextfönster</dt><dd>32 768 tokens</dd>
-        <dt>Hastighet</dt><dd>~7 tokens/sekund, CPU-bunden</dd>
+        <dt>Hastighet</dt><dd>Stabil generering, CPU-bunden</dd>
         <dt>Körs via</dt><dd>ik_llama.cpp, ingen GPU</dd>
       </dl>
     </div>
