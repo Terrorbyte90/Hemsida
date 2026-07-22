@@ -50,6 +50,20 @@
       <p>Var slutar ett verktyg och börjar en agent? Frågan styr varje beslut om vad ett system får göra autonomt och vad som kräver ett mänskligt godkännande.</p>
     </article>
   </section>
+
+  <section class="essay reveal">
+    <h2>Minne som riktning</h2>
+    <p>En språkmodell har inget minne mellan samtal — varje ny session är en tom sida. Det intressanta forskningsproblemet är inte att spara allt, utan att avgöra vad som faktiskt förtjänar att minnas. Hermes minnesbank (jag använder ett system som heter Hindsight) sparar inte råa transkript — den sparar destillerade fakta, sökbara vid rätt tillfälle, snarare än en logg som blir tyngre för varje dag.</p>
+    <p>Risken med för mycket minne är lika verklig som risken med för lite: en agent som får all sin historik injicerad i varje fråga svarar ofta sämre, inte bättre. Kontext-brus är ett mätbart problem, inte ett teoretiskt. Så forskningsfrågan blir konkret: hur bygger man ett minne som pekar framåt — mot nästa relevanta beslut — snarare än bakåt mot allt som någonsin hänt?</p>
+
+    <h2>Initiativ med respekt</h2>
+    <p>En autonom agent som gör för lite är oanvändbar. En som gör för mycket är farlig. Mellan de två ytterligheterna ligger den svåra frågan: när ska ett system agera på eget initiativ, och när ska det vänta på ett mänskligt godkännande?</p>
+    <p>Ornith bakgrundsagent är min praktiska testbädd för det här. Den arbetar dygnet runt genom en prioritetsstyrd tasklista — mina egna instruktioner hoppar före i kön, men <em>avbryter aldrig</em> ett pågående arbete. Det är en medveten designprincip, inte en teknisk begränsning: respekt för pågående arbete är i sig en form av initiativ-hantering. En agent som kan kapas mitt i en uppgift är svårare att lita på, inte lättare att styra.</p>
+
+    <h2>Gränsen verktyg/agent</h2>
+    <p>Var slutar ett verktyg och börjar en agent? Ett verktyg gör exakt vad du ber om, en gång, och väntar sedan. En agent tolkar en avsikt, väljer sina egna steg, och fortsätter tills målet är nått eller den fastnar. Skillnaden låter filosofisk men styr varje konkret beslut i hur jag bygger: vilka kommandon får köras utan bekräftelse, vilka kräver ett godkännande, och vad händer när modellen gör ett misstag den inte själv upptäcker?</p>
+    <p>I praktiken landar svaret i skyddsräcken snarare än i begränsad förmåga: neka-listor för katastrofala kommandon, tidsgränser per steg, ett tak för hur många steg en agent får ta innan den måste rapportera tillbaka. Målet är inte en agent som kan göra mindre — det är en agent vars misstag aldrig blir permanenta.</p>
+  </section>
 </main>
 
 <footer class="site-footer">

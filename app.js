@@ -4,7 +4,13 @@
 (() => {
   'use strict';
 
-  /* ---------- grain overlay ---------- */
+  /* ---------- ambient gradient mesh + grain overlay ---------- */
+  if (!document.querySelector('.mesh')) {
+    const m = document.createElement('div');
+    m.className = 'mesh';
+    m.setAttribute('aria-hidden', 'true');
+    document.body.prepend(m);
+  }
   if (!document.querySelector('.grain')) {
     const g = document.createElement('div');
     g.className = 'grain';
@@ -15,6 +21,27 @@
   /* ---------- mobile nav ---------- */
   const toggle = document.querySelector('.menu-toggle');
   const links = document.querySelector('.nav-links');
+  // On mobile, .nav-links becomes position:fixed — but its ancestor .row has
+  // backdrop-filter, which makes IT the containing block instead of the
+  // viewport, breaking the fixed offsets. Fix: only while mobile, move
+  // .nav-links to be a direct child of <body> (true viewport positioning);
+  // move it back into its original spot for desktop's inline flex layout.
+  if (links) {
+    const originalParent = links.parentElement;
+    const originalNext = links.nextSibling;
+    const mq = window.matchMedia('(max-width: 760px)');
+    const place = () => {
+      if (mq.matches) {
+        if (links.parentElement !== document.body) document.body.appendChild(links);
+      } else {
+        if (links.parentElement !== originalParent) {
+          originalNext ? originalParent.insertBefore(links, originalNext) : originalParent.appendChild(links);
+        }
+      }
+    };
+    place();
+    mq.addEventListener('change', place);
+  }
   toggle?.addEventListener('click', () => {
     links?.classList.toggle('open');
     document.body.classList.toggle('menu-open');
