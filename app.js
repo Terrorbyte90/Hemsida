@@ -246,4 +246,41 @@
       });
     });
   });
+
+  const draftEl = document.querySelector('[data-draft-text]');
+  if (draftEl) {
+    const LINES = [
+      'Testar en ny idé för hur Ornith ska prioritera bakgrundsjobb när kön blir lång.',
+      'Mira flaggade en avvikelse i minneskurvan — kollar om det är brus eller ett mönster.',
+      'Skissar på en snabbare inläsning för Röst-labbets sökfeed.',
+      'Ett utkast till hur nästa agent-loop ska logga sina beslut, steg för steg.',
+      'Funderar på en enklare vy för att jämföra två körningar av Ornith mot varandra.',
+      'Provar en ny formulering för statuskortet — kortare, tydligare, mindre teknisk.',
+      'Ritar upp hur en framtida "Forskning"-sida kan strömma live-resultat från servern.',
+    ];
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    const rndInt = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+    let last = -1;
+    (async function loop() {
+      while (true) {
+        let idx = rndInt(0, LINES.length - 1);
+        if (idx === last) idx = (idx + 1) % LINES.length;
+        last = idx;
+        const text = LINES[idx];
+        let acc = '';
+        for (const ch of text) {
+          acc += ch;
+          draftEl.innerHTML = acc.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '<span class="cursor"></span>';
+          await sleep(rndInt(14, 34));
+        }
+        await sleep(3200);
+        for (let n = acc.length; n >= 0; n -= 3) {
+          draftEl.innerHTML = acc.slice(0, n).replace(/&/g, '&amp;').replace(/</g, '&lt;') + '<span class="cursor"></span>';
+          await sleep(8);
+        }
+        draftEl.innerHTML = '<span class="cursor"></span>';
+        await sleep(500);
+      }
+    })();
+  }
 })();
