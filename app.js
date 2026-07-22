@@ -186,6 +186,28 @@
   }
 
   /* ======================================================
+     PODCASTS: click an episode row to play it inline
+     ====================================================== */
+  document.querySelectorAll('[data-episode-list]').forEach(list => {
+    const key = list.dataset.episodeList;
+    const player = document.querySelector(`[data-player="${key}"]`);
+    if (!player) return;
+    const items = list.querySelectorAll('.ep[data-src]');
+    const playEp = (ep) => {
+      items.forEach(i => i.classList.remove('playing'));
+      ep.classList.add('playing');
+      player.src = ep.dataset.src;
+      player.play().catch(() => {});
+    };
+    items.forEach(ep => {
+      ep.addEventListener('click', () => playEp(ep));
+      ep.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playEp(ep); }
+      });
+    });
+  });
+
+  /* ======================================================
      COURSE PAGE: scroll-spy TOC + reading progress + quizzes
      ====================================================== */
   const chapters = document.querySelectorAll('.chapter');

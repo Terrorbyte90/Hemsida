@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Om Ted Svärd — solo AI- och iOS-arkitekt som bygger premium appar och driftar sin egen AI-server.">
+<meta name="description" content="Om Ted Svärd — solo AI- och iOS-arkitekt med över 20 års teknisk erfarenhet, som bygger premium appar och driftar sin egen AI-server.">
 <title>Om mig — Ted Svärd</title>
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
@@ -29,26 +29,63 @@
 <header class="page-head wrap">
   <div class="eyebrow">Om byggaren</div>
   <h1>Ett person­studio som bygger <em>hela stacken</em>.</h1>
-  <p class="lede">Från strikt-concurrency Swift 6-appar med egna designsystem, till de självhostade AI-servrar och agenter som driver dem. Samma person, hela vägen.</p>
+  <p class="lede">Från strikt-concurrency Swift 6-appar med egna designsystem, till de självhostade AI-servrar och agenter som driver dem — och rösten, ljudet och den rörliga bilden runt omkring. Samma person, hela vägen.</p>
 </header>
 
 <main class="wrap">
   <section class="about-grid reveal">
     <div>
-      <p>Jag är svensk AI-arkitekt och systembyggare. Jag bygger sällan bara en app eller bara en modell — jag bygger hela kedjan: produktidé, arkitektur, gränssnitt, agentlogik och den infrastruktur som får allt att köra dygnet runt utan att jag behöver stå bredvid.</p>
-      <p>Två saker driver arbetet. Det ena är hantverk i gränssnittet — designsystem, rörelse, typografi, den där sista detaljen som gör att en app känns levande istället för byggd. Det andra är egen AI-infrastruktur: att köra modeller och agenter jag själv äger och kontrollerar, snarare än att bara anropa någon annans API.</p>
-      <p>Just nu betyder det: en självhostad agentplattform (Hermes) som kör en lokal modell och autonoma bakgrundsagenter på min egen server, en messenger-app med inbyggda AI-kontakter (Lunachat), och ett realtidsstrategispel byggt från grunden (Corefall) — tre helt olika discipliner, samma nivå av finish.</p>
+      <p>Jag är en svensk AI-arkitekt och systembyggare, med över 20 års praktisk erfarenhet av nästan all teknisk utrustning jag kommit i kontakt med — från hårdvara och nätverk till mobilutveckling, ljudproduktion och serverdrift. Den bredden är inget jag läst mig till; den kommer från att faktiskt ha byggt, monterat, felsökt och driftat, år efter år.</p>
+      <p>Jag bygger sällan bara en app eller bara en modell — jag bygger hela kedjan: produktidé, arkitektur, gränssnitt, agentlogik och den infrastruktur som får allt att köra dygnet runt utan att jag behöver stå bredvid. Två saker driver arbetet. Det ena är hantverk i gränssnittet — designsystem, rörelse, typografi, den där sista detaljen som gör att en app känns levande istället för byggd. Det andra är egen AI-infrastruktur: att köra modeller och agenter jag själv äger och kontrollerar, snarare än att bara anropa någon annans API.</p>
+      <p>De senaste åren har jag byggt betydligt djupare AI-erfarenhet än de flesta hobbyister eller ens många proffs kommer i närheten av — inte bara att använda AI, utan att bygga hela system kring den: agentarkitekturer med flera samverkande AI-agenter (Navi, Ikarus), forskning i AI från grunden utan att luta sig på färdiga basmodeller (Ai-research), realtids-telemetri och visualisering av AI-system (agentic-os/NEXA//OS), och en självhostad modell jag driftar och trimmar själv (Ornith-35B). Just nu betyder det: en självhostad agentplattform (Hermes) på min egen server, en messenger-app med inbyggda AI-kontakter (Lunachat), och ett realtidsstrategispel byggt från grunden (Corefall) — helt olika discipliner, samma nivå av finish.</p>
     </div>
     <div class="about-facts">
       <dl>
         <dt>Bas</dt><dd>Sverige</dd>
+        <dt>Erfarenhet</dt><dd>20+ år inom teknik — hårdvara, mobil, ljud, drift</dd>
         <dt>Fokus</dt><dd>AI-agentarkitektur · premium iOS/SwiftUI · self-hosted infrastruktur</dt>
         <dt>Just nu</dt><dd>Hermes/Ornith (självhostad AI), Lunachat, Corefall</dd>
       </dl>
       <div class="skill-row">
         <span>Swift 6</span><span>SwiftUI</span><span>Python</span><span>Agent-arkitektur</span>
         <span>Design systems</span><span>On-device AI</span><span>Systemdrift</span><span>TypeScript</span>
+        <span>Röstdesign</span><span>Ljudproduktion</span><span>AI-video</span>
       </div>
+    </div>
+  </section>
+
+  <section class="rail-head reveal" style="margin-top:100px">
+    <h2>Vad jag har byggt med AI</h2>
+  </section>
+  <section class="tracks reveal" style="margin-top:26px">
+    <article class="track">
+      <div class="n">Agentsystem</div>
+      <h3>Flera AI-agenter i samverkan</h3>
+      <p>Navi låter mig prata med en AI via röst eller text som i sin tur startar egna autonoma "workers" — agenter som kodar, deployar och researchar på servern medan jag gör annat. Ikarus går längre: fem distinkta kodagenter, en egen nyhetsflödesmotor och röstläge med ElevenLabs och Gemini.</p>
+    </article>
+    <article class="track">
+      <div class="n">Grundforskning</div>
+      <h3>AI från grunden, inte ovanpå någon annans modell</h3>
+      <p>Ai-research är ett långkörande, källbelagt forskningsspår i att bygga resurseffektiv AI från grunden för att köra lokalt på en iPhone — medvetet utan att luta sig på färdiga basmodeller eller ens Transformer-arkitekturen som given. 388 källor katalogiserade och räknar uppåt.</p>
+    </article>
+    <article class="track">
+      <div class="n">Visualisering</div>
+      <h3>Se ett AI-system tänka i realtid</h3>
+      <p>agentic-os (internt NEXA//OS) är en WebGL-instrumentpanel där en partikelsfär med tusentals punkter reagerar live på verklig telemetri från mina servrar — färg, puls och glöd driven av faktisk aktivitet, inte platshållardata.</p>
+    </article>
+  </section>
+
+  <section class="rail-head reveal" style="margin-top:80px">
+    <h2>Röst, ljud och rörlig bild</h2>
+  </section>
+  <section class="about-grid reveal" style="margin-top:26px">
+    <div>
+      <p>AI-arbetet stannar inte vid kod. Jag designar egna röster för mina poddar — <a href="poddar.html" style="text-decoration:underline">Övervakad</a> och <a href="poddar.html" style="text-decoration:underline">AI-Zonen</a> byggs båda kring noga formgivna AI-röster snarare än inspelat tal, från manus till färdig ljudmix.</p>
+      <p>Jag har även producerat AI-genererade reklamfilmer — hela vägen från koncept och manus till färdig video, med AI för bild, rörelse och ljud i samma flöde som resten av min AI-verktygslåda.</p>
+    </div>
+    <div>
+      <p>Ikarus har ett fullt röstläge (ElevenLabs för tal, Gemini för taligenkänning), och Navi går att prata med rakt av — röstsamtal med en AI-agent som faktiskt kan agera på det du säger, inte bara svara.</p>
+      <p>Samma princip som i koden: förstå verktyget på djupet innan man litar på det. Jag har provat, brutit och byggt om röst- och videopipelines tillräckligt många gånger för att veta var de faktiskt håller.</p>
     </div>
   </section>
 
@@ -64,10 +101,17 @@
       </div>
     </div>
     <div class="timeline-item">
+      <div class="yr">2026 · april–maj</div>
+      <div>
+        <h4>Eon-Y fortsätter, Navi får en röst</h4>
+        <p>Eon-Y-projektet fortsätter mot en polerad iOS-produkt med en realtidsvisualisering av modellens interna tillstånd. Samtidigt tar Navi form som en fullständig röst- och textassistent med en egen serverdel som kan spawna autonoma arbetare.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
       <div class="yr">2026 · juni</div>
       <div>
-        <h4>Två helt olika discipliner, parallellt</h4>
-        <p>Lunachat och Corefall tar form samtidigt — ett meddelandeapp med inbyggda AI-kontakter och sfär-navigation, och ett realtidsstrategispel byggt från grunden. Samma vecka som Titan iOS, kontrollpanelen till min egen server, går till TestFlight.</p>
+        <h4>Tre helt olika discipliner, parallellt</h4>
+        <p>Lunachat och Corefall tar form samtidigt — ett meddelandeapp med inbyggda AI-kontakter och sfär-navigation, och ett realtidsstrategispel byggt från grunden. Samma period som Titan iOS, kontrollpanelen till min egen server, går till TestFlight, och Lifetoken — ett dystopiskt livshanteringsspel — tar form.</p>
       </div>
     </div>
     <div class="timeline-item">
