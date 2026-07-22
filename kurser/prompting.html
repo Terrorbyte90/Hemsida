@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Kurs: Prompting &amp; kontext — hur du faktiskt blir förstådd av en språkmodell, förklarat av Ted Svärd.">
+<title>Prompting &amp; kontext — Kurser · Ted Svärd</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="../index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="../index.html">Hem</a>
+      <a href="../projekt.html">Projekt</a>
+      <a href="../ornith.html" class="nav-signal"><span class="pulse"></span>Ornith</a>
+      <a href="../kurser.html" aria-current="page">Kurser</a>
+      <a href="../poddar.html">Poddar</a>
+      <a href="../forskning.html">Forskning</a>
+      <a href="../om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head wrap">
+  <div class="eyebrow">Kurs 04 · 5 kapitel</div>
+  <h1>Prompting &amp; <em>kontext</em></h1>
+  <p class="lede">Det här är den mest praktiska kursen i serien. Att kunna resonera om AI är en sak — att faktiskt bli förstådd av en språkmodell, varje gång, är en annan färdighet helt och hållet. Den går att lära sig, den är omedelbart användbar, och den handlar mindre om att vara "kreativ" med sina frågor än om att vara tydlig.</p>
+</header>
+
+<main class="wrap kurs-shell">
+  <aside class="kurs-toc">
+    <div class="cat">Kurs 04</div>
+    <h2>Prompting &amp; kontext</h2>
+    <div class="progress"><i></i></div>
+    <ol>
+      <li><a href="#grunderna">Grunderna: instruktion, kontext och exempel</a></li>
+      <li><a href="#system-prompts">System-prompts och roller</a></li>
+      <li><a href="#resonemang">Att få modellen att resonera</a></li>
+      <li><a href="#kontextfonster">Kontextfönstret i praktiken</a></li>
+      <li><a href="#vanliga-misstag">Vanliga misstag och hur du fixar dem</a></li>
+    </ol>
+  </aside>
+
+  <article class="kurs-content">
+
+    <section class="chapter" id="grunderna">
+      <div class="cn">Kapitel 01</div>
+      <h2>Grunderna: instruktion, kontext och exempel</h2>
+      <p>En <strong>prompt</strong> är helt enkelt texten du skickar till en språkmodell — allt den ser innan den svarar. Det låter trivialt, men det är egentligen hela produkten: modellen har inga andra sinnen. Den vet bara vad som står i prompten (plus eventuell systeminstruktion, mer om det i nästa kapitel). Om något är oklart för dig i din egen text är det garanterat oklart för modellen också — den gissar då lika mycket som du skulle ha gjort.</p>
+      <p>En bra prompt består i praktiken av tre byggstenar, och de flesta svaga prompts saknar minst en av dem:</p>
+      <ul>
+        <li><strong>En tydlig instruktion</strong> — vad du faktiskt vill ha, uttalat rakt ut, inte underförstått. "Skriv något om X" är ingen instruktion, det är ett ämne.</li>
+        <li><strong>Relevant kontext</strong> — bakgrundsinformation modellen behöver men inte redan har: din kodbas, din målgrupp, din ton, dina begränsningar.</li>
+        <li><strong>Exempel (few-shot)</strong> — att visa modellen ett eller ett par exempel på exakt det format eller den stil du vill ha, är ofta effektivare än att beskriva det med ord.</li>
+      </ul>
+      <p>Se skillnaden mellan en vag och en specifik prompt:</p>
+      <div class="callout warn">
+        <div class="lbl">Vagt</div>
+        <p><code>"Skriv något om marknadsföring."</code></p>
+        <p>Modellen vet inte vilket format, vilken längd, vilken ton, eller för vem. Den fyller i alla luckor själv — och gissar sällan rätt på allihop.</p>
+      </div>
+      <div class="callout">
+        <div class="lbl">Specifikt</div>
+        <p><code>"Skriv tre rubriker för ett Instagram-inlägg om en ny kaffesort. Max 60 tecken var. Lekfull ton, ingen utropstecken-spam."</code></p>
+        <p>Här är instruktionen (tre rubriker), formatet (max 60 tecken), och tonen (lekfull) alla explicita. Modellen behöver inte gissa något.</p>
+      </div>
+      <p>Det här är den enskilt viktigaste insikten i hela kursen: <strong>specificitet slår finurlighet</strong>. Du behöver inga hemliga trick eller magiska frasformuleringar — du behöver bara säga exakt vad du vill ha, lika tydligt som du skulle förklara det för en ny kollega som är duktig men inte kan läsa dina tankar.</p>
+      <p>Few-shot-exempel förtjänar ett extra ord: om du vill ha en viss ton, ett visst format eller en viss struktur på svaret, är det ofta snabbare och mer träffsäkert att visa 1–3 exempel än att försöka beskriva stilen abstrakt. En modell som ser ett exempel på önskat format kopierar mönstret nästan perfekt — beskrivningar i ord ("var koncis men varm") tolkas mer olika från gång till gång.</p>
+    </section>
+
+    <section class="chapter" id="system-prompts">
+      <div class="cn">Kapitel 02</div>
+      <h2>System-prompts och roller</h2>
+      <p>Det du skriver i chattrutan är inte den enda texten modellen ser. De flesta AI-system lägger också in en <strong>system-prompt</strong> — en instruktion som sätts <em>innan</em> samtalet börjar och som gäller genomgående. Den definierar vem modellen ska vara, vilka verktyg den har, vilken ton den ska hålla och vilka gränser den aldrig får kliva över. Skillnaden mot ditt eget meddelande är att system-prompten är osynlig för dig i vardagen, men den styr allt.</p>
+      <p>En rimlig struktur för en system-prompt brukar innehålla fyra delar:</p>
+      <table>
+        <thead><tr><th>Del</th><th>Vad den gör</th></tr></thead>
+        <tbody>
+          <tr><td>Rolldefinition</td><td>Vem är assistenten? ("Du är en teknisk skribent som hjälper till att förenkla komplexa texter")</td></tr>
+          <tr><td>Begränsningar</td><td>Vad får den aldrig göra? ("Hitta aldrig på källor eller siffror")</td></tr>
+          <tr><td>Utformat</td><td>Hur ska svaret se ut? ("Svara alltid i punktlistor, max 5 punkter")</td></tr>
+          <tr><td>Ton</td><td>Hur ska den låta? ("Rakt på sak, inga överdrivna artighetsfraser")</td></tr>
+        </tbody>
+      </table>
+      <p>Mitt eget agentsystem Hermes (som du kan läsa mer om i <a href="hermes-agentsystem.html">kurs 01</a>) är i grunden bara ett stort exempel på precis den här principen. Hermes system-prompt berättar för modellen vem den är, vilka verktyg den har tillgång till, vad den absolut aldrig får göra (till exempel köra destruktiva kommandon utan att fråga), och hur den ska rapportera vad den gjort. Samma mönster fungerar i miniatyr för vilken egen assistent du än bygger — du behöver inte en hel serverdrift för att dra nytta av det, bara samma tankesätt i mindre skala.</p>
+      <div class="callout">
+        <div class="lbl">Nyckelinsikt</div>
+        <p>En bra system-prompt är specifik om <strong>edge cases</strong>, inte bara om den vanliga vägen. "Svara vänligt och hjälpsamt" säger inget om vad modellen ska göra när den inte vet svaret. "Om du är osäker, säg det — hitta aldrig på ett svar" gör det.</p>
+      </div>
+      <p>Ju viktigare uppgiften är, desto mer lönar det sig att lägga tid på just det ovanliga fallet i system-prompten: vad händer om användaren frågar om något utanför ämnet, om data saknas, om instruktionerna motsäger varandra? Det är där en svag system-prompt går sönder, inte i det vanliga fallet.</p>
+    </section>
+
+    <section class="chapter" id="resonemang">
+      <div class="cn">Kapitel 03</div>
+      <h2>Att få modellen att resonera</h2>
+      <p>På komplexa uppgifter — matematik, flerstegslogik, analyser med flera rörliga delar — ger det ofta ett tydligt bättre resultat att be modellen <strong>tänka steg för steg</strong> innan den ger sitt slutgiltiga svar, jämfört med att be den hoppa direkt till svaret.</p>
+      <p>Varför fungerar det? En modell genererar text ett steg i taget, och om den försöker mönstermatcha direkt till ett slutsvar utan mellansteg missar den ofta detaljer som bara blir synliga när de skrivs ut explicit. Att be den resonera ger den "utrymme" att faktiskt arbeta igenom problemet i text, precis som en människa som räknar på ett papper istället för i huvudet.</p>
+      <table>
+        <thead><tr><th>Prompt</th><th>Effekt</th></tr></thead>
+        <tbody>
+          <tr><td><code>"Vad blir svaret på det här problemet: …?"</code></td><td>Modellen kan hoppa direkt till ett svar — snabbt, men mer felbenäget på flerstegsproblem</td></tr>
+          <tr><td><code>"Tänk igenom det här steg för steg, visa ditt resonemang, ge sedan svaret."</code></td><td>Modellen bryter ner problemet i mindre steg och är betydligt mer träffsäker</td></tr>
+        </tbody>
+      </table>
+      <p>Ett konkret exempel: be en modell räkna ut hur många ägg som är kvar efter en serie köp och förbrukningar i flera led ("Anna köper 3 dussin ägg, använder 8 till en kaka, ger bort ett dussin, köper sedan 15 till …"). Frågar du direkt efter svaret gör modellen ibland ett aritmetiskt hopp och missar ett steg. Ber du den istället lista varje transaktion i ordning innan den summerar, blir felfrekvensen tydligt lägre — helt enkelt för att varje delsteg blir synligt och kan kontrolleras, av både modellen och dig.</p>
+      <div class="callout">
+        <div class="lbl">Kopplat till kurs 02</div>
+        <p>Moderna <strong>resonemangsmodeller</strong> — som Fable 5 eller GPT-5.6 Sol med hög resonemangsansträngning, som togs upp i <a href="ai-landskapet.html">kurs 02</a> — gör mycket av det här internt och automatiskt, utan att du behöver be om det explicit. Men för snabbare, icke-resonerande modeller gör en enkel "tänk steg för steg" fortfarande stor skillnad.</p>
+      </div>
+      <p>En andra teknik i samma familj: be modellen <strong>granska sitt eget svar</strong> som ett andra steg innan den lämnar det ifrån sig — "kontrollera resonemanget ovan, finns det något fel eller något du missat?" På viktiga uppgifter fångar det ofta misstag som slank igenom i det första försöket. Det kostar en extra runda, men för saker som verkligen måste stämma är det värt det.</p>
+    </section>
+
+    <section class="chapter" id="kontextfonster">
+      <div class="cn">Kapitel 04</div>
+      <h2>Kontextfönstret i praktiken</h2>
+      <p>Allt du skickar in — instruktion, bakgrundsinformation, tidigare meddelanden, dokument — delar samma utrymme: <strong>kontextfönstret</strong>. Det är frestande att tänka "ju mer information, desto bättre", men i praktiken är det tvärtom. Precis som vi tog upp i kursen om Hermes minne, försämrar för mycket irrelevant material — kontext-brus — kvaliteten på svaret, inte förbättrar den.</p>
+      <p>Praktisk tumregel: lägg in det som är <em>direkt relevant</em> för uppgiften (rätt kodfiler, rätt dokument, rätt bakgrund), och lämna ute allt annat — särskilt hela konversationshistorik som inte längre är relevant för den fråga du faktiskt ställer nu.</p>
+      <div class="callout warn">
+        <div class="lbl">"Lost in the middle"</div>
+        <p>Ett dokumenterat fenomen hos språkmodeller är att de attenderar mindre pålitligt till information som ligger mitt i en väldigt lång prompt, jämfört med information i början eller slutet. Praktisk konsekvens: placera dina viktigaste instruktioner först eller sist i en lång prompt — inte begravda mitt i ett stort textblock.</p>
+      </div>
+      <p>Det gäller särskilt när du klistrar in stora dokument eller kod som kontext och sedan lägger själva frågan i slutet — det brukar fungera bättre än att lägga frågan först och kontexten efter, eftersom instruktionen då är det senaste modellen läste innan den börjar svara.</p>
+      <p>En annan praktisk regel: för en stor och sammansatt uppgift, dela upp den i flera mindre, fokuserade prompts istället för en jätteprompt som ska göra allt på en gång. Varje delsteg blir lättare för modellen att hålla reda på, och lättare för dig att kontrollera resultatet mellan varje steg innan du går vidare.</p>
+    </section>
+
+    <section class="chapter" id="vanliga-misstag">
+      <div class="cn">Kapitel 05</div>
+      <h2>Vanliga misstag och hur du fixar dem</h2>
+      <p>De flesta prompting-problem jag stöter på — mina egna och andras — går igen i ett litet antal mönster. Här är de vanligaste, och den konkreta fixen för varje.</p>
+      <table>
+        <thead><tr><th>Misstag</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>Vag begäran ("skriv något om X")</td><td>Specificera format, längd och målgrupp explicit</td></tr>
+          <tr><td>Förutsätter att modellen minns något från tidigare utan att det står i aktuell kontext</td><td>Upprepa de viktiga fakta du behöver — anta ingenting utanför det som faktiskt skickas in</td></tr>
+          <tr><td>Ledande fråga som antar en felaktig premiss</td><td>Fråga neutralt, be modellen utvärdera istället för att bekräfta</td></tr>
+          <tr><td>Ger inte modellen en "utväg" att säga "jag vet inte"</td><td>Instruera explicit att osäkerhet ska erkännas, inte gömmas</td></tr>
+          <tr><td>En jätteprompt som ska göra fem saker samtidigt</td><td>Dela upp i sekventiella steg, ett i taget</td></tr>
+        </tbody>
+      </table>
+      <p>Det tredje misstaget förtjänar extra uppmärksamhet: som vi nämnde i kursen <a href="ai-i-praktiken.html">AI i praktiken</a>, tenderar modeller att hålla med om felaktiga premisser om du frågar ledande — fråga "varför är X sant" och du får ofta ett svar som antar att X är sant, även när det inte är det. Fixen är enkel men lätt att glömma: fråga öppet ("stämmer det att X, och varför/varför inte?") istället för att bädda in antagandet i frågan.</p>
+      <p>Det fjärde är kanske det mest underskattade: modeller är tränade att ge ett svar, och ett självsäkert formulerat fel svar är farligare än ett tveksamt korrekt svar. Ge modellen uttrycklig tillåtelse att säga "jag vet inte" eller att ställa en följdfråga istället för att gissa — det minskar andelen självsäkra men felaktiga svar mätbart.</p>
+      <div class="quiz">
+        <div class="q">Du frågar en modell: "Varför är lösning A bättre än lösning B?" — trots att du egentligen inte vet om det stämmer. Vad är den bästa fixen?</div>
+        <div class="opts">
+          <button class="opt" data-correct="0">Inget problem, modellen svarar alltid objektivt oavsett hur frågan är ställd</button>
+          <button class="opt" data-correct="1">Formulera om frågan neutralt: "Hur förhåller sig lösning A till lösning B, och vilken är starkast för mitt fall?"</button>
+          <button class="opt" data-correct="0">Ställ samma fråga igen och lita på det andra svaret</button>
+        </div>
+        <div class="fb" data-right="Rätt — en neutral formulering minskar risken att modellen bekräftar en felaktig premiss i frågan." data-wrong="Tänk på hur en ledande fråga bygger in ett antagande som modellen tenderar att hålla med om."></div>
+      </div>
+      <p>Sammanfattningsvis: det mesta som gör en prompt svag går att fixa utan att lära sig något nytt tekniskt — bara genom att vara lika tydlig, saklig och konkret som du skulle vara mot en människa som gärna vill hjälpa till men inte kan läsa dina tankar.</p>
+    </section>
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="ai-i-praktiken.html">← Föregående kurs</a>
+      <a href="ai-sakerhet.html">Nästa kurs →</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../app.js"></script>
+</body>
+</html>

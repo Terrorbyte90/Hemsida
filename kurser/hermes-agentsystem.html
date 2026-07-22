@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Kurs: Hermes och agentsystem — hur en autonom AI-agent faktiskt är uppbyggd, förklarat av Ted Svärd.">
+<title>Hermes &amp; agentsystem — Kurser · Ted Svärd</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="../index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="../index.html">Hem</a>
+      <a href="../projekt.html">Projekt</a>
+      <a href="../ornith.html" class="nav-signal"><span class="pulse"></span>Ornith</a>
+      <a href="../kurser.html" aria-current="page">Kurser</a>
+      <a href="../poddar.html">Poddar</a>
+      <a href="../forskning.html">Forskning</a>
+      <a href="../om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head wrap">
+  <div class="eyebrow">Kurs 01 · 6 kapitel</div>
+  <h1>Hermes &amp; <em>agentsystem</em></h1>
+  <p class="lede">Hur en autonom AI-agent faktiskt är uppbyggd — minne, verktyg, prioritering och gränsen mellan att agera och att fråga. Byggt kring mitt eget system, Hermes, som kör dygnet runt på min server.</p>
+</header>
+
+<main class="wrap kurs-shell">
+  <aside class="kurs-toc">
+    <div class="cat">Kurs 01</div>
+    <h2>Hermes &amp; agentsystem</h2>
+    <div class="progress"><i></i></div>
+    <ol>
+      <li><a href="#vad-ar-en-agent">Vad är en AI-agent?</a></li>
+      <li><a href="#hermes-arkitektur">Hermes arkitektur</a></li>
+      <li><a href="#minne-och-kontext">Minne och kontext</a></li>
+      <li><a href="#verktyg-och-handling">Verktyg och handling</a></li>
+      <li><a href="#autonomi-och-sakerhet">Autonomi och säkerhet</a></li>
+      <li><a href="#bygg-din-egen">Bygg din egen</a></li>
+    </ol>
+  </aside>
+
+  <article class="kurs-content">
+
+    <section class="chapter" id="vad-ar-en-agent">
+      <div class="cn">Kapitel 01</div>
+      <h2>Vad är en AI-agent?</h2>
+      <p>En vanlig chattbot gör en sak: du skriver en fråga, den skriver ett svar, samtalet är slut. En <strong>AI-agent</strong> gör mer — den kan <strong>agera</strong>. Den kan söka på webben, läsa och skriva filer, köra kommandon, komma ihåg saker mellan samtal, och fortsätta arbeta på egen hand efter att du har lämnat rummet.</p>
+      <p>Skillnaden är egentligen tre saker som läggs till ovanpå en vanlig språkmodell:</p>
+      <ul>
+        <li><strong>Verktyg</strong> — förmågan att göra något i världen, inte bara svara i text (söka, köra kod, skicka ett meddelande).</li>
+        <li><strong>Minne</strong> — information som överlever mellan enskilda samtal, så agenten inte börjar om från noll varje gång.</li>
+        <li><strong>Initiativ</strong> — förmågan att själv avgöra nästa steg, ibland utan att vänta på en ny instruktion från dig.</li>
+      </ul>
+      <div class="callout">
+        <div class="lbl">Analogi</div>
+        <p>Tänk dig skillnaden mellan att fråga en kollega om ett svar (chattbot) och att ge samma kollega ett uppdrag de kan jobba vidare på i flera dagar, rapportera status, och fråga om hjälp bara när de fastnar (agent).</p>
+      </div>
+      <p>Hermes, systemet jag byggt och driftar själv, är ett konkret exempel på en agentplattform — inte bara en modell, utan allt runt omkring den som gör den till en agent: en gateway som lyssnar på meddelanden, ett minnessystem, en uppsättning verktyg, och en regelbok för vad den får göra själv och vad den måste fråga om.</p>
+    </section>
+
+    <section class="chapter" id="hermes-arkitektur">
+      <div class="cn">Kapitel 02</div>
+      <h2>Hermes arkitektur</h2>
+      <p>Hermes körs som en <strong>gateway</strong> — en tjänst som är igång dygnet runt på min egen server (jag kallar den Titan) och lyssnar på meddelanden från flera håll samtidigt: iMessage, en kommandorads-klient, och interna schemalagda jobb.</p>
+      <table>
+        <thead><tr><th>Del</th><th>Roll</th></tr></thead>
+        <tbody>
+          <tr><td>Gateway</td><td>Tar emot meddelanden, håller sessioner, dirigerar till rätt modell och verktyg</td></tr>
+          <tr><td>Modell</td><td>Själva språkmodellen som resonerar — hos mig en blandning av en molnmodell och en egen lokal modell (Ornith-35B)</td></tr>
+          <tr><td>Plugins</td><td>Kopplingar utåt: meddelandeplattformar, webbsök, hemautomation</td></tr>
+          <tr><td>Skills</td><td>Sparade arbetssätt — instruktioner agenten lär sig och återanvänder, istället för att uppfinna hjulet varje gång</td></tr>
+          <tr><td>Cron / schemaläggare</td><td>Startar agent-jobb på tid ("varje morgon 09:00"), inte bara som svar på ett meddelande</td></tr>
+        </tbody>
+      </table>
+      <p>Det viktiga är att ingen av delarna är hela agenten. Modellen är hjärnan, men gatewayen, minnet och verktygen är lika viktiga för att den ska kunna <em>göra</em> något användbart, inte bara <em>säga</em> något klokt.</p>
+      <div class="callout">
+        <div class="lbl">I praktiken</div>
+        <p>Min egen Hermes-instans har en lokal modell (Ornith-35B) som kör på servern för integritet och kostnad, och kan falla tillbaka på en molnmodell för uppgifter som kräver mer kapacitet. Det är samma avvägning du möter i <a href="ai-landskapet.html">kurs 02</a> — moln kontra self-hosted.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="minne-och-kontext">
+      <div class="cn">Kapitel 03</div>
+      <h2>Minne och kontext</h2>
+      <p>En språkmodell har i sig inget minne mellan samtal — varje gång du börjar om är den en tom sida. Det en agentplattform löser är att spara relevant information <em>utanför</em> modellen och mata in den igen vid rätt tillfälle.</p>
+      <p>Hermes gör detta på flera nivåer:</p>
+      <ul>
+        <li><strong>Korttidsminne</strong> — det pågående samtalet, komprimerat när det blir för långt så att de senaste och viktigaste delarna prioriteras.</li>
+        <li><strong>Användarprofil</strong> — stabila fakta om mig som inte förändras ofta (preferenser, pågående projekt).</li>
+        <li><strong>Långtidsminne</strong> — en sökbar minnesbank (jag använder ett system som heter Hindsight) där agenten kan spara och senare hämta fram specifika fakta den lärt sig, ungefär som att slå upp i ett register istället för att komma ihåg allt utantill.</li>
+      </ul>
+      <div class="callout warn">
+        <div class="lbl">Vanligt missförstånd</div>
+        <p>Ett större minne är inte samma sak som bättre minne. En modell som får för mycket irrelevant historik blandad in i varje fråga svarar ofta sämre, inte bättre — det kallas ibland "kontext-brus". Bra agentdesign handlar om att välja vad som ska minnas, inte att minnas allt.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="verktyg-och-handling">
+      <div class="cn">Kapitel 04</div>
+      <h2>Verktyg och handling</h2>
+      <p>Ett "verktyg" i agent-sammanhang är en specifik funktion modellen kan välja att anropa — till exempel "sök på webben", "läs den här filen" eller "kör det här kommandot". Modellen skriver inte koden för verktyget; den bestämmer <em>när</em> och <em>med vilka argument</em> ett befintligt verktyg ska användas, och systemet runt omkring utför det.</p>
+      <p>I Hermes finns verktyg för bland annat webbsökning (via en egen, privat sökmotor), filhantering, terminalkommandon och integrationer mot tredjepartstjänster via en öppen standard som heter <strong>MCP</strong> (Model Context Protocol) — ett sätt att koppla in nya verktyg utan att bygga om agentens kärna varje gång.</p>
+      <div class="callout">
+        <div class="lbl">Konkret exempel</div>
+        <p>Min bakgrundsagent Ornith har ett litet, medvetet begränsat verktygsset: köra skalkommandon, läsa filer, skriva filer. Med bara de tre kan den ändå utföra riktiga jobb — inspektera ett system, felsöka, skapa en Git-branch och öppna en pull request — steg för steg, ett verktygsanrop i taget.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="autonomi-och-sakerhet">
+      <div class="cn">Kapitel 05</div>
+      <h2>Autonomi och säkerhet</h2>
+      <p>Ju mer en agent får göra själv, desto viktigare blir frågan: vad händer om den gör fel? Bra agentdesign handlar minst lika mycket om <strong>begränsningar</strong> som om förmågor.</p>
+      <p>Några principer jag använder i praktiken:</p>
+      <ul>
+        <li><strong>Neka-listor</strong> — kommandon som aldrig får köras, oavsett kontext (till exempel att radera hela filsystemet, stänga av servern, eller läsa hemliga nycklar).</li>
+        <li><strong>Tidsgränser</strong> — varje enskilt kommando får max köra en begränsad tid, så en agent aldrig kan fastna eller dra iväg okontrollerat.</li>
+        <li><strong>Iterationstak</strong> — en agent som arbetar autonomt får ett maxantal steg innan den måste stanna och rapportera, istället för att kunna loopa i evighet.</li>
+        <li><strong>Prioritet utan avbrott</strong> — mina egna instruktioner till agenten hoppar före i kön, men avbryter aldrig ett pågående jobb halvvägs — ett jobb får alltid slutföras innan nästa börjar.</li>
+      </ul>
+      <div class="callout warn">
+        <div class="lbl">Varför det här spelar roll</div>
+        <p>En agent med full åtkomst till ett system men utan skyddsräcken är inte kraftfull — den är farlig. De bästa agentsystemen är inte de som kan göra mest, utan de som kan göras mest <em>pålitligt</em>, med tydliga gränser för vad som händer när modellen gör ett misstag.</p>
+      </div>
+      <div class="quiz">
+        <div class="q">Vad är syftet med en "neka-lista" i ett agentsystem?</div>
+        <div class="opts">
+          <button class="opt" data-correct="0">Att göra agenten snabbare</button>
+          <button class="opt" data-correct="1">Att förhindra katastrofala kommandon oavsett vad modellen "tror" är rätt</button>
+          <button class="opt" data-correct="0">Att spara pengar på API-anrop</button>
+        </div>
+        <div class="fb" data-right="neka-listor är ett sista skyddsnät som gäller oavsett modellens eget resonemang." data-wrong="Tänk på vad som händer om modellen missförstår en instruktion helt."></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="bygg-din-egen">
+      <div class="cn">Kapitel 06</div>
+      <h2>Bygg din egen</h2>
+      <p>Du behöver inte driva en egen server för att förstå eller experimentera med agentsystem. De flesta principerna i den här kursen går att testa i mindre skala:</p>
+      <ol>
+        <li>Börja med <strong>ett</strong> verktyg agenten får använda — inte tio. Förstå hur den väljer att använda det innan du lägger till fler.</li>
+        <li>Ge den en tydlig, avgränsad uppgift med ett verifierbart slutresultat ("skapa filen X med innehåll Y"), inte en vag instruktion.</li>
+        <li>Lägg alltid in en gräns — max antal steg, eller en tidsgräns — innan du låter den arbeta utan uppsikt.</li>
+        <li>Låt den rapportera vad den gjorde, inte bara att den är "klar". Ett bra agentsystem lämnar alltid ett spår.</li>
+      </ol>
+      <p>Vill du se principerna i den här kursen köra live, i verkligheten, på riktig hårdvara? Min bakgrundsagent Ornith arbetar dygnet runt just nu — <a href="../ornith.html">se vad den gör</a>.</p>
+    </section>
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="../kurser.html">Alla kurser</a>
+      <a href="ai-landskapet.html">Nästa kurs →</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../app.js"></script>
+</body>
+</html>

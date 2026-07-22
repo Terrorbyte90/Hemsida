@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Ornith-35B — en autonom AI som arbetar dygnet runt på Ted Svärds egen server. Se vad den gör just nu, live.">
+<title>Ornith — arbetar live · Ted Svärd</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Hem</a>
+      <a href="projekt.html">Projekt</a>
+      <a href="ornith.html" class="nav-signal" aria-current="page"><span class="pulse"></span>Ornith</a>
+      <a href="kurser.html">Kurser</a>
+      <a href="poddar.html">Poddar</a>
+      <a href="forskning.html">Forskning</a>
+      <a href="om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="ornith-hero wrap">
+  <div class="eyebrow">Live · Titan-servern</div>
+  <h1 style="font-family:var(--sans);font-weight:700;letter-spacing:-.03em;font-size:clamp(2.2rem,5vw,3.8rem);margin-top:18px">
+    Ornith-35B arbetar <em style="color:var(--signal)">just nu</em>.
+  </h1>
+  <p class="lede" style="margin-top:18px;max-width:60ch;color:var(--ink-soft);font-size:1.08rem;line-height:1.6">
+    En 35-miljard-parameter modell kör lokalt på min egen server, dygnet runt, genom en prioritetsstyrd
+    uppgiftslista. Det du ser här är en fördröjd, säkrad ström — ingen känslig data lämnar servern.
+  </p>
+  <div class="status-line">
+    <span class="dot" data-status-dot></span>
+    <span data-status-text>Ansluter till signalen …</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="monitor-grid">
+    <section class="monitor-panel reveal">
+      <div class="ph">
+        <span class="t">Nu</span>
+        <span class="tps" data-tps></span>
+      </div>
+      <div class="now-playing">
+        <div class="cat">Aktuell uppgift</div>
+        <div class="txt" data-now-task>Läser in senaste signalen …</div>
+        <div class="elapsed" data-now-elapsed></div>
+      </div>
+      <ul class="activity" data-activity>
+        <li class="activity-item"><span class="d"></span><span class="txt">Väntar på data från servern …</span><span class="tag"></span></li>
+      </ul>
+    </section>
+
+    <aside class="queue-panel reveal">
+      <div class="ph">I kön</div>
+      <div class="count" data-pending-count>–</div>
+      <div class="count-label">väntande uppgifter</div>
+      <ul class="queue-list" data-queue></ul>
+    </aside>
+  </div>
+
+  <p class="ornith-note reveal">
+    Så här fungerar det: Ornith driver en autonom bakgrundsagent som Mira (min drift-AI) styr genom en
+    prioritetslista — allt från hälsokontroller och säkerhetsgranskningar till research och kodjobb.
+    En separat övervakningsprocess på servern filtrerar bort allt som skulle kunna vara känsligt
+    (sökvägar, kommandon, interna adresser) innan något lämnar servern, med en kort fördröjning på
+    ett par sekunder. Det som visas här är uppgiftstitlar, kategorier och tidsdata — aldrig råa loggar.
+  </p>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener">GitHub</a>
+      <a href="projekt.html">Projekt</a>
+      <a href="poddar.html">Poddar</a>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

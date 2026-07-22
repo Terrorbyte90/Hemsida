@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Kurs: Säkerhet, integritet & etik — vad en AI-tjänst faktiskt vet om dig, moln vs. self-hosted, när du kan lita på ett svar, och hur du använder AI ansvarsfullt. Av Ted Svärd.">
+<title>Säkerhet, integritet &amp; etik — Kurser · Ted Svärd</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="../index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="../index.html">Hem</a>
+      <a href="../projekt.html">Projekt</a>
+      <a href="../ornith.html" class="nav-signal"><span class="pulse"></span>Ornith</a>
+      <a href="../kurser.html" aria-current="page">Kurser</a>
+      <a href="../poddar.html">Poddar</a>
+      <a href="../forskning.html">Forskning</a>
+      <a href="../om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head wrap">
+  <div class="eyebrow">Kurs 05 · 5 kapitel</div>
+  <h1>Säkerhet, integritet &amp; <em>etik</em></h1>
+  <p class="lede">Vad en AI-tjänst faktiskt vet om dig, när du kan lita på ett svar, och hur du känner igen AI-genererat innehåll. Ingen skrämselpropaganda — bara det du behöver veta för att använda de här verktygen med sunt förnuft.</p>
+</header>
+
+<main class="wrap kurs-shell">
+  <aside class="kurs-toc">
+    <div class="cat">Kurs 05</div>
+    <h2>Säkerhet, integritet &amp; etik</h2>
+    <div class="progress"><i></i></div>
+    <ol>
+      <li><a href="#vad-ai-vet">Vad en AI-tjänst faktiskt vet om dig</a></li>
+      <li><a href="#moln-vs-lokal">Moln vs. self-hosted</a></li>
+      <li><a href="#att-lita-pa-svar">När du kan lita på ett AI-svar</a></li>
+      <li><a href="#desinformation">Deepfakes och att känna igen AI-genererat innehåll</a></li>
+      <li><a href="#ansvarsfull-anvandning">Ansvarsfull användning — en checklista</a></li>
+    </ol>
+  </aside>
+
+  <article class="kurs-content">
+
+    <section class="chapter" id="vad-ai-vet">
+      <div class="cn">Kapitel 01</div>
+      <h2>Vad en AI-tjänst faktiskt vet om dig</h2>
+      <p>När du skriver till ChatGPT, Claude, Gemini eller någon annan molnbaserad AI-tjänst i appen eller på webben, skickas det du skriver till det företagets servrar och bearbetas där. Det är den enkla, tekniska sanningen bakom varje sådant samtal — och den är värd att hålla i huvudet varje gång du skriver något känsligt.</p>
+      <p>Vad som händer med samtalet efter det varierar mycket beroende på tjänst, plan och dina inställningar:</p>
+      <ul>
+        <li><strong>Lagring</strong> — de flesta tjänster sparar dina samtal i någon form, ofta så att du själv kan se historiken. Hur länge, och om du kan radera den permanent, skiljer sig åt.</li>
+        <li><strong>Träning</strong> — vissa leverantörer använder konversationer från gratis- och konsumentplaner för att förbättra framtida modeller, om du inte aktivt väljer bort det. Betal- och företagsplaner utesluter däremot ofta uttryckligen träningsanvändning som en del av avtalet.</li>
+        <li><strong>Granskning</strong> — även om innehåll inte används för träning kan det granskas av mänsklig personal vid misstänkt missbruk, säkerhetsincidenter eller enligt lag.</li>
+      </ul>
+      <p>Detta är alltså inte en enda universell regel — det är en verklig och viktig skillnad mellan tjänster, planer och inställningar som är värd att faktiskt kolla upp för den AI du använder mest, snarare än att anta att den ena eller andra regeln gäller överallt.</p>
+      <div class="callout warn">
+        <div class="lbl">Bra tumregel</div>
+        <p>Behandla det du skriver i en molnbaserad AI-chatt ungefär som ett mejl till det företaget: anta att det kan lagras i loggar, ses av personal vid granskning, och hanteras enligt deras villkor. Klistra aldrig in lösenord, privata nycklar, journaluppgifter eller andra personers personuppgifter i en molnbaserad AI-chatt — om du inte specifikt har verifierat hur just den leverantören hanterar den typen av data.</p>
+      </div>
+      <p>Den praktiska slutsatsen är enkel även om detaljerna är komplicerade: läs igenom integritets- och datainställningarna för det AI-verktyg du använder regelbundet, en gång. De flesta större tjänster har en tydlig sida eller inställning för "data usage" eller "improve the model" — det tar fem minuter och ger dig svar på exakt vad som gäller för dig.</p>
+    </section>
+
+    <section class="chapter" id="moln-vs-lokal">
+      <div class="cn">Kapitel 02</div>
+      <h2>Moln vs. self-hosted</h2>
+      <p>Det finns ett alternativ till att alltid skicka data till någon annans servrar: <strong>öppna modeller</strong> (de vi gick igenom i <a href="ai-landskapet.html">kurs 02</a> — DeepSeek, GLM, Qwen, Llama och liknande) går att ladda ner och köra på egen hårdvara eller en egen privat server. Då lämnar din data aldrig din egen infrastruktur, punkt.</p>
+      <p>Det här är precis vad jag själv gör. Mitt agentsystem Hermes (som du kan läsa mer om i <a href="hermes-agentsystem.html">kurs 01</a>) kör en lokal modell — Ornith-35B — på min egen server, specifikt för att agentens minne, samtal och filer ska stanna under min egen kontroll istället för att skickas till en tredje part vid varje enskild förfrågan. Jag väljer själv, medvetet, när jag istället vill skicka en uppgift till en molnmodell — det är aldrig standardvalet.</p>
+      <table>
+        <thead><tr><th></th><th>Molntjänst</th><th>Self-hosted</th></tr></thead>
+        <tbody>
+          <tr><td>Var körs data</td><td>Leverantörens servrar</td><td>Din egen hårdvara/server</td></tr>
+          <tr><td>Modellkapacitet</td><td>Oftast absolut bäst i klassen</td><td>Ett par steg efter den allra senaste frontlinjen</td></tr>
+          <tr><td>Driftansvar</td><td>Leverantören sköter allt</td><td>Du sköter uppdateringar, hårdvara, drift</td></tr>
+          <tr><td>Kostnad</td><td>Löpande prenumeration/API-avgift</td><td>Engångsinvestering i hårdvara + el</td></tr>
+          <tr><td>Integritet</td><td>Beror helt på leverantörens policy</td><td>Data lämnar aldrig din infrastruktur</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <div class="lbl">Var ärlig om avvägningen</div>
+        <p>Self-hosting är inte automatiskt "bättre" för alla. Det kräver att du hanterar egen infrastruktur, och du ligger normalt en bit efter den absolut senaste frontlinje-modellen i ren kapacitet. Det är ett medvetet val för integritet och kontroll — inte en gratis uppgradering.</p>
+      </div>
+      <p>Ett enkelt sätt att avgöra vad som passar dig: klistrar du regelbundet in känslig personlig, medicinsk, juridisk eller affärsmässig information i AI-verktyg? Då är antingen self-hosting eller en företagsplan med tydliga datagarantier värt den extra ansträngningen. Använder du AI mer avslappnat — brainstorming, utkast, kod du ändå testar själv — är ett vanligt molnverktyg helt rimligt.</p>
+    </section>
+
+    <section class="chapter" id="att-lita-pa-svar">
+      <div class="cn">Kapitel 03</div>
+      <h2>När du kan lita på ett AI-svar</h2>
+      <p>Som vi gick igenom i kapitlet om ärliga begränsningar i <a href="ai-i-praktiken.html">kursen AI i praktiken</a> är hallucination — att modellen låter säker på något som faktiskt är fel — fortfarande ett olöst problem, även i de bästa modellerna som finns idag. Studier av faktacitat har hittat felfrekvenser på 15–20 % eller mer, och betydligt högre på nischade eller nya ämnen. Modeller tenderar också att hålla med om felaktiga påståenden om du frågar på ett ledande sätt — det kallas ibland "sycophancy", en tendens att vilja vara till lags snarare än att säga emot dig.</p>
+      <p>Ett praktiskt sätt att tänka: hur mycket du bör verifiera ett svar beror på hur <em>konsekvensrikt</em> och hur <em>långsvansat</em> — specifikt, obskyrt eller färskt — påståendet är.</p>
+      <table>
+        <thead><tr><th>Hög tillit</th><th>Låg tillit — verifiera först</th></tr></thead>
+        <tbody>
+          <tr><td>Vedertagna, väletablerade fakta</td><td>Mycket färska händelser</td></tr>
+          <tr><td>Allmänna förklaringar av begrepp</td><td>Nischade eller obskyra detaljfakta</td></tr>
+          <tr><td>Utkast och brainstorming</td><td>Exakta siffror, statistik, citat</td></tr>
+          <tr><td>Kod du ändå testar själv</td><td>Medicin, juridik, ekonomi — där fel kostar</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warn">
+        <div class="lbl">Tumregel</div>
+        <p>Ju mer konsekvensrikt och ju mer specifikt/obskyrt/färskt ett påstående är, desto mer bör du verifiera det oberoende innan du agerar på det. En felaktig brainstorming-idé kostar dig fem minuter. Ett felaktigt medicinskt eller juridiskt påstående kan kosta betydligt mer.</p>
+      </div>
+      <p>En konkret vana som fungerar bra i praktiken: be modellen ange <em>varifrån</em> ett specifikt sakförhållande kommer, och kontrollera sedan den källan själv. Lita inte på att en angiven källa faktiskt existerar eller säger det modellen påstår — det har hänt att modeller hittar på trovärdigt klingande källor som inte finns.</p>
+      <div class="quiz">
+        <div class="q">Du frågar en AI om en specifik lagparagraf inför ett viktigt beslut. Vad bör du göra?</div>
+        <div class="opts">
+          <button class="opt" data-correct="0">Lita på svaret direkt — moderna modeller gör sällan fel på juridik</button>
+          <button class="opt" data-correct="1">Be om källan och kontrollera den själv innan du agerar</button>
+          <button class="opt" data-correct="0">Fråga samma modell igen tills svaret känns säkrare</button>
+        </div>
+        <div class="fb" data-right="Rätt — juridik är precis den typ av konsekvensrikt, specifikt område där oberoende verifiering är motiverad." data-wrong="Tänk på att både konsekvenserna och specificiteten här är höga — det är exakt situationen där du bör verifiera oberoende."></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="desinformation">
+      <div class="cn">Kapitel 04</div>
+      <h2>Deepfakes och att känna igen AI-genererat innehåll</h2>
+      <p>I takt med att bild-, video- och ljudgenerering blivit dramatiskt bättre — verktyg som Sora 2, Veo 3.1, Kling och Suno, som vi tittade på i <a href="ai-i-praktiken.html">kurs 03</a> — har syntetiskt media blivit svårare att avslöja med blotta ögat. Det betyder inte att man ska bli paranoid, men det är värt att bygga in några vanor.</p>
+      <ul>
+        <li><strong>Var skeptisk mot det chockerande</strong> — innehåll som är starkt känsloladdat och kommer från en okänd eller overifierad källa förtjänar extra skepsis innan du delar det vidare, oavsett hur äkta det ser ut.</li>
+        <li><strong>Leta efter bekräftelse, inte övertygelse</strong> — fråga om ett påstående, en bild eller en video bekräftas av en etablerad, namngiven källa. Hur övertygande något <em>ser ut</em> säger i praktiken ingenting längre om huruvida det är äkta.</li>
+        <li><strong>Röstkloning i telefonsamtal</strong> — AI kan idag klona en röst från bara några sekunders ljud, vilket gjort bedrägerisamtal där någon låtsas vara en anhörig i nöd betydligt mer övertygande. En bra vana är att komma överens med nära familj om en verifieringsmetod för äkta nödsituationer — ett kodord, eller att alltid ringa tillbaka på ett känt nummer innan du agerar.</li>
+        <li><strong>Lita inte blint på "AI-detektorer"</strong> — verktyg som påstår sig kunna avgöra om text, bild eller ljud är AI-genererat har verkliga fel både i form av falska positiva och falska negativa svar. De bör aldrig vara den enda grunden för att anklaga någon för att ha använt AI.</li>
+      </ul>
+      <div class="callout warn">
+        <div class="lbl">Verkligt men hanterbart</div>
+        <p>Det här är ett äkta problem — inte skrämselpropaganda. Men lösningen är sällan att bli misstänksam mot allt. Den fungerar bäst som en enkel vana: bekräfta konsekvensrikt eller känsloladdat innehåll mot en etablerad källa innan du agerar på det eller sprider det vidare.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="ansvarsfull-anvandning">
+      <div class="cn">Kapitel 05</div>
+      <h2>Ansvarsfull användning — en checklista</h2>
+      <p>Fem kurser, en enda övergripande poäng: AI är ett kraftfullt verktyg som förtjänar respekt för både vad det kan och vad det inte kan. Här är en konkret checklista som samlar ihop det viktigaste från hela kursserien.</p>
+      <ul>
+        <li><strong>Verifiera konsekvensrika påståenden</strong> innan du agerar på dem — särskilt inom medicin, juridik och ekonomi (kapitel 3 i den här kursen).</li>
+        <li><strong>Klistra aldrig in verkligt känslig data</strong> i ett molnverktyg utan att först ha kollat dess datapolicy (kapitel 1).</li>
+        <li><strong>Använd steg-för-steg-instruktioner</strong> för komplexa uppgifter istället för att förvänta dig ett perfekt svar direkt — se <a href="prompting.html">kurs 04</a>.</li>
+        <li><strong>Välj rätt modell och nivå för uppgiften</strong> och din budget, inte automatiskt den dyraste — se <a href="ai-landskapet.html">kurs 02</a>.</li>
+        <li><strong>Kom ihåg att agenter behöver riktiga skyddsräcken</strong>, inte bara förmåga — se <a href="hermes-agentsystem.html">kurs 01</a>.</li>
+        <li><strong>Behandla AI som ett kraftfullt utkast och verktyg</strong> för att accelerera arbete — inte som en slutgiltig auktoritet för högriskbeslut.</li>
+      </ul>
+      <p>Jag skrev de här fem kurserna för att jag tycker att AI förtjänar ett ärligare samtal än det man oftast möter — varken hype eller domedagsprofetior, bara en tydlig bild av vad verktygen faktiskt kan, var gränserna går, och hur man använder dem klokt. Om du hoppade runt i kurserna, gå gärna tillbaka och plocka upp de delar du missade — de bygger på varandra, men står också var för sig.</p>
+      <p>Vill du se principerna i den här kursserien köra live, på riktig hårdvara, dygnet runt? <a href="../ornith.html">Min bakgrundsagent Ornith arbetar just nu</a> — med precis de avvägningar mellan förmåga, integritet och skyddsräcken som vi har gått igenom här. Det här fältet rör sig fort, och ärligt talat lär jag mig fortfarande något nytt varje vecka. Tack för att du läste hela vägen hit.</p>
+    </section>
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="prompting.html">← Föregående kurs</a>
+      <a href="../kurser.html">Alla kurser</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../app.js"></script>
+</body>
+</html>

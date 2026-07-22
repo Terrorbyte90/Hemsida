@@ -1,30 +1,41 @@
-# Ted Svärd – AI Architect Portfolio
+# Ted Svärd — portfolio
 
-En premium, grafiskt levande portfolio för Ted Svärd, AI Architect.
+Personlig portfolio för Ted Svärd: AI- och iOS-arkitekt. Statisk sajt, ingen byggprocess.
 
-## Tech Stack
+Live: https://terrorbyte90.github.io/Hemsida/
 
-- Vanilla HTML5, CSS3, JavaScript (ES6+)
-- Google Fonts: Inter + Space Grotesk
-- Canvas-baserat partikelsystem
-- Intersection Observer API för scroll-animationer
-- CSS Glassmorphism + Gradient design
+## Stack
 
-## Features
+- Vanilla HTML5, CSS3, JavaScript — inga ramverk, inget byggsteg.
+- Typsnitt: Instrument Serif + Instrument Sans (Google Fonts).
+- Native CSS scroll-driven animations (`animation-timeline: view()`) för scroll-reveals,
+  med en JS/IntersectionObserver-fallback för webbläsare utan stöd.
+- En liten, redigerad live-feed (`ornith.html`) hämtar status från en process på min
+  egen server (Titan) via `app.js` → `https://169.58.43.27.nip.io/ornith-feed/api/status`.
+  Feeden filtrerar bort allt känsligt server-side innan något publiceras.
 
-- 🎆 Animerat partikelsystem med nätverkslinjer
-- ✍️ Typewriter-effekt i hero
-- 🔢 Animerade räknare (stats)
-- 🃏 3D tilt-hover på projekt- och expertiskort
-- 📊 Animerade kompetensbar
-- 🌓 Glassmorphism-design
-- 📱 Fullresponsiv layout
-- ⚡ Ingen byggprocess – öppna index.html direkt
+## Struktur
 
-## Komma igång
+```
+index.html            Startsida
+om-mig.html            Om mig
+projekt.html           Alla projekt
+ornith.html            Live-monitor för min autonoma AI-agent
+kurser.html             Kurshubb
+kurser/*.html          5 kurser, flera kapitel per sida
+poddar.html            Poddar (Övervakad, AI-Zonen) med spelare
+forskning.html          Forskningsspår
+style.css / app.js      Delad design och interaktion för alla sidor
+```
 
-Öppna `index.html` i en webbläsare eller deploya till GitHub Pages:
+## Utveckla lokalt
 
-1. Gå till Settings → Pages
-2. Välj branch: `main`, folder: `/ (root)`
-3. Spara – din sida är live på `https://terrorbyte90.github.io/Hemsida`
+Ingen byggprocess krävs.
+
+```
+python3 -m http.server 8000
+```
+
+## Deploy
+
+GitHub Pages, servad från `main`-branchens rot. Push till `main` = live.

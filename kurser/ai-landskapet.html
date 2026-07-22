@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Kurs: AI-landskapet 2026 — en klar, ohypad guide till dagens modeller: Claude, GPT-5.6, Kimi K3, DeepSeek V4, GLM-5.2, förklarat av Ted Svärd.">
+<title>AI-landskapet 2026 — Kurser · Ted Svärd</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="../index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="../index.html">Hem</a>
+      <a href="../projekt.html">Projekt</a>
+      <a href="../ornith.html" class="nav-signal"><span class="pulse"></span>Ornith</a>
+      <a href="../kurser.html" aria-current="page">Kurser</a>
+      <a href="../poddar.html">Poddar</a>
+      <a href="../forskning.html">Forskning</a>
+      <a href="../om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head wrap">
+  <div class="eyebrow">Kurs 02 · 6 kapitel</div>
+  <h1>AI-landskapet <em>2026</em></h1>
+  <p class="lede">En klar, ohypad karta över dagens AI-modeller — vad parametrar och kontextfönster faktiskt betyder, vilka modeller som finns just nu, och hur du väljer rätt en för din uppgift istället för att bara ta den som skriks högst om.</p>
+</header>
+
+<main class="wrap kurs-shell">
+  <aside class="kurs-toc">
+    <div class="cat">Kurs 02</div>
+    <h2>AI-landskapet 2026</h2>
+    <div class="progress"><i></i></div>
+    <ol>
+      <li><a href="#grundbegrepp">Grundbegrepp: parametrar, MoE och kontextfönster</a></li>
+      <li><a href="#claude-familjen">Anthropics Claude-familj</a></li>
+      <li><a href="#gpt-5-6">OpenAI GPT-5.6 — Sol, Terra och Luna</a></li>
+      <li><a href="#oppna-vikter">Öppna vikter: Kimi K3, DeepSeek V4, GLM-5.2</a></li>
+      <li><a href="#jamforelse">Jämförelse: kostnad, hastighet, kvalitet</a></li>
+      <li><a href="#valja-ratt-modell">Hur du väljer rätt modell</a></li>
+    </ol>
+  </aside>
+
+  <article class="kurs-content">
+
+    <section class="chapter" id="grundbegrepp">
+      <div class="cn">Kapitel 01</div>
+      <h2>Grundbegrepp: parametrar, MoE och kontextfönster</h2>
+      <p>Innan vi tittar på enskilda modeller behöver du fyra begrepp som dyker upp i varenda produktblad och benchmark. De låter tekniska men är enkla när man väl ser vad de faktiskt beskriver.</p>
+      <p><strong>Parametrar</strong> är modellens inlärda "kunskapsrattar" — de siffror som justerats under träningen och som avgör hur modellen svarar. Fler parametrar ger generellt mer kapacitet, men det är inte hela bilden — hur de används spelar minst lika stor roll, vilket för oss till nästa begrepp.</p>
+      <p><strong>Mixture of Experts (MoE)</strong> är en arkitektur där modellen inte är ett enda jättenätverk som behandlar allt likadant, utan många mindre "expert"-nätverk plus en <em>router</em> som skickar varje del av texten (varje "token") till bara några få relevanta experter.</p>
+      <div class="callout">
+        <div class="lbl">Analogi</div>
+        <p>Tänk dig ett stort sjukhus med många specialister och en triage-sköterska (routern) i entrén. En patient behöver inte träffa alla läkare på sjukhuset — sköterskan skickar dem till de 2–3 specialister som faktiskt är relevanta. Sjukhuset kan vara enormt totalt sett, men varje enskilt besök involverar bara en liten del av personalen.</p>
+      </div>
+      <p>Det är därför en modell kan ha ett svindlande <em>totalt</em> antal parametrar men bara "aktivera" en mycket mindre andel per token — DeepSeek V4-Pro har till exempel 1,6 biljoner parametrar totalt, men aktiverar bara omkring 49 miljarder för varje token den genererar. Resultatet: nästan samma kapacitet som en jätte-modell, men till en bråkdel av beräkningskostnaden.</p>
+      <p><strong>Kontextfönster</strong> är hur mycket text — mätt i tokens, ungefär ordbitar — en modell kan "se" samtidigt, både det du skickar in och det den skriver ut. Många modeller 2026 klarar 1 miljon tokens, vilket räcker till väldigt stora kodbaser eller många långa dokument samtidigt. Men ett stort fönster är inte automatiskt bättre: kostnad skalar med hur mycket text som skickas in, och modeller är olika bra på att faktiskt <em>använda</em> information långt bort i ett långt fönster snarare än att bara "se" den.</p>
+      <p>Slutligen: <strong>öppna vikter kontra stängda modeller</strong>. En stängd modell (som Claude eller GPT-5.6) når du bara via företagets servrar — du betalar per token och får aldrig själva modellfilen. En modell med <strong>öppna vikter</strong> (DeepSeek, GLM, Kimi, med flera) publicerar de tränade parameterfilerna öppet, ofta på Hugging Face, så vem som helst kan ladda ner och köra dem på egen hårdvara — utan att skicka data till originalföretaget. Ett litet men viktigt förbehåll: "öppna vikter" är inte samma sak som "öppen källkod" i strikt mening — vikterna är tillgängliga, men träningsdata och träningskod är ofta fortfarande hemliga.</p>
+      <p>En sista teknisk term värd att känna till: <strong>kvantisering</strong>, att krympa en modells minnes- och beräkningsbehov genom att sänka precisionen på talen efter träning (16-bit → 8-bit → 4-bit), mot en liten förlust i noggrannhet. Det är kvantisering som gör det praktiskt möjligt att över huvud taget köra en modell med 2,8 biljoner parametrar, som Kimi K3, på hårdvara som inte är ett helt datacenter.</p>
+    </section>
+
+    <section class="chapter" id="claude-familjen">
+      <div class="cn">Kapitel 02</div>
+      <h2>Anthropics Claude-familj</h2>
+      <p>Anthropic delar upp sin Claude-familj i fyra nivåer, från snabbast/billigast till mest kapabel. Priserna nedan är per miljon tokens, in/ut.</p>
+      <table>
+        <thead><tr><th>Modell</th><th>Pris (in/ut per 1M)</th><th>Roll</th></tr></thead>
+        <tbody>
+          <tr><td>Claude Haiku 4.5</td><td>$1 / $5</td><td>Snabbast och billigast — enkla, högvolymuppgifter</td></tr>
+          <tr><td>Claude Sonnet 5</td><td>$3 / $15 (intro $2/$10)</td><td>Bäst balans mellan hastighet och intelligens — vardagsarbetshäst</td></tr>
+          <tr><td>Claude Opus 4.8</td><td>$5 / $25</td><td>Mest kapabel av de allmänt tillgängliga modellerna</td></tr>
+          <tr><td>Claude Fable 5</td><td>$10 / $50</td><td>Flaggskepp — svåraste resonemang och långsiktigt agent-arbete, 1M kontext, upp till 128K utdata</td></tr>
+        </tbody>
+      </table>
+      <p>Sonnet 5 är den modell de flesta möter i praktiken — tillräckligt smart för det mesta, snabb nog för ett samtal i realtid, och prissatt så att den går att använda i volym. Opus 4.8 och Fable 5 finns för uppgifter som verkligen kräver djupare resonemang eller att agenten arbetar självständigt under lång tid — kodrefaktorering över en hel kodbas, forskningsuppgifter i flera steg, den typen av jobb.</p>
+      <div class="callout">
+        <div class="lbl">I praktiken</div>
+        <p>Det här landskapet rör sig fort. Fable 5 hade turbulens kring tillgänglighet i juli 2026 — Anthropic förlängde först perioder med inkluderad åtkomst, och gick sedan över till förbetalda krediter den 20 juli. Ingen stor sak i sak, men ett bra exempel på att prissättning och tillgång för de nyaste modellerna kan ändras med kort varsel — bygg inte ett system som är beroende av att en specifik prisnivå gäller för evigt.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="gpt-5-6">
+      <div class="cn">Kapitel 03</div>
+      <h2>OpenAI GPT-5.6 — Sol, Terra och Luna</h2>
+      <p>Här kommer en liten "gotcha" som är lätt att missa: namnen <strong>Sol</strong>, <strong>Terra</strong> och <strong>Luna</strong> låter som de skulle kunna vara ett helt annat labs egen himlakropps-branding. De är det inte — det är OpenAys tre nivåer av <em>en och samma</em> release, <strong>GPT-5.6</strong>, som kom den 9 juli 2026.</p>
+      <table>
+        <thead><tr><th>Nivå</th><th>Pris (in/ut per 1M)</th><th>Roll</th></tr></thead>
+        <tbody>
+          <tr><td>GPT-5.6 Sol</td><td>$5 / $30</td><td>Flaggskepp — driver ChatGPTs tyngsta resonemangslägen</td></tr>
+          <tr><td>GPT-5.6 Terra</td><td>$2,50 / $15</td><td>Balanserad mellannivå</td></tr>
+          <tr><td>GPT-5.6 Luna</td><td>$1 / $6</td><td>Snabbast och billigast i familjen</td></tr>
+        </tbody>
+      </table>
+      <p>Sol är den modell som driver ChatGPTs tyngre resonemangslägen — bland annat "Max Reasoning Effort" och "Ultra Mode", ett läge där flera parallella sub-agenter arbetar på samma problem samtidigt istället för en enda kedja av tankar.</p>
+      <p>Den funktion som fått mest uppmärksamhet i den här releasen är dock inte modellen i sig, utan <strong>ChatGPT Work</strong> — en agentisk arbetsyta som kan utföra flerstegsuppgifter över flera appar och filer, och som kan köra i timmar helt utan tillsyn. Det är samma riktning som resten av branschen rör sig i: från "svara på en fråga" till "utför ett helt jobb".</p>
+      <div class="callout warn">
+        <div class="lbl">Namnförvirring</div>
+        <p>Om du ser "Sol", "Terra" eller "Luna" nämnas som om de vore separata, konkurrerande modeller från olika företag — det stämmer inte. Det är tre prisnivåer inom GPT-5.6. Samma mönster som Claudes Haiku/Sonnet/Opus/Fable-uppdelning, bara med andra namn.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="oppna-vikter">
+      <div class="cn">Kapitel 04</div>
+      <h2>Öppna vikter: Kimi K3, DeepSeek V4, GLM-5.2</h2>
+      <p>Medan Anthropic och OpenAI håller sina modeller stängda bakom ett API, publicerar flera kinesiska labb sina modellvikter öppet. Sommaren 2026 är det här fältet ovanligt hett.</p>
+      <p><strong>Kimi K3</strong> (Moonshot AI, släppt 16 juli 2026) är i skrivande stund den största öppna modellen vid lansering — ungefär 2,8 biljoner totala parametrar i en MoE-arkitektur, med 1M tokens kontext och ett agent-först-fokus: kodning, långsiktigt kunskapsarbete, inbyggd bildförståelse. Släppet skedde stegvis — API den 16 juli, fulla öppna vikter den 27 juli. På en ledartavla landade K3 på Elo 1547, precis bakom Claude Fable 5, och toppade "Frontend Code Arena" före både Fable 5, GPT-5.6 Sol och GLM-5.2. Hostad API-prissättning: $3/$15 per miljon tokens.</p>
+      <p><strong>DeepSeek V4</strong> (släppt 24 april 2026) finns i två varianter: V4-Pro (1,6 biljoner totala parametrar, ~49 miljarder aktiva per token) och den mycket lättare V4-Flash (284 miljarder totalt, ~13 miljarder aktiva). Båda har 1M kontext. Huvudberättelsen kring V4 är inte kapacitet i sig utan <strong>kostnadseffektivitet</strong>: den rapporteras matcha nivåer som GPT-5.5/Claude Opus 4.7 på agentiska benchmarks till 10–13 gånger lägre kostnad.</p>
+      <table>
+        <thead><tr><th>Modell</th><th>Totala / aktiva parametrar</th><th>Pris (in/ut per 1M)</th></tr></thead>
+        <tbody>
+          <tr><td>DeepSeek V4-Pro</td><td>1,6T / ~49B</td><td>$0,435 / $0,87</td></tr>
+          <tr><td>DeepSeek V4-Flash</td><td>284B / ~13B</td><td>$0,14 / $0,28</td></tr>
+          <tr><td>GLM-5.2</td><td>744B / ~40B</td><td>$1,40 / $4,40</td></tr>
+          <tr><td>Kimi K3 (hostad)</td><td>~2,8T (MoE)</td><td>$3 / $15</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warn">
+        <div class="lbl">En siffra att ta med en nypa salt</div>
+        <p>En ofta citerad jämförelse säger att 10 miljoner utdata-tokens kostar cirka $2,80 via DeepSeek V4-Flash mot cirka $250 via Claude Opus 4.6 — nästan 90 gånger dyrare. Det är en dramatisk, illustrativ leverantörsjämförelse mellan två olika sorters modeller, inte en oberoende granskad, äpplen-mot-äpplen-siffra. Använd den för att förstå <em>storleksordningen</em> på kostnadsskillnaden, inte som exakt sanning.</p>
+      </div>
+      <p>Värt att notera: NIST:s CAISI (Center for AI Standards and Innovation) genomförde en oberoende utvärdering av DeepSeek V4-Pro i maj 2026 — ett amerikanskt myndighetsorgan som bedömer en kinesisk öppen-vikt-modell, vilket säger något om hur mainstream öppna kinesiska modeller blivit i praktisk användning, oavsett var man står i den geopolitiska diskussionen.</p>
+      <p><strong>GLM-5.2</strong> (Zhipu AI, numera under varumärket Z.ai, släppt juni 2026) är en MoE-modell med ~744 miljarder totala och ~40 miljarder aktiva parametrar, 1M kontext, och släpps under MIT-licens — inga regionala begränsningar, fritt att självhosta och använda kommersiellt. Den är hårt tränad för mjukvaruutveckling och agentiskt verktygsbruk, och beskrevs som förmodligen den mest kapabla öppna modellen vid sin egen release — till ungefär en sjättedel av GPT-5.5:s kostnad på vissa kodbenchmarks. Kimi K3 gick dock om GLM-5.2 på flera ledartavlor redan i mitten av juli, vilket visar hur snabbt rangordningen ändras.</p>
+      <div class="callout">
+        <div class="lbl">I praktiken</div>
+        <p>Jag kör en egen lokal modell på min server (Ornith-35B, som du stötte på i <a href="hermes-agentsystem.html">Hermes-kursen</a>) av precis de skäl som gör öppna vikter attraktiva: ingen data lämnar min hårdvara, ingen per-token-kostnad oavsett hur mycket jag använder den, och full kontroll över hur den körs.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="jamforelse">
+      <div class="cn">Kapitel 05</div>
+      <h2>Jämförelse: kostnad, hastighet, kvalitet</h2>
+      <p>Zoomar man ut faller modellerna sommaren 2026 ungefär i fem prisband, från ultrabilligt till dyrast — allt per miljon tokens, in/ut.</p>
+      <table>
+        <thead><tr><th>Band</th><th>Modeller</th><th>Ungefärligt prisspann</th></tr></thead>
+        <tbody>
+          <tr><td>Ultrabilligt</td><td>DeepSeek V4-Flash</td><td>$0,14 / $0,28</td></tr>
+          <tr><td>Billigt</td><td>DeepSeek V4-Pro, GLM-5.2</td><td>$0,44–$1,40 / $0,87–$4,40</td></tr>
+          <tr><td>Mellan</td><td>Kimi K3, GPT-5.6 Luna/Terra, Claude Haiku 4.5, Claude Sonnet 5</td><td>$1–5 / $5–15</td></tr>
+          <tr><td>Dyrt (flaggskepp)</td><td>GPT-5.6 Sol, Claude Opus 4.8</td><td>$5 / $25–30</td></tr>
+          <tr><td>Dyrast</td><td>Claude Fable 5</td><td>$10 / $50</td></tr>
+        </tbody>
+      </table>
+      <p>Kvalitet följer grovt sett priset, men inte perfekt — det är just det som gör landskapet intressant. Kimi K3 lyckas ligga strax bakom Claude Fable 5 på en generell ledartavla trots att den kostar en bråkdel, och till och med toppa vissa kodbenchmarks. DeepSeek V4-Flash är extremt billig men fortfarande fullt användbar för många vardagsuppgifter.</p>
+      <div class="callout warn">
+        <div class="lbl">Ta benchmarksiffror med en nypa salt</div>
+        <p>Elo-poäng, rankningar och "X% bättre än Y på benchmark Z" ändras vecka för vecka i det här landskapet — nya modeller släpps, gamla omvärderas, och olika ledartavlor mäter olika saker. Se siffrorna i den här kursen som en fingervisning för var modellerna ungefär låg i juli 2026, inte som en fast sanning som gäller för alltid. Testa alltid själv på din egen uppgift innan du bygger något viktigt kring en enskild siffra.</p>
+      </div>
+      <div class="quiz">
+        <div class="q">Varför kan DeepSeek V4-Pro ha 1,6 biljoner parametrar totalt men vara mycket billigare per token än en lika stor "tät" (icke-MoE) modell?</div>
+        <div class="opts">
+          <button class="opt" data-correct="0">Den är kvantiserad till 4-bit vilket halverar priset automatiskt</button>
+          <button class="opt" data-correct="1">Den är en MoE-modell — bara en liten andel av de totala parametrarna (routern väljer ~49B) aktiveras per token</button>
+          <button class="opt" data-correct="0">Den har ett mindre kontextfönster än konkurrenterna</button>
+        </div>
+        <div class="fb" data-right="Rätt — MoE-routern skickar varje token till bara några få experter, så bara en bråkdel av modellen jobbar åt gången, vilket sänker beräkningskostnaden dramatiskt jämfört med en tät modell av samma totala storlek." data-wrong="Tänk tillbaka på sjukhus-analogin från kapitel 1 — hur många specialister träffar varje patient, jämfört med hur många som jobbar på sjukhuset totalt?"></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="valja-ratt-modell">
+      <div class="cn">Kapitel 06</div>
+      <h2>Hur du väljer rätt modell</h2>
+      <p>Med så många alternativ blir den viktiga frågan inte "vilken modell är bäst" utan "vilken modell är bäst <em>för det här</em>". Två övergripande vägval styr det mesta.</p>
+      <p>Välj en <strong>stängd API-modell</strong> (Claude, GPT-5.6) när du vill ha den enskilt bästa kapaciteten utan egen infrastruktur, har låg-till-måttlig volym där per-token-priset ändå blir litet i absoluta tal, behöver leverantörens supportkedja och säkerhetsverktyg, eller inte har något emot att data lämnar din egen infrastruktur.</p>
+      <p>Välj en <strong>öppen-vikt, självhostad modell</strong> (DeepSeek, GLM, Kimi och liknande) när du har sådan volym att kostnaden för att äga eller hyra beräkningskraft blir billigare än att betala per token — DeepSeeks 10–90 gånger lägre kostnad i vissa jämförelser illustrerar hur stor skillnaden kan bli i skala — när data av integritets- eller regelskäl aldrig får lämna dina egna servrar, när du vill finjustera modellen mot din egen data, eller när du redan har kompetensen att drifta inferensinfrastruktur själv.</p>
+      <table>
+        <thead><tr><th>Situation</th><th>Rekommendation</th></tr></thead>
+        <tbody>
+          <tr><td>Enstaka svåra resonemangsuppgifter, ingen egen infra</td><td>Stängd flaggskeppsmodell (Fable 5, Opus 4.8, GPT-5.6 Sol)</td></tr>
+          <tr><td>Vardagligt chattgränssnitt, hög kvalitet till rimligt pris</td><td>Sonnet 5 eller GPT-5.6 Terra</td></tr>
+          <tr><td>Massiv volym, kostnad avgörande</td><td>DeepSeek V4-Flash eller GLM-5.2, självhostat</td></tr>
+          <tr><td>Data får aldrig lämna din server</td><td>Öppen-vikt-modell, självhostad</td></tr>
+          <tr><td>Kodningsagent med lång kontext</td><td>Kimi K3 eller Claude Sonnet 5/Opus 4.8</td></tr>
+        </tbody>
+      </table>
+      <p>Ett praktiskt sista råd: testa alltid på din egen uppgift innan du bestämmer dig. En modell som toppar en generell ledartavla kan ändå prestera sämre än en billigare konkurrent på exakt det du behöver göra — och det enda sättet att veta är att prova. Det här landskapet ändras för fort för att någon enskild "bästa modell" ska gälla särskilt länge.</p>
+      <p>Nu när du har en karta över vilka modeller som finns och varför de skiljer sig åt, är nästa steg att se hur de faktiskt används i praktiken — det är precis vad nästa kurs handlar om.</p>
+    </section>
+
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="hermes-agentsystem.html">← Föregående kurs</a>
+      <a href="ai-i-praktiken.html">Nästa kurs →</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../app.js"></script>
+</body>
+</html>
