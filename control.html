@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Privat Control-panel för Ted Svärds Tailscale-nätverk.">
+<title>Control — Ted Svärd</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-control-page>
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Hem</a><a href="projekt.html">Projekt</a><a href="ornith.html">Ornith</a>
+      <a href="kurser.html">Kurser</a><a href="poddar.html">Poddar</a><a href="rostlabb.html">Röst-labb</a>
+      <a href="forskning.html">Forskning</a><a href="om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+<main class="wrap" style="padding-top:clamp(5rem,12vw,9rem);max-width:760px">
+  <div class="eyebrow">Privat · Tailscale</div>
+  <h1>Control</h1>
+  <p class="lede">En liten privat kontrollpunkt för mitt eget nätverk. Den syns och fungerar bara när webbläsaren är ansluten till Teds Tailscale-nätverk.</p>
+  <section class="manifesto" style="margin-top:3rem">
+    <div class="eyebrow">Åtkomststatus</div>
+    <h2 data-control-state>Kontrollerar Tailscale-anslutning…</h2>
+    <p data-control-detail>Ingen serverinformation visas innan den privata anslutningen är verifierad.</p>
+  </section>
+</main>
+<footer class="site-footer"><div class="wrap row"><span class="fmuted">© 2026 Ted Svärd</span><span class="fmuted">Privat Control · Tailscale</span></div></footer>
+<script src="app.js"></script>
+</body>
+</html>

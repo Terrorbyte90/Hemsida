@@ -86,6 +86,42 @@
      never shows an error to the visitor, just goes quiet.
      ====================================================== */
   const FEED_BASE = 'https://169.58.43.27.nip.io/ornith-feed';
+  // Control is never advertised publicly. The link is injected only after a
+  // successful request to the Tailscale-only endpoint on Titan.
+  const CONTROL_HEALTH = 'https://titan-server.tailfbfb1a.ts.net:9443/control-api/health';
+
+  const escapeHTML = value => String(value ?? '').replace(/[&<>\"']/g, ch => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;'
+  }[ch]));
+
+  async function enablePrivateControl() {
+    try {
+      const res = await fetch(CONTROL_HEALTH, { cache: 'no-store', mode: 'cors' });
+      if (!res.ok) throw new Error('private endpoint unavailable');
+      const data = await res.json();
+      if (!data.ok) throw new Error('private endpoint rejected');
+      const nav = document.querySelector('.nav-links');
+      if (nav && !nav.querySelector('[data-control-link]')) {
+        const link = document.createElement('a');
+        link.href = 'control.html';
+        link.textContent = 'Control';
+        link.dataset.controlLink = 'true';
+        nav.appendChild(link);
+      }
+      const state = document.querySelector('[data-control-state]');
+      const detail = document.querySelector('[data-control-detail]');
+      if (state) state.textContent = 'Ansluten till Titan via Tailscale';
+      if (detail) detail.textContent = data.message || 'Privat anslutning verifierad.';
+      document.body.dataset.controlVerified = 'true';
+    } catch (_) {
+      // Fail closed: no nav link and no server details for public visitors.
+      const state = document.querySelector('[data-control-state]');
+      const detail = document.querySelector('[data-control-detail]');
+      if (state) state.textContent = 'Control är privat';
+      if (detail) detail.textContent = 'Anslut till Teds Tailscale-nätverk för att fortsätta.';
+    }
+  }
+  enablePrivateControl();
 
   function timeAgo(s) {
     if (s == null) return '';
@@ -105,7 +141,7 @@
       return;
     }
     if (data.current) {
-      line.innerHTML = `<em>${data.current.narration}</em>`;
+      line.innerHTML = `<em>${escapeHTML(data.current.narration)}</em>`;
     } else {
       line.innerHTML = `<em>Ornith väntar på nästa uppgift.</em>`;
     }
@@ -154,7 +190,7 @@
       activityEl.innerHTML = data.recent.map(r => `
         <li class="activity-item">
           <span class="d"></span>
-          <span class="txt">${r.narration}</span>
+          <span class="txt">${escapeHTML(r.narration)}</span>
           <span class="tag">klart</span>
         </li>`).join('');
     }
@@ -162,7 +198,7 @@
     if (pendingCount && data.queue) pendingCount.textContent = data.queue.pending ?? '–';
     if (queueEl && Array.isArray(data.upcoming)) {
       queueEl.innerHTML = data.upcoming.map(t => `
-        <li class="queue-item"><span>${t.title}</span><span class="cat">${t.category}</span></li>
+        <li class="queue-item"><span>${escapeHTML(t.title)}</span><span class="cat">${escapeHTML(t.category)}</span></li>
       `).join('') || '<li class="queue-item"><span>Kön är tom just nu.</span></li>';
     }
   }
