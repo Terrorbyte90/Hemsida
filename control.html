@@ -4,9 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Privat Control-panel för Ted Svärds Tailscale-nätverk.">
-<title>Control — Ted Svärd</title>
+<meta name="description" content="Privat Control-panel för Hermes och Titan-servern.">
+<title>Control — Hermes & Titan</title>
 <link rel="stylesheet" href="style.css">
+<style>
+  [data-private-content] { display:none }
+  body[data-control-verified="true"] [data-private-content] { display:block }
+  .control-grid { display:grid;grid-template-columns:repeat(12,1fr);gap:1rem;margin:2rem 0 4rem }
+  .control-card { grid-column:span 4;padding:1.35rem;border:1px solid var(--line);border-radius:1.2rem;background:rgba(255,255,255,.48);text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s,border-color .2s }
+  .control-card:hover { transform:translateY(-3px);box-shadow:0 14px 35px rgba(45,30,80,.12);border-color:var(--accent) }
+  .control-card.wide { grid-column:span 6 }
+  .control-card .kicker { color:var(--accent);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700 }
+  .control-card h3 { margin:.5rem 0 .35rem }
+  .control-card p { margin:0;color:var(--muted);line-height:1.5 }
+  .profile-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:1.2rem }
+  .profile-card { padding:1rem;border:1px solid var(--line);border-radius:1rem;background:rgba(255,255,255,.4);text-decoration:none;color:inherit }
+  .profile-card:hover { border-color:var(--accent) }
+  .profile-card strong { display:block;margin-bottom:.35rem }
+  .profile-card span { color:var(--muted);font-size:.88rem }
+  .private-note { padding:1rem 1.2rem;border-radius:1rem;background:rgba(75,76,240,.08);color:var(--muted);font-size:.92rem }
+  @media (max-width:760px) { .control-card,.control-card.wide { grid-column:span 12 } .profile-grid { grid-template-columns:repeat(2,1fr) } }
+</style>
 </head>
 <body data-control-page>
 <nav class="site-nav">
@@ -20,15 +38,54 @@
     </div>
   </div>
 </nav>
-<main class="wrap" style="padding-top:clamp(5rem,12vw,9rem);max-width:760px">
-  <div class="eyebrow">Privat · Tailscale</div>
+<main class="wrap" style="padding-top:clamp(5rem,12vw,9rem);max-width:1080px">
+  <div class="eyebrow">Privat · Tailscale · Hermes</div>
   <h1>Control</h1>
-  <p class="lede">En liten privat kontrollpunkt för mitt eget nätverk. Den syns och fungerar bara när webbläsaren är ansluten till Teds Tailscale-nätverk.</p>
-  <section class="manifesto" style="margin-top:3rem">
+  <p class="lede">Din kontrollpanel för Hermes, profilerna och Titan. Öppnas bara på en enhet som är ansluten till ditt Tailscale-nätverk.</p>
+
+  <section class="manifesto" style="margin-top:2rem">
     <div class="eyebrow">Åtkomststatus</div>
     <h2 data-control-state>Kontrollerar Tailscale-anslutning…</h2>
     <p data-control-detail>Ingen serverinformation visas innan den privata anslutningen är verifierad.</p>
   </section>
+
+  <div data-private-content>
+    <p class="private-note">Control visar inga hemligheter och kör inga godtyckliga shell-kommandon från webbläsaren. Känsliga operationer går vidare till Hermes autentiserade dashboard.</p>
+
+    <section class="control-grid" aria-label="Kontrollområden">
+      <a class="control-card wide" href="https://titan-server.tailfbfb1a.ts.net:9443/" target="_blank" rel="noopener">
+        <span class="kicker">Hermes</span><h3>Öppna huvudpanelen →</h3><p>Full dashboard med autentiserad chat, profiler, sessionshistorik och verktyg.</p>
+      </a>
+      <a class="control-card wide" href="https://titan-server.tailfbfb1a.ts.net:9443/system" target="_blank" rel="noopener">
+        <span class="kicker">Titan</span><h3>System & gateway →</h3><p>Kontrollera Hermes-gateway, anslutningar, serverstatus och driftinformation.</p>
+      </a>
+      <a class="control-card" href="https://titan-server.tailfbfb1a.ts.net:9443/profiles" target="_blank" rel="noopener">
+        <span class="kicker">Konfiguration</span><h3>Profiler →</h3><p>Hantera modeller, skills, tools och profilinställningar.</p>
+      </a>
+      <a class="control-card" href="https://titan-server.tailfbfb1a.ts.net:9443/sessions" target="_blank" rel="noopener">
+        <span class="kicker">Historik</span><h3>Sessioner →</h3><p>Se tidigare samtal, uppdrag och resultat per profil.</p>
+      </a>
+      <a class="control-card" href="https://titan-server.tailfbfb1a.ts.net:9443/chat" target="_blank" rel="noopener">
+        <span class="kicker">Agentarbete</span><h3>Ny chat →</h3><p>Starta ett nytt uppdrag och välj profil i Hermes.</p>
+      </a>
+    </section>
+
+    <section>
+      <div class="eyebrow">Profilchattar</div>
+      <h2>Prata med rätt agent</h2>
+      <p class="sub">Varje länk öppnar Hermes chat med profilen förvald. Du kan ha flera flikar och ge dem olika uppdrag samtidigt; varje profils sessioner och kontext hålls separerade.</p>
+      <div class="profile-grid">
+        <a class="profile-card" href="https://titan-server.tailfbfb1a.ts.net:9443/chat?profile=default" target="_blank" rel="noopener"><strong>Mira · default</strong><span>Orkestrering och serverdrift</span></a>
+        <a class="profile-card" href="https://titan-server.tailfbfb1a.ts.net:9443/chat?profile=laguna" target="_blank" rel="noopener"><strong>Laguna</strong><span>Long-context research och repoanalys</span></a>
+        <a class="profile-card" href="https://titan-server.tailfbfb1a.ts.net:9443/chat?profile=fable" target="_blank" rel="noopener"><strong>Fable</strong><span>Kodning och agentiska kodjobb</span></a>
+        <a class="profile-card" href="https://titan-server.tailfbfb1a.ts.net:9443/chat?profile=ornith" target="_blank" rel="noopener"><strong>Ornith</strong><span>Privat lokal long-horizon-agent</span></a>
+        <a class="profile-card" href="https://titan-server.tailfbfb1a.ts.net:9443/chat?profile=buddy" target="_blank" rel="noopener"><strong>Buddy</strong><span>Live bugfix och Hermes-ops</span></a>
+        <a class="profile-card" href="https://titan-server.tailfbfb1a.ts.net:9443/chat?profile=freebie" target="_blank" rel="noopener"><strong>Freebie</strong><span>Billig research och enklare uppgifter</span></a>
+        <a class="profile-card" href="https://titan-server.tailfbfb1a.ts.net:9443/chat?profile=cheapy" target="_blank" rel="noopener"><strong>Cheapy</strong><span>Mekaniska småjobb</span></a>
+        <a class="profile-card" href="https://titan-server.tailfbfb1a.ts.net:9443/chat?profile=ornith-mac" target="_blank" rel="noopener"><strong>Ornith på Mac</strong><span>Separat GPU-instans på Mac</span></a>
+      </div>
+    </section>
+  </div>
 </main>
 <footer class="site-footer"><div class="wrap row"><span class="fmuted">© 2026 Ted Svärd</span><span class="fmuted">Privat Control · Tailscale</span></div></footer>
 <script src="app.js"></script>
