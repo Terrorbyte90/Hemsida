@@ -23,6 +23,11 @@
   .profile-card strong { display:block;margin-bottom:.35rem }
   .profile-card span { color:var(--muted);font-size:.88rem }
   .private-note { padding:1rem 1.2rem;border-radius:1rem;background:rgba(75,76,240,.08);color:var(--muted);font-size:.92rem }
+  .voice-card { margin:1.5rem 0; padding:1.35rem; border:1px solid var(--line); border-radius:1.2rem; background:rgba(255,255,255,.48) }
+  .voice-actions { display:flex; gap:.8rem; align-items:center; flex-wrap:wrap; margin-top:1rem }
+  .voice-button { border:0; border-radius:999px; padding:.8rem 1.2rem; background:var(--accent); color:white; font:inherit; font-weight:700; cursor:pointer }
+  .voice-button[aria-pressed="true"] { background:#b33b55 }
+  .voice-status { color:var(--muted); font-size:.9rem }
   @media (max-width:760px) { .control-card,.control-card.wide { grid-column:span 12 } .profile-grid { grid-template-columns:repeat(2,1fr) } }
 </style>
 </head>
@@ -51,6 +56,16 @@
 
   <div data-private-content>
     <p class="private-note">Control visar inga hemligheter och kör inga godtyckliga shell-kommandon från webbläsaren. Känsliga operationer går vidare till Hermes autentiserade dashboard.</p>
+
+    <section class="voice-card" aria-labelledby="voice-title">
+      <div class="eyebrow">Realtime · privat</div>
+      <h2 id="voice-title">Prata med Mira</h2>
+      <p class="sub">Tryck en gång för att starta handsfree. Mira svarar kort och varmt på svenska. Mikrofonåtkomst krävs.</p>
+      <div class="voice-actions">
+        <button class="voice-button" id="realtime-toggle" type="button" aria-pressed="false">Starta handsfree</button>
+        <span class="voice-status" id="realtime-status" role="status">Avstängd</span>
+      </div>
+    </section>
 
     <section class="control-grid" aria-label="Kontrollområden">
       <a class="control-card wide" href="https://titan-server.tailfbfb1a.ts.net:9443/" target="_blank" rel="noopener">
@@ -89,5 +104,6 @@
 </main>
 <footer class="site-footer"><div class="wrap row"><span class="fmuted">© 2026 Ted Svärd</span><span class="fmuted">Privat Control · Tailscale</span></div></footer>
 <script src="app.js"></script>
+<script src="realtime.js"></script>
 </body>
 </html>
