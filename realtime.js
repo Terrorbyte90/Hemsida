@@ -28,6 +28,20 @@
         const data = JSON.parse(event.data);
         if (data.type === 'input_audio_buffer.speech_started') setStatus('Lyssnar…');
         if (data.type === 'response.audio.delta') setStatus('Svarar…');
+        if (data.type === 'response.function_call_arguments.done' && data.name === 'ask_mira') {
+          setStatus('Frågar Mira…');
+          const args = JSON.parse(data.arguments || '{}');
+          fetch('https://titan-server.tailfbfb1a.ts.net:9443/control-api/ask-mira', {
+            method: 'POST', headers: {'Content-Type': 'application/json'}, cache: 'no-store',
+            body: JSON.stringify({question: String(args.question || '').slice(0, 1200)})
+          }).then(r => r.json()).then(result => {
+            channel.send(JSON.stringify({type: 'conversation.item.create', item: {type: 'function_call_output', call_id: data.call_id, output: JSON.stringify({answer: result.answer || 'Mira kunde inte svara just nu.'})}}));
+            channel.send(JSON.stringify({type: 'response.create'}));
+          }).catch(() => {
+            channel.send(JSON.stringify({type: 'conversation.item.create', item: {type: 'function_call_output', call_id: data.call_id, output: JSON.stringify({answer: 'Mira-bryggan är tillfälligt otillgänglig.'})}}));
+            channel.send(JSON.stringify({type: 'response.create'}));
+          });
+        }
         if (data.type === 'response.done') setStatus('Aktiv · prata fritt');
       } catch (_) {}
     };
