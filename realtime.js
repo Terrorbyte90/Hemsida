@@ -3,9 +3,13 @@
   const status = document.getElementById('realtime-status');
   if (!button || !status) return;
   let pc = null, stream = null, audio = null;
+  const sessionId = () => crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
+  let activeSessionId = null, startedAt = 0;
+  const logUsage = (usage) => fetch('https://titan-server.tailfbfb1a.ts.net:9443/control-api/realtime/usage', {method: 'POST', headers: {'Content-Type': 'application/json'}, keepalive: true, body: JSON.stringify({session_id: activeSessionId, duration_s: Math.max(0, (Date.now() - startedAt) / 1000), usage: usage || {}})}).catch(() => {});
   const setStatus = (text) => { status.textContent = text; };
 
   async function start() {
+    activeSessionId = sessionId(); startedAt = Date.now();
     button.disabled = true; setStatus('Ansluter…');
     const tokenResponse = await fetch('https://titan-server.tailfbfb1a.ts.net:9443/control-api/realtime/session', {
       method: 'POST', headers: {'Content-Type': 'application/json'}, cache: 'no-store'
@@ -42,7 +46,10 @@
             channel.send(JSON.stringify({type: 'response.create'}));
           });
         }
-        if (data.type === 'response.done') setStatus('Aktiv · prata fritt');
+        if (data.type === 'response.done') {
+          if (data.response?.usage) logUsage(data.response.usage);
+          setStatus('Aktiv · prata fritt');
+        }
       } catch (_) {}
     };
     const offer = await pc.createOffer(); await pc.setLocalDescription(offer);
@@ -55,6 +62,7 @@
   }
 
   function stop() {
+    logUsage({session_closed: 1}); activeSessionId = null; startedAt = 0;
     stream?.getTracks().forEach(track => track.stop()); stream = null;
     pc?.close(); pc = null; audio?.remove(); audio = null;
     button.textContent = 'Starta handsfree'; button.setAttribute('aria-pressed', 'false'); setStatus('Avstängd'); button.disabled = false;
