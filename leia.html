@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Leia · Control</title><link rel="stylesheet" href="style.css">
+<style>
+.leia-shell{max-width:860px;margin:0 auto;padding:clamp(5rem,12vw,9rem) 1rem 5rem}.leia-hero{display:grid;grid-template-columns:140px 1fr;gap:2rem;align-items:center}.leia-avatar{width:140px;height:140px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#f19ab7,#6455d9);color:#fff;font:italic 5rem Georgia;box-shadow:0 20px 50px #6455d933}.status{display:flex;gap:.6rem;align-items:center;color:var(--muted);font-size:.9rem}.status i{width:.65rem;height:.65rem;border-radius:50%;background:#aaa}.status.ok i{background:#2d9d70}.leia-card{margin-top:2rem;padding:1.4rem;border:1px solid var(--line);border-radius:1.2rem;background:rgba(255,255,255,.5)}.actions{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem}.btn{border:0;border-radius:999px;padding:.75rem 1rem;background:var(--accent);color:white;font:inherit;cursor:pointer}.btn.secondary{background:transparent;color:inherit;border:1px solid var(--line)}.btn:disabled{opacity:.5;cursor:not-allowed}.notice{margin-top:1rem;color:var(--muted);line-height:1.5}.privacy{margin-top:1.5rem;font-size:.86rem;color:var(--muted)}@media(max-width:650px){.leia-hero{grid-template-columns:1fr;text-align:center}.leia-avatar{margin:auto}.status{justify-content:center}}
+</style>
+</head>
+<body>
+<nav class="site-nav"><div class="wrap row"><a class="brand" href="control.html"><span class="dot"></span>Control</a><div class="nav-links"><a href="control.html">Control</a><a href="index.html">Hemsidan</a></div></div></nav>
+<main class="leia-shell">
+<section class="leia-hero"><div class="leia-avatar" aria-hidden="true">L</div><div><div class="eyebrow">Privat · Tailscale · Realtime</div><h1>Prata med Leia</h1><p class="lede">En varm svensk röst till Mira och Titan. Leia kan fråga Mira om servern, men har inte fri shell-åtkomst.</p><div class="status" id="status"><i></i><span>Inte ansluten</span></div></div></section>
+<section class="leia-card"><h2>Röstsession</h2><p class="notice">Tryck på start, tillåt mikrofonen och prata normalt. Du kan avbryta Leia genom att prata över henne eller trycka på stopp.</p><div class="actions"><button class="btn" id="start">Starta Leia</button><button class="btn secondary" id="stop" disabled>Stoppa</button></div><p class="privacy">Ljud skickas direkt till Realtime-sessionen. Servern lämnar endast ut en kortlivad sessionsnyckel; ingen API-nyckel ligger i sidan.</p></section>
+</main>
+<script>
+const sessionUrl='https://titan-server.tailfbfb1a.ts.net:9443/control-api/realtime/session';let pc,stream;const $=id=>document.getElementById(id);const setStatus=(text,ok=false)=>{$('status').className='status'+(ok?' ok':'');$('status span').textContent=text};
+async function start(){ $('start').disabled=true;setStatus('Ansluter…');try{const r=await fetch(sessionUrl,{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store'}),s=await r.json();if(!r.ok||!s.client_secret)throw Error(s.error||'Kunde inte skapa session');stream=await navigator.mediaDevices.getUserMedia({audio:true});pc=new RTCPeerConnection();const audio=document.createElement('audio');audio.autoplay=true;pc.ontrack=e=>audio.srcObject=e.streams[0];pc.addTrack(stream.getAudioTracks()[0],stream);const offer=await pc.createOffer();await pc.setLocalDescription(offer);const ans=await fetch('https://api.openai.com/v1/realtime/calls',{method:'POST',headers:{Authorization:'Bearer '+s.client_secret,'Content-Type':'application/sdp'},body:offer.sdp});if(!ans.ok)throw Error('Realtime-anslutningen avvisades');await pc.setRemoteDescription({type:'answer',sdp:await ans.text()});$('stop').disabled=false;setStatus('Leia är ansluten',true)}catch(e){console.error(e);setStatus('Kunde inte ansluta: '+e.message);stop(false)}}
+function stop(reset=true){if(pc)pc.close();if(stream)stream.getTracks().forEach(t=>t.stop());pc=null;stream=null;$('stop').disabled=true;if(reset){$('start').disabled=false;setStatus('Inte ansluten')}}$('start').onclick=start;$('stop').onclick=()=>stop(true);
+</script>
+</body></html>
