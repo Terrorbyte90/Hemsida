@@ -36,7 +36,7 @@ async function start(){
     stream=await navigator.mediaDevices.getUserMedia({audio:true}); pc=new RTCPeerConnection();
     const audio=document.createElement('audio');audio.autoplay=true;pc.ontrack=e=>audio.srcObject=e.streams[0];
     pc.addTrack(stream.getAudioTracks()[0],stream); channel=pc.createDataChannel('oai-events');
-    channel.onmessage=e=>{try{const d=JSON.parse(e.data);if(d.type==='input_audio_buffer.speech_started')setStatus('Lyssnar…');if(d.type==='conversation.item.input_audio_transcription.completed')answerFor(d.transcript)}catch(_){}};
+    channel.onmessage=e=>{try{const d=JSON.parse(e.data);if(d.type==='error'){console.error('Realtime error',d);setStatus('Röstfel: '+(d.error?.message||'transkriberingen misslyckades'));return}if(d.type==='input_audio_buffer.speech_started')setStatus('Lyssnar…');if(d.type==='input_audio_buffer.committed')setStatus('Transkriberar…');if(d.type==='conversation.item.input_audio_transcription.completed')answerFor(d.transcript)}catch(_){}};
     const offer=await pc.createOffer();await pc.setLocalDescription(offer);
     const ans=await fetch('https://api.openai.com/v1/realtime/calls',{method:'POST',headers:{Authorization:'Bearer '+s.client_secret,'Content-Type':'application/sdp'},body:offer.sdp});
     if(!ans.ok)throw Error('Realtime-anslutningen avvisades'); await pc.setRemoteDescription({type:'answer',sdp:await ans.text()});
