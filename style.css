@@ -269,6 +269,34 @@ em,i{ font-family:var(--serif); font-style:italic; }
 @media (max-width:980px){ .course-cards{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:560px){ .course-cards{ grid-template-columns:1fr; } }
 
+/* ---------- course learning controls ---------- */
+.course-status{
+  margin-top:22px; padding:14px 14px 12px; border:1px solid var(--line); border-radius:14px;
+  background:rgba(255,255,255,.42); color:var(--ink-soft); font-size:.82rem;
+}
+.course-status strong{ font-family:var(--mono); color:var(--signal-dim); font-size:1rem; }
+.course-status span{ margin-left:5px; }
+.course-status button{
+  display:block; margin-top:10px; padding:0; color:var(--muted); font-size:.76rem;
+  text-decoration:underline; text-underline-offset:3px;
+}
+.course-status button:hover{ color:var(--ink); }
+.chapter-complete{
+  margin-top:26px; padding:10px 14px; border:1px solid var(--line); border-radius:99px;
+  color:var(--signal-dim); background:rgba(255,255,255,.45); font-size:.82rem;
+  transition:background .2s, border-color .2s, transform .2s;
+}
+.chapter-complete:hover{ background:rgba(255,255,255,.8); border-color:var(--violet); transform:translateY(-1px); }
+.chapter.is-complete{ border-left:3px solid var(--alive); padding-left:22px; }
+.kurs-toc a.is-complete::after{ content:' ✓'; color:var(--alive); }
+.kurs-row.is-started .meta{ color:var(--signal-dim); }
+.kurs-row.is-complete{ border-color:rgba(47,174,114,.5); }
+.quiz-retry{
+  margin-top:12px; padding:8px 13px; border:1px solid var(--line); border-radius:99px;
+  color:var(--signal-dim); background:rgba(255,255,255,.5); font-size:.82rem;
+}
+.quiz-retry:hover{ background:rgba(255,255,255,.85); }
+
 /* ============================================================
    generic page header
    ============================================================ */
