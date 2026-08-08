@@ -270,15 +270,108 @@
     }
   }
 
+  /* ---------- COURSE PROGRESS: local, resumable learning flow ---------- */
+  const courseKey = document.body.dataset.course;
+  const progressStore = 'ted-course-progress-v1';
+  const readProgress = () => {
+    try { return JSON.parse(localStorage.getItem(progressStore) || '{}'); }
+    catch (_) { return {}; }
+  };
+  const writeProgress = data => {
+    try { localStorage.setItem(progressStore, JSON.stringify(data)); }
+    catch (_) { /* Private browsing may disable storage; the course still works. */ }
+  };
+  const courseState = (data, key) => {
+    const state = data[key] || { done: [] };
+    state.done = Array.isArray(state.done) ? state.done : [];
+    return state;
+  };
+
+  if (courseKey && chapters.length) {
+    const data = readProgress();
+    const state = courseState(data, courseKey);
+    const toc = document.querySelector('.kurs-toc');
+    const status = document.createElement('div');
+    status.className = 'course-status';
+    status.setAttribute('aria-live', 'polite');
+    status.innerHTML = '<strong data-course-count></strong><span data-course-label></span><button type="button" data-course-reset>Återställ</button>';
+    toc?.appendChild(status);
+    const countEl = status.querySelector('[data-course-count]');
+    const labelEl = status.querySelector('[data-course-label]');
+    const resetButton = status.querySelector('[data-course-reset]');
+    const update = () => {
+      const done = state.done.length;
+      if (countEl) countEl.textContent = `${done}/${chapters.length}`;
+      if (labelEl) labelEl.textContent = done === chapters.length ? ' Kurs klar' : ' kapitel klara';
+      chapters.forEach(chapter => {
+        const complete = state.done.includes(chapter.id);
+        chapter.classList.toggle('is-complete', complete);
+        const link = document.querySelector(`.kurs-toc a[href="#${chapter.id}"]`);
+        link?.classList.toggle('is-complete', complete);
+        const button = chapter.querySelector('[data-chapter-toggle]');
+        if (button) {
+          button.textContent = complete ? '✓ Kapitel klart — markera som ej klart' : 'Markera kapitlet som klart';
+          button.setAttribute('aria-pressed', String(complete));
+        }
+      });
+    };
+    chapters.forEach(chapter => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'chapter-complete';
+      button.dataset.chapterToggle = 'true';
+      button.addEventListener('click', () => {
+        const index = state.done.indexOf(chapter.id);
+        if (index === -1) state.done.push(chapter.id);
+        else state.done.splice(index, 1);
+        data[courseKey] = state;
+        writeProgress(data);
+        update();
+      });
+      chapter.appendChild(button);
+    });
+    resetButton?.addEventListener('click', () => {
+      state.done = [];
+      data[courseKey] = state;
+      writeProgress(data);
+      update();
+    });
+    update();
+  }
+
+  /* Course hub: show a real, persistent status instead of a static chapter count. */
+  document.querySelectorAll('.kurs-row[data-course]').forEach(row => {
+    const key = row.dataset.course;
+    const total = Number(row.querySelector('.meta')?.textContent.match(/\d+/)?.[0] || 0);
+    const done = courseState(readProgress(), key).done.length;
+    const meta = row.querySelector('.meta');
+    if (meta && total) meta.textContent = done ? `${done}/${total} kapitel klara` : `${total} kapitel · ej påbörjad`;
+    row.classList.toggle('is-started', done > 0);
+    row.classList.toggle('is-complete', total > 0 && done === total);
+  });
+
   document.querySelectorAll('.quiz').forEach(quiz => {
     const opts = quiz.querySelectorAll('.opt');
     const fb = quiz.querySelector('.fb');
+    let retry;
+    const reset = () => {
+      delete quiz.dataset.answered;
+      opts.forEach(o => o.classList.remove('correct', 'wrong'));
+      if (fb) { fb.textContent = ''; fb.classList.remove('show'); }
+      retry?.remove();
+    };
     opts.forEach(opt => {
       opt.addEventListener('click', () => {
         if (quiz.dataset.answered) return;
         quiz.dataset.answered = '1';
         opts.forEach(o => o.classList.add(o.dataset.correct === '1' ? 'correct' : (o === opt ? 'wrong' : '')));
         if (fb) { fb.textContent = opt.dataset.correct === '1' ? '✓ Rätt — ' + (fb.dataset.right || '') : '✗ ' + (fb.dataset.wrong || 'Inte riktigt — se den gröna raden.'); fb.classList.add('show'); }
+        retry = document.createElement('button');
+        retry.type = 'button';
+        retry.className = 'quiz-retry';
+        retry.textContent = 'Försök igen';
+        retry.addEventListener('click', reset);
+        quiz.appendChild(retry);
       });
     });
   });
