@@ -24,7 +24,7 @@
   ];
   const clamp = (v,min=0,max=100) => Math.max(min, Math.min(max, v));
   const createAgent = (profile, i) => ({ ...profile, needs:{sleep:28+i*7, hunger:34+i*4, social:42-i*3, curiosity:38+i*3, purpose:45}, relationship:{mira:0,elias:0,noor:0,liv:0,august:0}, action:'socialise', actionLabel:'vaknar i staden', place:'home', progress:0, target:[profile.home[0], profile.home[1]], thought:'Jag undrar vad som händer idag.', memory:['En ny dag börjar i staden.'], online:false });
-  function createSimulationState() { const saved=localStorage.getItem('city-qwen-endpoint'); const endpoint=saved&& !saved.includes(':11434/') ? saved : 'http://localhost:8093/v1/chat/completions'; return { minute: 19*60+12, day:12, agents:profiles.map(createAgent), laws:laws.map(l=>({...l})), weather:'clear', paused:false, speed:1, events:[{time:'19:12', text:'Stadens fem invånare vaknar till kvällslivet.'}], selected:'mira', qwenEndpoint:endpoint, lastQwen:0 }; }
+  function createSimulationState() { const saved=localStorage.getItem('city-qwen-endpoint'); const endpoint=saved&& !saved.includes(':11434/') && !saved.includes(':8092/') ? saved : 'http://localhost:8093/v1/chat/completions'; return { minute: 19*60+12, day:12, agents:profiles.map(createAgent), laws:laws.map(l=>({...l})), weather:'clear', paused:false, speed:1, events:[{time:'19:12', text:'Stadens fem invånare vaknar till kvällslivet.'}], selected:'mira', qwenEndpoint:endpoint, lastQwen:0 }; }
   function choose(agent, state) {
     const n=agent.needs, hour=(state.minute%1440)/60;
     if (n.sleep>78 || (hour>23 || hour<6) && n.sleep>45) return 'sleep';
