@@ -3,6 +3,7 @@
   const A=window.CityAgents, state=A.createSimulationState();
   const places={home:[0,0],plaza:[0,0],library:[-7,-5],workshop:[7,-5],school:[-7,0],garden:[7,0],hall:[0,-5],cafe:[0,3]};
   const $=s=>document.querySelector(s), stage=document.querySelector('.sim-stage');
+  $('#new-law').onclick=()=>{const title=window.prompt('Vad ska staden besluta om?');if(!title?.trim())return;const author=state.agents.find(a=>a.id===selected)?.name||'Staden';state.laws.unshift({id:`law-${Date.now()}`,title:title.trim(),author,yes:0,no:0,status:'pågående'});state.events.unshift({time:A.clock(state.minute),text:`${title.trim()} föreslogs i rådhuset.`});renderLaws();renderEvents();};
   let scene,camera,renderer,city,avatarMeshes=[],rain,lights=[],last=performance.now(),simAccum=0,selected=state.selected, yaw=0, dragging=false,lastX=0;
   const mat=(c,r=.85)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:.05});
   const add=(o,p=[0,0,0],parent=city)=>{o.position.set(...p);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;};
