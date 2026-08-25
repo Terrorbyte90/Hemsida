@@ -44,6 +44,6 @@
     if(Math.floor(state.minute/10)!==Math.floor((state.minute-minutes)/10)) { const a=state.agents[Math.floor(state.minute/10)%5]; state.events.unshift({time:clock(state.minute),text:`${a.name} ${a.actionLabel}.`}); state.events=state.events.slice(0,12); }
   }
   const clock = m => `${String(Math.floor(m/60)).padStart(2,'0')}:${String(Math.floor(m%60)).padStart(2,'0')}`;
-  async function askQwen(agent, context, endpoint) { try { const ctl=new AbortController(); const timer=setTimeout(()=>ctl.abort(),20000); const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},signal:ctl.signal,body:JSON.stringify({model:'Qwen3.8-27B-Fable-Distill',temperature:.7,max_tokens:180,messages:[{role:'system',content:`Du är ${agent.name}, ${agent.trait}. Välj en aktivitet i JSON: {"action":"sleep|eat|socialise|read|work|study|garden|vote","thought":"kort tanke på svenska"}.`},{role:'user',content:JSON.stringify(context)}]})}); clearTimeout(timer); if(!response.ok)return null; const data=await response.json(); const message=data.choices?.[0]?.message||{}; const raw=message.content||message.reasoning_content||''; const parsed=JSON.parse(raw.match(/\{[\s\S]*\}/)?.[0]||raw); if(!actions[parsed.action]||typeof parsed.thought!=='string')return null; return parsed; } catch(e){ return null; } }
+  async function askQwen() { return null; }
   window.CityAgents={actions,profiles,createSimulationState,tickAgents,askQwen,clock,startAction};
 })();
