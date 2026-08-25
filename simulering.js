@@ -1,10 +1,12 @@
 (() => {
   const mount=document.querySelector('#city-canvas'); if(!mount||!window.CityAgents)return;
   const A=window.CityAgents, state=A.createSimulationState();
+  // The public client is a read-only city viewer; it must never call a model endpoint.
+  A.askQwen=async()=>null;
   // Qwen is server-side only. The browser receives sanitized city state.
   state.qwenEndpoint='';
   const CITY_API='https://5.175.249.12.nip.io/city/api/city';
-  async function syncCity(){try{const response=await fetch(CITY_API,{cache:'no-store'});if(!response.ok)return;const remote=await response.json();if(!Array.isArray(remote.agents)||remote.agents.length!==5)return;state.minute=remote.minute;state.day=remote.day;state.weather=remote.weather;remote.agents.forEach((remoteAgent,i)=>Object.assign(state.agents[i],remoteAgent));state.events=remote.events||state.events;renderAgentList();renderDetail();renderEvents();$('#model-status').textContent=remote.qwen_configured?'Stadens motor · aktiv':'Stadens motor · lokal drift';}catch(_){/* local simulation remains a graceful fallback */}}
+  async function syncCity(){try{const response=await fetch(CITY_API,{cache:'no-store'});if(!response.ok)return;const remote=await response.json();if(!Array.isArray(remote.agents)||remote.agents.length!==5)return;state.minute=remote.minute;state.day=remote.day;state.weather=remote.weather;state.lastQwen=performance.now();remote.agents.forEach((remoteAgent,i)=>Object.assign(state.agents[i],remoteAgent));state.events=remote.events||state.events;renderAgentList();renderDetail();renderEvents();$('#model-status').textContent=remote.qwen_configured?'Stadens motor · aktiv':'Stadens motor · lokal drift';}catch(_){/* local simulation remains a graceful fallback */}}
   syncCity();setInterval(syncCity,15000);
   const places={home:[0,0],plaza:[0,0],library:[-7,-5],workshop:[7,-5],school:[-7,0],garden:[7,0],hall:[0,-5],cafe:[0,3]};
   const $=s=>document.querySelector(s), stage=document.querySelector('.sim-stage');
