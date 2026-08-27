@@ -88,7 +88,7 @@
   const FEED_BASE = 'https://169.58.43.27.nip.io/ornith-feed';
   // Control is never advertised publicly. The link is injected only after a
   // successful request to the Tailscale-only endpoint on Titan.
-  const CONTROL_HEALTH = 'https://titan-server.tailfbfb1a.ts.net:9443/control-api/health';
+  const CONTROL_HEALTH = 'https://ryzen-ted.tailfbfb1a.ts.net:9443/control-api/health';
 
   const escapeHTML = value => String(value ?? '').replace(/[&<>\"']/g, ch => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;'
