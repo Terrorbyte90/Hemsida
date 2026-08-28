@@ -3,7 +3,7 @@
   const status = document.getElementById('realtime-status');
   if (!button || !status) return;
   // Public Caddy endpoint: works on phones without an active Tailscale VPN.
-  const endpoint = 'wss://5.175.249.12.nip.io:9443/control-api/voice';
+  const endpoint = 'wss://5.175.249.12.nip.io/control-api/voice';
   let socket, stream, input, processor, sink, ctx;
   let playing = [], pcmQueue = [], playingNow = false;
   const setStatus = value => { status.textContent = value; };
