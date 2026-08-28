@@ -2,7 +2,8 @@
   const button = document.getElementById('realtime-toggle');
   const status = document.getElementById('realtime-status');
   if (!button || !status) return;
-  const endpoint = 'wss://ryzen-ted.tailfbfb1a.ts.net:9443/control-api/voice';
+  // Public Caddy endpoint: works on phones without an active Tailscale VPN.
+  const endpoint = 'wss://5.175.249.12.nip.io:9443/control-api/voice';
   let socket, stream, input, processor, sink, ctx;
   let playing = [], pcmQueue = [], playingNow = false;
   const setStatus = value => { status.textContent = value; };
