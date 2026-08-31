@@ -18,6 +18,19 @@
     document.body.appendChild(g);
   }
 
+  /* ---------- keyboard skip link ---------- */
+  const main = document.querySelector('main');
+  if (main) {
+    main.id ||= 'main-content';
+    if (!document.querySelector('.skip-link')) {
+      const skip = document.createElement('a');
+      skip.className = 'skip-link';
+      skip.href = `#${main.id}`;
+      skip.textContent = 'Hoppa till innehåll';
+      document.body.prepend(skip);
+    }
+  }
+
   /* ---------- mobile nav ---------- */
   const toggle = document.querySelector('.menu-toggle');
   const links = document.querySelector('.nav-links');
