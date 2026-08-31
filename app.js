@@ -119,6 +119,8 @@
   // Control is never advertised publicly. The link is injected only after a
   // successful request to the Tailscale-only endpoint on Titan.
   const CONTROL_HEALTH = 'https://ryzen-ted.tailfbfb1a.ts.net:9443/control-api/health';
+  const GOD_VIEW_HEALTH = 'https://ryzen-ted.tailfbfb1a.ts.net:9444/god-view-api/health';
+  const GOD_VIEW_URL = 'https://ryzen-ted.tailfbfb1a.ts.net:9444/';
 
   const escapeHTML = value => String(value ?? '').replace(/[&<>\"']/g, ch => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;'
@@ -152,6 +154,31 @@
     }
   }
   enablePrivateControl();
+
+  // God view is a separate private surface. It must never exist in the public
+  // DOM: the Tailscale health check is the only path that creates its link.
+  async function enablePrivateGodView() {
+    try {
+      const res = await fetch(GOD_VIEW_HEALTH, { cache: 'no-store', mode: 'cors' });
+      if (!res.ok) throw new Error('private God view unavailable');
+      const data = await res.json();
+      if (!data.ok) throw new Error('private God view rejected');
+      const nav = document.querySelector('.nav-links');
+      if (nav && !nav.querySelector('[data-god-view-link]')) {
+        const link = document.createElement('a');
+        link.href = GOD_VIEW_URL;
+        link.textContent = 'God view';
+        link.dataset.godViewLink = 'true';
+        link.setAttribute('rel', 'noopener');
+        nav.appendChild(link);
+      }
+      document.body.dataset.godViewVerified = 'true';
+    } catch (_) {
+      // Fail closed for every public visitor: no link and no endpoint details.
+      delete document.body.dataset.godViewVerified;
+    }
+  }
+  enablePrivateGodView();
 
   function timeAgo(s) {
     if (s == null) return '';
