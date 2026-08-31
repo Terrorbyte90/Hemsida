@@ -21,6 +21,7 @@
   /* ---------- mobile nav ---------- */
   const toggle = document.querySelector('.menu-toggle');
   const links = document.querySelector('.nav-links');
+  toggle?.setAttribute('aria-expanded', 'false');
   // On mobile, .nav-links becomes position:fixed — but its ancestor .row has
   // backdrop-filter, which makes IT the containing block instead of the
   // viewport, breaking the fixed offsets. Fix: only while mobile, move
@@ -45,10 +46,12 @@
   toggle?.addEventListener('click', () => {
     links?.classList.toggle('open');
     document.body.classList.toggle('menu-open');
+    toggle.setAttribute('aria-expanded', String(links?.classList.contains('open')));
   });
   links?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
     links.classList.remove('open');
     document.body.classList.remove('menu-open');
+    toggle?.setAttribute('aria-expanded', 'false');
   }));
 
   /* ---------- reveal-on-scroll fallback (only runs if scroll-timeline unsupported) ---------- */
