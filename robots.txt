@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /control.html
+Disallow: /leia.html
+
+Sitemap: https://terrorbyte90.github.io/Hemsida/sitemap.xml
