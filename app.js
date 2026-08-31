@@ -21,7 +21,12 @@
   /* ---------- mobile nav ---------- */
   const toggle = document.querySelector('.menu-toggle');
   const links = document.querySelector('.nav-links');
-  toggle?.setAttribute('aria-expanded', 'false');
+  if (toggle && links) {
+    const menuId = links.id || 'site-menu';
+    links.id = menuId;
+    toggle.setAttribute('aria-controls', menuId);
+    toggle.setAttribute('aria-expanded', 'false');
+  }
   // On mobile, .nav-links becomes position:fixed — but its ancestor .row has
   // backdrop-filter, which makes IT the containing block instead of the
   // viewport, breaking the fixed offsets. Fix: only while mobile, move
@@ -43,16 +48,25 @@
     place();
     mq.addEventListener('change', place);
   }
+  const closeMenu = () => {
+    links?.classList.remove('open');
+    document.body.classList.remove('menu-open');
+    toggle?.setAttribute('aria-expanded', 'false');
+  };
   toggle?.addEventListener('click', () => {
     links?.classList.toggle('open');
     document.body.classList.toggle('menu-open');
     toggle.setAttribute('aria-expanded', String(links?.classList.contains('open')));
   });
   links?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    links.classList.remove('open');
-    document.body.classList.remove('menu-open');
-    toggle?.setAttribute('aria-expanded', 'false');
+    closeMenu();
   }));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeMenu();
+  });
+  document.addEventListener('click', event => {
+    if (links?.classList.contains('open') && !links.contains(event.target) && !toggle?.contains(event.target)) closeMenu();
+  });
 
   /* ---------- reveal-on-scroll fallback (only runs if scroll-timeline unsupported) ---------- */
   const supportsScrollTimeline = CSS?.supports?.('animation-timeline: view()');
