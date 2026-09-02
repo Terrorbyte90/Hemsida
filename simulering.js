@@ -1,3 +1,10 @@
+// Keep the shared site navigation (including the private God view gate)
+// available on this standalone page as well.
+if (!document.querySelector('script[src="app.js"]')) {
+  const sharedNav = document.createElement('script');
+  sharedNav.src = 'app.js';
+  document.head.appendChild(sharedNav);
+}
 (() => {
   const mount=document.querySelector('#city-canvas'); if(!mount||!window.CityAgents)return;
   const A=window.CityAgents, Memory=window.CityMemory, state=A.createSimulationState();
