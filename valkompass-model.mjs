@@ -18,8 +18,8 @@ export const PARTY_SOURCES = {
 
 export function scoreAnswers(answers = {}, priorities = {}) {
   const totals = Object.fromEntries(PARTIES.map(p => [p, {distance:0, weight:0}]));
-  for (const topic of TOPICS) { const answer = Number(answers[topic] || 0); const weight = Number(priorities[topic] || 1); for (const p of PARTIES) { totals[p].distance += Math.abs(answer - PARTY_POSITIONS[topic][p]) * weight; totals[p].weight += 4 * weight; } }
-  const scores = Object.fromEntries(PARTIES.map(p => [p, Math.round(100 * (1 - totals[p].distance / Math.max(1, totals[p].weight)))]));
+  for (const topic of TOPICS) { if (!(topic in answers)) continue; const answer = Number(answers[topic]); const weight = Number(priorities[topic] || 1); for (const p of PARTIES) { totals[p].distance += Math.abs(answer - PARTY_POSITIONS[topic][p]) * weight; totals[p].weight += 4 * weight; } }
+  const scores = Object.fromEntries(PARTIES.map(p => [p, totals[p].weight ? Math.round(100 * (1 - totals[p].distance / totals[p].weight)) : 50]));
   for (const p of PARTIES) { const accept = Number(answers[`accept_${p}`] || 0); scores[p] += accept * Number(priorities[`accept_${p}`] || 1) * 2; scores[p] = Math.max(0, Math.min(100, Math.round(scores[p]))); }
   return scores;
 }

@@ -39,3 +39,7 @@ test('varje riksdagsparti har spårbar primärkälla och position i varje ämne'
 test('matchningen redovisar låg säkerhet när två partier ligger nära varandra', () => {
   assert.deepEqual(matchConfidence({S:71, M:68, V:40}), {gap:3, label:'låg'});
 });
+
+test('obesvarade sakfrågor ger samma neutrala startpoäng för alla partier', () => {
+  assert.deepEqual(new Set(Object.values(scoreAnswers({}, {}))), new Set([50]));
+});
