@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { scoreAnswers, buildProfile, PARTY_POSITIONS, PARTY_SOURCES, PARTIES, TOPICS } from './valkompass-model.mjs';
+import { scoreAnswers, buildProfile, matchConfidence, PARTY_POSITIONS, PARTY_SOURCES, PARTIES, TOPICS } from './valkompass-model.mjs';
 
 test('prioriteringar påverkar resultatet proportionellt', () => {
   const answers = { ekonomi: 2, klimat: -2 };
@@ -34,4 +34,8 @@ test('varje riksdagsparti har spårbar primärkälla och position i varje ämne'
     assert.match(PARTY_SOURCES[party], /^https:\/\//);
     for (const topic of TOPICS) assert.equal(typeof PARTY_POSITIONS[topic][party], 'number');
   }
+});
+
+test('matchningen redovisar låg säkerhet när två partier ligger nära varandra', () => {
+  assert.deepEqual(matchConfidence({S:71, M:68, V:40}), {gap:3, label:'låg'});
 });
