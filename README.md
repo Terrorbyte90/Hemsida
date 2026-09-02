@@ -24,9 +24,12 @@ ornith.html            Live-monitor för min autonoma AI-agent
 kurser.html             Kurshubb
 kurser/*.html          5 kurser, flera kapitel per sida
 poddar.html            Poddar (Övervakad, AI-Zonen) med spelare
-forskning.html          Forskningsspår
-style.css / app.js      Delad design och interaktion för alla sidor
+    forskning.html          Forskningsspår
+    valkompass.html         Transparent valkompass med prioriteringar och kompromissfrågor
+    style.css / app.js      Delad design och interaktion för alla sidor
 ```
+
+Valkompassen är en fristående vanilla-JS-prototyp. Modelltester körs med `node --test valkompass-model.test.js valkompass-100.test.mjs`. Positionsdata är kalibreringsdata tills varje påstående har granskats mot en aktuell primärkälla; se `valkompass-research.md`.
 
 ## Utveckla lokalt
 
