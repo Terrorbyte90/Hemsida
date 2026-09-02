@@ -26,3 +26,9 @@ export function buildProfile(answers = {}, priorities = {}, acceptances = {}) {
   const stance = Object.fromEntries(TOPICS.map(key => [key, Number(answers[key]||0) > .4 ? 'för' : Number(answers[key]||0) < -.4 ? 'emot' : 'blandad']));
   return { priorities: priorityEntries, stance, acceptances };
 }
+
+export function matchConfidence(scores = {}) {
+  const values = Object.values(scores).sort((a,b) => b-a);
+  const gap = Math.max(0, (values[0] ?? 0) - (values[1] ?? 0));
+  return { gap, label: gap >= 12 ? 'tydlig' : gap >= 6 ? 'måttlig' : 'låg' };
+}
