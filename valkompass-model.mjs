@@ -1,10 +1,13 @@
 export const PARTIES = ['S','M','SD','V','C','MP','KD','L'];
-export const TOPICS = ['ekonomi','välfärd','klimat','migration','trygghet','energi','europa','demokrati'];
+export const TOPICS = ['ekonomi','välfärd','klimat','migration','trygghet','energi','europa','demokrati','skola','arbetsmarknad','bostad','försvar','jämställdhet','landsbygd'];
 export const PARTY_POSITIONS = {
   ekonomi:{S:0,M:2,SD:1,V:-2,C:2,MP:-1,KD:1,L:2}, välfärd:{S:2,M:0,SD:0,V:2,C:-1,MP:1,KD:1,L:0},
   klimat:{S:1,M:-1,SD:-2,V:2,C:1,MP:2,KD:-1,L:1}, migration:{S:-1,M:-1,SD:-2,V:2,C:1,MP:2,KD:-1,L:0},
   trygghet:{S:1,M:2,SD:2,V:-1,C:0,MP:-1,KD:1,L:1}, energi:{S:1,M:2,SD:2,V:-1,C:1,MP:-2,KD:1,L:1},
-  europa:{S:1,M:1,SD:-2,V:-1,C:2,MP:2,KD:1,L:2}, demokrati:{S:1,M:1,SD:-1,V:1,C:1,MP:1,KD:1,L:1}
+  europa:{S:1,M:1,SD:-2,V:-1,C:2,MP:2,KD:1,L:2}, demokrati:{S:1,M:1,SD:-1,V:1,C:1,MP:1,KD:1,L:1},
+  skola:{S:1,M:1,SD:1,V:1,C:0,MP:1,KD:1,L:2}, arbetsmarknad:{S:1,M:2,SD:1,V:-1,C:2,MP:0,KD:1,L:2},
+  bostad:{S:1,M:-1,SD:0,V:2,C:0,MP:1,KD:0,L:-1}, försvar:{S:1,M:2,SD:2,V:-1,C:1,MP:0,KD:2,L:2},
+  jämställdhet:{S:2,M:1,SD:-1,V:2,C:1,MP:2,KD:0,L:2}, landsbygd:{S:1,M:1,SD:2,V:0,C:2,MP:0,KD:2,L:1}
 };
 export const PARTY_SOURCES = {
   S:'https://www.socialdemokraterna.se/val-2026', M:'https://moderaterna.se/valmanifest-2026/',
