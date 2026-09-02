@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { scoreAnswers, buildProfile, PARTY_POSITIONS, TOPICS } from './valkompass-model.mjs';
+import { scoreAnswers, buildProfile, PARTY_POSITIONS, PARTY_SOURCES, PARTIES, TOPICS } from './valkompass-model.mjs';
 
 test('prioriteringar påverkar resultatet proportionellt', () => {
   const answers = { ekonomi: 2, klimat: -2 };
@@ -26,5 +26,12 @@ test('en idealiserad partiprofil matchar partiet självt', () => {
     const answers = Object.fromEntries(TOPICS.map(topic => [topic, PARTY_POSITIONS[topic][party]]));
     const result = scoreAnswers(answers, Object.fromEntries(TOPICS.map(topic => [topic, 3])));
     assert.equal(Math.max(...Object.values(result)), result[party]);
+  }
+});
+
+test('varje riksdagsparti har spårbar primärkälla och position i varje ämne', () => {
+  for (const party of PARTIES) {
+    assert.match(PARTY_SOURCES[party], /^https:\/\//);
+    for (const topic of TOPICS) assert.equal(typeof PARTY_POSITIONS[topic][party], 'number');
   }
 });

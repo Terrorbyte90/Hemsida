@@ -6,6 +6,12 @@ export const PARTY_POSITIONS = {
   trygghet:{S:1,M:2,SD:2,V:-1,C:0,MP:-1,KD:1,L:1}, energi:{S:1,M:2,SD:2,V:-1,C:1,MP:-2,KD:1,L:1},
   europa:{S:1,M:1,SD:-2,V:-1,C:2,MP:2,KD:1,L:2}, demokrati:{S:1,M:1,SD:-1,V:1,C:1,MP:1,KD:1,L:1}
 };
+export const PARTY_SOURCES = {
+  S:'https://www.socialdemokraterna.se/val-2026', M:'https://moderaterna.se/valmanifest-2026/',
+  SD:'https://event.sd.se/wp-content/uploads/2026/05/valplattform-2026.pdf', V:'https://www.vansterpartiet.se/val2026/valplattform-2026-lattlast/',
+  C:'https://val2026.centerpartiet.se/', MP:'https://www.mp.se/valmanifest2026/',
+  KD:'https://kristdemokraterna.se/var-politik/val-2026/valmanifest', L:'https://www.liberalerna.se/var-politik-valet-2026'
+};
 
 export function scoreAnswers(answers = {}, priorities = {}) {
   const totals = Object.fromEntries(PARTIES.map(p => [p, {distance:0, weight:0}]));
