@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, Opus-5]
   pull_request:
     branches: [main]
 
@@ -12,8 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check HTML files exist
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate internal links and HTML
+        run: python3 tools/validate_static.py
+
+      - name: Check JavaScript syntax
         run: |
-          echo "HTML files:"
-          find . -name "*.html" | head -20
-          echo "All good!"
+          find . -name '*.js' -not -path './node_modules/*' -print0 | xargs -0 -n1 node --check
+
+      - name: Run browser-free model tests
+        run: node --test valkompass-model.test.js valkompass-100.test.mjs

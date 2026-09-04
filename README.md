@@ -31,11 +31,23 @@ poddar.html            Poddar (Övervakad, AI-Zonen) med spelare
 
 Valkompassen är en fristående vanilla-JS-prototyp. Modelltester körs med `node --test valkompass-model.test.js valkompass-100.test.mjs`. Positionsdata är kalibreringsdata tills varje påstående har granskats mot en aktuell primärkälla; se `valkompass-research.md`.
 
+## Kvalitetskontroller
+
+Sajten är statisk och har ingen `package.json`, bundler eller separat TypeScript-kod. CI kör därför samma reproducerbara kontroller som lokalt:
+
+```bash
+python3 tools/validate_static.py
+find . -name '*.js' -not -path './node_modules/*' -print0 | xargs -0 -n1 node --check
+node --test valkompass-model.test.js
+```
+
+`projekt.html` har en separat GitHub-verifierad projektsektion. Repo-namn, huvudspråk, beskrivningar och uppdateringsdatum är hämtade från Terrorbyte90:s publika GitHub-metadata; urval, rubriker och övrig presentation är redaktionella formuleringar.
+
 ## Utveckla lokalt
 
-Ingen byggprocess krävs.
+Öppna `index.html` direkt i webbläsaren eller servera katalogen med valfri statisk filserver. Ingen simulator eller extern runtime krävs.
 
-```
+```bash
 python3 -m http.server 8000
 ```
 
