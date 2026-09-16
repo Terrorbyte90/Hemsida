@@ -10,7 +10,15 @@
   let meshes = [], colliders = [], lamps = [], windowLights = [], lastSocial = 0, lastSync = 0;
   let directorIndex = 0, directorChanged = performance.now(), dust, fireflies, stars, sunMesh, moonMesh, plazaGlow;
   let talkLines = null, vehicleMeshes = [], animalMeshes = [], houseLabels = [];
+  let camMode = 'overview', camLook = null, frameDt = 0.016, userOrbit = false;
   const lerp = (a, b, t) => a + (b - a) * t;
+  const damp = (a, b, lambda) => lerp(a, b, 1 - Math.exp(-lambda * Math.max(0.001, frameDt)));
+  const angDamp = (cur, target, lambda) => {
+    let dy = target - cur;
+    while (dy > Math.PI) dy -= Math.PI * 2;
+    while (dy < -Math.PI) dy += Math.PI * 2;
+    return cur + dy * (1 - Math.exp(-lambda * Math.max(0.001, frameDt)));
+  };
   const mat = (c, rough = .78, metal = .05, opts = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: rough, metalness: metal, ...opts });
   const emissiveMat = (c, e, intensity = .55) => new THREE.MeshStandardMaterial({ color: c, emissive: e, emissiveIntensity: intensity, roughness: .38, metalness: .08 });
 
@@ -546,6 +554,97 @@
     }
   }
 
+
+  function sidewalk(w, d, x, z) {
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, d), mat(0x2a3648, .9, .03));
+    mesh.rotation.x = -Math.PI / 2;
+    mesh.position.set(x, .068, z);
+    mesh.receiveShadow = true;
+    city.add(mesh);
+    return mesh;
+  }
+
+  function crosswalk(x, z, alongX = true) {
+    const g = new THREE.Group();
+    g.position.set(x, .076, z);
+    city.add(g);
+    for (let i = -2; i <= 2; i++) {
+      const stripe = box(alongX ? .55 : 2.4, .01, alongX ? 2.4 : .55, 0xd8c898, [alongX ? i * .7 : 0, 0, alongX ? 0 : i * .7], g, .55);
+      stripe.castShadow = false;
+    }
+    return g;
+  }
+
+  function hedge(x, z, w = 1.2, d = .35) {
+    box(w, .45, d, 0x2a5a42, [x, 0, z], city, .95);
+    box(w * .92, .18, d * .85, 0x3d7a56, [x, .45, z], city, .95);
+  }
+
+  function awning(x, z, w, depth, color) {
+    const g = new THREE.Group();
+    g.position.set(x, 0, z);
+    city.add(g);
+    box(w, .06, depth, color, [0, 2.05, depth / 2], g, .55);
+    box(.06, 1.9, .06, 0x2a3344, [-w / 2 + .1, .2, depth], g);
+    box(.06, 1.9, .06, 0x2a3344, [w / 2 - .1, .2, depth], g);
+    return g;
+  }
+
+  function clockTower(x, z) {
+    const g = new THREE.Group();
+    g.position.set(x, 0, z);
+    city.add(g);
+    box(1.1, 4.2, 1.1, 0x4a3840, [0, .2, 0], g, .75);
+    box(1.35, .18, 1.35, 0xc4a36a, [0, 4.4, 0], g, .5);
+    cyl(.08, .08, .55, 0xc4a36a, [0, 4.55, 0], g, 8);
+    const face = box(.7, .7, .04, emissiveMat(0xf5e6c8, 0xf3c98b, .35), [0, 3.4, .56], g);
+    face.castShadow = false;
+    return g;
+  }
+
+  function polishTownExtras() {
+    // Sidewalks along main axes — keep agent lanes clear of clutter
+    sidewalk(76, 1.35, 0, -6.35);
+    sidewalk(76, 1.35, 0, -9.65);
+    sidewalk(76, 1.2, 0, 12.55);
+    sidewalk(76, 1.2, 0, 15.45);
+    sidewalk(1.2, 26, -34.55, 2);
+    sidewalk(1.2, 26, 34.55, 2);
+    sidewalk(54, 1.1, 0, 17.2);
+    // Crosswalks at readable intersections
+    crosswalk(0, -8, true);
+    crosswalk(-18, -8, true);
+    crosswalk(18, -8, true);
+    crosswalk(0, 14, true);
+    crosswalk(-36, 2, false);
+    crosswalk(36, 2, false);
+    // Low hedges framing plaza without blocking walks
+    hedge(-7.2, -1.2, 1.4, .32); hedge(7.2, -1.2, 1.4, .32);
+    hedge(-7.2, 3.6, 1.4, .32); hedge(7.2, 3.6, 1.4, .32);
+    // Landmark accents
+    clockTower(0, -26.2);
+    awning(0, 10.5 + 1.55, 4.2, 1.1, 0x8a4038);
+    awning(18, 4 + 1.65, 4.8, 1.0, 0x3a6a8a);
+    // Path stones from homes to plaza (north → center)
+    for (let z = 16; z >= 8; z -= 1.4) {
+      box(1.6, .04, .9, 0x3a4e62, [0, .05, z], city, .88).castShadow = false;
+    }
+    // Zoo gate path
+    for (let x = -22; x >= -28; x -= 1.5) {
+      box(.9, .04, 1.5, 0x3a4e62, [x, .05, 2], city, .88).castShadow = false;
+    }
+    // Quiet benches off main flow + market edge fill
+    bench(-22, 12, .3); bench(22, 12, -.3);
+    planter(-20, 12.5, 0xc47852); planter(20, 12.5, 0xc47852);
+    stall(-8.5, -14); stall(8.5, -14);
+    // Courtyard glow ring for overview readability
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(6.8, 7.35, 64),
+      new THREE.MeshBasicMaterial({ color: 0xf3c98b, transparent: true, opacity: .12, side: THREE.DoubleSide, depthWrite: false })
+    );
+    ring.rotation.x = -Math.PI / 2; ring.position.set(0, .09, 0); city.add(ring);
+  }
+
   function buildCity() {
     city = new THREE.Group();
     scene.add(city);
@@ -558,11 +657,11 @@
     plazaRing.rotation.x = -Math.PI / 2; plazaRing.position.set(0, .08, 0); city.add(plazaRing);
 
     roadStrip(4.2, 70, 0, -2);
-    const roadEW = new THREE.Mesh(new THREE.PlaneGeometry(78, 3.6), mat(0x222e40, .92, .04));
+    const roadEW = new THREE.Mesh(new THREE.PlaneGeometry(78, 3.6), mat(0x222e40, .92, .04, { map: texRoad }));
     roadEW.rotation.x = -Math.PI / 2; roadEW.position.set(0, .074, -8); roadEW.receiveShadow = true; city.add(roadEW);
-    const roadLoopN = new THREE.Mesh(new THREE.PlaneGeometry(78, 3.2), mat(0x222e40, .92, .04));
+    const roadLoopN = new THREE.Mesh(new THREE.PlaneGeometry(78, 3.2), mat(0x222e40, .92, .04, { map: texRoad }));
     roadLoopN.rotation.x = -Math.PI / 2; roadLoopN.position.set(0, .074, 14); roadLoopN.receiveShadow = true; city.add(roadLoopN);
-    const roadLoopS = new THREE.Mesh(new THREE.PlaneGeometry(78, 3.2), mat(0x222e40, .92, .04));
+    const roadLoopS = new THREE.Mesh(new THREE.PlaneGeometry(78, 3.2), mat(0x222e40, .92, .04, { map: texRoad }));
     roadLoopS.rotation.x = -Math.PI / 2; roadLoopS.position.set(0, .074, -10); roadLoopS.receiveShadow = true; city.add(roadLoopS);
     const roadW = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 28), mat(0x222e40, .92, .04));
     roadW.rotation.x = -Math.PI / 2; roadW.position.set(-36, .074, 2); roadW.receiveShadow = true; city.add(roadW);
@@ -631,7 +730,7 @@
     for (let x = -4.5; x <= 4.5; x += 2.2) planter(x, 4.2);
     bench(-5, 1.2, .2); bench(5, 1.2, -.2); bench(-3, -3, 0); bench(3, -3, 0);
     stall(-6, 6.5); stall(6.5, 6.2);
-    bike(8, 8, .4); bike(8.6, 8.4, -.2); bike(-8, 9, .6);
+    bike(10.5, 7.2, .4); bike(11.1, 7.6, -.2); bike(-10.5, 7.4, .6);
 
     const parked = makeCar(0x5a6a78); parked.position.set(22, 0, 8); parked.rotation.y = .4;
     (state.vehicles || []).forEach(v => {
@@ -644,6 +743,8 @@
     box(14, 5.5, 3, 0x0c1520, [-40, 0, -38], city, 1);
     box(12, 4.2, 3, 0x0b141e, [38, 0, -38], city, 1);
     box(10, 6, 3, 0x0a121c, [20, 0, -39], city, 1);
+
+    polishTownExtras();
 
     talkLines = new THREE.LineSegments(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: .85 }));
     talkLines.frustumCulled = false;
@@ -720,16 +821,54 @@
       el.className = 'city-bubble';
       mount.appendChild(el);
     }
-    el.classList.toggle('thought-bubble', kind === 'thought');
-    const spoken = agent.dialog || agent._dialog || agent.thought;
-    el.innerHTML = kind === 'thought' ? `<i>· · ·</i><span>${agent.thought}</span>` : `<b>${agent.name}</b><span>${spoken}</span>`;
+    const partner = agent.talking_with ? state.agents.find(x => x.id === agent.talking_with) : null;
+    const speaking = kind === 'speech' && partner && (agent.dialog || agent._dialog);
+    el.classList.toggle('thought-bubble', !speaking);
+    el.style.setProperty('--bubble-accent', agent.color || '#f3c98b');
+    const spoken = agent.dialog || agent._dialog || agent.thought || '';
+    if (speaking) {
+      el.innerHTML = `<b>${agent.name}<em>→ ${partner.name}</em></b><span>${spoken}</span>`;
+    } else {
+      el.innerHTML = `<i>· · ·</i><span>${agent.thought || ''}</span>`;
+    }
     const m = meshes[state.agents.indexOf(agent)];
-    if (!m) return;
-    const v = new THREE.Vector3(m.position.x, 2.55, m.position.z);
+    if (!m) { el.classList.add('is-off'); return null; }
+    const v = new THREE.Vector3(m.position.x, 2.65, m.position.z);
     v.project(camera);
-    el.style.left = `${(v.x * .5 + .5) * mount.clientWidth}px`;
-    el.style.top = `${(-v.y * .5 + .5) * mount.clientHeight}px`;
-    el.style.display = (v.z > -1 && v.z < 1) ? 'grid' : 'none';
+    const onScreen = v.z > -1 && v.z < 1 && Math.abs(v.x) < 1.15 && Math.abs(v.y) < 1.2;
+    const sx = (v.x * .5 + .5) * mount.clientWidth;
+    const sy = (-v.y * .5 + .5) * mount.clientHeight;
+    el.style.left = `${sx}px`;
+    el.style.top = `${sy}px`;
+    el.style.display = onScreen ? 'grid' : 'none';
+    el.classList.toggle('is-off', !onScreen);
+    return { el, agent, speaking, sx, sy, priority: speaking ? 2 : (agent.id === selected ? 1 : 0) };
+  }
+
+  function layoutBubbles(items) {
+    const mobile = mount.clientWidth < 680;
+    const visible = items.filter(Boolean).filter(x => x.el.style.display !== 'none');
+    // Prefer speech + selected; dim or hide extras on narrow screens
+    visible.sort((a, b) => b.priority - a.priority || a.sx - b.sx);
+    const keep = mobile ? 2 : 4;
+    const placed = [];
+    visible.forEach((item, i) => {
+      const show = i < keep || item.priority >= 2;
+      item.el.classList.toggle('is-dim', !show && item.priority < 2);
+      if (!show && mobile && item.priority < 2) {
+        item.el.style.display = 'none';
+        return;
+      }
+      let bob = 0;
+      placed.forEach(p => {
+        if (Math.abs(p.sx - item.sx) < (mobile ? 110 : 140) && Math.abs((p.sy - p.bob) - (item.sy - bob)) < 54) {
+          bob += mobile ? 46 : 52;
+        }
+      });
+      item.bob = bob;
+      item.el.style.setProperty('--bob', `${-bob}px`);
+      placed.push(item);
+    });
   }
 
   function renderAgentList() {
@@ -737,7 +876,14 @@
     list.innerHTML = state.agents.map(a =>
       `<button class="agent-card ${a.id === selected ? 'selected' : ''}" data-id="${a.id}" style="--agent-color:${a.color};--need:${100 - a.needs.sleep}%"><span class="agent-orb"></span><strong>${a.name}</strong><small>${a.actionLabel}</small><span class="agent-mood">${a.mood || ''}</span><span class="agent-status"><i></i></span></button>`
     ).join('');
-    list.querySelectorAll('.agent-card').forEach(x => x.onclick = () => { selected = x.dataset.id; renderAgentList(); renderDetail(); });
+    list.querySelectorAll('.agent-card').forEach(x => x.onclick = () => {
+      selected = x.dataset.id;
+      if (camMode === 'overview') {
+        camMode = 'follow';
+        document.querySelectorAll('[data-cam]').forEach(btn => btn.classList.toggle('active', btn.dataset.cam === 'follow'));
+      }
+      renderAgentList(); renderDetail();
+    });
     $('#active-count').textContent = `${state.agents.filter(a => a.action !== 'sleep').length} vakna`;
   }
 
@@ -852,47 +998,48 @@
 
   function updateScene(now) {
     const dtFactor = Math.min(2.2, state.speed);
+    const moveLambda = 3.2 + dtFactor * 1.1;
+    const bubbleItems = [];
     state.agents.forEach((a, i) => {
       const m = meshes[i];
       if (!m) return;
       const target = Array.isArray(a.target) ? a.target : A.slotOf(a, a.place);
-      let x = lerp(m.position.x, target[0], 0.045 * dtFactor);
-      let z = lerp(m.position.z, target[1], 0.045 * dtFactor);
+      // Frame-rate independent damp toward target — no teleport snap
+      let x = damp(m.position.x, target[0], moveLambda);
+      let z = damp(m.position.z, target[1], moveLambda);
       [x, z] = avoidFountain(x, z);
       const dx = target[0] - m.position.x, dz = target[1] - m.position.z;
       const dist = Math.hypot(dx, dz);
-      const moving = dist > .12 && a.action !== 'sleep';
+      const moving = dist > .18 && a.action !== 'sleep' && a.action !== 'drive';
       m.position.x = x; m.position.z = z;
       let desiredYaw = m.rotation.y;
       if (a.talking_with) {
         const other = meshes.find(n => n.userData.id === a.talking_with);
         if (other) desiredYaw = Math.atan2(other.position.x - m.position.x, other.position.z - m.position.z);
-      } else if (moving && dist > 0) desiredYaw = Math.atan2(dx, dz);
-      let dy = desiredYaw - m.rotation.y;
-      while (dy > Math.PI) dy -= Math.PI * 2;
-      while (dy < -Math.PI) dy += Math.PI * 2;
-      m.rotation.y += dy * .14;
+      } else if (moving && dist > 0.05) desiredYaw = Math.atan2(dx, dz);
+      m.rotation.y = angDamp(m.rotation.y, desiredYaw, 7.5);
       const q = m.userData.parts;
-      const walk = moving ? Math.sin(now / 130 + q.phase) : 0;
-      const walkAmt = moving ? .42 : 0;
+      const gait = Math.min(1, dist * 1.8);
+      const walk = moving ? Math.sin(now / 140 + q.phase) * gait : 0;
+      const walkAmt = moving ? .4 * gait : 0;
       if (a.action === 'sleep') {
-        q.la.rotation.z = lerp(q.la.rotation.z, .55, .08);
-        q.ra.rotation.z = lerp(q.ra.rotation.z, -.55, .08);
-        q.ll.rotation.x = lerp(q.ll.rotation.x, .95, .08);
-        q.rl.rotation.x = lerp(q.rl.rotation.x, .95, .08);
-        m.position.y = lerp(m.position.y, .02, .08);
+        q.la.rotation.z = damp(q.la.rotation.z, .55, 6);
+        q.ra.rotation.z = damp(q.ra.rotation.z, -.55, 6);
+        q.ll.rotation.x = damp(q.ll.rotation.x, .95, 6);
+        q.rl.rotation.x = damp(q.rl.rotation.x, .95, 6);
+        m.position.y = damp(m.position.y, .02, 6);
       } else if (a.action === 'drive') {
-        q.la.rotation.z = lerp(q.la.rotation.z, .35, .1);
-        q.ra.rotation.z = lerp(q.ra.rotation.z, -.35, .1);
-        q.ll.rotation.x = lerp(q.ll.rotation.x, .55, .1);
-        q.rl.rotation.x = lerp(q.rl.rotation.x, .55, .1);
-        m.position.y = lerp(m.position.y, .55, .12);
+        q.la.rotation.z = damp(q.la.rotation.z, .35, 7);
+        q.ra.rotation.z = damp(q.ra.rotation.z, -.35, 7);
+        q.ll.rotation.x = damp(q.ll.rotation.x, .55, 7);
+        q.rl.rotation.x = damp(q.rl.rotation.x, .55, 7);
+        m.position.y = damp(m.position.y, .55, 8);
       } else if (['eat', 'sit'].includes(a.action) && !moving) {
-        q.la.rotation.z = lerp(q.la.rotation.z, .25, .08);
-        q.ra.rotation.z = lerp(q.ra.rotation.z, -.2, .08);
-        q.ll.rotation.x = lerp(q.ll.rotation.x, .7, .08);
-        q.rl.rotation.x = lerp(q.rl.rotation.x, .7, .08);
-        m.position.y = lerp(m.position.y, .15, .08);
+        q.la.rotation.z = damp(q.la.rotation.z, .25, 6);
+        q.ra.rotation.z = damp(q.ra.rotation.z, -.2, 6);
+        q.ll.rotation.x = damp(q.ll.rotation.x, .7, 6);
+        q.rl.rotation.x = damp(q.rl.rotation.x, .7, 6);
+        m.position.y = damp(m.position.y, .15, 6);
       } else if (a.action === 'feed' && !moving) {
         q.la.rotation.z = .15 + Math.sin(now / 200) * .5;
         q.ra.rotation.z = -.1;
@@ -928,21 +1075,25 @@
       }
       if (q.key) q.key.intensity = .55 + Math.sin(now / 600 + q.phase) * .14 + (a.id === selected ? .28 : 0);
       if (q.plate) q.plate.material.opacity = a.id === selected ? 1 : .88;
-      bubble(a, a.talking_with ? 'speech' : 'thought');
+      bubbleItems.push(bubble(a, a.talking_with ? 'speech' : 'thought'));
     });
+    layoutBubbles(bubbleItems);
     updateTalkLines();
     vehicleMeshes.forEach(vm => {
       const v = (state.vehicles || []).find(x => x.id === vm.userData.vehicleId);
       if (!v) return;
-      vm.position.x = lerp(vm.position.x, v.x || 0, .12);
-      vm.position.z = lerp(vm.position.z, v.z || 0, .12);
-      vm.rotation.y = v.yaw || 0;
+      vm.position.x = damp(vm.position.x, v.x || 0, 5.5);
+      vm.position.z = damp(vm.position.z, v.z || 0, 5.5);
+      vm.rotation.y = angDamp(vm.rotation.y, v.yaw || 0, 6.5);
+      // Subtle wheel roll feel
+      vm.position.y = Math.sin(now / 180 + (v.t || 0) * 20) * 0.012;
       if (v.rider) {
         const riderMesh = meshes.find(m => m.userData.id === v.rider);
         if (riderMesh) {
-          riderMesh.position.x = vm.position.x;
-          riderMesh.position.z = vm.position.z;
-          riderMesh.rotation.y = vm.rotation.y;
+          riderMesh.position.x = damp(riderMesh.position.x, vm.position.x, 10);
+          riderMesh.position.z = damp(riderMesh.position.z, vm.position.z, 10);
+          riderMesh.position.y = damp(riderMesh.position.y, .55, 8);
+          riderMesh.rotation.y = angDamp(riderMesh.rotation.y, vm.rotation.y, 8);
         }
       }
     });
@@ -982,8 +1133,8 @@
     if (plazaGlow) plazaGlow.intensity = night ? 1.15 : .25;
     if (sunMesh) { sunMesh.position.copy(sun.position); sunMesh.visible = solar > .05; }
     if (moonMesh) { moonMesh.position.set(-sun.position.x * .6, 10, -sun.position.z * .6); moonMesh.visible = night; }
-    scene.fog.near = night ? 40 : 36;
-    scene.fog.far = night ? 115 : 105;
+    scene.fog.near = night ? 48 : 44;
+    scene.fog.far = night ? 145 : 135;
     renderer.toneMappingExposure = night ? 1.14 : dusk ? 1.08 : 1.16;
     updateAtmosphere(now, night, solar);
     rain.visible = state.weather === 'rain';
@@ -1025,10 +1176,11 @@
   function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0b1729);
-    scene.fog = new THREE.Fog(0x0b1729, 35, 110);
-    camera = new THREE.PerspectiveCamera(44, 1, .1, 220);
-    camera.position.set(0, 22, 28);
-    camera.lookAt(0, .8, -0.4);
+    scene.fog = new THREE.Fog(0x0b1729, 42, 140);
+    camera = new THREE.PerspectiveCamera(42, 1, .1, 260);
+    camera.position.set(0, 28, 42);
+    camLook = new THREE.Vector3(0, .7, -1);
+    camera.lookAt(camLook);
     renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', alpha: false });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
@@ -1045,9 +1197,9 @@
     sun = new THREE.DirectionalLight(0xffe0b8, 2.0);
     sun.castShadow = true;
     sun.shadow.mapSize.set(2048, 2048);
-    sun.shadow.camera.near = 1; sun.shadow.camera.far = 90;
-    sun.shadow.camera.left = -40; sun.shadow.camera.right = 40;
-    sun.shadow.camera.top = 40; sun.shadow.camera.bottom = -40;
+    sun.shadow.camera.near = 1; sun.shadow.camera.far = 120;
+    sun.shadow.camera.left = -55; sun.shadow.camera.right = 55;
+    sun.shadow.camera.top = 55; sun.shadow.camera.bottom = -55;
     sun.shadow.bias = -0.00025; sun.shadow.normalBias = 0.02;
     scene.add(sun); scene.add(sun.target);
     rim = new THREE.DirectionalLight(0x88aacc, .25);
@@ -1064,7 +1216,7 @@
     renderer.setSize(r.width, r.height, false);
     camera.aspect = Math.max(r.width / Math.max(r.height, 1), .35);
     const portrait = r.height > r.width * 1.1;
-    camera.fov = portrait ? 54 : (r.width < 680 ? 48 : 42);
+    camera.fov = portrait ? 52 : (r.width < 680 ? 46 : (camMode === 'overview' ? 40 : 44));
     camera.updateProjectionMatrix();
   }
 
@@ -1081,9 +1233,21 @@
     document.querySelectorAll('.time-mode').forEach(b => b.onclick = () => { state.minute = b.dataset.mode === 'day' ? 720 : 1320; });
     $('#ask-agent').onclick = askSelected;
     $('#agent-question').onkeydown = e => { if (e.key === 'Enter') askSelected(); };
-    mount.onpointerdown = e => { dragging = true; lastX = e.clientX; };
+    document.querySelectorAll('[data-cam]').forEach(b => b.onclick = () => {
+      camMode = b.dataset.cam;
+      userOrbit = false;
+      document.querySelectorAll('[data-cam]').forEach(x => x.classList.toggle('active', x === b));
+      if (camMode === 'follow' || camMode === 'street') directorChanged = performance.now();
+    });
+    mount.onpointerdown = e => { dragging = true; lastX = e.clientX; userOrbit = true; };
     addEventListener('pointerup', () => dragging = false);
-    addEventListener('pointermove', e => { if (dragging) { yaw += (e.clientX - lastX) * .004; lastX = e.clientX; } });
+    addEventListener('pointermove', e => {
+      if (!dragging) return;
+      yaw += (e.clientX - lastX) * .004;
+      lastX = e.clientX;
+      if (camMode === 'street') camMode = 'follow'; // orbit exits pure street lock
+      document.querySelectorAll('[data-cam]').forEach(x => x.classList.toggle('active', x.dataset.cam === camMode));
+    });
     mount.onclick = e => {
       if (dragging) return;
       const rect = renderer.domElement.getBoundingClientRect();
@@ -1094,7 +1258,14 @@
       if (hit) {
         let g = hit.object;
         while (g && !g.userData.id) g = g.parent;
-        if (g) { selected = g.userData.id; renderAgentList(); renderDetail(); }
+        if (g) {
+          selected = g.userData.id;
+          if (camMode === 'overview') {
+            camMode = 'follow';
+            document.querySelectorAll('[data-cam]').forEach(x => x.classList.toggle('active', x.dataset.cam === 'follow'));
+          }
+          renderAgentList(); renderDetail();
+        }
       }
     };
   }
@@ -1103,6 +1274,7 @@
     requestAnimationFrame(loop);
     const dt = Math.min(100, now - last);
     last = now;
+    frameDt = dt / 1000;
     simAccum += dt;
     if (simAccum > 700) {
       const liveFresh = state.mode === 'live' && now - lastSync < 25000;
@@ -1111,7 +1283,7 @@
       simAccum = 0;
       renderAgentList(); renderDetail(); renderEvents(); renderDirector();
     }
-    if (now - directorChanged > 18000 && !dragging) {
+    if (now - directorChanged > 18000 && !dragging && camMode === 'overview' && !userOrbit) {
       const awake = meshes.filter(m => {
         const a = state.agents.find(x => x.id === m.userData.id);
         return a && a.action !== 'sleep';
@@ -1119,19 +1291,69 @@
       directorIndex = (directorIndex + 1) % Math.max((awake.length || meshes.length), 1);
       directorChanged = now;
     }
-    const plaza = new THREE.Vector3(0, .85, 0);
     const selMesh = meshes.find(m => m.userData.id === selected);
     const awake = meshes.filter(m => (state.agents.find(x => x.id === m.userData.id) || {}).action !== 'sleep');
     const dirMesh = (awake[directorIndex] || meshes[directorIndex] || meshes[0]);
-    const agentMesh = selMesh || dirMesh;
-    const focus = plaza.clone();
-    if (agentMesh) focus.lerp(new THREE.Vector3(agentMesh.position.x, 1.05, agentMesh.position.z), .32);
+    const followMesh = selMesh || dirMesh;
     const mobile = mount.clientWidth < 680 || innerWidth < 680;
-    const radius = mobile ? 32 : 28;
-    const elev = mobile ? 20 : 17;
-    const desired = new THREE.Vector3(focus.x + Math.sin(yaw) * radius, focus.y + elev, focus.z + Math.cos(yaw) * radius);
-    camera.position.lerp(desired, .048);
-    camera.lookAt(focus);
+    let focusTarget = new THREE.Vector3(0, .7, -1);
+    let radius = mobile ? 46 : 40;
+    let elev = mobile ? 30 : 26;
+    let lookH = .85;
+    if (camMode === 'follow' && followMesh) {
+      focusTarget.set(followMesh.position.x, 1.05, followMesh.position.z);
+      radius = mobile ? 13 : 11;
+      elev = mobile ? 7.5 : 6.4;
+      lookH = 1.15;
+    } else if (camMode === 'street' && followMesh) {
+      const facing = followMesh.rotation.y;
+      focusTarget.set(
+        followMesh.position.x + Math.sin(facing) * 1.2,
+        1.35,
+        followMesh.position.z + Math.cos(facing) * 1.2
+      );
+      radius = mobile ? 8.5 : 7.2;
+      elev = mobile ? 3.6 : 3.1;
+      lookH = 1.45;
+      // Street cam sits behind the agent
+      const desiredStreet = new THREE.Vector3(
+        followMesh.position.x - Math.sin(facing) * radius,
+        followMesh.position.y + elev,
+        followMesh.position.z - Math.cos(facing) * radius
+      );
+      camera.position.x = damp(camera.position.x, desiredStreet.x, 3.8);
+      camera.position.y = damp(camera.position.y, desiredStreet.y, 3.8);
+      camera.position.z = damp(camera.position.z, desiredStreet.z, 3.8);
+      if (!camLook) camLook = focusTarget.clone();
+      camLook.x = damp(camLook.x, focusTarget.x, 5.2);
+      camLook.y = damp(camLook.y, lookH, 5.2);
+      camLook.z = damp(camLook.z, focusTarget.z, 5.2);
+      camera.lookAt(camLook);
+      updateScene(now);
+      renderer.render(scene, camera);
+      return;
+    } else {
+      // Overview: frame the whole town; gentle bias toward activity
+      focusTarget.set(0, .55, -1);
+      if (followMesh && !userOrbit) {
+        focusTarget.lerp(new THREE.Vector3(followMesh.position.x * .22, .7, followMesh.position.z * .18), .35);
+      }
+      radius = mobile ? 48 : 42;
+      elev = mobile ? 32 : 27;
+    }
+    const desired = new THREE.Vector3(
+      focusTarget.x + Math.sin(yaw) * radius,
+      focusTarget.y + elev,
+      focusTarget.z + Math.cos(yaw) * radius
+    );
+    camera.position.x = damp(camera.position.x, desired.x, 3.2);
+    camera.position.y = damp(camera.position.y, desired.y, 3.2);
+    camera.position.z = damp(camera.position.z, desired.z, 3.2);
+    if (!camLook) camLook = focusTarget.clone();
+    camLook.x = damp(camLook.x, focusTarget.x, 4.5);
+    camLook.y = damp(camLook.y, lookH, 4.5);
+    camLook.z = damp(camLook.z, focusTarget.z, 4.5);
+    camera.lookAt(camLook);
     updateScene(now);
     renderer.render(scene, camera);
   }

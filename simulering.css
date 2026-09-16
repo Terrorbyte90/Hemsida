@@ -133,23 +133,43 @@
 .social-line{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #ffffff0d;color:#b6c0d0;font-size:.78rem;line-height:1.4}
 .social-empty{color:#75839a;font:11px var(--mono,monospace);padding:12px 0}
 .city-bubble{
-  position:absolute;z-index:3;transform:translate(-50%,-100%);
-  width:min(190px,30vw);padding:10px 12px;
-  border:1px solid #ffffff30;border-radius:14px 14px 14px 5px;
-  background:linear-gradient(165deg,#121c2cf0,#0a111ee8);
-  backdrop-filter:blur(14px);
-  box-shadow:0 12px 32px -14px #000,0 0 0 1px #ffffff08 inset;
-  pointer-events:none;display:grid;gap:4px;color:#e7edf7;font-size:11px;line-height:1.3;
-  animation:bubble-in .35s cubic-bezier(.22,1,.36,1)
+  position:absolute;z-index:3;transform:translate(-50%,calc(-100% + var(--bob,0px)));
+  width:min(200px,42vw);padding:9px 11px 10px;
+  border:1px solid color-mix(in srgb,var(--bubble-accent,#f3c98b),transparent 55%);
+  border-radius:14px 14px 14px 4px;
+  background:linear-gradient(165deg,#152033f5,#0a111ef0);
+  backdrop-filter:blur(16px);
+  box-shadow:
+    0 14px 36px -16px #000,
+    0 0 0 1px #ffffff0a inset,
+    0 0 24px -8px color-mix(in srgb,var(--bubble-accent,#f3c98b),transparent 70%);
+  pointer-events:none;display:grid;gap:5px;color:#e7edf7;font-size:11px;line-height:1.35;
+  animation:bubble-in .38s cubic-bezier(.22,1,.36,1);
+  transition:opacity .25s,transform .2s;
+  max-height:88px;overflow:hidden
 }
 .city-bubble:after{
-  content:"";position:absolute;bottom:-6px;left:16px;
-  border:6px solid transparent;border-top-color:#ffffff28;border-left:0
+  content:"";position:absolute;bottom:-7px;left:18px;
+  border:7px solid transparent;border-top-color:#ffffff22;border-left:0
 }
-.city-bubble b{color:#f3c878;font:9px var(--mono,monospace);letter-spacing:.08em;text-transform:uppercase}
-.thought-bubble{opacity:.78;width:160px;border-radius:16px;background:#111a28dd;color:#bfcadd;font-style:italic}
-.thought-bubble i{color:#75d6c7;font-style:normal;letter-spacing:4px}
-.thought-bubble span{max-height:29px;overflow:hidden}
+.city-bubble b{
+  color:var(--bubble-accent,#f3c878);font:9px var(--mono,monospace);
+  letter-spacing:.06em;text-transform:uppercase;display:flex;gap:6px;align-items:center;
+  text-shadow:0 0 12px color-mix(in srgb,var(--bubble-accent,#f3c98b),transparent 55%)
+}
+.city-bubble b em{font-style:normal;color:#8491a8;letter-spacing:.04em;font-weight:500}
+.city-bubble span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.thought-bubble{
+  opacity:.72;width:min(168px,38vw);border-radius:16px;
+  background:#111a28e0;color:#bfcadd;font-style:italic;
+  border-color:#ffffff18;box-shadow:0 10px 28px -18px #000
+}
+.thought-bubble i{color:#75d6c7;font-style:normal;letter-spacing:4px;font-size:10px}
+.thought-bubble span{max-height:34px;-webkit-line-clamp:2}
+.city-bubble.is-dim{opacity:.42;transform:translate(-50%,calc(-100% + var(--bob,0px))) scale(.96)}
+.city-bubble.is-off{opacity:0;visibility:hidden}
+.cam-presets{display:flex;gap:4px;margin-right:4px}
+.sim-button.cam.active{background:#75d6c7;color:#0b1520;border-color:#75d6c7;box-shadow:0 0 18px #75d6c733}
 @keyframes sim-pulse{50%{opacity:.45;box-shadow:0 0 0 #75d6c7}}
 @keyframes bubble-in{from{opacity:0;transform:translate(-50%,-90%) scale(.94)}to{opacity:1;transform:translate(-50%,-100%) scale(1)}}
 @media(max-width:980px){
@@ -176,7 +196,10 @@
   .needs{gap:3px}
   .nav-links{max-height:70vh;overflow:auto}
   .social-log{grid-template-columns:1fr}
-  .city-bubble{width:145px;font-size:10px}
+  .city-bubble{width:min(132px,46vw);font-size:10px;padding:8px 9px;max-height:76px}
+  .thought-bubble{width:min(118px,42vw)}
+  .cam-presets{width:100%;margin:0 0 8px}
+  .stage-actions{flex-direction:column;align-items:flex-start}
 }
 @media(prefers-reduced-motion:reduce){
   .live-dot,.model-dot,.pulse-dot{animation:none}
@@ -193,4 +216,3 @@
 .rel-row i{display:block;height:4px;background:#243044;border-radius:4px;overflow:hidden}
 .rel-row i:after{content:"";display:block;width:var(--value);height:100%;background:var(--agent-color);border-radius:4px}
 .social-line span{color:#c5cedc}
-.city-bubble b{text-shadow:0 0 12px #f3c98b55}
