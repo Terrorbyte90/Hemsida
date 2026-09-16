@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Fable — Qwen3.8-27B Fable Distill, Teds lokala språkmodell. Modellkort, live-status och korta demos från hemlabbet.">
+<title>Fable — lokal Qwen-labb · Ted Svärd</title>
+<link rel="canonical" href="https://tedsvard.se/fable.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fable — lokal Qwen-labb">
+<meta property="og:description" content="Se statusen för Qwen3.8-27B-Fable Distill som körs lokalt på Teds server — modellkort, live-signal och korta demos.">
+<meta property="og:url" content="https://tedsvard.se/fable.html">
+<meta property="og:locale" content="sv_SE">
+<meta name="theme-color" content="#F3EEE6">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Hem</a>
+      <a href="projekt.html">Projekt</a>
+      <a href="simulering.html">Simulering</a>
+      <a href="fable.html" class="nav-signal" aria-current="page"><span class="pulse"></span>Fable</a>
+      <a href="kurser.html">Kurser</a>
+      <a href="poddar.html">Poddar</a>
+      <a href="rostlabb.html">Röst-labb</a>
+      <a href="forskning.html">Forskning</a>
+      <a href="om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="ornith-hero wrap">
+  <div class="eyebrow">Lokal labb · Qwen3.8-27B Fable Distill</div>
+  <h1 style="font-family:var(--sans);font-weight:700;letter-spacing:-.03em;font-size:clamp(2.2rem,5vw,3.8rem);margin-top:18px">
+    Fable tänker <em style="color:var(--signal)">här hemma</em>.
+  </h1>
+  <p class="lede" style="margin-top:18px;max-width:62ch;color:var(--ink-soft);font-size:1.08rem;line-height:1.6">
+    Ornith-35B är avvecklad. Det som körs nu är en dens modell — Qwen3.8-27B Fable Distill —
+    kvantiserad till Q4_K_M och serverad lokalt via llama.cpp. Den här sidan visar live-status
+    och korta, sparade demos. Full fri chat stannar i det privata hemlabbet.
+  </p>
+  <div class="status-line">
+    <span class="dot off" data-fable-dot></span>
+    <span data-fable-status>Ansluter till Fable …</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="monitor-grid">
+    <section class="monitor-panel reveal">
+      <div class="ph">
+        <span class="t">Live-status</span>
+        <span class="t" data-fable-updated style="opacity:.7"></span>
+      </div>
+      <div class="now-playing">
+        <div class="cat">Modell</div>
+        <div class="txt" data-fable-model>Qwen3.8-27B-Fable Distill</div>
+        <div class="phase" data-fable-state style="display:none"></div>
+        <div class="elapsed" data-fable-alias></div>
+      </div>
+      <ul class="activity" data-fable-facts>
+        <li class="activity-item"><span class="d"></span><span class="txt">Läser in status från hemlabbet …</span><span class="tag"></span></li>
+      </ul>
+    </section>
+
+    <aside class="queue-panel reveal">
+      <div class="ph">Kort fakta</div>
+      <div class="count" data-fable-params>27B</div>
+      <div class="count-label">parametrar · dens transformer</div>
+      <ul class="queue-list">
+        <li class="queue-item"><span>Kvantisering</span><span class="cat" data-fable-quant>Q4_K_M</span></li>
+        <li class="queue-item"><span>Kontext</span><span class="cat" data-fable-ctx>65&nbsp;536</span></li>
+        <li class="queue-item"><span>Viktstorlek</span><span class="cat" data-fable-size>~17&nbsp;GB</span></li>
+        <li class="queue-item"><span>Runtime</span><span class="cat">llama.cpp</span></li>
+        <li class="queue-item"><span>Hosting</span><span class="cat">self-hosted</span></li>
+      </ul>
+    </aside>
+  </div>
+
+  <section class="rail-head reveal" style="margin-top:96px">
+    <h2>Demo-labb</h2>
+  </section>
+  <p style="margin-top:14px;max-width:70ch;color:var(--muted)">
+    Tre sparade svar i Fables ton — streamade lokalt i webbläsaren. De är inte live-inferens:
+    en 27B-modell på CPU är för långsam och för dyr att öppna för publik chat. Statuslampan ovan är däremot äkta.
+  </p>
+
+  <div class="fable-demo reveal">
+    <div class="fable-prompts" role="tablist" aria-label="Demo-prompts">
+      <button type="button" class="fable-prompt active" data-demo="0" aria-selected="true">Berätta en kort fabel</button>
+      <button type="button" class="fable-prompt" data-demo="1" aria-selected="false">Förklara MoE vs dens</button>
+      <button type="button" class="fable-prompt" data-demo="2" aria-selected="false">Skriv en systemprompt</button>
+    </div>
+    <div class="fable-stage">
+      <div class="fable-bubble user" data-demo-user></div>
+      <div class="fable-bubble assistant" data-demo-assistant aria-live="polite"><span class="cursor"></span></div>
+      <div class="fable-meta"><span class="tag">Sparad demo</span><span data-demo-note>Inte live-inferens</span></div>
+    </div>
+  </div>
+
+  <section class="rail-head reveal" style="margin-top:110px">
+    <h2>Om Fable</h2>
+  </section>
+  <section class="about-grid reveal" style="margin-top:26px">
+    <div>
+      <p><strong>Fable</strong> är mitt namn på den lokala distill-modellen
+        <em>Qwen3.8-27B-Fable-Distill</em>. Den ersätter Ornith-35B (MoE) som tidigare körde
+        på samma server. Där Ornith var en Mixture-of-Experts med många vilande experter är
+        Fable en <strong>dens transformer</strong> — varje lager deltar i varje token, vilket
+        ger en mer förutsägbar lastprofil på CPU.</p>
+      <p>Den körs via <strong>llama.cpp</strong> (alias <code>qwen38-27b</code>) med ett stort
+        kontextfönster och Q4_K_M-kvantisering så att ~17&nbsp;GB vikter får plats i minnet.
+        Agentplattformen Hermes/Mira och privata verktyg som Paseo pratar med samma motor —
+        men den råa inferensen exponeras inte publikt.</p>
+      <p>Varför visa den här sidan? För att self-hosting ska synas. En statussignal, ett modellkort
+        och ärliga demos säger mer om hur jag bygger än en död “live feed” till en modell som inte längre finns.</p>
+    </div>
+    <div class="about-facts">
+      <dl>
+        <dt>Produktnamn</dt><dd>Fable</dd>
+        <dt>Bas</dt><dd>Qwen3.8-27B Fable Distill</dd>
+        <dt>Arkitektur</dt><dd>Dens transformer</dd>
+        <dt>Kvantisering</dt><dd>Q4_K_M (~17 GB)</dd>
+        <dt>Kontextfönster</dt><dd>65 536 tokens</dd>
+        <dt>Alias</dt><dd>qwen38-27b</dd>
+        <dt>Publikt</dt><dd>Status + demos</dd>
+        <dt>Privat</dt><dd>Full chat via hemlabb/Tailscale</dd>
+      </dl>
+    </div>
+  </section>
+
+  <p class="ornith-note reveal">
+    Ornith-feeden är avstängd (404). Den här sidan läser bara en redigerad status-JSON —
+    modellnamn, alias, kontext och om servern svarar. Inga privata IP-adresser, sökvägar,
+    nycklar eller råa loggar lämnar servern.
+  </p>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener">GitHub</a>
+      <a href="projekt.html">Projekt</a>
+      <a href="poddar.html">Poddar</a>
+      <a href="rostlabb.html">Röst-labb</a>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script src="fable.js"></script>
+</body>
+</html>

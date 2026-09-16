@@ -793,3 +793,47 @@ body.menu-open{ overflow:hidden; }
   .player-bar .meta .sh{ display:none; }
 }
 .voice-lib span{ font-family:var(--mono); font-size:.8rem; background:rgba(255,255,255,.5); border:1px solid var(--line-glass); border-radius:99px; padding:8px 16px; }
+
+
+/* ============================================================
+   FABLE lab demos
+   ============================================================ */
+.fable-demo{ margin-top:28px; display:grid; gap:18px; }
+.fable-prompts{ display:flex; flex-wrap:wrap; gap:10px; }
+.fable-prompt{
+  font-family:var(--mono); font-size:.78rem; letter-spacing:.02em;
+  border-radius:99px; padding:10px 16px; cursor:pointer;
+  background:var(--glass); border:1px solid var(--glass-border);
+  color:var(--ink-soft); transition:transform .25s var(--ease-out-expo), background .2s, color .2s;
+}
+.fable-prompt:hover{ transform:translateY(-2px); color:var(--ink); }
+.fable-prompt.active{
+  color:#fff; background:linear-gradient(120deg,var(--signal-dim),var(--violet));
+  border-color:transparent; box-shadow:0 12px 28px -16px rgba(75,76,240,.55);
+}
+.fable-stage{
+  border-radius:22px; padding:22px 24px 18px; display:flex; flex-direction:column; gap:14px;
+  background:linear-gradient(150deg,#241d33,#1D1726 65%); color:var(--paper);
+  box-shadow:0 24px 60px -28px rgba(120,70,160,.5); position:relative; overflow:hidden;
+}
+.fable-stage::before{ content:''; position:absolute; inset:0; opacity:.45; pointer-events:none;
+  background:radial-gradient(circle at 12% 0%, rgba(255,152,104,.28), transparent 42%),
+             radial-gradient(circle at 90% 100%, rgba(166,132,255,.32), transparent 48%); filter:blur(36px); }
+.fable-stage > *{ position:relative; z-index:1; }
+.fable-bubble{ border-radius:16px; padding:14px 16px; line-height:1.55; font-size:.95rem; }
+.fable-bubble.user{
+  align-self:flex-end; max-width:92%;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+  color:var(--muted-on-dark);
+}
+.fable-bubble.assistant{
+  align-self:stretch; min-height:7.5em;
+  background:rgba(0,0,0,.22); border:1px solid var(--dark-border);
+  font-family:var(--serif); font-style:italic; font-size:1.05rem; line-height:1.5;
+}
+.fable-bubble .cursor{
+  display:inline-block; width:0.55ch; height:1em; margin-left:2px; vertical-align:-2px;
+  background:var(--alive); animation:breathe 1.2s ease-in-out infinite;
+}
+.fable-meta{ display:flex; justify-content:space-between; gap:12px; font-family:var(--mono); font-size:.72rem; color:var(--muted-on-dark); }
+.fable-meta .tag{ color:var(--amber); text-transform:uppercase; letter-spacing:.08em; }

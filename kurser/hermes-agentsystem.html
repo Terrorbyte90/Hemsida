@@ -22,7 +22,7 @@
       <a href="../index.html">Hem</a>
       <a href="../projekt.html">Projekt</a>
       <a href="../simulering.html">Simulering</a>
-      <a href="../ornith.html" class="nav-signal"><span class="pulse"></span>Ornith</a>
+      <a href="../fable.html" class="nav-signal"><span class="pulse"></span>Fable</a>
       <a href="../kurser.html" aria-current="page">Kurser</a>
       <a href="../poddar.html">Poddar</a>
       <a href="../rostlabb.html">Röst-labb</a>
@@ -80,7 +80,7 @@
         <thead><tr><th>Del</th><th>Roll</th></tr></thead>
         <tbody>
           <tr><td>Gateway</td><td>Tar emot meddelanden, håller sessioner, dirigerar till rätt modell och verktyg</td></tr>
-          <tr><td>Modell</td><td>Själva språkmodellen som resonerar — hos mig en blandning av en molnmodell och en egen lokal modell (Ornith-35B)</td></tr>
+          <tr><td>Modell</td><td>Själva språkmodellen som resonerar — hos mig en blandning av en molnmodell och en egen lokal modell (Fable / Qwen3.8-27B)</td></tr>
           <tr><td>Plugins</td><td>Kopplingar utåt: meddelandeplattformar, webbsök, hemautomation</td></tr>
           <tr><td>Skills</td><td>Sparade arbetssätt — instruktioner agenten lär sig och återanvänder, istället för att uppfinna hjulet varje gång</td></tr>
           <tr><td>Cron / schemaläggare</td><td>Startar agent-jobb på tid ("varje morgon 09:00"), inte bara som svar på ett meddelande</td></tr>
@@ -89,7 +89,7 @@
       <p>Det viktiga är att ingen av delarna är hela agenten. Modellen är hjärnan, men gatewayen, minnet och verktygen är lika viktiga för att den ska kunna <em>göra</em> något användbart, inte bara <em>säga</em> något klokt.</p>
       <div class="callout">
         <div class="lbl">I praktiken</div>
-        <p>Min egen Hermes-instans har en lokal modell (Ornith-35B) som kör på servern för integritet och kostnad, och kan falla tillbaka på en molnmodell för uppgifter som kräver mer kapacitet. Det är samma avvägning du möter i <a href="ai-landskapet.html">kurs 02</a> — moln kontra self-hosted.</p>
+        <p>Min egen Hermes-instans har en lokal modell (Fable / Qwen3.8-27B) som kör på servern för integritet och kostnad, och kan falla tillbaka på en molnmodell för uppgifter som kräver mer kapacitet. Det är samma avvägning du möter i <a href="ai-landskapet.html">kurs 02</a> — moln kontra self-hosted.</p>
       </div>
     </section>
 
@@ -116,7 +116,7 @@
       <p>I Hermes finns verktyg för bland annat webbsökning (via en egen, privat sökmotor), filhantering, terminalkommandon och integrationer mot tredjepartstjänster via en öppen standard som heter <strong>MCP</strong> (Model Context Protocol) — ett sätt att koppla in nya verktyg utan att bygga om agentens kärna varje gång.</p>
       <div class="callout">
         <div class="lbl">Konkret exempel</div>
-        <p>Min bakgrundsagent Ornith har ett litet, medvetet begränsat verktygsset: köra skalkommandon, läsa filer, skriva filer. Med bara de tre kan den ändå utföra riktiga jobb — inspektera ett system, felsöka, skapa en Git-branch och öppna en pull request — steg för steg, ett verktygsanrop i taget.</p>
+        <p>Min Hermes-bakgrundsagent har ett litet, medvetet begränsat verktygsset: köra skalkommandon, läsa filer, skriva filer. Med bara de tre kan den ändå utföra riktiga jobb — inspektera ett system, felsöka, skapa en Git-branch och öppna en pull request — steg för steg, ett verktygsanrop i taget.</p>
       </div>
     </section>
 
@@ -156,7 +156,7 @@
         <li>Lägg alltid in en gräns — max antal steg, eller en tidsgräns — innan du låter den arbeta utan uppsikt.</li>
         <li>Låt den rapportera vad den gjorde, inte bara att den är "klar". Ett bra agentsystem lämnar alltid ett spår.</li>
       </ol>
-      <p>Vill du se principerna i den här kursen köra live, i verkligheten, på riktig hårdvara? Min bakgrundsagent Ornith arbetar dygnet runt just nu — <a href="../ornith.html">se vad den gör</a>.</p>
+      <p>Vill du se principerna i den här kursen köra live, i verkligheten, på riktig hårdvara? Fable kör lokalt dygnet runt — <a href="../fable.html">öppna labbsidan</a>.</p>
     </section>
 
   </article>

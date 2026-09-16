@@ -3,118 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Ornith-35B — en autonom AI som arbetar dygnet runt på Ted Svärds egen server. Se vad den gör just nu, live.">
-<title>Ornith — arbetar live · Ted Svärd</title>
-<link rel="canonical" href="https://terrorbyte90.github.io/Hemsida/ornith.html">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ornith — en self-hostad AI">
-<meta property="og:description" content="Följ en lokal språkmodell och agent som kör på Teds egen server.">
-<link rel="stylesheet" href="style.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+<title>Ornith har blivit Fable · Ted Svärd</title>
+<link rel="canonical" href="https://tedsvard.se/fable.html">
+<meta http-equiv="refresh" content="0; url=fable.html">
+<meta name="robots" content="noindex">
+<script>location.replace('fable.html');</script>
 </head>
 <body>
-
-<nav class="site-nav">
-  <div class="wrap row">
-    <a class="brand" href="index.html"><span class="dot"></span>Ted Svärd</a>
-    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
-    <div class="nav-links">
-      <a href="index.html">Hem</a>
-      <a href="projekt.html">Projekt</a>
-      <a href="simulering.html">Simulering</a>
-      <a href="ornith.html" class="nav-signal" aria-current="page"><span class="pulse"></span>Ornith</a>
-      <a href="kurser.html">Kurser</a>
-      <a href="poddar.html">Poddar</a>
-      <a href="rostlabb.html">Röst-labb</a>
-      <a href="forskning.html">Forskning</a>
-      <a href="om-mig.html">Om mig</a>
-    </div>
-  </div>
-</nav>
-
-<header class="ornith-hero wrap">
-  <div class="eyebrow">Live · Titan-servern</div>
-  <h1 style="font-family:var(--sans);font-weight:700;letter-spacing:-.03em;font-size:clamp(2.2rem,5vw,3.8rem);margin-top:18px">
-    Ornith-35B arbetar <em style="color:var(--signal)">just nu</em>.
-  </h1>
-  <p class="lede" style="margin-top:18px;max-width:60ch;color:var(--ink-soft);font-size:1.08rem;line-height:1.6">
-    En 35-miljard-parameter modell kör lokalt på min egen server, dygnet runt, genom en prioritetsstyrd
-    uppgiftslista. Det du ser här är en fördröjd, säkrad ström — ingen känslig data lämnar servern.
-  </p>
-  <div class="status-line">
-    <span class="dot" data-status-dot></span>
-    <span data-status-text>Ansluter till signalen …</span>
-  </div>
-</header>
-
-<main class="wrap">
-  <div class="monitor-grid">
-    <section class="monitor-panel reveal">
-      <div class="ph">
-        <span class="t">Nu</span>
-      </div>
-      <div class="now-playing">
-        <div class="cat">Aktuell uppgift</div>
-        <div class="txt" data-now-task>Läser in senaste signalen …</div>
-        <div class="phase" data-now-phase style="display:none"></div>
-        <div class="elapsed" data-now-elapsed></div>
-      </div>
-      <ul class="activity" data-activity>
-        <li class="activity-item"><span class="d"></span><span class="txt">Väntar på data från servern …</span><span class="tag"></span></li>
-      </ul>
-    </section>
-
-    <aside class="queue-panel reveal">
-      <div class="ph">I kön</div>
-      <div class="count" data-pending-count>–</div>
-      <div class="count-label">väntande uppgifter</div>
-      <ul class="queue-list" data-queue></ul>
-    </aside>
-  </div>
-
-  <p class="ornith-note reveal">
-    Så här fungerar det: Ornith är en autonom bakgrundsagent på min server som min Hermes Agent Mira
-    styr genom en prioritetslista — allt från hälsokontroller och säkerhetsgranskningar till research och kodjobb.
-    En separat övervakningsprocess på servern filtrerar bort allt som skulle kunna vara känsligt
-    (sökvägar, kommandon, interna adresser) innan något lämnar servern, med en kort fördröjning på
-    ett par sekunder. Det som visas här är uppgiftstitlar, kategorier och tidsdata — aldrig råa loggar.
-  </p>
-
-  <section class="rail-head reveal" style="margin-top:110px">
-    <h2>Om modellen</h2>
-  </section>
-  <section class="about-grid reveal" style="margin-top:26px">
-    <div>
-      <p>Ornith-35B är en <strong>Mixture-of-Experts-modell</strong> (qwen35moe-arkitektur) — istället för att ett enda gigantiskt nätverk hanterar varje token på samma sätt, innehåller den 256 mindre "expert"-nätverk och en router som väljer ut åtta av dem för varje enskild token. Det gör att modellen kan ha ett mycket stort totalt parameterantal utan att behöva aktivera allt samtidigt, ungefär som ett stort sjukhus där en triage-sköterska skickar varje patient till bara de specialister som faktiskt behövs.</p>
-      <p>Den kör helt lokalt på min server, Titan, via ik_llama.cpp — en variant av llama.cpp optimerad för just MoE-modeller och kvantiserade vikter. Modellen är kvantiserad till IQ4_XS (cirka 18,8 GB på disk) för att rymmas och köra rimligt snabbt.</p>
-      <p>Jag kör den med <strong>full kvalitet</strong> — inga reducerade experter, ingen genväg för hastighet. Flaskhalsen är serverns minnesbandbredd, inte antalet trådar; efter noggrann trimning (trådantal, minneslåsning, transparenta hugepages) går den stabilt och förutsägbart i generering. Långsammare än ett moln-API, men den är min, kör dygnet runt, och skickar aldrig en enda token till någon annans server.</p>
-    </div>
-    <div class="about-facts">
-      <dl>
-        <dt>Arkitektur</dt><dd>qwen35moe · Mixture-of-Experts</dd>
-        <dt>Experter</dt><dd>256 totalt, 8 aktiva per token</dd>
-        <dt>Lager</dt><dd>40</dd>
-        <dt>Kvantisering</dt><dd>IQ4_XS (~18,8 GB)</dd>
-        <dt>Kontextfönster</dt><dd>32 768 tokens</dd>
-        <dt>Hastighet</dt><dd>Stabil generering, CPU-bunden</dd>
-        <dt>Körs via</dt><dd>ik_llama.cpp</dd>
-      </dl>
-    </div>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap row">
-    <span class="fmuted">© 2026 Ted Svärd</span>
-    <div class="footer-links">
-      <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener">GitHub</a>
-      <a href="projekt.html">Projekt</a>
-      <a href="poddar.html">Poddar</a>
-      <a href="rostlabb.html">Röst-labb</a>
-    </div>
-  </div>
-</footer>
-
-<script src="app.js"></script>
+<p style="font-family:system-ui;padding:2rem;max-width:40rem">Ornith-sidan är ersatt av <a href="fable.html">Fable</a> — den lokala Qwen3.8-27B Fable Distill-labbsidan.</p>
 </body>
 </html>

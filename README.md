@@ -10,8 +10,8 @@ Live: https://terrorbyte90.github.io/Hemsida/
 - Typsnitt: Instrument Serif + Instrument Sans (Google Fonts).
 - Native CSS scroll-driven animations (`animation-timeline: view()`) för scroll-reveals,
   med en JS/IntersectionObserver-fallback för webbläsare utan stöd.
-- En liten, redigerad live-feed (`ornith.html`) hämtar status från en process på min
-  egen server (Titan) via `app.js` → `https://169.58.43.27.nip.io/ornith-feed/api/status`.
+- En liten, redigerad live-feed (`fable.html`) hämtar status från en process på min
+  egen server (Titan) via `app.js` → `https://169.58.43.27.nip.io/fable-feed/api/status`.
   Feeden filtrerar bort allt känsligt server-side innan något publiceras.
 
 ## Struktur
@@ -20,7 +20,7 @@ Live: https://terrorbyte90.github.io/Hemsida/
 index.html            Startsida
 om-mig.html            Om mig
 projekt.html           Alla projekt
-ornith.html            Live-monitor för min autonoma AI-agent
+fable.html            Live-monitor för min autonoma AI-agent
 kurser.html             Kurshubb
 kurser/*.html          5 kurser, flera kapitel per sida
 poddar.html            Poddar (Övervakad, AI-Zonen) med spelare
