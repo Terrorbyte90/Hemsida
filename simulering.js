@@ -569,7 +569,7 @@
 
     // Lamps
     lamps.forEach((L, i) => {
-      const pulse = night ? 1.5 + Math.sin(now / 500 + i) * .15 : .2;
+      const pulse = night ? 1.85 + Math.sin(now / 500 + i) * .2 : .2;
       L.light.intensity = night ? pulse : .25;
       L.glow.material.opacity = night ? .28 + Math.sin(now / 450 + i) * .06 : .04;
       L.halo.material.opacity = night ? .16 : .03;
@@ -640,8 +640,8 @@
     const dusk = !night && solar < .45;
 
     // Sky & fog blend
-    const skyTarget = night ? 0x060d18 : dusk ? 0x2a4060 : 0x6a9db0;
-    const fogTarget = night ? 0x08111e : dusk ? 0x2c4560 : 0x7aabba;
+    const skyTarget = night ? 0x0e1a2c : dusk ? 0x2a4060 : 0x6a9db0;
+    const fogTarget = night ? 0x122238 : dusk ? 0x2c4560 : 0x7aabba;
     scene.background.lerp(new THREE.Color(skyTarget), .04);
     scene.fog.color.lerp(new THREE.Color(fogTarget), .04);
     if (skyMesh) skyMesh.material.color.copy(scene.background);
@@ -649,15 +649,15 @@
     // Sun path
     const ang = (hour - 12) / 24 * Math.PI * 2;
     sun.position.set(Math.cos(ang) * 16, 2.5 + solar * 16, Math.sin(ang) * 14);
-    sun.intensity = .22 + solar * 1.85;
-    sun.color.setHex(dusk ? 0xffc090 : night ? 0xa0b8d8 : 0xffe6c4);
-    hemi.intensity = night ? .45 : .85 + solar * .4;
-    ambient.intensity = night ? .18 : .28 + solar * .15;
-    if (rim) rim.intensity = night ? .35 : .15;
+    sun.intensity = night ? .55 : (.22 + solar * 1.85);
+    sun.color.setHex(dusk ? 0xffc090 : night ? 0xb0c8e8 : 0xffe6c4);
+    hemi.intensity = night ? .82 : .85 + solar * .4;
+    ambient.intensity = night ? .48 : .28 + solar * .15;
+    if (rim) rim.intensity = night ? .62 : .15;
 
-    scene.fog.near = night ? 14 : 20;
-    scene.fog.far = night ? 36 : 48;
-    renderer.toneMappingExposure = night ? .95 : dusk ? 1.05 : 1.18;
+    scene.fog.near = night ? 24 : 22;
+    scene.fog.far = night ? 58 : 52;
+    renderer.toneMappingExposure = night ? 1.18 : dusk ? 1.08 : 1.18;
 
     updateAtmosphere(now, night, solar);
 
@@ -709,8 +709,9 @@
     scene.background = new THREE.Color(0x0b1729);
     scene.fog = new THREE.Fog(0x0b1729, 18, 42);
 
-    camera = new THREE.PerspectiveCamera(40, 1, .1, 120);
-    camera.position.set(0, 6.2, 13);
+    camera = new THREE.PerspectiveCamera(44, 1, .1, 140);
+    camera.position.set(0, 14, 18);
+    camera.lookAt(0, .8, -1.5);
 
     renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', alpha: false });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -754,7 +755,10 @@
   function resize() {
     const r = mount.getBoundingClientRect();
     renderer.setSize(r.width, r.height, false);
-    camera.aspect = r.width / r.height;
+    camera.aspect = Math.max(r.width / Math.max(r.height, 1), .35);
+    // Portrait phones need a wider vertical FOV so the plaza fits in frame
+    const portrait = r.height > r.width * 1.1;
+    camera.fov = portrait ? 54 : (r.width < 680 ? 48 : 42);
     camera.updateProjectionMatrix();
   }
 
@@ -812,18 +816,28 @@
       renderEvents();
     }
     if (now - directorChanged > 24000 && !dragging) {
-      directorIndex = (directorIndex + 1) % 5;
+      directorIndex = (directorIndex + 1) % Math.max(meshes.length, 1);
       directorChanged = now;
     }
-    const m = meshes[directorIndex];
-    const focus = new THREE.Vector3(m.position.x, 1.35, m.position.z);
-    const dist = innerWidth < 680 ? 6.4 : 8.4;
+    // Elevated plaza overview — clears the residential block that used to swallow the tight follow-cam
+    const plaza = new THREE.Vector3(0, .9, -1.5);
+    const selMesh = meshes.find(m => m.userData.id === selected);
+    const dirMesh = meshes[directorIndex] || meshes[0];
+    const agentMesh = selMesh || dirMesh;
+    const focus = plaza.clone();
+    if (agentMesh) {
+      // Soft bias toward the active agent so they stay readable without burying the city
+      focus.lerp(new THREE.Vector3(agentMesh.position.x, 1.1, agentMesh.position.z), .38);
+    }
+    const mobile = mount.clientWidth < 680 || innerWidth < 680;
+    const radius = mobile ? 19.5 : 16.5;
+    const elev = mobile ? 13.5 : 11.5;
     const desired = new THREE.Vector3(
-      focus.x + Math.sin(yaw) * dist,
-      focus.y + 2.5,
-      focus.z + Math.cos(yaw) * dist
+      focus.x + Math.sin(yaw) * radius,
+      focus.y + elev,
+      focus.z + Math.cos(yaw) * radius
     );
-    camera.position.lerp(desired, .055);
+    camera.position.lerp(desired, .045);
     camera.lookAt(focus);
     updateScene(now);
     renderer.render(scene, camera);
