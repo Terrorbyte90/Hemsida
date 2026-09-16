@@ -73,7 +73,7 @@
     sleep: ['Mitt hus luktar tystnad. I morgon tar vi om det här.', 'Jag låser dörren och släpper dagen.'],
     eat: ['Ångan från koppen luktar som att någon väntar.', 'Jag äter långsamt och lyssnar på staden.'],
     sit: ['Cafébordet är mitt favoritfönster mot torget.', 'Jag sitter kvar. Ingen brådska.'],
-    socialise: ['Torget rymmer fler samtal än lagar.', 'Jag vill veta hur de andra egentligen har det.'],
+    socialise: ['Torget rymmer fler samtal än lagar.', 'Jag vill veta hur de andra egentligen har det.', 'Någon skrattar vid fontänen — jag går dit.'],
     read: ['En mening i en bok kan flytta ett helt kvarter.', 'Jag stryker under det Elias skulle förneka.'],
     work: ['Om något kärvar lagar jag det innan kvällen.', 'Ritningen sitter. Nu är det händer som gäller.'],
     study: ['Eleverna förtjänar mer än färdiga svar.', 'Jag övar frågan jag ska ställa i morgon.'],
@@ -91,21 +91,78 @@
   };
 
   const DIALOG = {
-    plaza: [['Se hur lyktorna tänder kvarteret.', 'Ja. Torget känns som att det andas.'], ['Ska vi ta upp det i rådhuset i kväll?', 'Bara om vi tar med fler röster.'], ['Jag hörde att lotten behöver vatten.', 'Då hämtar vi August innan skymningen.']],
-    cafe: [['Koppen värmer mer än lamporna.', 'Sitt kvar. Jag vill höra slutet.'], ['Regn eller inte — caféet samlar oss.', 'Det är därför jag kommer hit när jag tvekar.']],
-    library: [['Den här boken beskriver just vårt torg.', 'Läs högt. Jag minns bättre då.'], ['Om vi öppnar sent vinner nyfikenheten.', 'Eller så förlorar de som måste sova.']],
-    workshop: [['Håll här. Skruven släpper om vi drar snett.', 'Jag håller. Du räknar varven.'], ['Lampan vid skolan flimrar igen.', 'Då tar vi den före mörkret.']],
-    school: [['De förstår träden, men inte röstsedeln.', 'Då börjar vi med varför någon röstar nej.'], ['Kan du gästa lektionen i morgon?', 'Om jag får ta med en riktig ritning.']],
-    garden: [['Jorden är torr mot mitten.', 'Jag hämtar kannan, du tar de gula bladen.'], ['Lotten är vår tystaste lag.', 'Och den enda som växer medan vi sover.']],
-    hall: [['Fler träd, ja — men inte om vi skymmer lyktorna.', 'Då planterar vi mellan stolparna.'], ['Midnatt i biblioteket är vackert och oroligt.', 'Vi kan prova två kvällar och mäta.']],
-    home: [['Vilken dag det blev.', 'Vila. Staden tar oss tillbaka i gryningen.'], ['Ditt hus luktar kaffe.', 'Kom in. Vi tar resten i morgon.']],
-    shop: [['Har ni färskt bröd kvar?', 'Ja — och den nya sylten från lotten.'], ['Jag tar två liter mjölk och en lykta.', 'Lyktan är Augusts. Säg att den flimrar.']],
-    zoo: [['Titta, renarna står i skuggan.', 'De vet mer om väder än vi gör.'], ['Ska vi mata änder innan stängning?', 'Bara om Liv säger att det är okej.'], ['Hägnen behöver en ny skylt.', 'Då målar Noor den efter föreställningen.']],
-    park: [['Här är det tystare än på torget.', 'Just därför kommer jag hit.'], ['Ska vi sitta en stund under eken?', 'Ja. Sedan går vi till butiken.']],
-    road: [['Kör sakta förbi skolan.', 'Jag gör det. Barnen springer ibland.'] ]
+    plaza: [
+      ['Se hur lyktorna tänder kvarteret.', 'Ja. Torget känns som att det andas.'],
+      ['Ska vi ta upp det i rådhuset i kväll?', 'Bara om vi tar med fler röster.'],
+      ['Jag hörde att lotten behöver vatten.', 'Då hämtar vi August innan skymningen.'],
+      ['Noors melodi sitter kvar i öronen.', 'Hon spelar när staden behöver en paus.'],
+      ['Vem kör den gula bilen i dag?', 'Elias, förstås — han kartlägger varje sväng.']
+    ],
+    cafe: [
+      ['Koppen värmer mer än lamporna.', 'Sitt kvar. Jag vill höra slutet.'],
+      ['Regn eller inte — caféet samlar oss.', 'Det är därför jag kommer hit när jag tvekar.'],
+      ['Tar du kanel eller vanilj i dag?', 'Kanel. Det luktar som höst på torget.'],
+      ['Bordet vid fönstret är ledigt.', 'Perfekt. Där ser man hela kvarteret.']
+    ],
+    library: [
+      ['Den här boken beskriver just vårt torg.', 'Läs högt. Jag minns bättre då.'],
+      ['Om vi öppnar sent vinner nyfikenheten.', 'Eller så förlorar de som måste sova.'],
+      ['Hylla C behöver mer ljus.', 'August lovade en lampa innan helgen.']
+    ],
+    workshop: [
+      ['Håll här. Skruven släpper om vi drar snett.', 'Jag håller. Du räknar varven.'],
+      ['Lampan vid skolan flimrar igen.', 'Då tar vi den före mörkret.'],
+      ['Bilen skakar i höger kurva.', 'Jag tar en titt efter lunch.']
+    ],
+    school: [
+      ['De förstår träden, men inte röstsedeln.', 'Då börjar vi med varför någon röstar nej.'],
+      ['Kan du gästa lektionen i morgon?', 'Om jag får ta med en riktig ritning.'],
+      ['Rasten är för kort för riktiga frågor.', 'Då förlänger vi den — lagligt.']
+    ],
+    garden: [
+      ['Jorden är torr mot mitten.', 'Jag hämtar kannan, du tar de gula bladen.'],
+      ['Lotten är vår tystaste lag.', 'Och den enda som växer medan vi sover.']
+    ],
+    hall: [
+      ['Fler träd, ja — men inte om vi skymmer lyktorna.', 'Då planterar vi mellan stolparna.'],
+      ['Midnatt i biblioteket är vackert och oroligt.', 'Vi kan prova två kvällar och mäta.'],
+      ['Djurparken behöver tydligare öppettider.', 'Skriv det som lagförslag, så röstar vi.']
+    ],
+    home: [
+      ['Vilken dag det blev.', 'Vila. Staden tar oss tillbaka i gryningen.'],
+      ['Ditt hus luktar kaffe.', 'Kom in. Vi tar resten i morgon.']
+    ],
+    shop: [
+      ['Har ni färskt bröd kvar?', 'Ja — och den nya sylten från lotten.'],
+      ['Jag tar två liter mjölk och en lykta.', 'Lyktan är Augusts. Säg att den flimrar.'],
+      ['Finns det äppelmust?', 'Bakom disken. Ta två — en till Liv.']
+    ],
+    zoo: [
+      ['Titta, renarna står i skuggan.', 'De vet mer om väder än vi gör.'],
+      ['Ska vi mata änder innan stängning?', 'Bara om Liv säger att det är okej.'],
+      ['Hägnen behöver en ny skylt.', 'Då målar Noor den efter föreställningen.'],
+      ['Räven tittar som om den känner igen oss.', 'Kanske gör den det. Vi kommer ju ofta.']
+    ],
+    park: [
+      ['Här är det tystare än på torget.', 'Just därför kommer jag hit.'],
+      ['Ska vi sitta en stund under eken?', 'Ja. Sedan går vi till butiken.'],
+      ['Bänken mot väster får finast ljus.', 'Då tar vi den innan någon annan.']
+    ],
+    road: [
+      ['Kör sakta förbi skolan.', 'Jag gör det. Barnen springer ibland.'],
+      ['Huvudgatan är fri just nu.', 'Bra — då hinner vi till verkstaden.']
+    ]
   };
-  const CONFLICT = [['Du skyndar fram lagar.', 'Och du väntar tills ingenting händer.'], ['Jag hör principen. Jag ser också de som blir utan.', 'Principen är till för just dem.']];
-  const COOP = [['Om vi gör det tillsammans hinner vi före skymningen.', 'Jag tar vänster sida, du tar höger.'], ['Räkna med mig.', 'Då är vi redan två mer än igår.']];
+  const CONFLICT = [
+    ['Du skyndar fram lagar.', 'Och du väntar tills ingenting händer.'],
+    ['Jag hör principen. Jag ser också de som blir utan.', 'Principen är till för just dem.'],
+    ['Det här går för fort för kvarteret.', 'Eller så går resten av världen förbi oss.']
+  ];
+  const COOP = [
+    ['Om vi gör det tillsammans hinner vi före skymningen.', 'Jag tar vänster sida, du tar höger.'],
+    ['Räkna med mig.', 'Då är vi redan två mer än igår.'],
+    ['Säg till när du behöver en hand.', 'Nu. Och tack — det betyder mer än du tror.']
+  ];
 
   const OBJECTS = {
     cafe_table: { place: 'cafe', label: 'cafébord', use: 'sit' },
@@ -350,7 +407,7 @@
       for (let i = 0; i < group.length - 1; i += 2) {
         const a = group[i], b = group[i + 1];
         const elapsed = (state.minute - (a.dialog_started ?? -20) + 1440) % 1440;
-        const sticky = a.talking_with === b.id && elapsed < 11;
+        const sticky = a.talking_with === b.id && elapsed < 16;
         if (!sticky) {
           const pair = dialogPair(a, b, state);
           a.dialog = pair.a; b.dialog = pair.b;
@@ -374,20 +431,22 @@
 
   function tickVehicles(state) {
     (state.vehicles || []).forEach((v, i) => {
-      v.t = ((v.t || 0) + 0.004 + i * 0.001) % 1;
-      // Rectangular road loop around the town
+      // Smooth ease-in/out along each road segment (less robotic corners)
+      const speed = (v.rider ? 0.0052 : 0.0036) + i * 0.0008;
+      v.t = ((v.t || 0) + speed) % 1;
       const path = [
         [-36, -10], [36, -10], [36, 14], [-36, 14]
       ];
       const segLen = 1 / path.length;
       const seg = Math.floor(v.t / segLen) % path.length;
-      const local = (v.t - seg * segLen) / segLen;
+      const raw = (v.t - seg * segLen) / segLen;
+      const local = raw * raw * (3 - 2 * raw); // smoothstep
       const a = path[seg], b = path[(seg + 1) % path.length];
       v.x = a[0] + (b[0] - a[0]) * local;
       v.z = a[1] + (b[1] - a[1]) * local;
       v.yaw = Math.atan2(b[0] - a[0], b[1] - a[1]);
       if (v.rider) {
-        const rider = state.agents.find(a => a.id === v.rider);
+        const rider = state.agents.find(ag => ag.id === v.rider);
         if (rider && rider.action === 'drive') {
           rider.target = [v.x, v.z];
           rider.place = 'road';
