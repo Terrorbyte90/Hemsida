@@ -56,20 +56,12 @@
     // Cornice
     box(w + .18, .14, d + .18, accent, [0, h + .15, 0], group, .65);
 
-    // Roof — soft hip / pyramid
-    const roofSpan = Math.max(w, d) * .72;
-    const roof = new THREE.Mesh(new THREE.ConeGeometry(roofSpan, .95, 4), mat(0x151d2c, .85, .08));
-    roof.rotation.y = Math.PI / 4;
-    roof.castShadow = true;
-    roof.receiveShadow = true;
-    roof.position.set(0, h + .22 + .95 / 2 + .05, 0);
-    group.add(roof);
-
-    // Chimney on larger buildings
-    if (h > 3) {
-      box(.28, .55, .28, 0x2a3348, [w * .22, h + .9, -d * .15], group);
-      box(.34, .08, .34, 0x1a2233, [w * .22, h + 1.2, -d * .15], group);
-    }
+    // Cutaway roof deck — flat & low so the overview camera can see plaza/agents
+    // (no tall cones; walls + cornice still read as finished buildings)
+    box(w - .12, .1, d - .12, 0x1a2436, [0, h + .22, 0], group, .88);
+    // Inner floor tint so open tops feel intentional, not hollow voids
+    const deck = box(w - .45, .04, d - .45, accent, [0, h + .18, 0], group, .7);
+    deck.castShadow = false;
 
     // Front door
     const door = box(.55, 1.05, .08, 0x1c2638, [0, .22, -d / 2 - .02], group, .6);
@@ -262,26 +254,43 @@
     box(.21, .1, .32, 0x0e121c, [-.16, 0, .08], g);
     box(.21, .1, .32, 0x0e121c, [.16, 0, .08], g);
 
-    // Personal glow — soft key + rim ring
-    const key = new THREE.PointLight(agent.color, .55, 3.2, 2);
-    key.position.set(0, 1.55, .55);
+    // Personal glow — stronger key, ground rings, and a tall beacon for overview readability
+    const key = new THREE.PointLight(agent.color, .95, 4.5, 2);
+    key.position.set(0, 1.7, .35);
     g.add(key);
     const ring = new THREE.Mesh(
-      new THREE.RingGeometry(.36, .48, 40),
-      new THREE.MeshBasicMaterial({ color: agent.color, transparent: true, opacity: .4, side: THREE.DoubleSide, depthWrite: false })
+      new THREE.RingGeometry(.4, .56, 40),
+      new THREE.MeshBasicMaterial({ color: agent.color, transparent: true, opacity: .55, side: THREE.DoubleSide, depthWrite: false })
     );
     ring.rotation.x = -Math.PI / 2;
     ring.position.y = .03;
     g.add(ring);
     const outer = new THREE.Mesh(
-      new THREE.RingGeometry(.5, .58, 40),
-      new THREE.MeshBasicMaterial({ color: agent.color, transparent: true, opacity: .12, side: THREE.DoubleSide, depthWrite: false })
+      new THREE.RingGeometry(.58, .72, 40),
+      new THREE.MeshBasicMaterial({ color: agent.color, transparent: true, opacity: .2, side: THREE.DoubleSide, depthWrite: false })
     );
     outer.rotation.x = -Math.PI / 2;
     outer.position.y = .031;
     g.add(outer);
+    // Vertical beacon so agents stay visible among building walls from above
+    const beacon = new THREE.Mesh(
+      new THREE.CylinderGeometry(.045, .08, 2.4, 10),
+      new THREE.MeshBasicMaterial({ color: agent.color, transparent: true, opacity: .38, depthWrite: false })
+    );
+    beacon.position.set(0, 2.85, 0);
+    beacon.castShadow = false;
+    beacon.receiveShadow = false;
+    g.add(beacon);
+    const halo = new THREE.Mesh(
+      new THREE.SphereGeometry(.22, 12, 10),
+      new THREE.MeshBasicMaterial({ color: agent.color, transparent: true, opacity: .45, depthWrite: false })
+    );
+    halo.position.set(0, 4.05, 0);
+    halo.castShadow = false;
+    g.add(halo);
 
-    g.userData.parts = { la, ra, ll, rl, ring, outer, key, phase: Math.random() * 6.28, bob: 0 };
+    g.scale.setScalar(1.12);
+    g.userData.parts = { la, ra, ll, rl, ring, outer, key, beacon, halo, phase: Math.random() * 6.28, bob: 0 };
     g.userData.target = new THREE.Vector3(p[0], 0, p[1]);
     city.add(g);
     return g;
@@ -611,13 +620,18 @@
       const breath = Math.sin(now / 520 + q.phase) * .018;
       const bob = moving ? Math.abs(Math.sin(now / 140 + q.phase)) * .06 : breath;
       m.position.y = bob;
-      // Soft pulsing rings
+      // Soft pulsing rings + beacon for overview readability
       if (q.ring) {
-        q.ring.material.opacity = .28 + Math.sin(now / 700 + q.phase) * .12 + (a.id === selected ? .18 : 0);
-        q.outer.material.opacity = .08 + Math.sin(now / 900 + q.phase) * .04;
-        q.ring.scale.setScalar(1 + Math.sin(now / 800 + q.phase) * .04);
+        q.ring.material.opacity = .42 + Math.sin(now / 700 + q.phase) * .14 + (a.id === selected ? .2 : 0);
+        q.outer.material.opacity = .14 + Math.sin(now / 900 + q.phase) * .05;
+        q.ring.scale.setScalar(1 + Math.sin(now / 800 + q.phase) * .05);
       }
-      if (q.key) q.key.intensity = .4 + Math.sin(now / 600 + q.phase) * .12 + (a.id === selected ? .25 : 0);
+      if (q.beacon) {
+        q.beacon.material.opacity = .28 + Math.sin(now / 650 + q.phase) * .12 + (a.id === selected ? .18 : 0);
+        q.halo.material.opacity = .35 + Math.sin(now / 550 + q.phase) * .12 + (a.id === selected ? .2 : 0);
+        q.halo.scale.setScalar(1 + Math.sin(now / 500 + q.phase) * .08);
+      }
+      if (q.key) q.key.intensity = .75 + Math.sin(now / 600 + q.phase) * .18 + (a.id === selected ? .35 : 0);
       bubble(a, 'thought');
     });
 
