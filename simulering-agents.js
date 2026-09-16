@@ -125,7 +125,7 @@
     if (n.sleep > 82 || ((hour >= 22.5 || hour < 6) && n.sleep > 38)) return 'sleep';
     if (hour >= 22.5 || hour < 6) return 'sleep';
     if (n.hunger > 76) return 'eat';
-    if (hour >= 6.2 && hour < 8) return (agent.id === 'august' || agent.id === 'elias') ? 'garden' : 'eat';
+    if (hour >= 6 && hour < 8) return (agent.id === 'august' || agent.id === 'elias') ? 'garden' : 'eat';
     if (hour >= 8 && hour < 12) {
       return ({ mira: 'read', elias: 'work', noor: hour > 10 ? 'perform' : 'socialise', liv: hour > 9 ? 'teach' : 'study', august: hour > 10 ? 'repair' : 'work' })[agent.id];
     }
@@ -262,7 +262,7 @@
           || (agent.needs.sleep > 84 && agent.action !== 'sleep')
           || (agent.needs.hunger > 82 && agent.action !== 'eat')
           || ((hour >= 23 || hour < 5.5) && agent.action !== 'sleep')
-          || (hour >= 7.2 && hour <= 21 && agent.action === 'sleep' && agent.needs.sleep < 46);
+          || (hour >= 6 && hour <= 21.8 && agent.action === 'sleep' && agent.needs.sleep < 52);
         if (reconsider) startAction(agent, choose(agent, state), state);
         else {
           agent.target = slotOf(agent, agent.place);
