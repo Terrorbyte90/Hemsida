@@ -37,7 +37,7 @@
 #city-canvas{position:absolute;inset:0;z-index:1}
 #city-canvas canvas{
   width:100%;height:100%;display:block;
-  filter:saturate(1.12) contrast(1.06) brightness(1.02)
+  filter:saturate(1.08) contrast(1.05) brightness(1.03)
 }
 .stage-top,.stage-bottom{position:absolute;left:24px;right:24px;z-index:4;display:flex;justify-content:space-between;align-items:start}
 .stage-top{top:22px}
@@ -183,3 +183,14 @@
   .agent-card{transition:none}
   .city-bubble{animation:none}
 }
+
+.agent-mood{display:block;margin-top:6px;color:#f3c98b;font:8px var(--mono,monospace);letter-spacing:.08em;text-transform:uppercase}
+.place-pill{display:block;margin-top:14px;color:#75d6c7}
+.rel-block{margin-top:16px}
+.rel-block .panel-label{margin-bottom:8px;display:block}
+.rels{display:grid;gap:7px}
+.rel-row{display:grid;grid-template-columns:64px 1fr;gap:8px;align-items:center;color:#9aa6b8;font:10px var(--mono,monospace)}
+.rel-row i{display:block;height:4px;background:#243044;border-radius:4px;overflow:hidden}
+.rel-row i:after{content:"";display:block;width:var(--value);height:100%;background:var(--agent-color);border-radius:4px}
+.social-line span{color:#c5cedc}
+.city-bubble b{text-shadow:0 0 12px #f3c98b55}
