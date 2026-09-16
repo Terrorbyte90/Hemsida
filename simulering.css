@@ -9,7 +9,7 @@
 .sim-intro h1 em{font-family:var(--serif);font-weight:400;color:#f3c98b}
 .sim-intro>p{max-width:34ch;color:#9aa5b8;line-height:1.65;margin:0 0 4px;font-size:1rem}
 .sim-stage{
-  height:min(69vh,700px);min-height:480px;position:relative;overflow:hidden;
+  height:min(72vh,760px);min-height:520px;position:relative;overflow:hidden;
   border:1px solid #ffffff1f;border-radius:28px;
   background:
     radial-gradient(ellipse 80% 55% at 50% 18%,#4a6d8e55 0%,transparent 55%),

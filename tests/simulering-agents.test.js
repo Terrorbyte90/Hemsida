@@ -23,10 +23,20 @@ const night = { ...state, minute: 2 * 60 };
 assert.equal(A.choose(state.agents[0], night), 'sleep');
 
 A.tickAgents(state, 40);
-const talking = state.agents.filter(a => a.talking_with);
-assert.ok(talking.length >= 2, 'co-located agents should start talking');
 assert.ok(state.events.length > 1, 'society should emit events');
 assert.ok(state.scene.title, 'director should name the scene');
+
+// Force co-location to verify social brain still pairs dialog
+state.agents.forEach(a => { A.startAction(a, 'socialise', state); a.progress = 0; });
+A.tickAgents(state, 3);
+const talking = state.agents.filter(a => a.talking_with);
+assert.ok(talking.length >= 2, 'co-located agents should start talking');
+
+assert.ok(A.places.zoo && A.places.shop && A.places.park, 'town places exist');
+assert.ok(A.actions.visit_zoo && A.actions.drive && A.actions.shop, 'town actions exist');
+assert.equal(A.HOME_LOTS.length, 5);
+const zooSlot = A.slotOf(state.agents[0], 'zoo');
+assert.ok(Math.abs(zooSlot[0] - A.places.zoo[0]) < 6, 'zoo slots near zoo');
 
 const mira = state.agents[0];
 const slot = A.slotOf(mira, 'home');
