@@ -1,6 +1,6 @@
 /* Ted Svärd — portfolio interactions.
    No frameworks. Progressive enhancement: everything works without JS except
-   the live Ornith feed (which has a static "offline" fallback in the markup). */
+   the live Fable status (which has a static "offline" fallback in the markup). */
 (() => {
   'use strict';
 
@@ -109,13 +109,12 @@
   });
 
   /* ======================================================
-     ORNITH LIVE FEED
-     Reads the redacted public feed served from Titan via Caddy.
-     Used by: hero "signal card" teaser + the full /ornith.html monitor.
-     Degrades gracefully to a static "offline" state if unreachable —
-     never shows an error to the visitor, just goes quiet.
+     FABLE LIVE STATUS
+     Reads a redacted public status JSON from the home lab via Caddy.
+     Used by: hero signal card + (legacy) data-ornith-teaser hooks.
+     Degrades gracefully when unreachable.
      ====================================================== */
-  const FEED_BASE = 'https://169.58.43.27.nip.io/ornith-feed';
+  const FABLE_STATUS = 'https://5.175.249.12.nip.io/fable-status/api/status';
   // Control is never advertised publicly. The link is injected only after a
   // successful request to the Tailscale-only endpoint on Titan.
   const CONTROL_HEALTH = 'https://ryzen-ted.tailfbfb1a.ts.net:9443/control-api/health';
@@ -180,102 +179,34 @@
   }
   enablePrivateGodView();
 
-  function timeAgo(s) {
-    if (s == null) return '';
-    if (s < 60) return s + 's';
-    if (s < 3600) return Math.floor(s / 60) + 'm';
-    return Math.floor(s / 3600) + 'h';
-  }
-
   function renderSignalCard(data) {
-    const card = document.querySelector('[data-ornith-teaser]');
+    const card = document.querySelector('[data-ornith-teaser], [data-fable-teaser]');
     if (!card) return;
     const dot = card.querySelector('.pulse');
     const line = card.querySelector('.line');
     if (!data || !data.alive) {
       if (dot) dot.style.background = 'var(--muted-on-ink)';
-      if (line) line.innerHTML = 'Ornith vilar just nu.';
+      if (line) line.innerHTML = 'Fable vilar just nu.';
       return;
     }
-    if (data.current) {
-      line.innerHTML = `<em>${escapeHTML(data.current.narration)}</em>`;
-    } else {
-      line.innerHTML = `<em>Ornith väntar på nästa uppgift.</em>`;
-    }
+    const model = escapeHTML(data.model || 'Qwen3.8-27B-Fable Distill');
+    if (line) line.innerHTML = `<em>${model}</em> kör lokalt · ${escapeHTML(data.state || 'ready')}.`;
   }
 
-  const PHASE_ICON = {
-    'läser systemkontext': '◎', 'tänker': '◈', 'sammanställer en rapport': '✎',
-    'kör ett kommando': '▸', 'läser en fil': '◎', 'skriver en fil': '✎',
-    'sammanställer resultatet': '◆',
-  };
-
-  function renderMonitor(data) {
-    const nowEl = document.querySelector('[data-now-task]');
-    const nowPhase = document.querySelector('[data-now-phase]');
-    const nowElapsed = document.querySelector('[data-now-elapsed]');
-    const activityEl = document.querySelector('[data-activity]');
-    const pendingCount = document.querySelector('[data-pending-count]');
-    const queueEl = document.querySelector('[data-queue]');
-    const statusDot = document.querySelector('[data-status-dot]');
-    const statusText = document.querySelector('[data-status-text]');
-    if (!nowEl && !activityEl) return; // not on the monitor page
-
-    if (!data || !data.alive) {
-      if (statusDot) statusDot.classList.add('off');
-      if (statusText) statusText.textContent = 'Signalen är tillfälligt otillgänglig';
-      return;
-    }
-    if (statusDot) statusDot.classList.remove('off');
-    if (statusText) statusText.textContent = data.state === 'running' ? 'Vaken och arbetar' : 'Vaken, väntar på nästa uppgift';
-
-    if (nowEl) {
-      nowEl.textContent = data.current ? data.current.narration : 'Ornith väntar på nästa uppgift.';
-    }
-    if (nowPhase) {
-      const ph = data.current && data.current.phase;
-      nowPhase.textContent = ph ? (PHASE_ICON[ph] || '·') + ' ' + ph : '';
-      nowPhase.style.display = ph ? '' : 'none';
-    }
-    if (nowElapsed && data.current) {
-      nowElapsed.textContent = 'Pågått i ' + timeAgo(data.current.elapsed_s);
-    } else if (nowElapsed) {
-      nowElapsed.textContent = '';
-    }
-
-    if (activityEl && Array.isArray(data.recent)) {
-      activityEl.innerHTML = data.recent.map(r => `
-        <li class="activity-item">
-          <span class="d"></span>
-          <span class="txt">${escapeHTML(r.narration)}</span>
-          <span class="tag">klart</span>
-        </li>`).join('');
-    }
-
-    if (pendingCount && data.queue) pendingCount.textContent = data.queue.pending ?? '–';
-    if (queueEl && Array.isArray(data.upcoming)) {
-      queueEl.innerHTML = data.upcoming.map(t => `
-        <li class="queue-item"><span>${escapeHTML(t.title)}</span><span class="cat">${escapeHTML(t.category)}</span></li>
-      `).join('') || '<li class="queue-item"><span>Kön är tom just nu.</span></li>';
-    }
-  }
-
-  async function pollFeed() {
+  async function pollFableStatus() {
     try {
-      const res = await fetch(FEED_BASE + '/api/status', { cache: 'no-store' });
+      const res = await fetch(FABLE_STATUS, { cache: 'no-store', mode: 'cors' });
       if (!res.ok) throw new Error('bad status');
       const data = await res.json();
       renderSignalCard(data);
-      renderMonitor(data);
     } catch (e) {
       renderSignalCard(null);
-      renderMonitor(null);
     }
   }
 
-  if (document.querySelector('[data-ornith-teaser]') || document.querySelector('[data-now-task]')) {
-    pollFeed();
-    setInterval(pollFeed, 6000);
+  if (document.querySelector('[data-ornith-teaser], [data-fable-teaser]')) {
+    pollFableStatus();
+    setInterval(pollFableStatus, 8000);
   }
 
   /* ======================================================
@@ -436,11 +367,11 @@
   const draftEl = document.querySelector('[data-draft-text]');
   if (draftEl) {
     const LINES = [
-      'Testar en ny idé för hur Ornith ska prioritera bakgrundsjobb när kön blir lång.',
+      'Testar en ny idé för hur Fable ska prioritera labb-jobb när kön blir lång.',
       'Mira flaggade en avvikelse i minneskurvan — kollar om det är brus eller ett mönster.',
       'Skissar på en snabbare inläsning för Röst-labbets sökfeed.',
       'Ett utkast till hur nästa agent-loop ska logga sina beslut, steg för steg.',
-      'Funderar på en enklare vy för att jämföra två körningar av Ornith mot varandra.',
+      'Funderar på en enklare vy för att jämföra två körningar av Fable mot varandra.',
       'Provar en ny formulering för statuskortet — kortare, tydligare, mindre teknisk.',
       'Ritar upp hur en framtida "Forskning"-sida kan strömma live-resultat från servern.',
     ];
