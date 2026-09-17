@@ -18,7 +18,8 @@
     visit_zoo: { label: 'besöker djurparken', place: 'zoo', duration: 34, need: 'curiosity', pose: 'look' },
     feed: { label: 'matar djuren', place: 'zoo', duration: 22, need: 'purpose', pose: 'feed' },
     drive: { label: 'åker bil genom stan', place: 'road', duration: 16, need: 'purpose', pose: 'drive' },
-    stroll: { label: 'promenerar i parken', place: 'park', duration: 28, need: 'social', pose: 'walk' }
+    stroll: { label: 'promenerar i parken', place: 'park', duration: 28, need: 'social', pose: 'walk' },
+    wait: { label: 'väntar i kön', place: 'plaza', duration: 10, need: 'purpose', pose: 'queue' }
   };
 
   const places = {
@@ -47,6 +48,51 @@
     cafe: 3, shop: 2, library: 3, workshop: 3, school: 3, hall: 4,
     zoo: 3, park: 4, garden: 3, plaza: 5, home: 1, road: 2
   };
+
+  // Where agents stand while waiting for a full place
+  const QUEUE_STAGE = {
+    cafe: 'plaza', shop: 'plaza', library: 'plaza', workshop: 'plaza',
+    school: 'park', hall: 'plaza', zoo: 'park', garden: 'plaza',
+    park: 'plaza', home: 'plaza', road: 'plaza', plaza: 'park'
+  };
+
+  // Emergent town pulses visitors can notice
+  const PULSES = [
+    { id: 'market', title: 'Torgmarknad', copy: 'Stånden öppnar — bröd, sylt och lyktor.', after: 9, before: 12, draw: ['shop', 'socialise', 'eat'], weather: null },
+    { id: 'concert', title: 'Kvällskonsert', copy: 'Noor spelar och kvarteret samlas vid fontänen.', after: 17, before: 20, draw: ['perform', 'socialise', 'sit'], weather: null },
+    { id: 'feeding', title: 'Utfodring', copy: 'Djurparken ringer i klockan. Maten väntar.', after: 14, before: 16, draw: ['feed', 'visit_zoo'], weather: null },
+    { id: 'repair', title: 'Gemensam lagning', copy: 'En lampa flimrar — verkstaden behöver fler händer.', after: 10, before: 13, draw: ['repair', 'work'], weather: null },
+    { id: 'shelter', title: 'Regnskydd', copy: 'Takdropp. Caféet och biblioteket fylls.', after: 0, before: 24, draw: ['sit', 'read', 'eat'], weather: 'rain' },
+    { id: 'snowhush', title: 'Snötystnad', copy: 'Steg dämpas. Någon föreslår ett tyst samtal.', after: 0, before: 24, draw: ['stroll', 'read', 'sit'], weather: 'snow' },
+    { id: 'dawn', title: 'Gryningssträcka', copy: 'Första ljuset. Någon går redan mot lotten.', after: 6, before: 8, draw: ['garden', 'stroll', 'eat'], weather: null },
+    { id: 'debate', title: 'Lagdebatt', copy: 'Rådhuset fylls — en pågående lag ska avgöras.', after: 15, before: 18, draw: ['vote', 'debate'], weather: null }
+  ];
+
+  const THREADS = {
+    talk: [
+      ['Vad händer sedan?', 'Vi tar det steg för steg — jag är kvar.'],
+      ['Jag tänker på det du sa.', 'Bra. Då är vi redan två som bär det.'],
+      ['Ska vi berätta för de andra?', 'Ja, men lugnt. Ryktet springer fort nog.']
+    ],
+    coop: [
+      ['Jag tar nästa bit om du håller här.', 'Klart. Räkna högt så synkar vi.'],
+      ['Det här går lättare tillsammans.', 'Just därför stannar jag.'],
+      ['När vi är klara tar vi kaffe.', 'Avtalat. Jag bjuder.']
+    ],
+    conflict: [
+      ['Jag hör dig — men jag håller inte med.', 'Då tar vi det i rådhuset, inte här.'],
+      ['Vi kan vara oense utan att tappa kvarteret.', 'Det är min gräns också.'],
+      ['Låt oss pausa innan det blir hårt.', 'Paus. Sedan en mening var.']
+    ]
+  };
+
+  const GOSSIP = [
+    'Hörde du? Marknaden drog fler än igår.',
+    'Någon säger att lyktan vid skolan flimrar igen.',
+    'Det sägs att lotten behöver vatten före kvällen.',
+    'Ryktet går att konserten blir längre i kväll.',
+    'Biblioteket ska kanske öppna sent — igen.'
+  ];
 
   const profiles = [
     { id: 'mira', name: 'Mira', role: 'Bibliotekarie', trait: 'nyfiken · varm · undersökande', color: '#76d6c6', preferred: ['read', 'visit_zoo', 'vote'], stance: { trees: 1, 'late-library': 1, 'shared-garden': 1, 'zoo-hours': 1 }, bonds: ['liv', 'noor'] },
@@ -125,7 +171,8 @@
     visit_zoo: ['Djuren tittar tillbaka. Det gör staden större.', 'Jag går sakta längs hägnet och räknar hovar.'],
     feed: ['En handfull pellets, ett tack som inte behöver ord.', 'Om vi matar rätt mår hela kvarteret bättre.'],
     drive: ['Huvudgatan öppnar sig. Jag kör försiktigt förbi caféet.', 'Bilen skakar lätt — August måste se över den.'],
-    stroll: ['Parken andas mellan träden.', 'Jag går utan mål och det räcker.']
+    stroll: ['Parken andas mellan träden.', 'Jag går utan mål och det räcker.'],
+    wait: ['Kön rör sig långsamt. Jag väntar.', 'Någon före mig. Jag tar det lugnt.']
   };
 
   const DIALOG = {
@@ -312,6 +359,12 @@
     if (seed % 5 === 0) thought = ({ clear: 'Luften är klar. ', rain: 'Regnet sätter tempot. ', snow: 'Snön dämpar rösterna. ' })[state.weather] + thought;
     const openLaw = (state.laws || []).find(l => l.status === 'pågående');
     if (openLaw && agent.place === 'hall' && seed % 2 === 0) thought = `«${openLaw.title}» ligger framför oss. ${thought}`;
+    if (agent.action === 'wait' && agent.waitingFor) {
+      const where = PLACE_SV[(actions[agent.waitingFor] || {}).place] || agent.waitingFor;
+      thought = `Jag väntar på plats vid ${where}. ${thought}`;
+    }
+    if (state.pulse && seed % 3 === 1) thought = `${state.pulse.title}: ${thought}`;
+    if (agent.lastGossip && seed % 7 === 0) thought = `${agent.lastGossip} ${thought}`;
     return thought;
   }
 
@@ -328,6 +381,7 @@
       target: slotOf({ _index: i, id: profile.id }, 'plaza'), thought: 'Jag undrar vad som händer idag.',
       dialog: '', talking_with: '', mood: 'nyfiken', memory: ['En ny kväll börjar på torget.'],
       plan: [], planLabel: '',
+      waitingFor: '', threadTurn: 0, lastGossip: '',
       online: false, action_started: 19 * 60 + 12, dialog_started: -20
     };
   }
@@ -339,6 +393,7 @@
       events: [{ time: '19:12', text: 'Stadens fem invånare möts på det nya torget.' }],
       social_log: [], selected: 'mira', qwenEndpoint: '', lastQwen: 0, mode: 'local',
       scene: { title: 'Staden andas in', copy: 'Fem hus, en butik, en djurpark — ett liv i taget.', phase: 'kväll' },
+      pulse: null,
       vehicles: [
         { id: 'car_a', label: 'blå bil', color: '#4a7ab0', t: 0.12, rider: '' },
         { id: 'car_b', label: 'gul bil', color: '#d4a84a', t: 0.62, rider: '' }
@@ -355,20 +410,82 @@
     return fresh;
   }
 
+
+  function activePulse(state) {
+    const hour = hourOf(state.minute);
+    const weather = state.weather || 'clear';
+    // Keep sticky pulse for the current 25-minute block
+    const block = Math.floor(state.minute / 25);
+    if (state.pulse && state.pulse.block === block) {
+      return state.pulse;
+    }
+    // Deterministic pick from eligible pulses
+    const eligible = PULSES.filter(p => {
+      if (p.weather) return p.weather === weather && hour >= p.after && hour < p.before;
+      if ((weather === 'rain' || weather === 'snow') && (p.id === 'concert' || p.id === 'market' || p.id === 'feeding')) return false;
+      return hour >= p.after && hour < p.before;
+    });
+    if (!eligible.length) { state.pulse = null; return null; }
+    const seed = state.day * 17 + Math.floor(state.minute / 25);
+    const pick = eligible[seed % eligible.length];
+    const next = { id: pick.id, title: pick.title, copy: pick.copy, draw: pick.draw.slice(), block, until: (block * 25 + 25) % 1440 };
+    const changed = !state.pulse || state.pulse.id !== next.id;
+    state.pulse = next;
+    if (changed) {
+      state.events.unshift({ time: clock(state.minute), text: `Stadspuls: ${next.title}. ${next.copy}` });
+      state.events = state.events.slice(0, 20);
+    }
+    return state.pulse;
+  }
+
+  function queueSlot(agent, intendedPlace) {
+    const stage = QUEUE_STAGE[intendedPlace] || 'plaza';
+    const base = slotOf(agent, stage);
+    // Stand just outside intended place, facing toward it
+    const dest = places[intendedPlace] || places.plaza;
+    const dx = dest[0] - base[0], dz = dest[1] - base[1];
+    const len = Math.hypot(dx, dz) || 1;
+    const i = agent._index ?? 0;
+    return [
+      dest[0] - (dx / len) * (2.4 + i * 0.35),
+      dest[1] - (dz / len) * (2.4 + i * 0.35) * 0.85
+    ];
+  }
+
   function choose(agent, state) {
     const n = agent.needs, hour = hourOf(state.minute);
+    const pulse = activePulse(state);
+    // Resume after queue if intended place opened
+    if (agent.waitingFor && placeOpen(agent.waitingFor, state)) {
+      const resume = agent.waitingFor;
+      agent.waitingFor = '';
+      return resume;
+    }
     // Hard needs first
     if (n.sleep > 82 || ((hour >= 22.5 || hour < 6) && n.sleep > 38)) return 'sleep';
     if (hour >= 22.5 || hour < 6) return 'sleep';
     if (n.hunger > 76) {
       const food = hour % 2 < 1 ? 'eat' : 'shop';
-      return placeOpen(food, state) ? food : (food === 'eat' ? 'shop' : 'eat');
+      if (placeOpen(food, state)) return food;
+      const alt = food === 'eat' ? 'shop' : 'eat';
+      if (placeOpen(alt, state)) return alt;
+      agent.waitingFor = food;
+      return 'wait';
+    }
+    // Town pulse draws people (emergent gathering)
+    if (pulse && pulse.draw?.length && (hourOf(state.minute) % 1 < 0.55 || n.social > 55 || n.curiosity > 55)) {
+      const pull = pulse.draw.find(a => placeOpen(a, state) || a === agent.action);
+      if (pull && ((agent.preferred || []).includes(pull) || Math.random() < 0.55 || pulse.id === 'concert' || pulse.id === 'market')) {
+        if (placeOpen(pull, state) || pull === agent.action) return pull;
+        agent.waitingFor = pull;
+        return 'wait';
+      }
     }
     // Seek companion when lonely
     if (n.social > 72) {
       const friend = bestFriend(agent, state);
       if (friend && friend.place !== 'home' && friend.place !== 'road') {
-        const meet = Object.keys(actions).find(k => actions[k].place === friend.place && actions[k].need === 'social');
+        const meet = Object.keys(actions).find(k => actions[k].place === friend.place && actions[k].need === 'social' && k !== 'wait');
         if (meet && placeOpen(meet, state)) return meet;
         if (placeOpen('socialise', state)) return 'socialise';
       }
@@ -377,16 +494,20 @@
     const fromAgenda = agendaStep(agent, state);
     if (fromAgenda) {
       if (placeOpen(fromAgenda, state) || fromAgenda === agent.action) return fromAgenda;
-      // Fallback within same block
       const blocks = AGENDAS[agent.id] || [];
       const block = blocks.find(b => hour >= b.after && hour < b.before);
       const alt = (block?.steps || []).find(s => placeOpen(s, state));
       if (alt) return alt;
+      agent.waitingFor = fromAgenda;
+      return 'wait';
     }
     // Weather-aware soft fallback
     if (state.weather === 'rain' && placeOpen('sit', state)) return 'sit';
     if (state.weather === 'snow' && placeOpen('read', state)) return 'read';
-    return agent.preferred[0] || 'socialise';
+    const pref = agent.preferred[0] || 'socialise';
+    if (placeOpen(pref, state)) return pref;
+    agent.waitingFor = pref;
+    return 'wait';
   }
 
   function startAction(agent, action, state) {
@@ -415,9 +536,19 @@
     agent.using = objectFor(action, spec.place);
     agent.progress = 0;
     agent.action_started = state ? state.minute : agent.action_started;
-    agent.target = slotOf(agent, spec.place);
     agent.talking_with = '';
     agent.dialog = '';
+    agent.threadTurn = 0;
+    if (action === 'wait' && agent.waitingFor) {
+      const intended = (actions[agent.waitingFor] || {}).place || agent.waitingFor;
+      agent.place = QUEUE_STAGE[intended] || 'plaza';
+      agent.actionLabel = `väntar till ${PLACE_SV[intended] || intended}`;
+      agent.pose = 'queue';
+      agent.target = queueSlot(agent, intended);
+    } else {
+      if (action !== 'wait') agent.waitingFor = '';
+      agent.target = slotOf(agent, agent.place);
+    }
     if (state) {
       agent.thought = localThought(agent, state);
       (state.vehicles || []).forEach(v => { if (v.rider === agent.id) v.rider = ''; });
@@ -453,8 +584,13 @@
   function dialogPair(a, b, state) {
     const kind = relationKind(a, b);
     const seed = Math.floor(state.minute / 11) + (a._index || 0) + (b._index || 0);
+    const turn = Math.max(a.threadTurn || 0, b.threadTurn || 0);
     let pack = kind === 'conflict' ? CONFLICT : kind === 'coop' ? COOP : (DIALOG[a.place] || DIALOG.plaza);
-    // Context-reactive lines woven from live state
+    // Continuing thread: follow-up beats instead of a fresh opener
+    if (turn >= 1 && a.talking_with === b.id) {
+      const thread = THREADS[kind] || THREADS.talk;
+      pack = thread;
+    }
     const weatherBit = state.weather === 'rain'
       ? [['Regnet tränger in under takfoten.', 'Bra. Då stannar vi en stund till.']]
       : state.weather === 'snow'
@@ -467,11 +603,15 @@
     const planBit = a.plan?.[1]
       ? [[`Efter det här tänker jag ${(actions[a.plan[1]] || {}).label || 'vidare'}.`, `Då korsar vi varandra snart igen.`]]
       : null;
-    if (kind === 'talk' && weatherBit && seed % 5 === 0) pack = weatherBit;
-    if (kind !== 'conflict' && lawBit && seed % 4 === 1) pack = lawBit;
-    if (kind === 'talk' && planBit && seed % 3 === 2) pack = planBit;
+    const pulse = state.pulse;
+    const pulseBit = pulse
+      ? [[`Känner du pulsen? ${pulse.title}.`, `Ja — ${pulse.copy}`]]
+      : null;
+    if (turn === 0 && kind === 'talk' && weatherBit && seed % 5 === 0) pack = weatherBit;
+    if (turn === 0 && kind !== 'conflict' && lawBit && seed % 4 === 1) pack = lawBit;
+    if (turn === 0 && kind === 'talk' && planBit && seed % 3 === 2) pack = planBit;
+    if (turn === 0 && pulseBit && seed % 4 === 0) pack = pulseBit;
     const pair = pack[seed % pack.length];
-    // Personalize with names occasionally
     let lineA = pair[0], lineB = pair[1];
     if (seed % 6 === 0) lineA = `${b.name}, ${lineA.charAt(0).toLowerCase()}${lineA.slice(1)}`;
     if (seed % 7 === 0) lineB = `${a.name} — ${lineB}`;
@@ -486,6 +626,7 @@
       if (other && relationKind(agent, other) === 'coop') return 'samarbetar';
       return 'samtal';
     }
+    if (agent.action === 'wait') return 'i kö';
     if (agent.needs.hunger > 70) return 'hungrig';
     if (agent.needs.social > 70) return 'söker sällskap';
     if (agent.plan?.length > 1) return 'på väg';
@@ -503,9 +644,20 @@
     const talking = state.agents.filter(a => a.talking_with);
     const driving = state.agents.find(a => a.action === 'drive');
     const atZoo = state.agents.filter(a => a.place === 'zoo');
+    const queued = state.agents.filter(a => a.action === 'wait');
     const planner = state.agents.find(a => (a.plan || []).length > 1);
+    const pulse = state.pulse;
     if (sleeping.length >= 4 && (phase === 'natt' || phase === 'morgon')) {
       return { title: 'Staden sover', copy: 'Fem hus är tysta. I gryningen börjar de om.', phase };
+    }
+    if (pulse && pulse.title) {
+      const drawn = state.agents.filter(a => (pulse.draw || []).includes(a.action));
+      if (drawn.length >= 2 || hourOf(state.minute) % 1 < 0.4) {
+        return { title: pulse.title, copy: pulse.copy + (drawn.length ? ` · ${drawn.map(a => a.name).join(', ')}` : ''), phase };
+      }
+    }
+    if (queued.length >= 2) {
+      return { title: 'Kö utanför dörren', copy: `${queued.map(a => a.name).join(' & ')} väntar på plats.`, phase };
     }
     if (atZoo.length >= 2) {
       return { title: 'Besök i djurparken', copy: `${atZoo.map(a => a.name).join(' & ')} vid hägnen.`, phase };
@@ -515,7 +667,10 @@
     }
     if (talking.length) {
       const a = talking[0], other = state.agents.find(x => x.id === a.talking_with);
-      if (other) return { title: `${a.name} och ${other.name}`, copy: a.dialog || `De möts vid ${PLACE_SV[a.place]}.`, phase };
+      if (other) {
+        const beat = (a.threadTurn || 0) >= 1 ? 'Samtalet fördjupas' : `${a.name} och ${other.name}`;
+        return { title: beat, copy: a.dialog || `De möts vid ${PLACE_SV[a.place]}.`, phase };
+      }
     }
     if (planner) {
       return { title: `${planner.name} följer sin dag`, copy: planner.planLabel || planner.thought, phase };
@@ -557,8 +712,14 @@
       });
       pairs.forEach(([a, b]) => {
         const elapsed = (state.minute - (a.dialog_started ?? -20) + 1440) % 1440;
-        const sticky = a.talking_with === b.id && elapsed < 16;
+        const samePair = a.talking_with === b.id && b.talking_with === a.id;
+        // Sticky opener ~12 min, then advance thread every ~9 min up to 3 beats
+        const sticky = samePair && elapsed < 12;
+        const advance = samePair && !sticky && elapsed >= 12 && (a.threadTurn || 0) < 3;
         if (!sticky) {
+          if (advance) a.threadTurn = (a.threadTurn || 0) + 1;
+          else if (!samePair) a.threadTurn = 0;
+          b.threadTurn = a.threadTurn;
           const pair = dialogPair(a, b, state);
           a.dialog = pair.a; b.dialog = pair.b;
           a.talking_with = b.id; b.talking_with = a.id;
@@ -573,9 +734,22 @@
             window.CityMemory.rememberConversation(a, b.name, pair.a, pair.kind === 'conflict' ? 'tense' : 'warm');
             window.CityMemory.rememberConversation(b, a.name, pair.b, pair.kind === 'conflict' ? 'tense' : 'warm');
           }
-          const verb = { coop: 'samarbetar', conflict: 'är oense', talk: 'pratar' }[pair.kind];
+          const verb = (a.threadTurn || 0) >= 1
+            ? 'fördjupar samtalet'
+            : { coop: 'samarbetar', conflict: 'är oense', talk: 'pratar' }[pair.kind];
           state.events.unshift({ time: clock(state.minute), text: `${a.name} och ${b.name} ${verb} vid ${PLACE_SV[place]}.` });
           (state.social_log ||= []).unshift({ time: clock(state.minute), from: a.name, to: b.name, text: `${a.name} → ${b.name}: ${pair.a}` });
+          // Gossip: after a thread beat, a bystander elsewhere may overhear the news
+          if ((a.threadTurn || 0) >= 1 && state.minute % 13 === 0) {
+            const outsider = state.agents.find(o => o.id !== a.id && o.id !== b.id && o.action !== 'sleep' && o.place !== place);
+            if (outsider) {
+              const g = GOSSIP[(state.minute + (outsider._index || 0)) % GOSSIP.length];
+              outsider.lastGossip = g;
+              outsider.thought = `${g} (${a.name} & ${b.name}.)`;
+              outsider.knowledge = [...(outsider.knowledge || []).slice(-4), g];
+              state.events.unshift({ time: clock(state.minute), text: `${outsider.name} hör ryktet: ${g}` });
+            }
+          }
         }
       });
       unused.forEach(id => {
@@ -617,8 +791,10 @@
       if (state.minute === 0) {
         state.day++;
         state.events.unshift({ time: clock(state.minute), text: `Dag ${state.day} börjar i Kvarter 07.` });
-        state.agents.forEach(a => { a.plan = []; a.planLabel = ''; });
+        state.agents.forEach(a => { a.plan = []; a.planLabel = ''; a.waitingFor = ''; a.threadTurn = 0; });
+        state.pulse = null;
       }
+      activePulse(state);
       state.agents.forEach(agent => {
         const spec = actions[agent.action] || actions.socialise;
         Object.keys(agent.needs).forEach(k => {
@@ -630,15 +806,22 @@
         agent.needs[spec.need] = clamp(agent.needs[spec.need] - (agent.action === 'sleep' ? 0.85 : 0.42));
         agent.progress += 1 / spec.duration;
         const hour = hourOf(state.minute);
+        const queueReady = agent.action === 'wait' && agent.waitingFor && placeOpen(agent.waitingFor, state);
         const reconsider = agent.progress >= 1
+          || queueReady
           || (agent.needs.sleep > 84 && agent.action !== 'sleep')
-          || (agent.needs.hunger > 82 && agent.action !== 'eat' && agent.action !== 'shop')
-          || (agent.needs.social > 88 && !['socialise', 'sit', 'perform', 'stroll'].includes(agent.action))
+          || (agent.needs.hunger > 82 && agent.action !== 'eat' && agent.action !== 'shop' && agent.action !== 'wait')
+          || (agent.needs.social > 88 && !['socialise', 'sit', 'perform', 'stroll', 'wait'].includes(agent.action))
           || ((hour >= 23 || hour < 5.5) && agent.action !== 'sleep')
           || (hour >= 6 && hour <= 21.8 && agent.action === 'sleep' && agent.needs.sleep < 52);
         if (reconsider) startAction(agent, choose(agent, state), state);
         else {
-          if (agent.action !== 'drive') agent.target = slotOf(agent, agent.place);
+          if (agent.action === 'wait' && agent.waitingFor) {
+            const intended = (actions[agent.waitingFor] || {}).place || agent.waitingFor;
+            agent.target = queueSlot(agent, intended);
+          } else if (agent.action !== 'drive') {
+            agent.target = slotOf(agent, agent.place);
+          }
           if (state.minute % 9 === (agent._index || 0)) agent.thought = localThought(agent, state);
         }
       });
@@ -679,6 +862,7 @@
     if (remote.social_log) state.social_log = remote.social_log;
     if (remote.scene) state.scene = remote.scene;
     if (remote.vehicles) state.vehicles = remote.vehicles;
+    if (remote.pulse !== undefined) state.pulse = remote.pulse;
     remote.agents.forEach((src, i) => {
       const dst = state.agents[i];
       const keep = { color: dst.color, home: dst.home, homeLabel: dst.homeLabel, preferred: dst.preferred, stance: dst.stance, bonds: dst.bonds, _index: dst._index, role: dst.role || src.role, knowledge: dst.knowledge };
@@ -691,7 +875,8 @@
       dst.using = src.using || dst.using || '';
       dst.plan = Array.isArray(src.plan) ? src.plan : (dst.plan || []);
       dst.planLabel = src.planLabel || dst.planLabel || '';
-      dst.planLabel = dst.planLabel;
+      dst.waitingFor = src.waitingFor || '';
+      dst.threadTurn = src.threadTurn || 0;
       dst.target = Array.isArray(src.target) ? src.target : slotOf(dst, dst.place);
       dst.mood = src.mood || dst.mood;
     });
@@ -701,8 +886,8 @@
   async function askQwen() { return null; }
 
   window.CityAgents = {
-    actions, profiles, places, laws, PLACE_SV, HOME_X, HOME_Z, HOME_LOTS, OBJECTS, AGENDAS,
+    actions, profiles, places, laws, PLACE_SV, HOME_X, HOME_Z, HOME_LOTS, OBJECTS, AGENDAS, PULSES,
     createSimulationState, tickAgents, askQwen, clock, startAction, choose,
-    slotOf, sceneStory, applyRemote, phaseOf, hourOf, homeOf, tickVehicles
+    slotOf, sceneStory, applyRemote, phaseOf, hourOf, homeOf, tickVehicles, activePulse
   };
 })();
