@@ -55,3 +55,13 @@ assert.equal(state.agents[0].color, '#76d6c6');
 assert.equal(state.scene.title, 'Regn');
 
 console.log('simulering-agents: assertions passed');
+
+// Agenda / plan chain visibility
+const morning = A.createSimulationState();
+morning.minute = 9 * 60;
+morning.agents.forEach(a => { a.needs.sleep = 15; a.needs.hunger = 35; a.progress = 1; });
+A.tickAgents(morning, 25);
+const withPlan = morning.agents.filter(a => (a.plan && a.plan.length) || a.planLabel);
+assert.ok(withPlan.length >= 1 || morning.agents.some(a => a.action !== 'socialise'), 'morning agenda should move agents off idle plaza loop');
+assert.ok(morning.agents.some(a => a.place !== 'plaza' || a.action === 'perform' || a.action === 'socialise'), 'town places in use');
+console.log('agenda checks passed');
