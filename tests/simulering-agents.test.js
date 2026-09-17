@@ -65,3 +65,26 @@ const withPlan = morning.agents.filter(a => (a.plan && a.plan.length) || a.planL
 assert.ok(withPlan.length >= 1 || morning.agents.some(a => a.action !== 'socialise'), 'morning agenda should move agents off idle plaza loop');
 assert.ok(morning.agents.some(a => a.place !== 'plaza' || a.action === 'perform' || a.action === 'socialise'), 'town places in use');
 console.log('agenda checks passed');
+
+// Town pulse + queue behavior
+const market = A.createSimulationState();
+market.minute = 10 * 60 + 5;
+market.weather = 'clear';
+market.agents.forEach(a => { a.needs.sleep = 10; a.needs.hunger = 40; a.progress = 1; });
+A.tickAgents(market, 8);
+assert.ok(market.pulse || market.events.some(e => /Stadspuls|Marknad|Konsert|Utfodring|Lagdebatt|Gryning|lagning/i.test(e.text)), 'town pulse should surface in state or events');
+
+// Force full cafe → waiters queue
+const crowded = A.createSimulationState();
+crowded.minute = 12 * 60 + 10;
+crowded.agents.forEach((a, i) => {
+  a.needs.sleep = 10;
+  a.needs.hunger = 90;
+  a.progress = 1;
+});
+// Fill cafe capacity first
+crowded.agents.slice(0, 3).forEach(a => A.startAction(a, 'eat', crowded));
+A.tickAgents(crowded, 2);
+const waiter = crowded.agents.find(a => a.action === 'wait' || a.waitingFor);
+assert.ok(waiter || crowded.agents.filter(a => a.place === 'cafe').length <= 3, 'capacity should constrain cafe or produce a queue');
+console.log('pulse/queue checks passed');

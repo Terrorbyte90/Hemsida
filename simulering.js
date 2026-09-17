@@ -10,6 +10,7 @@
   let meshes = [], colliders = [], lamps = [], windowLights = [], lastSocial = 0, lastSync = 0;
   let directorIndex = 0, directorChanged = performance.now(), dust, fireflies, stars, sunMesh, moonMesh, plazaGlow;
   let talkLines = null, vehicleMeshes = [], animalMeshes = [], houseLabels = [];
+  let chimneySmoke = null, fountainSplash = null;
   let camMode = 'overview', camLook = null, frameDt = 0.016, userOrbit = false;
   const lerp = (a, b, t) => a + (b - a) * t;
   const damp = (a, b, lambda) => lerp(a, b, 1 - Math.exp(-lambda * Math.max(0.001, frameDt)));
@@ -276,6 +277,18 @@
     g.userData.headlights = [headL, headR];
     g.userData.taillights = [tailL, tailR];
     g.userData.wheels = g.children.filter(c => c.geometry && c.geometry.type === 'CylinderGeometry');
+    // Night headlight cones (SpotLights aimed forward)
+    const beam = (oz) => {
+      const spot = new THREE.SpotLight(0xffe0a8, 0, 14, 0.42, 0.55, 1.4);
+      spot.position.set(.82, .42, oz);
+      const tgt = new THREE.Object3D();
+      tgt.position.set(3.8, .1, oz * 0.4);
+      g.add(tgt);
+      spot.target = tgt;
+      g.add(spot);
+      return spot;
+    };
+    g.userData.beams = [beam(.28), beam(-.28)];
     city.add(g);
     return g;
   }
@@ -548,9 +561,9 @@
     const key = new THREE.PointLight(agent.color, .7, 4.2, 2);
     key.position.set(0, 1.6, .3);
     g.add(key);
-    const ring = new THREE.Mesh(new THREE.RingGeometry(.38, .52, 40), new THREE.MeshBasicMaterial({ color: agent.color, transparent: true, opacity: .5, side: THREE.DoubleSide, depthWrite: false }));
+    const ring = new THREE.Mesh(new THREE.RingGeometry(.34, .46, 40), new THREE.MeshBasicMaterial({ color: agent.color, transparent: true, opacity: .28, side: THREE.DoubleSide, depthWrite: false }));
     ring.rotation.x = -Math.PI / 2; ring.position.y = .03; g.add(ring);
-    const outer = new THREE.Mesh(new THREE.RingGeometry(.54, .66, 40), new THREE.MeshBasicMaterial({ color: agent.color, transparent: true, opacity: .16, side: THREE.DoubleSide, depthWrite: false }));
+    const outer = new THREE.Mesh(new THREE.RingGeometry(.48, .58, 40), new THREE.MeshBasicMaterial({ color: agent.color, transparent: true, opacity: .08, side: THREE.DoubleSide, depthWrite: false }));
     outer.rotation.x = -Math.PI / 2; outer.position.y = .032; g.add(outer);
     const plate = nameplate(agent.name, agent.color);
     g.add(plate);
@@ -823,6 +836,27 @@
     scene.add(sunMesh);
     moonMesh = new THREE.Mesh(new THREE.SphereGeometry(.45, 12, 10), new THREE.MeshBasicMaterial({ color: 0xd0dcec }));
     scene.add(moonMesh);
+    // Soft chimney plumes from each house roof
+    const smokeGeo = new THREE.BufferGeometry();
+    const smokePos = [];
+    (A.HOME_LOTS || []).forEach((lot, i) => {
+      for (let n = 0; n < 8; n++) {
+        smokePos.push(lot.x + (i % 2 ? .4 : -.3), 3.2 + Math.random() * 1.2, lot.z - .2 + (Math.random() - .5) * .3);
+      }
+    });
+    smokeGeo.setAttribute('position', new THREE.Float32BufferAttribute(smokePos, 3));
+    chimneySmoke = new THREE.Points(smokeGeo, new THREE.PointsMaterial({ color: 0xb8c4d4, size: .09, transparent: true, opacity: .28, depthWrite: false }));
+    scene.add(chimneySmoke);
+    // Fountain splash sparkles
+    const splashGeo = new THREE.BufferGeometry();
+    const splashPos = [];
+    for (let i = 0; i < 36; i++) {
+      const a = (i / 36) * Math.PI * 2;
+      splashPos.push(Math.cos(a) * .35, 1.4 + Math.random() * .6, -2.2 + Math.sin(a) * .35);
+    }
+    splashGeo.setAttribute('position', new THREE.Float32BufferAttribute(splashPos, 3));
+    fountainSplash = new THREE.Points(splashGeo, new THREE.PointsMaterial({ color: 0xa8e8ec, size: .05, transparent: true, opacity: .55, depthWrite: false }));
+    scene.add(fountainSplash);
   }
 
   function addSocial(a, b, text) {
@@ -903,7 +937,7 @@
   function renderAgentList() {
     const list = $('#agent-list');
     list.innerHTML = state.agents.map(a =>
-      `<button class="agent-card ${a.id === selected ? 'selected' : ''}" data-id="${a.id}" style="--agent-color:${a.color};--need:${100 - a.needs.sleep}%"><span class="agent-orb"></span><strong>${a.name}</strong><small>${a.actionLabel}</small><span class="agent-mood">${a.mood || ''}</span><span class="agent-status"><i></i></span></button>`
+      `<button class="agent-card ${a.id === selected ? 'selected' : ''}" data-id="${a.id}" style="--agent-color:${a.color};--need:${100 - a.needs.sleep}%"><span class="agent-orb"></span><strong>${a.name}</strong><small>${a.actionLabel}</small><span class="agent-mood${a.action === 'wait' ? ' queue' : ''}">${a.mood || ''}</span><span class="agent-status"><i></i></span></button>`
     ).join('');
     list.querySelectorAll('.agent-card').forEach(x => x.onclick = () => {
       selected = x.dataset.id;
@@ -942,12 +976,21 @@
     ).join('');
   }
   function renderEvents() {
-    $('#event-list').innerHTML = state.events.slice(0, 6).map(e => `<div class="event"><time>${e.time}</time><span>${e.text}</span></div>`).join('');
+    $('#event-list').innerHTML = state.events.slice(0, 6).map(e => {
+      const pulse = /Stadspuls|ryktet|Kö |fördjupar/.test(e.text || '');
+      return `<div class="event${pulse ? ' pulse-event' : ''}"><time>${e.time}</time><span>${e.text}</span></div>`;
+    }).join('');
   }
   function renderDirector() {
     const sceneInfo = state.scene || A.sceneStory(state);
     $('#scene-title').textContent = sceneInfo.title;
-    $('#scene-copy').textContent = sceneInfo.copy;
+    const pulse = state.pulse;
+    const copyEl = $('#scene-copy');
+    if (pulse && pulse.title) {
+      copyEl.innerHTML = `${sceneInfo.copy}<span class="pulse-chip">Puls · <b>${pulse.title}</b></span>`;
+    } else {
+      copyEl.textContent = sceneInfo.copy;
+    }
     const hour = A.hourOf(state.minute);
     const night = hour >= 21 || hour < 5.5;
     const dusk = !night && (hour < 8 || hour >= 17);
@@ -993,7 +1036,11 @@
     (city.userData.trees || []).forEach((t, i) => { t.rotation.z = Math.sin(now / 1400 + (t.userData.sway || i)) * .025; });
     windowLights.forEach((w, i) => {
       if (!w.userData.window) return;
-      w.material = (night || (solar < .25 && i % 3 !== 0)) ? w.userData.nightMat : w.userData.dayMat;
+      const lit = night || (solar < .25 && i % 3 !== 0);
+      w.material = lit ? w.userData.nightMat : w.userData.dayMat;
+      if (lit && w.userData.nightMat) {
+        w.userData.nightMat.emissiveIntensity = .75 + Math.sin(now / 420 + i * 1.7) * .28 + ((i * 13) % 5) * .04;
+      }
     });
     lamps.forEach((L, i) => {
       const pulse = night ? 1.7 + Math.sin(now / 500 + i) * .18 : .18;
@@ -1003,6 +1050,27 @@
       L.bulb.material.color.setHex(night ? 0xffe0a0 : 0xd0c8b0);
     });
     if (waterMat) { waterMat.uniforms.t.value = now / 400; waterMat.uniforms.night.value = night ? 1 : 0; }
+    if (chimneySmoke) {
+      chimneySmoke.visible = true;
+      chimneySmoke.material.opacity = night ? .38 : .18;
+      const pos = chimneySmoke.geometry.attributes.position.array;
+      for (let i = 0; i < pos.length; i += 3) {
+        pos[i] += Math.sin(now / 900 + i) * .004;
+        pos[i + 1] += 0.012 * state.speed;
+        if (pos[i + 1] > 5.8) pos[i + 1] = 3.1;
+      }
+      chimneySmoke.geometry.attributes.position.needsUpdate = true;
+    }
+    if (fountainSplash) {
+      fountainSplash.visible = state.weather !== 'snow';
+      const pos = fountainSplash.geometry.attributes.position.array;
+      for (let i = 0; i < pos.length; i += 3) {
+        pos[i + 1] = 1.35 + Math.abs(Math.sin(now / 280 + i)) * .55;
+        pos[i] += Math.sin(now / 400 + i) * .002;
+      }
+      fountainSplash.geometry.attributes.position.needsUpdate = true;
+      fountainSplash.material.opacity = .4 + Math.sin(now / 350) * .15;
+    }
   }
 
   function updateTalkLines() {
@@ -1076,6 +1144,15 @@
         q.ll.rotation.x = 0; q.rl.rotation.x = 0;
         m.position.y = Math.abs(Math.sin(now / 200)) * .03;
         m.rotation.x = a.action === 'visit_zoo' ? -0.08 : 0;
+      } else if (a.action === 'wait' || a.pose === 'queue') {
+        // Queue: weight shift, arms folded, slight impatience tap
+        q.la.rotation.z = damp(q.la.rotation.z, .42 + Math.sin(now / 900 + q.phase) * .06, 5);
+        q.ra.rotation.z = damp(q.ra.rotation.z, -.48 + Math.cos(now / 850 + q.phase) * .05, 5);
+        q.ll.rotation.x = damp(q.ll.rotation.x, .08 + Math.sin(now / 700 + q.phase) * .04, 5);
+        q.rl.rotation.x = damp(q.rl.rotation.x, -.05, 5);
+        m.position.y = .02 + Math.abs(Math.sin(now / 600 + q.phase)) * .015;
+        m.rotation.z = Math.sin(now / 1100 + q.phase) * .03;
+        m.rotation.x = 0;
       } else if (a.talking_with) {
         // Animated conversation: gesturing arms, weight shift, slight lean
         q.la.rotation.z = .15 + Math.sin(now / 260 + q.phase) * .45;
@@ -1095,20 +1172,30 @@
         q.ll.rotation.x = 0; q.rl.rotation.x = 0;
         m.position.y = Math.abs(Math.sin(now / 200)) * .04;
       } else {
-        q.la.rotation.z = walk * walkAmt;
-        q.ra.rotation.z = -walk * walkAmt;
-        q.ll.rotation.x = -walk * walkAmt * .85;
-        q.rl.rotation.x = walk * walkAmt * .85;
+        // Opposite arm/leg + shoulder counter-sway for readable gait
+        q.la.rotation.z = walk * walkAmt * 1.05;
+        q.ra.rotation.z = -walk * walkAmt * 1.05;
+        q.la.rotation.x = -walk * walkAmt * .25;
+        q.ra.rotation.x = walk * walkAmt * .25;
+        q.ll.rotation.x = -walk * walkAmt * 1.05;
+        q.rl.rotation.x = walk * walkAmt * 1.05;
         const breath = Math.sin(now / 520 + q.phase) * .016;
-        m.position.y = moving ? Math.abs(Math.sin(now / 130 + q.phase)) * .055 : breath;
+        m.position.y = moving ? Math.abs(Math.sin(now / 125 + q.phase)) * .06 : breath;
+        m.rotation.z = moving ? walk * .05 : Math.sin(now / 900 + q.phase) * .012;
+        m.rotation.x = 0;
       }
       if (q.ring) {
-        q.ring.material.opacity = .4 + Math.sin(now / 700 + q.phase) * .12 + (a.id === selected ? .22 : 0);
-        q.outer.material.opacity = .12 + Math.sin(now / 900 + q.phase) * .04;
-        q.ring.scale.setScalar(1 + Math.sin(now / 800 + q.phase) * .05);
+        const focus = a.id === selected ? .34 : (a.talking_with ? .18 : .1);
+        q.ring.material.opacity = focus + Math.sin(now / 700 + q.phase) * .04;
+        q.outer.material.opacity = (a.id === selected ? .14 : .04);
+        q.ring.scale.setScalar(1 + Math.sin(now / 800 + q.phase) * .03);
       }
-      if (q.key) q.key.intensity = .55 + Math.sin(now / 600 + q.phase) * .14 + (a.id === selected ? .28 : 0);
-      if (q.plate) q.plate.material.opacity = a.id === selected ? 1 : .88;
+      if (q.key) q.key.intensity = .4 + Math.sin(now / 600 + q.phase) * .1 + (a.id === selected ? .32 : 0);
+      if (q.plate) {
+        const camDist = camera.position.distanceTo(m.position);
+        q.plate.material.opacity = a.id === selected ? 1 : Math.max(.15, 1.15 - camDist / 42);
+        q.plate.scale.setScalar(camDist > 28 ? 1.35 : 1.15);
+      }
       bubbleItems.push(bubble(a, a.talking_with ? 'speech' : 'thought'));
     });
     layoutBubbles(bubbleItems);
@@ -1122,14 +1209,16 @@
       // Subtle wheel roll feel
       vm.position.y = Math.sin(now / 180 + (v.t || 0) * 20) * 0.012;
 
-      // Night headlights / daytime running lights
-      const nightDrive = (typeof night === 'boolean' ? night : false) || (sun && sun.intensity < .7);
+      // Night headlights / daytime running lights + beam cones
+      const hourNow = A.hourOf(state.minute);
+      const nightDrive = hourNow >= 20 || hourNow < 6.5 || (sun && sun.intensity < .7);
       (vm.userData.headlights || []).forEach(h => {
-        if (h.material && h.material.emissiveIntensity !== undefined) h.material.emissiveIntensity = nightDrive ? 1.4 : .12;
+        if (h.material && h.material.emissiveIntensity !== undefined) h.material.emissiveIntensity = nightDrive ? 1.55 : .12;
       });
       (vm.userData.taillights || []).forEach(h => {
-        if (h.material && h.material.emissiveIntensity !== undefined) h.material.emissiveIntensity = nightDrive ? .9 : .25;
+        if (h.material && h.material.emissiveIntensity !== undefined) h.material.emissiveIntensity = nightDrive ? 1.05 : .25;
       });
+      (vm.userData.beams || []).forEach(b => { b.intensity = nightDrive ? 2.4 : 0; });
       vm.userData._spin = (vm.userData._spin || 0) + (v.rider ? 0.35 : 0.18);
       if (v.rider) {
         const riderMesh = meshes.find(m => m.userData.id === v.rider);
@@ -1148,9 +1237,18 @@
       const amp = kind === 'duck' ? 1.35 : kind === 'rabbit' ? .55 : .85;
       const nx = o.x + Math.sin(now / 1800 + ph) * amp;
       const nz = o.z + Math.cos(now / 2100 + ph) * (amp * .75);
-      const dx = nx - am.position.x, dz = nz - am.position.z;
       am.position.x = nx; am.position.z = nz;
-      if (Math.hypot(dx, dz) > 0.001) am.rotation.y = Math.atan2(dx, dz);
+      // Gaze toward nearest nearby agent when visitors are at the zoo
+      let lookYaw = Math.atan2(nx - o.x, nz - o.z);
+      let nearest = null, nd = 9;
+      meshes.forEach(hm => {
+        const d = Math.hypot(hm.position.x - am.position.x, hm.position.z - am.position.z);
+        if (d < nd) { nd = d; nearest = hm; }
+      });
+      if (nearest && nd < 6.5) {
+        lookYaw = Math.atan2(nearest.position.x - am.position.x, nearest.position.z - am.position.z);
+      }
+      am.rotation.y = angDamp(am.rotation.y, lookYaw, 3.2);
       const hop = am.userData.hop ? Math.abs(Math.sin(now / 280 + ph)) * (kind === 'rabbit' ? .12 : .05) : 0;
       am.position.y = hop;
       am.rotation.z = Math.sin(now / 900 + ph) * 0.04;
@@ -1183,9 +1281,10 @@
     if (plazaGlow) plazaGlow.intensity = night ? 1.15 : .25;
     if (sunMesh) { sunMesh.position.copy(sun.position); sunMesh.visible = solar > .05; }
     if (moonMesh) { moonMesh.position.set(-sun.position.x * .6, 10, -sun.position.z * .6); moonMesh.visible = night; }
-    scene.fog.near = night ? 48 : 44;
-    scene.fog.far = night ? 145 : 135;
-    renderer.toneMappingExposure = night ? 1.05 : dusk ? 1.18 : 1.22;
+    scene.fog.near = night ? 36 : dusk ? 42 : 46;
+    scene.fog.far = night ? 118 : dusk ? 128 : 138;
+    if (plazaGlow) plazaGlow.color.setHex(dusk ? 0xff9a62 : night ? 0xffc878 : 0xffe0b0);
+    renderer.toneMappingExposure = night ? 1.02 : dusk ? 1.2 : 1.22;
     updateAtmosphere(now, night, solar);
     rain.visible = state.weather === 'rain';
     snow.visible = state.weather === 'snow';
