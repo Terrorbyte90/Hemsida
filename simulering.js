@@ -19,8 +19,20 @@
     while (dy < -Math.PI) dy += Math.PI * 2;
     return cur + dy * (1 - Math.exp(-lambda * Math.max(0.001, frameDt)));
   };
-  const mat = (c, rough = .78, metal = .05, opts = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: rough, metalness: metal, ...opts });
-  const emissiveMat = (c, e, intensity = .55) => new THREE.MeshStandardMaterial({ color: c, emissive: e, emissiveIntensity: intensity, roughness: .38, metalness: .08 });
+  const mat = (c, rough = .72, metal = .06, opts = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: rough, metalness: metal, ...opts });
+  const emissiveMat = (c, e, intensity = .7) => new THREE.MeshStandardMaterial({ color: c, emissive: e, emissiveIntensity: intensity, roughness: .32, metalness: .1 });
+  // Soft contact AO under props/agents (fake ambient occlusion)
+  function contactAO(parent, radius = .55, opacity = .32) {
+    const m = new THREE.Mesh(
+      new THREE.CircleGeometry(radius, 28),
+      new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity, depthWrite: false })
+    );
+    m.rotation.x = -Math.PI / 2;
+    m.position.y = .015;
+    m.renderOrder = -1;
+    parent.add(m);
+    return m;
+  }
 
   function canvasTex(size, draw, repeatX = 1, repeatY = 1) {
     const c = document.createElement('canvas');
@@ -87,6 +99,11 @@
     shadow.position.y = .02;
     shadow.castShadow = false;
     parent.add(shadow);
+    // Inner darker contact ring for AO depth
+    const core = new THREE.Mesh(new THREE.CircleGeometry(radius * .45, 20), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: opacity * 1.35, depthWrite: false }));
+    core.rotation.x = -Math.PI / 2;
+    core.position.y = .025;
+    parent.add(core);
     return shadow;
   }
 
@@ -201,6 +218,7 @@
     box(1.4, .14, .7, 0x2a3648, [0, 0, d / 2 + .4], group, .85);
     box(1.1, .14, .55, 0x323e52, [0, .14, d / 2 + .28], group, .85);
     colliders.push({ x, z, w: w + .5, d: d + .5 });
+    contactAO(group, Math.max(w, d) * .55, .26);
     return group;
   }
 
@@ -235,6 +253,7 @@
     signband(group, label, 1.7, d / 2 + .04, accent, Math.min(w - .5, 3.2));
     colliders.push({ x, z, w: w + .5, d: d + .6 });
     houseLabels.push(group);
+    contactAO(group, Math.max(w, d) * .5, .24);
     return group;
   }
 
@@ -248,7 +267,15 @@
     wheel(-.5, .42); wheel(.5, .42); wheel(-.5, -.42); wheel(.5, -.42);
     box(.12, .08, .08, emissiveMat(0xffe0a0, 0xffe0a0, .8), [.82, .38, .28], g);
     box(.12, .08, .08, emissiveMat(0xffe0a0, 0xffe0a0, .8), [.82, .38, -.28], g);
-    softShadow(g, .7, .25);
+    const headL = box(.1, .08, .08, emissiveMat(0xffe6b0, 0xffe0a0, .15), [.82, .38, .28], g);
+    const headR = box(.1, .08, .08, emissiveMat(0xffe6b0, 0xffe0a0, .15), [.82, .38, -.28], g);
+    const tailL = box(.08, .06, .06, emissiveMat(0xff4040, 0xff2020, .2), [-.82, .38, .28], g);
+    const tailR = box(.08, .06, .06, emissiveMat(0xff4040, 0xff2020, .2), [-.82, .38, -.28], g);
+    softShadow(g, .75, .3);
+    contactAO(g, .85, .22);
+    g.userData.headlights = [headL, headR];
+    g.userData.taillights = [tailL, tailR];
+    g.userData.wheels = g.children.filter(c => c.geometry && c.geometry.type === 'CylinderGeometry');
     city.add(g);
     return g;
   }
@@ -289,6 +316,8 @@
     g.userData.kind = kind;
     g.userData.phase = Math.random() * 6.28;
     g.userData.origin = { x, z };
+    g.userData.hop = kind === 'rabbit' || kind === 'duck' ? 1 : 0;
+    g.userData.gaze = Math.random() * 6.28;
     animalMeshes.push(g);
     return g;
   }
@@ -526,7 +555,7 @@
     const plate = nameplate(agent.name, agent.color);
     g.add(plate);
     g.scale.setScalar(1.22);
-    g.userData.parts = { la, ra, ll, rl, ring, outer, key, plate, phase: Math.random() * 6.28 };
+    g.userData.parts = { la, ra, ll, rl, ring, outer, key, plate, head: g.children.find(c => c.geometry && c.geometry.type === "SphereGeometry" && c.position.y > 1.5) || null, phase: Math.random() * 6.28 };
     g.userData.target = new THREE.Vector3(p0[0], 0, p0[1]);
     city.add(g);
     return g;
@@ -902,7 +931,8 @@
       `<div class="needs">${Object.entries(a.needs).map(([k, v]) =>
         `<span class="need" style="--agent-color:${a.color};--value:${v}%"><b>${({ sleep: 'sömn', hunger: 'mat', social: 'socialt', curiosity: 'nyfiken', purpose: 'mening' })[k]}</b><i></i></span>`
       ).join('')}</div>` +
-      `<p class="panel-meta place-pill">${a.actionLabel} · ${A.PLACE_SV[a.place] || a.place} · ${a.mood || ''}</p>` +
+`<p class="panel-meta place-pill">${a.actionLabel} · ${A.PLACE_SV[a.place] || a.place} · ${a.mood || ''}</p>` +
+      (a.planLabel ? `<p class="plan-chain"><span>Plan</span> ${a.planLabel}</p>` : '') +
       `<div class="rel-block"><span class="panel-label">Relationer</span><div class="rels">${relHtml}</div></div>`;
   }
 
@@ -1040,16 +1070,20 @@
         q.ll.rotation.x = damp(q.ll.rotation.x, .7, 6);
         q.rl.rotation.x = damp(q.rl.rotation.x, .7, 6);
         m.position.y = damp(m.position.y, .15, 6);
-      } else if (a.action === 'feed' && !moving) {
-        q.la.rotation.z = .15 + Math.sin(now / 200) * .5;
-        q.ra.rotation.z = -.1;
+      } else if ((a.action === 'feed' || a.action === 'visit_zoo') && !moving) {
+        q.la.rotation.z = .2 + Math.sin(now / 220) * .55;
+        q.ra.rotation.z = -.15 + Math.cos(now / 260) * .2;
         q.ll.rotation.x = 0; q.rl.rotation.x = 0;
-        m.position.y = Math.abs(Math.sin(now / 200)) * .025;
+        m.position.y = Math.abs(Math.sin(now / 200)) * .03;
+        m.rotation.x = a.action === 'visit_zoo' ? -0.08 : 0;
       } else if (a.talking_with) {
-        q.la.rotation.z = Math.sin(now / 280 + q.phase) * .35;
-        q.ra.rotation.z = Math.cos(now / 320 + q.phase) * .28;
-        q.ll.rotation.x = 0; q.rl.rotation.x = 0;
-        m.position.y = Math.sin(now / 520 + q.phase) * .02;
+        // Animated conversation: gesturing arms, weight shift, slight lean
+        q.la.rotation.z = .15 + Math.sin(now / 260 + q.phase) * .45;
+        q.ra.rotation.z = -.1 + Math.cos(now / 300 + q.phase) * .38;
+        q.ll.rotation.x = Math.sin(now / 700 + q.phase) * .06;
+        q.rl.rotation.x = -Math.sin(now / 700 + q.phase) * .06;
+        m.position.y = .02 + Math.sin(now / 480 + q.phase) * .03;
+        m.rotation.z = Math.sin(now / 900 + q.phase) * .04;
       } else if (['work', 'repair', 'garden', 'shop'].includes(a.action) && !moving) {
         q.la.rotation.z = .2 + Math.sin(now / 180) * .45;
         q.ra.rotation.z = -.15;
@@ -1087,6 +1121,16 @@
       vm.rotation.y = angDamp(vm.rotation.y, v.yaw || 0, 6.5);
       // Subtle wheel roll feel
       vm.position.y = Math.sin(now / 180 + (v.t || 0) * 20) * 0.012;
+
+      // Night headlights / daytime running lights
+      const nightDrive = (typeof night === 'boolean' ? night : false) || (sun && sun.intensity < .7);
+      (vm.userData.headlights || []).forEach(h => {
+        if (h.material && h.material.emissiveIntensity !== undefined) h.material.emissiveIntensity = nightDrive ? 1.4 : .12;
+      });
+      (vm.userData.taillights || []).forEach(h => {
+        if (h.material && h.material.emissiveIntensity !== undefined) h.material.emissiveIntensity = nightDrive ? .9 : .25;
+      });
+      vm.userData._spin = (vm.userData._spin || 0) + (v.rider ? 0.35 : 0.18);
       if (v.rider) {
         const riderMesh = meshes.find(m => m.userData.id === v.rider);
         if (riderMesh) {
@@ -1100,11 +1144,16 @@
     animalMeshes.forEach(am => {
       const o = am.userData.origin || { x: 0, z: 0 };
       const ph = am.userData.phase || 0;
-      const amp = am.userData.kind === 'duck' ? 1.2 : .7;
-      am.position.x = o.x + Math.sin(now / 1800 + ph) * amp;
-      am.position.z = o.z + Math.cos(now / 2100 + ph) * (amp * .75);
-      am.rotation.y = Math.sin(now / 1600 + ph) * .4;
-      am.position.y = am.userData.kind === 'duck' ? Math.abs(Math.sin(now / 400 + ph)) * .04 : 0;
+      const kind = am.userData.kind || 'deer';
+      const amp = kind === 'duck' ? 1.35 : kind === 'rabbit' ? .55 : .85;
+      const nx = o.x + Math.sin(now / 1800 + ph) * amp;
+      const nz = o.z + Math.cos(now / 2100 + ph) * (amp * .75);
+      const dx = nx - am.position.x, dz = nz - am.position.z;
+      am.position.x = nx; am.position.z = nz;
+      if (Math.hypot(dx, dz) > 0.001) am.rotation.y = Math.atan2(dx, dz);
+      const hop = am.userData.hop ? Math.abs(Math.sin(now / 280 + ph)) * (kind === 'rabbit' ? .12 : .05) : 0;
+      am.position.y = hop;
+      am.rotation.z = Math.sin(now / 900 + ph) * 0.04;
     });
     const talking = state.agents.filter(a => a.talking_with);
     if (talking.length >= 2 && now - lastSocial > 7000) {
@@ -1116,8 +1165,8 @@
     const solar = Math.max(0, Math.sin((hour - 6) / 12 * Math.PI));
     const night = solar < .12;
     const dusk = !night && solar < .45;
-    scene.background.lerp(new THREE.Color(night ? 0x0e1a2c : dusk ? 0x2a4060 : 0x6a9db0), .04);
-    scene.fog.color.lerp(new THREE.Color(night ? 0x122238 : dusk ? 0x2c4560 : 0x7aabba), .04);
+    scene.background.lerp(new THREE.Color(night ? 0x070e1a : dusk ? 0x3a2a48 : 0x7eb4c8), .05);
+    scene.fog.color.lerp(new THREE.Color(night ? 0x0a1524 : dusk ? 0x4a3858 : 0x8ab8c6), .05);
     if (skyMat) {
       skyMat.uniforms.top.value.lerp(new THREE.Color(night ? 0x0b1728 : dusk ? 0x3a5a78 : 0x7eb8cc), .04);
       skyMat.uniforms.mid.value.lerp(new THREE.Color(night ? 0x152438 : dusk ? 0x6a5a70 : 0xc5d8e4), .04);
@@ -1126,8 +1175,9 @@
     const ang = (hour - 12) / 24 * Math.PI * 2;
     sun.position.set(Math.cos(ang) * 16, 2.5 + solar * 16, Math.sin(ang) * 14);
     sun.intensity = night ? .48 : (.2 + solar * 1.9);
-    sun.color.setHex(dusk ? 0xffc090 : night ? 0xb0c8e8 : 0xffe6c4);
-    hemi.intensity = night ? .78 : .88 + solar * .38;
+    sun.color.setHex(dusk ? 0xff9a62 : night ? 0x9bb4d8 : 0xffefd0);
+    hemi.intensity = night ? .62 : .92 + solar * .42;
+    if (hemi.color) hemi.color.setHex(night ? 0x6a82a8 : dusk ? 0xffc8a0 : 0xc8e0f4);
     ambient.intensity = night ? .42 : .26 + solar * .16;
     if (rim) rim.intensity = night ? .55 : .14;
     if (plazaGlow) plazaGlow.intensity = night ? 1.15 : .25;
@@ -1135,7 +1185,7 @@
     if (moonMesh) { moonMesh.position.set(-sun.position.x * .6, 10, -sun.position.z * .6); moonMesh.visible = night; }
     scene.fog.near = night ? 48 : 44;
     scene.fog.far = night ? 145 : 135;
-    renderer.toneMappingExposure = night ? 1.14 : dusk ? 1.08 : 1.16;
+    renderer.toneMappingExposure = night ? 1.05 : dusk ? 1.18 : 1.22;
     updateAtmosphere(now, night, solar);
     rain.visible = state.weather === 'rain';
     snow.visible = state.weather === 'snow';
@@ -1190,11 +1240,11 @@
     renderer.outputEncoding = THREE.sRGBEncoding;
     if ('physicallyCorrectLights' in renderer) renderer.physicallyCorrectLights = true;
     mount.appendChild(renderer.domElement);
-    hemi = new THREE.HemisphereLight(0xb8d4f0, 0x1a2a22, 1.0);
+    hemi = new THREE.HemisphereLight(0xc5dff5, 0x1a2a22, 1.08);
     scene.add(hemi);
-    ambient = new THREE.AmbientLight(0x6a7f9a, .3);
+    ambient = new THREE.AmbientLight(0x7a90a8, .34);
     scene.add(ambient);
-    sun = new THREE.DirectionalLight(0xffe0b8, 2.0);
+    sun = new THREE.DirectionalLight(0xffe8c4, 2.25);
     sun.castShadow = true;
     sun.shadow.mapSize.set(2048, 2048);
     sun.shadow.camera.near = 1; sun.shadow.camera.far = 120;
@@ -1205,7 +1255,7 @@
     rim = new THREE.DirectionalLight(0x88aacc, .25);
     rim.position.set(-8, 4, -10);
     scene.add(rim);
-    plazaGlow = new THREE.PointLight(0xffc878, .55, 22, 2);
+    plazaGlow = new THREE.PointLight(0xffc878, .7, 24, 1.8);
     plazaGlow.position.set(0, 2.8, 0);
     scene.add(plazaGlow);
     buildCity(); resize(); addEventListener('resize', resize); bind(); loop();
