@@ -294,8 +294,9 @@ const Api = {
     if (!this.state || this.state.version !== 5) { this.state = seedState(); this.save(); }
     for (const m of this.state.materials) { const d = MATERIALS.find(x => x.no === m.no); if (d) { m.name = d.name; m.art = d.art; } }
   },
-  save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(this.state)); } catch {} },
-  reset() { this.state = seedState(); this.save(); },
+  rev: 0,
+  save() { this.rev++; try { localStorage.setItem(STORE_KEY, JSON.stringify(this.state)); } catch {} },
+  reset() { this.rev++; this.state = seedState(); this.save(); },
   batches() { return this.state.batches; },
   batch(id) { return this.state.batches.find(b => b.id === id); },
   recipe(no) { return RECIPES.find(r => r.no === no); },

@@ -39,7 +39,11 @@ const matShort = no => { const n = Api.material(no).name; return n.replace(/^(Ku
 
 /* Historisk effekt: före = senaste värdet innan justeringen, efter = första värdet efter
    (innan nästa justering). Effekten normaliseras till "per kg råvara per ton batch". */
+const histCache = new Map();
 function adjustmentHistory(matNo, excludeId) {
+  const ck = Api.rev + '|' + matNo + '|' + excludeId;
+  if (histCache.has(ck)) return histCache.get(ck);
+  if (histCache.size > 200) histCache.clear();
   const out = [];
   for (const b of Api.batches()) {
     if (b.id === excludeId || !b.adjustments.length) continue;
@@ -57,7 +61,7 @@ function adjustmentHistory(matNo, excludeId) {
       if (Object.keys(effect).length) out.push({ batch: b, recipe: Api.recipe(b.recipe), kg: a.kg, time: a.time, before, after, effect });
     });
   }
-  return out.sort((x, y) => y.time.localeCompare(x.time));
+  out.sort((x, y) => y.time.localeCompare(x.time)); histCache.set(ck, out); return out;
 }
 
 function recommend(b) {
@@ -224,10 +228,10 @@ function viewBatch(id) {
   if (b.mix === 'paused') actionsHtml = `<button class="btn danger big" ${b.test !== 'stopped' ? 'disabled' : ''} onclick="confirmStop('${b.id}')">Stoppa batch</button><button class="btn ghost" onclick="act('resumeMix','${b.id}')">Återuppta blandning</button>`;
   actionsHtml += `<button class="btn ghost" onclick="printBatch('${b.id}')">Skriv ut</button>`;
   const compTable = `<table class="tbl"><thead><tr><th>Råvara</th><th class="r">Andel</th><th class="r">Kg</th><th class="r">I lager</th></tr></thead><tbody>
-    ${comps.map(c => `<tr class="${c.level}"><td>${esc(c.m.name)} <span class="mono muted">${c.m.art}</span></td><td class="r num muted">${nf(c.kg / b.weight, 5)}</td><td class="r num"><b>${nf(c.kg, 2)}</b></td><td class="r num">${c.m.bulk ? '<span class="muted">ledning</span>' : `${c.level === 'short' ? '<span class="tag red">Saknas</span> ' : c.level === 'low' ? '<span class="tag">Lågt</span> ' : ''}${nf(c.m.stock)}`}</td></tr>`).join('')}
+    ${comps.map(c => `<tr class="${c.level}"><td>${esc(c.m.name)} <span class="mono muted">${c.m.art}</span></td><td class="r num muted">${nf(c.kg / b.weight, 5)}</td><td class="r num"><b>${nf(c.kg, 2)} kg</b></td><td class="r num">${c.m.bulk ? '<span class="muted">ledning</span>' : `${c.level === 'short' ? '<span class="tag red">Saknas – Undersök!</span> ' : c.level === 'low' ? '<span class="tag">Lågt saldo – Undersök!</span> ' : ''}${nf(c.m.stock)} kg`}</td></tr>`).join('')}
     </tbody></table>`;
   let alert = '';
-  if (warns.length && b.mix !== 'stopped') alert = `<div class="alert ${warns.some(w => w.level === 'short') ? 'red' : 'amber'}"><div><b>Lågt lager:</b> ${warns.map(w => esc(matShort(w.m.no))).join(', ')}</div></div>`;
+  if (warns.length && b.mix !== 'stopped') alert = `<div class="alert ${warns.some(w => w.level === 'short') ? 'red' : 'amber'}"><div><b>Lågt saldo – Undersök!</b> ${warns.map(w => esc(matShort(w.m.no))).join(', ')}</div></div>`;
   if (b.mix === 'paused' && b.test !== 'stopped') alert += `<div class="alert blue"><div>Batchen är pausad. ${b.test === 'running' ? 'Provning pågår' : 'Starta provningen'} under <a href="#/prov/${b.id}">Provning →</a> Därefter lägger du in justeringar och stoppar här.</div></div>`;
   const stoppedAdj = b.mix === 'stopped' && b.machineAdj.length ? panel('Rapporterade justeringar', `<div class="adjlist">${b.machineAdj.map(a => `<div class="adjrow"><span>${esc(Api.material(a.mat).name)}</span><b class="${a.kg < 0 ? 'neg' : 'posv'}">${a.kg > 0 ? '+' : ''}${nf(a.kg, 1)} kg</b></div>`).join('')}</div>`) : '';
   const back = `#/maskin/${m.id}/${b.mix === 'planned' ? 'planerade' : b.mix === 'stopped' ? 'stoppade' : 'startade'}`;
@@ -284,7 +288,7 @@ function measureRow(k, v, spec, prevVals, input) {
     ${input || '<div></div>'}</div>`;
 }
 /* Kvalitetsmått som kompakt tabell (samma struktur som i BC): en rad per mätning, senaste överst per mått. */
-function qualityTable(keys, specs, rows, editable, id, fnNum, fnBool) {
+function qualityTable(keys, specs, rows, editable, id, fnNum, fnBool, latestOnly) {
   const body = keys.map(k => {
     const M = MEASURES[k]; const spec = specs[k];
     const hist = rows.filter(r => r.key === k).sort((x, y) => y.time.localeCompare(x.time));
@@ -294,9 +298,29 @@ function qualityTable(keys, specs, rows, editable, id, fnNum, fnBool) {
       <td class="num">${i ? '' : M.no}</td><td>${i ? '' : esc(M.name)}</td>
       <td class="r num v">${r ? fmtVal(k, r.value) : '–'}</td><td class="r num">${lim(0)}</td><td class="r num">${lim(1)}</td>
       <td class="num t">${r ? `${tm(r.time)} <span>${esc(r.by)}</span>` : ''}</td><td class="in">${i ? '' : input}</td></tr>`;
-    return hist.length ? hist.map((r, i) => line(r, i)).join('') : line(null, 0);
+    return hist.length ? (latestOnly ? hist.slice(0, 1) : hist).map((r, i) => line(r, i)).join('') : line(null, 0);
   }).join('');
   return `<div class="scroll"><table class="tbl qtbl"><thead><tr><th>Nr</th><th>Beskrivning</th><th class="r">Värde</th><th class="r">Min</th><th class="r">Max</th><th>Uppdaterad</th><th>${editable ? 'Nytt värde' : ''}</th></tr></thead><tbody>${body}</tbody></table></div>`;
+}
+/* Mätningar grupperade per justering: visar vad alla värden blev efter varje tillsats. */
+function adjustmentRounds(b, keys) {
+  const adj = [...b.adjustments].sort((x, y) => x.time.localeCompare(y.time));
+  const rounds = [{ title: 'Utgångsvärden', from: '', to: adj[0]?.time || '9999' }];
+  adj.forEach((a, i) => rounds.push({ title: `Efter justering ${i + 1}`, adj: a, from: a.time, to: adj[i + 1]?.time || '9999' }));
+  const spec = Api.recipe(b.recipe).spec;
+  const html = rounds.map(r => {
+    const rows = b.rows.filter(x => x.time > r.from && x.time < r.to);
+    const cells = keys.map(k => {
+      const v = rows.filter(x => x.key === k).sort((x, y) => y.time.localeCompare(x.time))[0]; if (!v) return '';
+      const before = r.adj ? latest(b.rows, k, r.from) : null;
+      const d = before && !MEASURES[k].bool ? v.value - before.value : null;
+      return `<div class="${inRange(v.value, spec[k]) ? 'ok' : 'bad'}"><small>${esc(MEASURES[k].name)}</small><b>${fmtVal(k, v.value)}</b>${d ? `<i>${d > 0 ? '+' : '−'}${nf(Math.abs(d), MEASURES[k].dec)}</i>` : ''}</div>`;
+    }).join('');
+    if (!cells && !r.adj) return '';
+    return `<div class="round"><div class="round-h"><b>${r.title}</b>${r.adj ? `<span class="tag">+${nf(r.adj.kg, 1)} kg ${esc(matShort(r.adj.mat))}</span>` : ''}<span class="muted mono">${tm(r.adj?.time || rows[0]?.time)}</span></div>
+      ${cells ? `<div class="msum">${cells}</div>` : '<p class="hint" style="margin:0 0 14px">Inga nya mätvärden ännu efter justeringen.</p>'}</div>`;
+  }).join('');
+  return adj.length ? `<section class="card panel"><div class="ph"><h3>Mätvärden per justering</h3><span class="muted">${adj.length} justering${adj.length > 1 ? 'ar' : ''}</span></div><div class="rounds">${html}</div></section>` : '';
 }
 const numInput = (fn, id, k, has) => `<form class="qin" onsubmit="${fn}(event,'${id}','${k}')"><input name="v" inputmode="decimal" placeholder="${has ? 'Ny rad' : 'Värde'}" autocomplete="off"><button class="btn">+</button></form>`;
 const boolInput = (fn, id, k) => `<div class="boolbtns qin"><button class="btn ok" onclick="${fn}('${id}','${k}',1)">OK</button><button class="btn bad" onclick="${fn}('${id}','${k}',0)">Ej OK</button></div>`;
@@ -315,7 +339,7 @@ function viewTest(id) {
     ? `<div class="alert green"><div>Provningen är klar. Gå till <a href="#/batch/${b.id}">${esc(m.name)} →</a> för att lägga in justeringar och stoppa batchen.</div></div><div class="actions"><a class="btn primary big" href="#/batch/${b.id}">Till ${esc(m.name)}</a><button class="btn ghost" onclick="act('reopenTest','${b.id}')">Återöppna provning</button></div>`
     : `<div class="alert green"><div>Provningen är klar${b.tapp === 'done' ? ' och batchen godkänd i prov tapp' : ''}.</div></div>`;
 
-  const table = qualityTable(keys, rec.spec, b.rows, editable, b.id, 'addRowForm', 'addRow');
+  const table = qualityTable(keys, rec.spec, b.rows, editable, b.id, 'addRowForm', 'addRow', true);
   const adjEvents = [...b.adjustments].sort((x, y) => x.time.localeCompare(y.time));
 
   const notePanel = panel('Anteckning & justering', `
@@ -325,7 +349,7 @@ function viewTest(id) {
   draftAdj = null;
   return header([['Översikt', '#/'], ['Provning', '#/provning/' + (b.test === 'stopped' ? 'stoppade' : 'startade')], [b.id]], titleFor(rec), subline('Kvalitetsmått', `<span class="mono">${b.id}</span>`, esc(m.name), `${nf(b.weight)} kg`, statusPill(b, 'test')))
     + flowSteps(b) + top
-    + `<div class="grid-t"><div><section class="card panel"><div class="ph"><h3>Kvalitetsmått</h3><span class="muted">${b.rows.length} rader</span></div>${table}</section></div>
+    + `<div class="grid-t"><div><section class="card panel"><div class="ph"><h3>Kvalitetsmått</h3><span class="muted">Senaste värden</span></div>${table}</section>${adjustmentRounds(b, keys)}</div>
       <div>${b.test !== 'waiting' ? recommendPanel(b) : ''}${b.test !== 'waiting' ? notePanel : ''}</div></div>`;
 }
 window.addRow = (id, key, value) => { const b = Api.batch(id); b.rows.push({ key, value, time: nowIso(), by: operator }); Api.save(); render(); };
