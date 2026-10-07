@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bland · Kalasfärg</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F3EEE6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%231A1620%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%23FF9868%27/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="mesh"></div><div class="grain"></div>
+<nav class="site-nav">
+  <div class="row">
+    <a class="brand" href="#/"><span class="dot"></span>Teds Kalasfärg</a>
+    <div id="nav" class="nav-links"></div>
+    <div class="nav-r">
+      <select id="op" aria-label="Operatör"></select>
+      <button id="burger" class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<main id="main" class="wrap"></main>
+<footer class="wrap foot"><span><span class="live"></span>Business Central · demoläge</span><button id="reset">Återställ demodata</button></footer>
+<div id="toasts"></div>
+<div id="print"></div>
+<div id="gate" class="gate"><form class="card gate-card" id="gateForm">
+  <div class="eyebrow">Teds Kalasfärg · Produktion</div>
+  <h1 style="font-size:2.4rem;margin-top:14px"><span>Bland<em>app</em></span></h1>
+  <p class="sub" style="margin-bottom:20px">Demo av produktionsflödet. Ange lösenord för att fortsätta.</p>
+  <input id="gatePw" type="password" placeholder="Lösenord" autocomplete="current-password" autofocus>
+  <button class="btn primary big" style="width:100%;margin-top:10px">Öppna</button>
+  <p id="gateErr" class="hint" style="margin:12px 0 0;min-height:1.2em"></p>
+  <a href="../" class="hint" style="margin:6px 0 0;display:block">← Till tedsvard.se</a>
+</form></div>
+<script>
+(function () {
+  const H = 'f9efd8c3e9f78386f4c6799ffd83094005bc63803183cfc0c07536be270bc3fa';
+  const boot = () => { document.getElementById('gate').remove(); document.body.classList.remove('locked');
+    const a = document.createElement('script'); a.src = 'data.js'; a.onload = () => { const b = document.createElement('script'); b.src = 'app.js'; document.body.append(b); }; document.body.append(a); };
+  const sha = async t => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)))].map(x => x.toString(16).padStart(2, '0')).join('');
+  let ok = false; try { ok = localStorage.getItem('bland-ok') === H; } catch {}
+  if (ok) return boot();
+  document.body.classList.add('locked');
+  document.getElementById('gateForm').onsubmit = async e => { e.preventDefault();
+    if (await sha(document.getElementById('gatePw').value) === H) { try { localStorage.setItem('bland-ok', H); } catch {} boot(); }
+    else { document.getElementById('gateErr').textContent = 'Fel lösenord.'; } };
+})();
+</script>
+</body>
+</html>
