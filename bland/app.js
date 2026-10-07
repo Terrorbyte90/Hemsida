@@ -283,8 +283,23 @@ function measureRow(k, v, spec, prevVals, input) {
     <div class="val">${v == null ? '<span class="none">—</span>' : fmtVal(k, v)}${!M.bool && v != null ? `<em>${M.unit}</em>` : ''}</div>
     ${input || '<div></div>'}</div>`;
 }
-const numInput = (fn, id, k, has) => `<form onsubmit="${fn}(event,'${id}','${k}')"><input name="v" inputmode="decimal" placeholder="${has ? 'Nytt värde' : 'Värde'}" autocomplete="off"><button class="btn">${has ? '+' : 'Spara'}</button></form>`;
-const boolInput = (fn, id, k) => `<div class="boolbtns"><button class="btn ok" onclick="${fn}('${id}','${k}',1)">OK</button><button class="btn bad" onclick="${fn}('${id}','${k}',0)">Ej OK</button></div>`;
+/* Kvalitetsmått som kompakt tabell (samma struktur som i BC): en rad per mätning, senaste överst per mått. */
+function qualityTable(keys, specs, rows, editable, id, fnNum, fnBool) {
+  const body = keys.map(k => {
+    const M = MEASURES[k]; const spec = specs[k];
+    const hist = rows.filter(r => r.key === k).sort((x, y) => y.time.localeCompare(x.time));
+    const input = !editable ? '' : M.bool ? boolInput(fnBool, id, k) : numInput(fnNum, id, k, hist.length);
+    const lim = i => M.bool ? 1 : nf(spec[i], M.dec);
+    const line = (r, i) => `<tr class="${r ? (inRange(r.value, spec) ? 'gok' : 'gbad') : 'gnone'} ${i ? 'old' : ''}">
+      <td class="num">${i ? '' : M.no}</td><td>${i ? '' : esc(M.name)}</td>
+      <td class="r num v">${r ? fmtVal(k, r.value) : '–'}</td><td class="r num">${lim(0)}</td><td class="r num">${lim(1)}</td>
+      <td class="num t">${r ? `${tm(r.time)} <span>${esc(r.by)}</span>` : ''}</td><td class="in">${i ? '' : input}</td></tr>`;
+    return hist.length ? hist.map((r, i) => line(r, i)).join('') : line(null, 0);
+  }).join('');
+  return `<div class="scroll"><table class="tbl qtbl"><thead><tr><th>Nr</th><th>Beskrivning</th><th class="r">Värde</th><th class="r">Min</th><th class="r">Max</th><th>Uppdaterad</th><th>${editable ? 'Nytt värde' : ''}</th></tr></thead><tbody>${body}</tbody></table></div>`;
+}
+const numInput = (fn, id, k, has) => `<form class="qin" onsubmit="${fn}(event,'${id}','${k}')"><input name="v" inputmode="decimal" placeholder="${has ? 'Ny rad' : 'Värde'}" autocomplete="off"><button class="btn">+</button></form>`;
+const boolInput = (fn, id, k) => `<div class="boolbtns qin"><button class="btn ok" onclick="${fn}('${id}','${k}',1)">OK</button><button class="btn bad" onclick="${fn}('${id}','${k}',0)">Ej OK</button></div>`;
 
 function viewTest(id) {
   const b = Api.batch(id); if (!b) return empty('Batchen finns inte');
@@ -300,15 +315,7 @@ function viewTest(id) {
     ? `<div class="alert green"><div>Provningen är klar. Gå till <a href="#/batch/${b.id}">${esc(m.name)} →</a> för att lägga in justeringar och stoppa batchen.</div></div><div class="actions"><a class="btn primary big" href="#/batch/${b.id}">Till ${esc(m.name)}</a><button class="btn ghost" onclick="act('reopenTest','${b.id}')">Återöppna provning</button></div>`
     : `<div class="alert green"><div>Provningen är klar${b.tapp === 'done' ? ' och batchen godkänd i prov tapp' : ''}.</div></div>`;
 
-  const rowsHtml = keys.map(k => {
-    const prev = b.rows.filter(r => r.key === k).sort((x, y) => y.time.localeCompare(x.time)).slice(1);
-    const input = !editable ? '' : MEASURES[k].bool ? boolInput('addRow', b.id, k) : numInput('addRowForm', b.id, k, cur[k] != null);
-    return measureRow(k, cur[k], rec.spec[k], prev, input);
-  }).join('');
-
-  const rows = [...b.rows].sort((x, y) => MEASURES[x.key].sort - MEASURES[y.key].sort || y.time.localeCompare(x.time));
-  const logTable = `<div class="scroll"><table class="tbl bc"><thead><tr><th>Sort.</th><th>Beskrivning</th><th class="r">Värde</th><th class="r">Min</th><th class="r">Max</th><th>Tid</th><th>Av</th></tr></thead><tbody>
-    ${rows.map(r => { const s = rec.spec[r.key]; const M = MEASURES[r.key]; return `<tr class="${inRange(r.value, s) ? 'gok' : 'gbad'}"><td>${M.sort}</td><td>${esc(M.name)}</td><td class="r num">${fmtVal(r.key, r.value)}</td><td class="r num">${M.bool ? 1 : nf(s[0], M.dec)}</td><td class="r num">${M.bool ? 1 : nf(s[1], M.dec)}</td><td class="num">${tm(r.time)}</td><td>${esc(r.by)}</td></tr>`; }).join('')}</tbody></table></div>`;
+  const table = qualityTable(keys, rec.spec, b.rows, editable, b.id, 'addRowForm', 'addRow');
   const adjEvents = [...b.adjustments].sort((x, y) => x.time.localeCompare(y.time));
 
   const notePanel = panel('Anteckning & justering', `
@@ -318,8 +325,7 @@ function viewTest(id) {
   draftAdj = null;
   return header([['Översikt', '#/'], ['Provning', '#/provning/' + (b.test === 'stopped' ? 'stoppade' : 'startade')], [b.id]], titleFor(rec), subline('Kvalitetsmått', `<span class="mono">${b.id}</span>`, esc(m.name), `${nf(b.weight)} kg`, statusPill(b, 'test')))
     + flowSteps(b) + top
-    + `<div class="grid-t"><div><section class="card panel"><div class="mlist">${rowsHtml}</div></section>
-        ${b.rows.length ? `<section class="card panel"><details class="log"><summary>Mätlogg · ${b.rows.length} rader</summary>${logTable}</details></section>` : ''}</div>
+    + `<div class="grid-t"><div><section class="card panel"><div class="ph"><h3>Kvalitetsmått</h3><span class="muted">${b.rows.length} rader</span></div>${table}</section></div>
       <div>${b.test !== 'waiting' ? recommendPanel(b) : ''}${b.test !== 'waiting' ? notePanel : ''}</div></div>`;
 }
 window.addRow = (id, key, value) => { const b = Api.batch(id); b.rows.push({ key, value, time: nowIso(), by: operator }); Api.save(); render(); };
@@ -379,14 +385,14 @@ function viewTapp(id) {
   const cur = {}; for (const k in spec) { const r = latest(b.tappRows, k); if (r) cur[k] = r.value; }
   const allOk = Object.keys(spec).every(k => cur[k] != null && inRange(cur[k], spec[k]));
   const editable = b.tapp === 'running';
-  const rowsHtml = Object.keys(spec).map(k => measureRow(k, cur[k], spec[k], null, !editable ? '' : MEASURES[k].bool ? boolInput('addTapp', b.id, k) : numInput('addTappForm', b.id, k, cur[k] != null))).join('');
+  const table = qualityTable(Object.keys(spec), spec, b.tappRows, editable, b.id, 'addTappForm', 'addTapp');
   let top = '';
   if (b.tapp === 'waiting') top = `<div class="actions"><button class="btn primary big" onclick="act('startTapp','${b.id}')">Starta prov tapp</button></div>`;
   if (editable) top = `<div class="actions"><button class="btn primary big" ${allOk ? '' : 'disabled'} onclick="act('finishTapp','${b.id}','#/tapp')">Godkänn och stoppa</button>${allOk ? '' : '<span class="muted">Båda proven måste vara gröna</span>'}</div>`;
   if (b.tapp === 'done') top = `<div class="alert green"><div>Godkänd ${dt(b.tappDone)}. <a href="#/rapport/${b.id}">Visa rapport →</a></div></div>`;
   return header([['Översikt', '#/'], ['Prov tapp', '#/tapp'], [b.id]], titleFor(rec), subline('Prov tapp', `<span class="mono">${b.id}</span>`, esc(Api.machine(b.machine).name), `${nf(b.weight)} kg`, statusPill(b, 'tapp')))
     + flowSteps(b) + top
-    + `<div class="grid-t"><div><section class="card panel"><div class="mlist big">${rowsHtml}</div></section>
+    + `<div class="grid-t"><div><section class="card panel"><div class="ph"><h3>Kvalitetsmått</h3></div>${table}</section>
       ${ref != null ? `<p class="hint" style="margin:0 4px">ICI-intervallet är ±5 % av provningens sista värde (${nf(ref)} cP).</p>` : ''}</div>
       <div>${panel('Från provningen', measureSummary(b), `<a href="#/prov/${b.id}">Öppna →</a>`)}</div></div>`;
 }
