@@ -299,6 +299,21 @@ details.log>summary{padding:18px 24px}
   .pr-sign{display:flex;justify-content:space-between;margin-top:30px}
 }
 
+/* Kompakt kvalitetstabell */
+.qtbl{font-size:.9rem}
+.qtbl td{padding:7px 14px;white-space:nowrap}.qtbl th{padding:9px 14px}
+.qtbl td:first-child,.qtbl th:first-child{padding-left:24px;color:var(--muted)}
+.qtbl tr.gok td{color:var(--ok)}.qtbl tr.gbad td{color:var(--bad);font-style:italic}
+.qtbl tr.gok td.v,.qtbl tr.gbad td.v{font-weight:700}
+.qtbl tr.old td{border-top:0;font-size:.82rem;opacity:.72;padding-top:2px;padding-bottom:5px}
+.qtbl tr:not(.old) td{border-top:1px solid var(--line)}.qtbl td{border-bottom:0}
+.qtbl td.t span{color:var(--muted);font-family:var(--mono);font-size:.72rem;margin-left:4px;font-style:normal}
+.qtbl tr.gnone td{color:var(--ink)}
+.qtbl td.in{width:170px;padding-right:20px}
+.qin{display:flex;gap:4px}.qin input{width:100%;padding:6px 10px;border-radius:10px;font-size:.86rem}
+.qin .btn{padding:6px 12px;font-size:.84rem}
+@media (max-width:680px){.qtbl td.t{display:none}.qtbl th:nth-child(6){display:none}}
+
 .gate{position:fixed;inset:0;z-index:800;display:flex;align-items:center;justify-content:center;padding:16px}
 .gate-card{width:100%;max-width:400px;padding:34px}
 .gate-card input{width:100%}
