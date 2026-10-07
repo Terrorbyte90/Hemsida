@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /control.html
 Disallow: /leia.html
+Disallow: /bland/
 
 Sitemap: https://tedsvard.se/sitemap.xml
