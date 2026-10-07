@@ -121,6 +121,12 @@ const TRUE_EFFECT = {
 };
 
 const TAPP_LINES = ['Tapplinje 1 (1 L–3 L)', 'Tapplinje 2 (10 L)', 'Storsäck / IBC', 'Handtapp'];
+/* Återkommande tendens per recept (i halva intervallbredder) – ger historiken något att lära sig av. */
+const BIAS = {
+  RL12210: { ici: -1.5 }, RL12400: { ici: 1.4, ku: 0.8 }, RL30140: { ku: -1.4 }, RL10001: { mpas: 1.3 },
+  RL41510: { ku: 1.3 }, RL12200: { ici: 1.2 }, RL12241: { mpas: -1.3 }, RL38550: { ici: -1.3 }, RL52003: { ku: -1.2 },
+  RL12432: { ici: 1.3 }, RL05210: { ku: 1.4 }, RL61991: { ici: 1.3 },
+};
 const OPERATORS = ['TEDDIC', 'PERHOL', 'ANNLIN', 'JONBER', 'MALSVE'];
 
 /* ---------- Seeding ---------- */
@@ -151,7 +157,7 @@ function seedState() {
     for (const [k, [lo, hi]] of Object.entries(recipe.spec)) {
       if (MEASURES[k].bool) { v[k] = r() < 0.9 ? 1 : 0; continue; }
       const mid = (lo + hi) / 2, half = (hi - lo) / 2;
-      v[k] = round(k === 'kulor' ? Math.abs(mid * 0.6 + gauss() * 0.45) : mid + gauss() * half * wild * 2, k);
+      v[k] = round(k === 'kulor' ? Math.abs(mid * 0.6 + gauss() * 0.45) : mid + ((BIAS[recipe.no]?.[k] || 0) + gauss() * wild * 1.4) * half, k);
     }
     return v;
   };
@@ -163,7 +169,7 @@ function seedState() {
   };
   /* Väljer en realistisk korrigering för ett mått utanför intervall. */
   const chooseFix = (recipe, v, weight) => {
-    const bad = outOf(recipe, v).filter(k => !MEASURES[k].bool && k !== 'kulor');
+    const bad = outOf(recipe, v).filter(k => ['ici', 'ku', 'mpas', 'glans'].includes(k)).sort((a, c) => ['ici', 'ku', 'mpas', 'glans'].indexOf(a) - ['ici', 'ku', 'mpas', 'glans'].indexOf(c));
     if (!bad.length) return null;
     const k = bad[0]; const [lo, hi] = recipe.spec[k]; const target = (lo + hi) / 2;
     const cands = recipe.adjust.filter(m => TRUE_EFFECT[m]?.[k] && Math.sign(TRUE_EFFECT[m][k]) === Math.sign(target - v[k]));
@@ -279,7 +285,7 @@ function seedState() {
       for (let i = 0; i < n; i++) { mk(m.id, pick(recs), at(d, d === 0 ? 10 + i * 3 : 6 + i * 4, pick([0, 30]))); slot++; }
     }
   }
-  return { batches, materials: MATERIALS.map(m => ({ ...m })), version: 5 };
+  return { batches, materials: MATERIALS.map(m => ({ ...m })), version: 6 };
 }
 
 function noteLine(i, kg, mat, weight) { const pct = kg / weight * 100; return `${i}. +${fmtKg(kg)} kg${pct >= 0.1 ? ` (${pct.toLocaleString('sv-SE', { maximumFractionDigits: 1 })} %)` : ''} ${MATERIALS.find(m => m.no === mat).name}`; }
@@ -291,7 +297,7 @@ const Api = {
   state: null,
   load() {
     try { this.state = JSON.parse(localStorage.getItem(STORE_KEY)); } catch { this.state = null; }
-    if (!this.state || this.state.version !== 5) { this.state = seedState(); this.save(); }
+    if (!this.state || this.state.version !== 6) { this.state = seedState(); this.save(); }
     for (const m of this.state.materials) { const d = MATERIALS.find(x => x.no === m.no); if (d) { m.name = d.name; m.art = d.art; } }
   },
   rev: 0,

@@ -64,6 +64,49 @@ function adjustmentHistory(matNo, excludeId) {
   out.sort((x, y) => y.time.localeCompare(x.time)); histCache.set(ck, out); return out;
 }
 
+/* Före start: hur har tidigare batcher av samma recept hamnat, och vad brukade man behöva tillsätta? */
+function preStartAdvice(b) {
+  const rec = Api.recipe(b.recipe);
+  const prev = Api.batches().filter(x => x.recipe === b.recipe && x.id !== b.id && x.test === 'stopped' && x.rows.length).sort(byStoppedDesc).slice(0, 10);
+  if (prev.length < 2) return null;
+  // Utgångsvärden = första mätningen per mått innan första justeringen
+  const first = x => { const o = {}; const t0 = [...x.adjustments].sort((p, q) => p.time.localeCompare(q.time))[0]?.time || '9999';
+    for (const r of [...x.rows].sort((p, q) => p.time.localeCompare(q.time))) if (r.time < t0 && !(r.key in o)) o[r.key] = r.value; return o; };
+  const starts = prev.map(first);
+  let worst = null;
+  for (const k of Object.keys(rec.spec)) {
+    if (!['ici', 'ku', 'mpas', 'glans'].includes(k)) continue;
+    const vals = starts.map(o => o[k]).filter(v => v != null); if (vals.length < 2) continue;
+    const [lo, hi] = rec.spec[k]; const low = vals.filter(v => v < lo).length, high = vals.filter(v => v > hi).length;
+    const share = Math.max(low, high) / vals.length; const avg = vals.reduce((a, c) => a + c, 0) / vals.length;
+    if (share >= 0.4 && (!worst || share > worst.share)) worst = { k, share, avg, dir: low > high ? 'låg' : 'hög', n: vals.length };
+  }
+  if (!worst) return null;
+  // Vilken råvara justerade man med, och hur mycket per ton i snitt?
+  const use = {};
+  for (const x of prev) for (const a of x.adjustments) (use[a.mat] ||= []).push(a.kg / (x.weight / 1000));
+  let best = null;
+  for (const [mat, perTon] of Object.entries(use)) {
+    const h = adjustmentHistory(mat, b.id); const eff = h.reduce((a, r) => a + (r.effect[worst.k] || 0), 0) / (h.length || 1);
+    if (!eff || (worst.dir === 'låg') !== (eff > 0)) continue;
+    const avg = perTon.reduce((a, c) => a + c, 0) / prev.length;
+    if (!best || perTon.length > best.count) best = { mat, perTon: avg, count: perTon.length };
+  }
+  if (!best) return null;
+  let kg = best.perTon * b.weight / 1000; kg = kg >= 20 ? Math.round(kg) : Math.round(kg * 10) / 10;
+  if (!(kg > 0) || best.perTon > 15) return null;
+  return { ...worst, mat: best.mat, kg, count: best.count, batches: prev.length, spec: rec.spec[worst.k] };
+}
+function preStartPanel(b) {
+  const a = preStartAdvice(b); if (!a) return '';
+  const M = MEASURES[a.k]; const added = b.machineAdj.some(x => x.pre);
+  return `<div class="card prestart"><div class="eyebrow">Rekommendation före start</div>
+    <p class="ps-txt">${esc(M.name.replace('Viskositet ', ''))} på tidigare batcher har varit <b>${a.dir}</b> – snitt ${fmtVal(a.k, a.avg)} mot ${fmtRange(a.k, a.spec)} ${M.unit} (${Math.round(a.share * 100)} % av ${a.n} batcher utanför).</p>
+    <div class="ps-big"><span class="kg">+${nf(a.kg, a.kg < 20 ? 1 : 0)}<small>kg</small></span><span class="mat">${esc(Api.material(a.mat).name)}</span></div>
+    <p class="hint" style="margin:6px 0 14px">Uträknat efter vikten på din batch (${nf(b.weight)} kg), baserat på ${a.count} justeringar i de senaste ${a.batches} batcherna av ${esc(Api.recipe(b.recipe).name)}.</p>
+    ${added ? '<span class="st green">Tillagd i batchen</span>' : `<button class="btn primary" onclick="addPreDose('${b.id}','${a.mat}',${a.kg})">Lägg till i batchen</button>`}</div>`;
+}
+window.addPreDose = (id, mat, kg) => { const b = Api.batch(id); b.machineAdj.push({ mat, kg, pre: true }); b.note = (b.note ? b.note.trimEnd() + '\n' : '') + 'Förtillsats: ' + noteLine(0, kg, mat, b.weight).replace(/^0\. /, ''); Api.save(); toast(`+${nf(kg, 1)} kg ${matShort(mat)} tillagd som förtillsats`); render(); };
 function recommend(b) {
   const rec = Api.recipe(b.recipe); const cur = currentValues(b);
   const keys = Object.keys(rec.spec).filter(k => !MEASURES[k].bool && k !== 'kulor' && cur[k] != null);
@@ -236,7 +279,7 @@ function viewBatch(id) {
   const stoppedAdj = b.mix === 'stopped' && b.machineAdj.length ? panel('Rapporterade justeringar', `<div class="adjlist">${b.machineAdj.map(a => `<div class="adjrow"><span>${esc(Api.material(a.mat).name)}</span><b class="${a.kg < 0 ? 'neg' : 'posv'}">${a.kg > 0 ? '+' : ''}${nf(a.kg, 1)} kg</b></div>`).join('')}</div>`) : '';
   const back = `#/maskin/${m.id}/${b.mix === 'planned' ? 'planerade' : b.mix === 'stopped' ? 'stoppade' : 'startade'}`;
   return header([['Översikt', '#/'], [m.name, back], [b.id]], titleFor(rec), subline(`<span class="mono">${b.id}</span>`, `<span class="mono">${recNo(b)}</span>`, esc(m.name), `${nf(b.weight)} kg`, statusPill(b)))
-    + flowSteps(b) + (b.rework ? `<div class="alert amber"><div><b>Omarbetning.</b> Batchen körs om på recept ${rec.no} – kontrollera mätvärden extra noga.</div></div>` : '') + alert + `<div class="actions">${actionsHtml}</div>`
+    + flowSteps(b) + (b.rework ? `<div class="alert amber"><div><b>Omarbetning.</b> Batchen körs om på recept ${rec.no} – kontrollera mätvärden extra noga.</div></div>` : '') + alert + (b.mix === 'planned' ? preStartPanel(b) : '') + `<div class="actions">${actionsHtml}</div>`
     + `<div class="grid-b"><div>${b.mix === 'paused' && b.test === 'stopped' ? adjustPanel(b) : ''}${panel('Komponenter', compTable, `<span class="muted">${comps.length} råvaror</span>`)}</div>
        <div>${panel('Batch', infoGrid(b))}${stoppedAdj}${b.rows.length ? panel('Provning', measureSummary(b), `<a href="#/prov/${b.id}">Öppna →</a>`) : ''}${logPanel(b)}</div></div>`;
 }
@@ -254,7 +297,7 @@ function measureSummary(b) {
 
 function adjustPanel(b) {
   const rec = Api.recipe(b.recipe);
-  if (!b._adjInit) { b.machineAdj = b.machineAdj.length ? b.machineAdj : b.adjustments.map(a => ({ mat: a.mat, kg: a.kg })); b._adjInit = true; Api.save(); }
+  if (!b._adjInit) { b.machineAdj = [...b.machineAdj.filter(a => a.pre), ...b.adjustments.map(a => ({ mat: a.mat, kg: a.kg }))]; b._adjInit = true; Api.save(); }
   const opts = [...new Set([...rec.adjust, ...Object.keys(rec.formula)])];
   return panel('Lägg till / ta bort råvaror', `
     ${b.note ? `<div class="note"><small>Från provningen</small><pre>${esc(b.note)}</pre></div>` : ''}
