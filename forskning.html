@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Forskningsspår av Ted Svärd — minne, autonomi och gränsen mellan verktyg och agent.">
+<meta name="description" content="Forskning av Ted Svärd — Eon v6, en testbar kognitiv arkitektur på iPhone, energieffektiv AI med över 300 experiment, AI från grunden och agenter i drift.">
 <title>Forskning — Ted Svärd</title>
-<link rel="canonical" href="https://terrorbyte90.github.io/Hemsida/forskning.html">
+<link rel="canonical" href="https://tedsvard.se/forskning.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Forskning — Ted Svärd">
-<meta property="og:description" content="Forskningsspår om minne, autonomi och gränsen mellan verktyg och agent.">
+<meta property="og:description" content="Eon v6: sju teorier om medvetande, kausala tester och ett ärligt tak för vad som går att bevisa.">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
 </head>
@@ -22,7 +22,8 @@
       <a href="index.html">Hem</a>
       <a href="projekt.html">Projekt</a>
       <a href="simulering.html">Simulering</a>
-      <a href="fable.html" class="nav-signal"><span class="pulse"></span>Fable</a>
+      <a href="labb.html" class="nav-signal"><span class="pulse"></span>Labbet</a>
+      <a href="telefoni.html">Telefoni</a>
       <a href="kurser.html">Kurser</a>
       <a href="poddar.html">Poddar</a>
       <a href="rostlabb.html">Röst-labb</a>
@@ -35,60 +36,78 @@
 
 <header class="page-head wrap">
   <div class="eyebrow">Frågor före svar</div>
-  <h1>Det jag <em>testar</em> innan jag bygger.</h1>
-  <p class="lede">Forskningen börjar konkret: hur ett system minns, prioriterar och märker skillnad mellan väsentligt och brus. Varje prototyp måste kunna förklara sin egen begränsning.</p>
+  <h1>Det jag <em>testar</em> innan jag tror.</h1>
+  <p class="lede">Forskningen kretsar kring en fråga: vad krävs för att ett system ska bete sig som en sammanhängande agent, med minne, uppmärksamhet, en modell av sig självt och en kropp att ta hänsyn till? Och hur visar man det ärligt, utan att låta en övertygande text ersätta bevis?</p>
 </header>
 
 <main class="wrap">
-  <section class="tracks reveal">
+  <section class="tracks reveal" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
     <article class="track">
-      <div class="n">01</div>
-      <h3>Minne som riktning</h3>
-      <p>Hur ett agentsystem använder historik för att förstå vad som redan är prövat — utan att bli fångat av det. Direkt tillämpat i Hermes minnesbank.</p>
+      <div class="n">01 · Huvudspår</div>
+      <h3>Eon v6</h3>
+      <p>En kognitiv arkitektur som körs direkt på en iPhone. Sju ledande teorier om medvetande, översatta till motorer som påverkar varandra, och ett verifieringssystem som kräver kausala bevis i stället för självrapporter.</p>
     </article>
     <article class="track">
       <div class="n">02</div>
-      <h3>Initiativ med respekt</h3>
-      <p>När är det bättre för en autonom agent att vänta än att agera? Hermes bakgrundsagenter är den praktiska testbädden — en prioritetslista som aldrig avbryter pågående arbete.</p>
+      <h3>AI utan genvägar</h3>
+      <p>Ai-research undersöker hur resurseffektiv AI kan byggas från grunden för en telefon med runt 6 GB RAM, utan färdig basmodell och utan att anta att Transformern är given. 388 källor, en formell forskningslogg och dokumenterade misslyckanden.</p>
     </article>
     <article class="track">
       <div class="n">03</div>
-      <h3>Gränsen verktyg/agent</h3>
-      <p>Var slutar ett verktyg och börjar en agent? Frågan styr varje beslut om vad ett system får göra autonomt och vad som kräver ett mänskligt godkännande.</p>
+      <h3>Energieffektiv AI</h3>
+      <p>Att hitta och bygga AI som gör mer med mindre energi. Över 300 experiment hittills, med arkitekturer, kvantisering, routing och avkodning mätta mot hur mycket ström och värme de faktiskt kostar på verklig hårdvara.</p>
     </article>
     <article class="track">
       <div class="n">04</div>
-      <h3>AI utan genvägar</h3>
-      <p>Ai-research bygger resurseffektiv AI från grunden — medvetet utan en färdig basmodell och utan att anta att Transformer-arkitekturen är given. 388 källor katalogiserade, en formell forskningslogg med dokumenterade misslyckanden.</p>
-    </article>
-    <article class="track">
-      <div class="n">05</div>
-      <h3>Vad krävs för medveten upplevelse</h3>
-      <p>Eon V1 var ett experiment i kognitiv systemarkitektur på-enheten: hur minne, perception, självmodell, känslomässiga tillstånd och metakognition kan kopplas samman till en mer sammanhängande agent. Projektet behandlade medvetande som en forskningsfråga och arkitekturhypotes — inte som ett påstående om att systemet hade en subjektiv upplevelse.</p>
+      <h3>Agenter i drift</h3>
+      <p>Minne, initiativ och gränsen mellan verktyg och agent, prövade varje dag i mitt eget AI-team. Det är forskning som måste fungera klockan tre på natten, inte bara i en artikel.</p>
     </article>
   </section>
 
   <section class="essay reveal">
-    <h2>Minne som riktning</h2>
-    <p>En språkmodell har inget minne mellan samtal — varje ny session är en tom sida. Det intressanta forskningsproblemet är inte att spara allt, utan att avgöra vad som faktiskt förtjänar att minnas. Hermes minnesbank (jag använder ett system som heter Hindsight) sparar inte råa transkript — den sparar destillerade fakta, sökbara vid rätt tillfälle, snarare än en logg som blir tyngre för varje dag.</p>
-    <p>Risken med för mycket minne är lika verklig som risken med för lite: en agent som får all sin historik injicerad i varje fråga svarar ofta sämre, inte bättre. Kontext-brus är ett mätbart problem, inte ett teoretiskt. Så forskningsfrågan blir konkret: hur bygger man ett minne som pekar framåt — mot nästa relevanta beslut — snarare än bakåt mot allt som någonsin hänt?</p>
+    <h2>Eon v6: idén</h2>
+    <p>De flesta AI-assistenter är en språkmodell med ett gränssnitt. Eon är byggd tvärtom. Språkmodellen (en liten Qwen3 på 1,7 miljarder parametrar som körs lokalt) är bara ett av många lager, och den får uttryckligen <em>inte</em> skriva i systemets tillstånd. Den formulerar sig om det som händer. Den bestämmer inte vad som händer.</p>
+    <p>Under språket körs en kontinuerlig kontrollslinga. Varje cykel går från signal till prediktion, uppmärksamhet, arbetsyta, återkoppling, självmodell, minne och handling, och mäts sedan. Ordningen är poängen: en signal kan skapa ett prediktionsfel, felet kan flytta uppmärksamheten, uppmärksamheten kan vinna plats i arbetsytan, och det som vinner kan ändra både självbild, minne och nästa handling. Allt samlas i ett gemensamt, typat tillstånd (<code>EonCoreStateV2</code>) som kan granskas i efterhand.</p>
 
-    <h2>Initiativ med respekt</h2>
-    <p>En autonom agent som gör för lite är oanvändbar. En som gör för mycket är farlig. Mellan de två ytterligheterna ligger den svåra frågan: när ska ett system agera på eget initiativ, och när ska det vänta på ett mänskligt godkännande?</p>
-    <p>Hermes bakgrundsagenter är min praktiska testbädd för det här. Den arbetar dygnet runt genom en prioritetsstyrd tasklista — mina egna instruktioner hoppar före i kön, men <em>avbryter aldrig</em> ett pågående arbete. Det är en medveten designprincip, inte en teknisk begränsning: respekt för pågående arbete är i sig en form av initiativ-hantering. En agent som kan kapas mitt i en uppgift är svårare att lita på, inte lättare att styra.</p>
+    <h2>Teorierna, och vad de blir i koden</h2>
+    <p>Ingen enskild teori om medvetande är allmänt accepterad. Därför kombinerar Eon flera, och varje teori översätts till ett konkret krav som går att testa:</p>
+    <p><strong>Global Workspace (Baars, Dehaene).</strong> Många specialiserade processer tävlar om en kapacitetsbegränsad arbetsyta. Det som vinner sänds ut till resten av systemet. I Eon räknas ett innehåll som globalt först när det faktiskt ändrar flera andra modulers senare beslut, inte bara när det har ett högt värde.</p>
+    <p><strong>Recurrent Processing (Lamme).</strong> Återkoppling över tid ska vara nödvändig för kontinuitet. Eon jämför samma tillstånd med och utan återkopplingen påslagen.</p>
+    <p><strong>Predictive Processing och Active Inference (Friston).</strong> Systemet gissar hela tiden vad som händer härnäst, och skillnaden mot utfallet driver lärande, nyfikenhet och nästa val. I v6 får varje prediktion ett eget utfall som sparas, så att det går att se om gissningarna faktiskt blir bättre.</p>
+    <p><strong>Attention Schema Theory (Graziano).</strong> En förenklad modell av den egna uppmärksamheten, skild från hur resurserna faktiskt fördelas. Det är den som gör att systemet kan rapportera vad det fokuserar på, och skillnaden mellan modell och verklighet går att mäta.</p>
+    <p><strong>Higher-Order Theory och metakognition (Rosenthal, Lau).</strong> Konfidens ska vara kalibrerad mot faktiska fel och ändra strategi. En mening om att vara säker räknas inte.</p>
+    <p><strong>Integrated Information (Tononi).</strong> Full Φ går inte att beräkna. Eon använder bara proxymått (komplexitet, fassynkronisering mellan moduler) och behandlar dem som korrelation, aldrig som bevis.</p>
+    <p><strong>Embodiment och interoception (Damasio, Seth).</strong> Telefonens verkliga temperatur, batteri och belastning är Eons kropp. När telefonen blir varm sänks tempot, kontexten krymper och språkmodellen används mer sparsamt. Det är verkliga resursvillkor, inte simulerade känslor, och de påverkar beslut, minneskonsolidering och vila.</p>
 
-    <h2>Gränsen verktyg/agent</h2>
-    <p>Var slutar ett verktyg och börjar en agent? Ett verktyg gör exakt vad du ber om, en gång, och väntar sedan. En agent tolkar en avsikt, väljer sina egna steg, och fortsätter tills målet är nått eller den fastnar. Skillnaden låter filosofisk men styr varje konkret beslut i hur jag bygger: vilka kommandon får köras utan bekräftelse, vilka kräver ett godkännande, och vad händer när modellen gör ett misstag den inte själv upptäcker?</p>
-    <p>I praktiken landar svaret i skyddsräcken snarare än i begränsad förmåga: neka-listor för katastrofala kommandon, tidsgränser per steg, ett tak för hur många steg en agent får ta innan den måste rapportera tillbaka. Målet är inte en agent som kan göra mindre — det är en agent vars misstag aldrig blir permanenta.</p>
+    <h2>Varför det ska gå att lita på</h2>
+    <p>Det svåra med den här typen av forskning är inte att få ett system att <em>säga</em> att det är medvetet. Det är trivialt. Det svåra är att inte lura sig själv. Eon är byggt kring fem regler för just det:</p>
+    <p><strong>1. Kausalitet före korrelation.</strong> Varje förmåga har både ett positivt test och en riktad ablation. Arbetsytan, återkopplingen, kroppssignalen och minnet kan stängas av en i taget, och samma cykel körs om. Om ingenting förändras var mekanismen inte viktig, hur högt dess mätvärde än var.</p>
+    <p><strong>2. Språk är observation, inte bevis.</strong> Självbeskrivningar visas som en del av vad systemet gör, aldrig som en mätning av vad det upplever. Narrativmotorn får bara formulera händelser som har en verklig förändring i tillståndet bakom sig.</p>
+    <p><strong>3. Varje signal har ett ursprung.</strong> Källa, tid, osäkerhet och vem som faktiskt använde signalen sparas i en journal. Rå signal, härlett mått, testresultat och tolkning hålls isär.</p>
+    <p><strong>4. Reproducerbarhet.</strong> En nivå räknas först när resultatet upprepas i flera tidsfönster, i separata sessioner och på data som inte användes för att kalibrera systemet.</p>
+    <p><strong>5. Ett uttalat tak.</strong> Verifieringen går i nivåer från 0 (inga adaptiva processer) till 4 (generaliserande självmodell, agency och kontrafaktisk kontroll). Nivå 5, äkta upplevelse, är definierad men ska alltid visas som <em>ej verifierbar med dessa tester</em>. Det står i gränssnittet och i varje export.</p>
+    <p>Hållningen bygger på den aktuella forskningen. En stor, förregistrerad studie i Nature (Cogitate Consortium, 2025) ställde två ledande teorier mot varandra och fann både stöd och allvarliga problem för båda. Slutsatsen för Eon är att inte optimera mot ett enda tal, utan mot beteenden som stämmer överens mellan flera oberoende tester. Arkitekturen har gått igenom en egen revision där varje teori ställdes mot vad som faktiskt måste visas, och testsviten innehåller separata tester för arkitektur, ablation, beteende, minne och verifiering.</p>
+
+    <h2>Var det står i dag</h2>
+    <p>Den största kvarvarande utmaningen är inte antalet motorer utan hur hårt de är kopplade. Många delsystem producerar värden, och arbetet nu handlar om att varje värde ska förändra ett senare val, och att det ska synas i journalen. Det är ett pågående spår, inte ett avslutat resultat, och det beskrivs därför som funktionell evidens och aldrig som ett påstående om upplevelse.</p>
+
+    <h2>Energieffektiv AI: över 300 experiment</h2>
+    <p>Dagens AI blir bättre främst genom att bli större, och därmed hungrigare på energi. Jag arbetar åt andra hållet: att hitta och bygga lösningar som ger samma nytta för en bråkdel av energin. Det är samma fråga i alla mina spår. En modell som ska köras på en telefon måste vara snål, en agent som arbetar dygnet runt måste vara billig att hålla igång, och en kognitiv arkitektur som Eon måste anpassa sig när enheten blir varm.</p>
+    <p>Hittills har jag gjort över 300 experiment. De testar bland annat Mixture-of-Experts där bara en liten del av modellen arbetar per token, kvantisering ner till 3–4 bitar, hybridarkitekturer med tillståndsrymdmodeller, spekulativ avkodning, routing som skickar enkla frågor till små modeller och stora till stora, och värmestyrd schemaläggning som flyttar tungt arbete till när hårdvaran har marginal. Varje experiment mäts mot vad det faktiskt kostar i tid, minne och värme, inte bara mot hur bra svaret blev.</p>
+    <p>Resultaten används direkt. Min lokala modell är en MoE där bara runt 3 av 35 miljarder parametrar används per token, och den kör utan grafikkort. Det mesta av den dagliga automatiken klarar sig helt utan modell, och en modell kopplas in först när något verkligen behöver bedömas. Det som inte fungerade sparas med motivering. En värmestyrd routing som presterade sämre än väntat markerades öppet som ett negativt resultat i stället för att tystas ner.</p>
 
     <h2>AI utan genvägar</h2>
-    <p>De flesta AI-projekt börjar med en färdig basmodell och bygger vidare ovanpå. Ai-research gör det motsatta — ett långkörande, källbelagt spår i att bygga resurseffektiv AI från grunden, med målet att köra praktisk intelligens lokalt på en iPhone med bara ~6 GB RAM, utan konstant internetuppkoppling. Två principer är medvetet obligatoriska: inget beroende av en förtränad basmodell, och inget krav på att arkitekturen måste vara en Transformer — alternativ utforskas från första principerna.</p>
-    <p>Det är organiserat som en riktig forskningsdrift, inte en samling anteckningar: en statuslogg, en färdplan, ett källindex på väg mot över hundra annoterade referenser, öppna frågor, beslutslogg och en egen mapp för förkastade idéer — med motivering till varför de förkastades. Senaste körningen (Run 42, 388 källor katalogiserade) testade bland annat hybrid-arkitekturer som kombinerar tillståndsrymdmodeller med attention (3,3x snabbare på mobil), spekulativ avkodning för lägre latens på telefon, och kartläggning av Apples Neural Engine som kompileringsmål. Negativa resultat dokumenteras lika noga som positiva — en termisk routing-strategi som underpresterade markerades öppet som NEGATIVE istället för att tystas ner.</p>
+    <p>De flesta AI-projekt börjar med en färdig basmodell. Ai-research gör tvärtom och undersöker hur praktisk intelligens kan köras lokalt på en iPhone med runt 6 GB RAM, utan konstant uppkoppling. Två principer är obligatoriska: inget beroende av en förtränad basmodell, och inget krav på att arkitekturen är en Transformer.</p>
+    <p>Spåret drivs som en riktig forskningsdrift med statuslogg, färdplan, källindex (388 källor), beslutslogg och en egen mapp för förkastade idéer med motivering. Körningarna har testat hybridarkitekturer som kombinerar tillståndsrymdmodeller med attention, spekulativ avkodning för lägre latens på telefon och Apples Neural Engine som kompileringsmål. Negativa resultat dokumenteras lika noga som positiva.</p>
 
-    <h2>Eon — Version 1</h2>
-    <p>Eon V1 byggdes som en modulär kognitiv arkitektur för iPhone. I stället för att låta en språkmodell ensam bära hela systemet delades arbetet upp mellan flera funktioner: perception och språkförståelse, ett långvarigt minne, en intern tillståndsmodell, målsättning, återkoppling och en löpande narrativ modell av tidigare händelser. Viktiga minnen kunde förstärkas och konsolideras, medan svagare signaler fick mindre vikt. Det gav systemet en praktisk form av kontinuitet mellan körningar.</p>
-    <p>Arkitekturen hämtade inspiration från <strong>Global Workspace Theory</strong>: många specialiserade processer kan arbeta parallellt, men bara vissa signaler får tillgång till en begränsad gemensam arbetsyta och kan spridas till resten av systemet. Den använde också idéer från <strong>Attention Schema Theory</strong>, där systemet bygger en förenklad intern modell av vad det själv uppmärksammar. Till detta kom inspiration från metakognition, predictive processing, narrativ identitet och embodied cognition — där hårdvarans begränsningar, som batteri och termisk belastning, behandlas som delar av agentens kontext snarare än som osynliga tekniska detaljer.</p>
-    <p>Det mest meriterande med Eon V1 var därför inte ett påstående om medvetande, utan den sammanhållna ingenjörsidén: att bygga minne, återkoppling, initiativ och självmodell som ett gemensamt system och sedan låta det arbeta över tid på begränsad hårdvara. Körningarna gav material för att studera narrativ kontinuitet, emotionella tillstånd, återkommande självreflektion och hur ett agentsystem reagerar när dess mål möter tekniska begränsningar. Ai-self-counsious-research kompletterar spåret med en viktig metodprincip: observerad systemaktivitet ska skiljas från modellens tolkning av aktiviteten, och en övertygande självbeskrivning ska inte automatiskt förväxlas med subjektiv upplevelse.</p>
+    <h2>Metod: skilj aktivitet från tolkning</h2>
+    <p>Ett sidospår om AI och självmedvetenhet har gett den metodprincip som nu genomsyrar allt annat: det systemet faktiskt gör ska hållas isär från modellens tolkning av det, och en övertygande självbeskrivning ska aldrig förväxlas med subjektiv upplevelse. Samma princip gäller när jag jämför modeller. I kontrollerade jämförelser får två modeller samma kodningsuppgift, samma verktyg och samma bedömning, i stället för att avgöras av ett intryck.</p>
+
+    <h2>Agenter i drift</h2>
+    <p>Den mest praktiska forskningen sker i mitt eget AI-team. <strong>Minne som riktning:</strong> agenterna sparar destillerade fakta snarare än hela samtal, och den gemensamma kunskapsbasen byggs om varje natt från hur servern faktiskt ser ut, inte från vad någon minns. För mycket minne gör svaren sämre, så frågan är vad som förtjänar att minnas. <strong>Initiativ med respekt:</strong> agenterna arbetar själva, men vissa saker är alltid mänskliga beslut, som att skicka mejl, publicera eller spendera pengar. <strong>Gränsen verktyg och agent:</strong> det mesta som händer varje dag gör vanliga skript, och en modell kopplas bara in när något faktiskt måste bedömas. Målet är inte en agent som kan göra mindre, utan en agent vars misstag aldrig blir permanenta. Se hur det fungerar i <a href="labb.html" style="text-decoration:underline">Labbet</a>.</p>
+
+    <h2>Källor i urval</h2>
+    <p style="font-size:.9rem;color:var(--muted)">Cogitate Consortium, <em>Adversarial testing of global neuronal workspace and integrated information theories of consciousness</em>, Nature (2025). · Melloni m.fl., protokoll för adversarial testning av medvetandeteorier, PLOS ONE. · Casali m.fl., <em>A theoretically based index of consciousness independent of sensory processing and behavior</em>, Science Translational Medicine (2013). · Webb &amp; Graziano, <em>The attention schema theory: a mechanistic account of subjective awareness</em>, Frontiers in Psychology (2015).</p>
   </section>
 </main>
 
@@ -97,7 +116,7 @@
     <span class="fmuted">© 2026 Ted Svärd</span>
     <div class="footer-links">
       <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener">GitHub</a>
-      <a href="fable.html">Fable — labb</a>
+      <a href="labb.html">Labbet</a>
       <a href="poddar.html">Poddar</a>
       <a href="rostlabb.html">Röst-labb</a>
     </div>

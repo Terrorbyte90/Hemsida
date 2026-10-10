@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Kurs: Hermes och agentsystem — hur en autonom AI-agent faktiskt är uppbyggd, förklarat av Ted Svärd.">
 <title>Hermes &amp; agentsystem — Kurser · Ted Svärd</title>
-<link rel="canonical" href="https://terrorbyte90.github.io/Hemsida/kurser/hermes-agentsystem.html">
+<link rel="canonical" href="https://tedsvard.se/kurser/hermes-agentsystem.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hermes &amp; agentsystem — Ted Svärd">
 <meta property="og:description" content="Lär dig hur en autonom AI-agent är uppbyggd: minne, verktyg, prioritering och säkerhet.">
@@ -22,7 +22,8 @@
       <a href="../index.html">Hem</a>
       <a href="../projekt.html">Projekt</a>
       <a href="../simulering.html">Simulering</a>
-      <a href="../fable.html" class="nav-signal"><span class="pulse"></span>Fable</a>
+      <a href="../labb.html" class="nav-signal"><span class="pulse"></span>Labbet</a>
+      <a href="../telefoni.html">Telefoni</a>
       <a href="../kurser.html" aria-current="page">Kurser</a>
       <a href="../poddar.html">Poddar</a>
       <a href="../rostlabb.html">Röst-labb</a>
@@ -76,12 +77,12 @@
     <section class="chapter" id="hermes-arkitektur">
       <div class="cn">Kapitel 02</div>
       <h2>Hermes arkitektur</h2>
-      <p>Hermes körs som en <strong>gateway</strong> — en tjänst som är igång dygnet runt på min egen server (jag kallar den Titan) och lyssnar på meddelanden från flera håll samtidigt: iMessage, en kommandorads-klient, och interna schemalagda jobb.</p>
+      <p>Hermes körs som en <strong>gateway</strong> — en tjänst som är igång dygnet runt på min egen server och lyssnar på meddelanden från flera håll samtidigt: iMessage, en kommandorads-klient, och interna schemalagda jobb.</p>
       <table>
         <thead><tr><th>Del</th><th>Roll</th></tr></thead>
         <tbody>
           <tr><td>Gateway</td><td>Tar emot meddelanden, håller sessioner, dirigerar till rätt modell och verktyg</td></tr>
-          <tr><td>Modell</td><td>Själva språkmodellen som resonerar — hos mig en blandning av en molnmodell och en egen lokal modell (Fable / Qwen3.8-27B)</td></tr>
+          <tr><td>Modell</td><td>Själva språkmodellen som resonerar — hos mig olika molnmodeller för olika roller, plus en egen lokal modell (Qwen3.6-35B-A3B) för nattjobben</td></tr>
           <tr><td>Plugins</td><td>Kopplingar utåt: meddelandeplattformar, webbsök, hemautomation</td></tr>
           <tr><td>Skills</td><td>Sparade arbetssätt — instruktioner agenten lär sig och återanvänder, istället för att uppfinna hjulet varje gång</td></tr>
           <tr><td>Cron / schemaläggare</td><td>Startar agent-jobb på tid ("varje morgon 09:00"), inte bara som svar på ett meddelande</td></tr>
@@ -90,7 +91,7 @@
       <p>Det viktiga är att ingen av delarna är hela agenten. Modellen är hjärnan, men gatewayen, minnet och verktygen är lika viktiga för att den ska kunna <em>göra</em> något användbart, inte bara <em>säga</em> något klokt.</p>
       <div class="callout">
         <div class="lbl">I praktiken</div>
-        <p>Min egen Hermes-instans har en lokal modell (Fable / Qwen3.8-27B) som kör på servern för integritet och kostnad, och kan falla tillbaka på en molnmodell för uppgifter som kräver mer kapacitet. Det är samma avvägning du möter i <a href="ai-landskapet.html">kurs 02</a> — moln kontra self-hosted.</p>
+        <p>Min egen Hermes-instans är ett team av fem profiler med olika modeller: en kraftfull molnmodell för svåra jobb, en snabb för enkla frågor, specialister för kod och poddproduktion, och en lokal modell (Qwen3.6-35B-A3B) som gör nattjobben gratis på servern. Det är samma avvägning du möter i <a href="ai-landskapet.html">kurs 02</a> — moln kontra self-hosted.</p>
       </div>
     </section>
 
@@ -157,7 +158,7 @@
         <li>Lägg alltid in en gräns — max antal steg, eller en tidsgräns — innan du låter den arbeta utan uppsikt.</li>
         <li>Låt den rapportera vad den gjorde, inte bara att den är "klar". Ett bra agentsystem lämnar alltid ett spår.</li>
       </ol>
-      <p>Vill du se principerna i den här kursen köra live, i verkligheten, på riktig hårdvara? Fable kör lokalt dygnet runt — <a href="../fable.html">öppna labbsidan</a>.</p>
+      <p>Vill du se principerna i den här kursen köra live, i verkligheten, på riktig hårdvara? Mitt AI-team kör dygnet runt — <a href="../labb.html">öppna Labbet</a> och se vad Leia, den lokala modellen, gör just nu.</p>
     </section>
 
   </article>

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Telefonin — Teds AI-assistent Athena svarar i telefon, ringer upp åt honom och rapporterar efteråt. Arkitektur, säkerhet och röstprov.">
+<title>Telefonin — Ted Svärd</title>
+<link rel="canonical" href="https://tedsvard.se/telefoni.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Telefonin — en AI som svarar, ringer och rapporterar">
+<meta property="og:description" content="Så fungerar Teds AI-telefoni: från operatör till röstbrygga, taligenkänning, språkmodell och röst, på under en sekund.">
+<meta property="og:url" content="https://tedsvard.se/telefoni.html">
+<meta property="og:locale" content="sv_SE">
+<meta name="theme-color" content="#F3EEE6">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+<style>
+  .tel-flow{ margin-top:34px; border-radius:24px; padding:clamp(18px,3vw,34px); background:var(--dark); color:#fff; position:relative; overflow:hidden; box-shadow:var(--glass-shadow); }
+  .tel-flow::before{ content:''; position:absolute; inset:0; background:radial-gradient(60% 80% at 15% 0%,rgba(166,132,255,.28),transparent 60%),radial-gradient(50% 70% at 100% 100%,rgba(255,152,104,.18),transparent 60%); pointer-events:none; }
+  .tel-flow svg{ width:100%; height:auto; display:block; position:relative; }
+  .tel-flow .node rect{ fill:rgba(255,255,255,.07); stroke:rgba(255,255,255,.22); stroke-width:1.2; }
+  .tel-flow .node.hot rect{ stroke:var(--violet); fill:rgba(166,132,255,.14); }
+  .tel-flow .node text{ fill:#fff; font-family:var(--sans); font-size:15px; font-weight:600; }
+  .tel-flow .node text.s{ fill:var(--muted-on-dark); font-size:11.5px; font-weight:400; font-family:var(--mono); letter-spacing:.02em; }
+  .tel-flow .wire{ fill:none; stroke:rgba(255,255,255,.18); stroke-width:2; }
+  .tel-flow .pulse-line{ fill:none; stroke:url(#g); stroke-width:3; stroke-linecap:round; stroke-dasharray:14 220; animation:flow 3.2s linear infinite; }
+  .tel-flow .pulse-line.back{ animation-delay:1.6s; }
+  .tel-flow .lbl{ fill:var(--amber); font-family:var(--mono); font-size:11px; letter-spacing:.06em; }
+  @keyframes flow{ to{ stroke-dashoffset:-234; } }
+  @media (prefers-reduced-motion:reduce){ .tel-flow .pulse-line{ animation:none; stroke-dasharray:none; opacity:.5; } }
+  .tel-legend{ display:flex; flex-wrap:wrap; gap:10px 22px; margin-top:16px; font-size:.84rem; color:var(--muted-on-dark); position:relative; }
+  .tel-legend i{ display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:7px; vertical-align:-1px; }
+  .lat{ margin-top:30px; display:grid; gap:10px; }
+  .lat .row{ display:grid; grid-template-columns:170px 1fr 70px; gap:14px; align-items:center; font-size:.9rem; }
+  .lat .bar{ height:12px; border-radius:99px; background:var(--glass-strong); border:1px solid var(--glass-border); overflow:hidden; }
+  .lat .bar i{ display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,var(--violet),var(--signal)); transform-origin:left; animation:grow 1.4s var(--ease-out-expo) both; }
+  .lat .ms{ font-family:var(--mono); font-size:.8rem; color:var(--muted); text-align:right; }
+  @keyframes grow{ from{ transform:scaleX(0); } }
+  @media (max-width:640px){ .lat .row{ grid-template-columns:110px 1fr 56px; font-size:.82rem; } }
+  .samples{ margin-top:30px; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; }
+  .sample{ padding:24px; border-radius:20px; background:var(--glass); border:1px solid var(--glass-border); box-shadow:var(--glass-shadow); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); }
+  .sample .k{ font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--signal-dim); }
+  .sample h3{ font-family:var(--serif); font-style:italic; font-weight:400; font-size:1.45rem; margin-top:10px; }
+  .sample q{ display:block; margin-top:10px; color:var(--muted); font-size:.92rem; line-height:1.5; quotes:"”" "”"; }
+  .sample button{ margin-top:16px; border:0; border-radius:99px; padding:.65rem 1.1rem; background:var(--signal-dim); color:#fff; font:inherit; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:.55em; }
+  .sample button .wave{ display:inline-flex; gap:2px; align-items:flex-end; height:12px; }
+  .sample button .wave span{ width:2px; height:4px; background:#fff; border-radius:1px; }
+  .sample button.playing .wave span{ animation:eqb .9s ease-in-out infinite; }
+  .sample button.playing .wave span:nth-child(2){ animation-delay:.15s } .sample button.playing .wave span:nth-child(3){ animation-delay:.3s } .sample button.playing .wave span:nth-child(4){ animation-delay:.45s }
+  @keyframes eqb{ 50%{ height:12px; } }
+  .steps{ margin-top:30px; counter-reset:s; display:grid; gap:14px; max-width:820px; }
+  .steps li{ list-style:none; counter-increment:s; display:grid; grid-template-columns:44px 1fr; gap:14px; align-items:start; }
+  .steps li::before{ content:counter(s,decimal-leading-zero); font-family:var(--mono); font-size:.8rem; color:#fff; background:var(--dark); border-radius:12px; height:44px; display:grid; place-items:center; }
+  .steps li strong{ display:block; font-size:1.02rem; }
+  .steps li span{ color:var(--muted); font-size:.93rem; line-height:1.55; }
+  .chat{ margin-top:28px; max-width:520px; padding:22px; border-radius:28px; background:#fff; box-shadow:var(--glass-shadow); }
+  .chat .b{ background:#E9E9EB; color:#111; border-radius:18px 18px 18px 6px; padding:12px 15px; font-size:.9rem; line-height:1.45; white-space:pre-line; }
+  .chat .m{ margin-top:8px; font-size:.72rem; color:#8a8a8e; padding-left:6px; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Hem</a>
+      <a href="projekt.html">Projekt</a>
+      <a href="simulering.html">Simulering</a>
+      <a href="labb.html" class="nav-signal"><span class="pulse"></span>Labbet</a>
+      <a href="telefoni.html" aria-current="page">Telefoni</a>
+      <a href="kurser.html">Kurser</a>
+      <a href="poddar.html">Poddar</a>
+      <a href="rostlabb.html">Röst-labb</a>
+      <a href="forskning.html">Forskning</a>
+      <a href="bland/">Bland</a>
+      <a href="om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head wrap">
+  <div class="eyebrow">Röst · Realtid · Hermes</div>
+  <h1>En AI som <em>svarar, ringer</em> och rapporterar.</h1>
+  <p class="lede">Min AI-assistent Athena har ett eget telefonnummer. Hon svarar när jag inte kan, tar emot meddelanden, ringer upp och bokar saker åt mig, och skickar en sammanfattning med inspelning till min telefon när samtalet är slut. Samtalet sker i realtid på svenska, och hon svarar på under en sekund.</p>
+</header>
+
+<main class="wrap">
+
+  <section class="tel-flow reveal" aria-label="Arkitekturdiagram för telefonin">
+    <svg viewBox="0 0 1100 430" role="img" aria-labelledby="flowTitle">
+      <title id="flowTitle">Samtalets väg: telefon, operatör, säker webhook, röstbrygga, taligenkänning, språkmodell, röst och tillbaka, samt rapport via iMessage.</title>
+      <defs>
+        <linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#A684FF"/><stop offset="1" stop-color="#FF9868"/></linearGradient>
+      </defs>
+      <!-- wires -->
+      <path class="wire" d="M150 110 H250 M410 110 H500 M660 110 H750"/>
+      <path class="wire" d="M830 150 V215 M580 150 V215"/>
+      <path class="wire" d="M500 255 H410 M250 255 H150"/>
+      <path class="wire" d="M830 295 V345 H660"/>
+      <path class="pulse-line" d="M150 110 H250 M410 110 H500 M660 110 H750 M830 150 V215"/>
+      <path class="pulse-line back" d="M750 255 H660 M500 255 H410 M250 255 H150"/>
+      <!-- row 1 -->
+      <g class="node"><rect x="20" y="70" width="130" height="80" rx="18"/><text x="40" y="104">📱 Telefon</text><text class="s" x="40" y="128">vem som helst</text></g>
+      <g class="node"><rect x="250" y="70" width="160" height="80" rx="18"/><text x="270" y="104">Operatör</text><text class="s" x="270" y="128">svensk, 46elks</text></g>
+      <g class="node hot"><rect x="500" y="70" width="160" height="80" rx="18"/><text x="520" y="104">Säker webhook</text><text class="s" x="520" y="128">hemlig token · HTTPS</text></g>
+      <g class="node hot"><rect x="750" y="70" width="160" height="80" rx="18"/><text x="770" y="104">Röstbrygga</text><text class="s" x="770" y="128">egen server · ljud</text></g>
+      <!-- row 2 -->
+      <g class="node"><rect x="750" y="215" width="160" height="80" rx="18"/><text x="770" y="249">Tal → text</text><text class="s" x="770" y="273">Scribe realtid</text></g>
+      <g class="node hot"><rect x="500" y="215" width="160" height="80" rx="18"/><text x="520" y="249">Språkmodell</text><text class="s" x="520" y="273">Athenas hjärna</text></g>
+      <g class="node"><rect x="250" y="215" width="160" height="80" rx="18"/><text x="270" y="249">Text → röst</text><text class="s" x="270" y="273">ElevenLabs v4</text></g>
+      <g class="node"><rect x="20" y="215" width="130" height="80" rx="18"/><text x="40" y="249">🔊 Svar</text><text class="s" x="40" y="273">rösten Lauren</text></g>
+      <path class="wire" d="M750 255 H660"/>
+      <!-- row 3 -->
+      <g class="node"><rect x="500" y="320" width="160" height="80" rx="18"/><text x="520" y="354">💬 Rapport</text><text class="s" x="520" y="378">iMessage + inspelning</text></g>
+      <text class="lbl" x="250" y="56">IN</text>
+      <text class="lbl" x="250" y="320">UT</text>
+      <text class="lbl" x="845" y="335">EFTER SAMTALET</text>
+    </svg>
+    <div class="tel-legend">
+      <span><i style="background:var(--violet)"></i>Körs på min server eller i en säker kanal</span>
+      <span><i style="background:rgba(255,255,255,.4)"></i>Specialiserade realtidstjänster</span>
+      <span><i style="background:var(--coral)"></i>Ljudet strömmar åt båda hållen samtidigt</span>
+    </div>
+  </section>
+
+  <section class="about-grid reveal" style="margin-top:80px">
+    <div>
+      <h3 style="font-size:1.5rem;font-weight:700;letter-spacing:-.02em">Så går ett samtal till</h3>
+      <p style="margin-top:18px">När någon ringer kopplar en svensk teleoperatör samtalet till en webhook på min server. Adressen innehåller en hemlig nyckel, så att ingen annan kan låtsas vara operatören. Därifrån tar en egen <strong>röstbrygga</strong> över. Den strömmar ljudet åt båda hållen samtidigt, i små paket, så att det låter som ett vanligt telefonsamtal.</p>
+      <p>Ljudet går vidare till tre specialister som arbetar i ett flöde: taligenkänning i realtid som skriver ut det du säger medan du pratar, en snabb språkmodell som bestämmer vad Athena ska svara, och ElevenLabs v4 som gör om svaret till tal med rösten Lauren. Hela kedjan tar mindre än en sekund.</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.5rem;font-weight:700;letter-spacing:-.02em">Varför det känns naturligt</h3>
+      <p style="margin-top:18px">Det svåraste med telefoni är inte att prata, utan att <em>turas om</em>. Athena börjar förbereda ett svar innan du pratat klart och avbryts om du fortsätter. Korta "mm", "ja" och "precis" tolkas som att du lyssnar, inte som att du vill ta ordet. Behöver hon tänka säger hon "Mm…" eller "Jag tittar på det…" i stället för att bli tyst.</p>
+      <p>Hon känner också igen röstbrevlådor, och avslutar ett samtal först när båda har sagt hejdå.</p>
+    </div>
+  </section>
+
+  <section class="rail-head reveal" style="margin-top:90px">
+    <h2>Snabbare genom att mäta</h2>
+  </section>
+  <p style="margin-top:14px;max-width:70ch;color:var(--muted)">Den största delen av väntan i ett AI-samtal är språkmodellens tid till första ord. Jag testade flera modeller i samma uppsättning och bytte till den snabbaste som fortfarande håller kvaliteten.</p>
+  <div class="lat reveal" aria-label="Uppmätt svarstid för språkmodellen">
+    <div class="row"><span>Tidigare modell</span><div class="bar"><i style="width:100%"></i></div><span class="ms">1,42 s</span></div>
+    <div class="row"><span>Nuvarande modell</span><div class="bar"><i style="width:46%;animation-delay:.2s"></i></div><span class="ms">0,65 s</span></div>
+  </div>
+  <p style="margin-top:12px;color:var(--muted);font-size:.85rem">Uppmätt tid till svar för språkmodellen i telefonuppsättningen. Svaret börjar dessutom spelas upp innan hela meningen är färdig, så den upplevda väntan blir kortare.</p>
+
+  <section class="rail-head reveal" style="margin-top:90px">
+    <h2>Lyssna på Athena</h2>
+  </section>
+  <p style="margin-top:14px;max-width:70ch;color:var(--muted)">Tre riktiga röstprov, gjorda med samma röst och modell som i telefonen.</p>
+  <section class="samples reveal">
+    <article class="sample">
+      <div class="k">Inkommande samtal</div>
+      <h3>När jag inte kan svara</h3>
+      <q>Hej! Det här är Athena, Teds AI-assistent. Ted kan inte svara just nu, men jag hjälper gärna till. Vad gäller saken?</q>
+      <button type="button" data-tel-play="assets/voices/telefoni/inkommande.mp3"><span class="wave"><span></span><span></span><span></span><span></span></span>Lyssna</button>
+    </article>
+    <article class="sample">
+      <div class="k">Utgående samtal</div>
+      <h3>Hon ringer och bokar</h3>
+      <q>Hej, jag ringer för Teds räkning och skulle vilja boka en tid nästa vecka. Har ni något ledigt på tisdag eller onsdag eftermiddag?</q>
+      <button type="button" data-tel-play="assets/voices/telefoni/bokning.mp3"><span class="wave"><span></span><span></span><span></span><span></span></span>Lyssna</button>
+    </article>
+    <article class="sample">
+      <div class="k">Mitt i samtalet</div>
+      <h3>När hon tänker</h3>
+      <q>Mm… ett ögonblick bara, jag tittar på det. Okej, då har jag noterat det och skickar det vidare till Ted direkt.</q>
+      <button type="button" data-tel-play="assets/voices/telefoni/tankepaus.mp3"><span class="wave"><span></span><span></span><span></span><span></span></span>Lyssna</button>
+    </article>
+  </section>
+
+  <section class="rail-head reveal" style="margin-top:90px">
+    <h2>Vad den kan göra</h2>
+  </section>
+  <section class="tracks reveal" style="margin-top:26px">
+    <article class="track">
+      <div class="n">Inkommande</div>
+      <h3>Svarar åt mig</h3>
+      <p>Känner igen när det är jag som ringer och blir då min assistent: tar uppdrag, svarar på frågor och för anteckningar. Ringer någon annan tar hon reda på namn och ärende och hur jag når personen, och lovar att framföra det.</p>
+    </article>
+    <article class="track">
+      <div class="n">Utgående</div>
+      <h3>Ringer åt mig</h3>
+      <p>Jag skriver till exempel "ring frisören och boka en tid nästa vecka" i iMessage, så ringer Athena upp med ett tydligt mål. Samtal kan också schemaläggas till en viss tid, med en maxlängd per samtal.</p>
+    </article>
+    <article class="track">
+      <div class="n">Efteråt</div>
+      <h3>Rapporterar</h3>
+      <p>När samtalet är slut får jag ett meddelande med vem det gällde, om målet uppnåddes, en kort sammanfattning med tider, namn och detaljer, eventuellt meddelande, längd och kostnad, och inspelningen som bilaga.</p>
+    </article>
+  </section>
+
+  <div class="chat reveal" aria-label="Exempel på rapport i iMessage">
+    <div class="b">📞 Samtal till frisören
+
+🎯 Boka klippning nästa vecka
+✅ Målet uppnåddes
+
+Tid bokad tisdag 14:30. De bad om att bli meddelade vid återbud senast dagen innan.
+
+⏱ 1:42  ·  💰 1,20 kr</div>
+    <div class="m">Athena · exempel</div>
+    <div class="b" style="margin-top:10px">🎧 Inspelning</div>
+  </div>
+
+  <section class="rail-head reveal" style="margin-top:90px">
+    <h2>Byggd för att gå att lita på</h2>
+  </section>
+  <ol class="steps reveal">
+    <li><div><strong>Bara jag kan beställa samtal</strong><span>Utgående samtal startas bara via ett lokalt gränssnitt på servern som inte går att nå utifrån, på mitt uppdrag.</span></div></li>
+    <li><div><strong>Hårda gränser</strong><span>Varje samtal har en maxlängd, med ett absolut tak på 20 minuter, och det finns ett tak för antal samtal per dag. Ett fel kan aldrig bli en dyr loop.</span></div></li>
+    <li><div><strong>Inga hemligheter i samtalet</strong><span>Webhooken skyddas av en hemlig token, nycklar ligger i ett separat valv, och ingen serveradress eller nyckel syns någonsin för den som ringer.</span></div></li>
+    <li><div><strong>Ärlig om resultatet</strong><span>Efter varje samtal bedöms det separat om målet faktiskt uppnåddes. Athena rapporterar "nej" lika tydligt som "ja", och varje samtal redovisar sin exakta kostnad.</span></div></li>
+    <li><div><strong>Två motorer</strong><span>Huvudmotorn är ElevenLabs realtidsagent. Som reserv finns en andra, helt separat motor byggd på OpenAI Realtime, och vilken som används kan väljas per samtal.</span></div></li>
+  </ol>
+
+  <section class="method reveal" style="margin-top:100px">
+    <h2>Rösten är densamma som i podden</h2>
+    <p>Lauren, rösten i telefonen, är samma röst som Nova i <a href="poddar.html" style="color:#fff;text-decoration:underline">Dystopia AI</a>. Samma modell, ElevenLabs v4 i full kvalitet, används för båda. Det är ett medvetet val: en röst man känner igen är en röst man litar på.</p>
+    <p>Telefonin är en del av <a href="labb.html" style="color:#fff;text-decoration:underline">AI-teamet</a>. Det är Athena, huvudagenten, som pratar, och rapporten hamnar i samma iMessage-tråd som allt annat hon gör.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener">GitHub</a>
+      <a href="labb.html">Labbet</a>
+      <a href="poddar.html">Poddar</a>
+      <a href="rostlabb.html">Röst-labb</a>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+(() => {
+  const audio = new Audio(); audio.preload = 'none';
+  let cur = null;
+  const reset = () => { if (cur) { cur.classList.remove('playing'); cur.lastChild.textContent = 'Lyssna'; } cur = null; };
+  audio.addEventListener('ended', reset);
+  document.querySelectorAll('[data-tel-play]').forEach(btn => btn.addEventListener('click', () => {
+    if (cur === btn && !audio.paused) { audio.pause(); reset(); return; }
+    reset(); audio.src = btn.dataset.telPlay; audio.play().catch(() => {});
+    cur = btn; btn.classList.add('playing'); btn.lastChild.textContent = 'Pausa';
+  }));
+})();
+</script>
+</body>
+</html>

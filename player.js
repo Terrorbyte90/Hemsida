@@ -8,6 +8,15 @@
 
   const SHOWS = [
     {
+      key: 'dystopia-ai', name: 'Dystopia AI', cover: 'assets/podcasts/dystopia-ai.jpg',
+      tags: ['AI', 'Framtid', 'Dramatiserat', 'Ny'],
+      desc: 'Hur kan artificiell intelligens förändra samhället, våra relationer och vår syn på verkligheten? Dramatiserade framtidsscenarier möter forskning och verkliga händelser. Producerad med AI-röster, egenkomponerad musik och ljuddesign.',
+      links: { spotify: 'https://podcasters.spotify.com/pod/show/ted-svrd9' },
+      episodes: [
+        { title: 'Välkommen!', dur: '0:35', src: 'https://anchor.fm/s/114ee0268/podcast/play/124463361/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2026-7-20%2F61d7ed92-d1d2-d71f-eeaa-5667e8608568.mp3' },
+      ],
+    },
+    {
       key: 'overvakad', name: 'Övervakad', cover: 'assets/podcasts/overvakad.jpg',
       tags: ['Skräck', 'AI', 'Vuxet innehåll'],
       desc: 'En skräckpodd om internets djupaste och mörkaste hörn. Där mänskliga berättare ryggar tillbaka, tar algoritmen vid.',
@@ -73,9 +82,9 @@
       <div class="tags" style="margin-top:8px">${s.tags.map(t => `<span>${t}</span>`).join('')}</div>
       <p>${s.desc}</p>
       ${s.links ? `<div class="links">
-        <a href="${s.links.spotify}" target="_blank" rel="noopener">Spotify ↗</a>
-        <a href="${s.links.apple}" target="_blank" rel="noopener">Apple Podcasts ↗</a>
-        <a href="${s.links.acast}" target="_blank" rel="noopener">Acast ↗</a>
+        ${s.links.spotify ? `<a href="${s.links.spotify}" target="_blank" rel="noopener">Spotify ↗</a>` : ''}
+        ${s.links.apple ? `<a href="${s.links.apple}" target="_blank" rel="noopener">Apple Podcasts ↗</a>` : ''}
+        ${s.links.acast ? `<a href="${s.links.acast}" target="_blank" rel="noopener">Acast ↗</a>` : ''}
       </div>` : ''}
     `;
   }
