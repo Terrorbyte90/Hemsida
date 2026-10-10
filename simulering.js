@@ -2,7 +2,7 @@
   const mount = document.querySelector('#city-canvas');
   if (!mount || !window.CityAgents || !window.THREE) return;
   const A = window.CityAgents, Memory = window.CityMemory, $ = s => document.querySelector(s);
-  const CITY_API = 'https://5.175.249.12.nip.io/city/api/city';
+  const CITY_API = ''; // motorn är pausad; ingen serveradress publiceras
   const state = A.createSimulationState();
   A.askQwen = async () => null;
   let scene, camera, renderer, city, rain, snow, sun, moon, ambient, hemi, rim, skyMesh, skyMat, waterMesh, waterMat;
