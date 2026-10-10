@@ -260,3 +260,20 @@ button.is-disabled,#ask-agent:disabled{
   position:absolute;z-index:6;pointer-events:none;width:min(240px,56vw);
   transition:opacity .25s ease
 }
+
+/* —— en dag i Kvarter 07 (2026-10-11) —— */
+.day-plan{display:grid;gap:2px;margin-top:14px;font-size:.84rem;color:#8f9bb0}
+.day-plan div{display:flex;gap:10px;padding:5px 8px;border-radius:8px}
+.day-plan span{font:10px var(--mono,monospace);color:#6f7d94;min-width:38px;padding-top:2px}
+.day-plan .now{background:#ffffff0d;color:#e9edf5}
+.day-plan .now span{color:#f3c98b}
+.day-events .event-item b{font:10px var(--mono,monospace);color:#6f7d94;margin-right:8px}
+.day-events .event-item.next{color:#f3c98b}
+.day-events .event-item.next b{color:#f3c98b}
+.city-about{color:#8f9bb0;font-size:.86rem;line-height:1.55;margin:10px 0 0}
+.social-log{display:block}
+.social-item{grid-template-columns:120px 1fr;align-items:baseline;animation:bubble-in .4s ease}
+@media (max-width:640px){.social-item{grid-template-columns:1fr}}
+.sim-uptime{display:grid;gap:6px;justify-items:end;text-align:right}
+.sim-uptime strong{display:flex;gap:8px;align-items:center}
+.sim-uptime small{color:#8491a8}
