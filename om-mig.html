@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Om Ted Svärd — solo AI- och iOS-arkitekt med över 20 års teknisk erfarenhet, som bygger premium appar och driftar sin egen AI-server.">
 <title>Om mig — Ted Svärd</title>
-<link rel="canonical" href="https://terrorbyte90.github.io/Hemsida/om-mig.html">
+<link rel="canonical" href="https://tedsvard.se/om-mig.html">
 <meta property="og:type" content="profile">
 <meta property="og:title" content="Om Ted Svärd">
 <meta property="og:description" content="Svensk AI-arkitekt och systembyggare med fokus på agenter, iOS och egen infrastruktur.">
@@ -22,7 +22,8 @@
       <a href="index.html">Hem</a>
       <a href="projekt.html">Projekt</a>
       <a href="simulering.html">Simulering</a>
-      <a href="fable.html" class="nav-signal"><span class="pulse"></span>Fable</a>
+      <a href="labb.html" class="nav-signal"><span class="pulse"></span>Labbet</a>
+      <a href="telefoni.html">Telefoni</a>
       <a href="kurser.html">Kurser</a>
       <a href="poddar.html">Poddar</a>
       <a href="rostlabb.html">Röst-labb</a>
@@ -44,14 +45,14 @@
     <div>
       <p>Jag är en svensk AI-arkitekt och systembyggare, med över 20 års praktisk erfarenhet av nästan all teknisk utrustning jag kommit i kontakt med — från hårdvara och nätverk till mobilutveckling, ljudproduktion och serverdrift. Den bredden är inget jag läst mig till; den kommer från att faktiskt ha byggt, monterat, felsökt och driftat, år efter år.</p>
       <p>Jag bygger sällan bara en app eller bara en modell — jag bygger hela kedjan: produktidé, arkitektur, gränssnitt, agentlogik och den infrastruktur som får allt att köra dygnet runt utan att jag behöver stå bredvid. Två saker driver arbetet. Det ena är hantverk i gränssnittet — designsystem, rörelse, typografi, den där sista detaljen som gör att en app känns levande istället för byggd. Det andra är egen AI-infrastruktur: att köra modeller och agenter jag själv äger och kontrollerar, snarare än att bara anropa någon annans API.</p>
-      <p>De senaste åren har jag byggt betydligt djupare AI-erfarenhet än de flesta hobbyister eller ens många proffs kommer i närheten av — inte bara att använda AI, utan att bygga hela system kring den: agentarkitekturer med flera samverkande AI-agenter (Navi, Ikarus), forskning i AI från grunden utan att luta sig på färdiga basmodeller (Ai-research), realtids-telemetri och visualisering av AI-system (agentic-os/NEXA//OS), och en självhostad modell jag driftar och trimmar själv (Fable / Qwen3.8-27B). Just nu betyder det: en självhostad agentplattform (Hermes) på min egen server, en messenger-app med inbyggda AI-kontakter (Lunachat), och ett realtidsstrategispel byggt från grunden (Corefall) — helt olika discipliner, samma nivå av finish.</p>
+      <p>De senaste åren har jag byggt betydligt djupare AI-erfarenhet än de flesta hobbyister eller ens många proffs kommer i närheten av — inte bara att använda AI, utan att bygga hela system kring den: agentarkitekturer med flera samverkande AI-agenter (Navi, Ikarus), forskning i AI från grunden utan att luta sig på färdiga basmodeller (Ai-research), realtids-telemetri och visualisering av AI-system (agentic-os), en kognitiv arkitektur som verifieras med kausala tester i stället för självrapporter (Eon v6), och ett självhostat AI-team med fem agenter och en lokal modell som arbetar dygnet runt. Just nu betyder det: AI-teamet på min egen server, Eon v6, podden Dystopia AI och spel som Everlife och Corefall. Helt olika discipliner, samma nivå av finish.</p>
     </div>
     <div class="about-facts">
       <dl>
         <dt>Bas</dt><dd>Sverige</dd>
         <dt>Erfarenhet</dt><dd>20+ år inom teknik — hårdvara, mobil, ljud, drift</dd>
         <dt>Fokus</dt><dd>AI-agentarkitektur · premium iOS/SwiftUI · self-hosted infrastruktur</dt>
-        <dt>Just nu</dt><dd>Hermes/Fable (självhostad AI), Lunachat, Corefall</dd>
+        <dt>Just nu</dt><dd>Självhostat AI-team, Eon v6, Dystopia AI, Everlife</dd>
       </dl>
       <div class="skill-row">
         <span>Swift 6</span><span>SwiftUI</span><span>Python</span><span>Agent-arkitektur</span>
@@ -87,7 +88,7 @@
   </section>
   <section class="about-grid reveal" style="margin-top:26px">
     <div>
-      <p>AI-arbetet stannar inte vid kod. Jag designar egna röster för mina poddar — <a href="poddar.html" style="text-decoration:underline">Övervakad</a> och <a href="poddar.html" style="text-decoration:underline">AI-Zonen</a> byggs båda kring noga formgivna AI-röster snarare än inspelat tal, från manus till färdig ljudmix.</p>
+      <p>AI-arbetet stannar inte vid kod. Jag designar egna röster för mina poddar. <a href="poddar.html" style="text-decoration:underline">Dystopia AI</a>, Övervakad och AI-Zonen byggs alla kring noga formgivna AI-röster snarare än inspelat tal, från manus till färdig ljudmix. Dystopia AI görs i en egen pipeline där röster, egenkomponerad musik och ljudeffekter mixas automatiskt.</p>
       <p>Jag har även producerat AI-genererade reklamfilmer — hela vägen från koncept och manus till färdig video, med AI för bild, rörelse och ljud i samma flöde som resten av min AI-verktygslåda.</p>
     </div>
     <div>
@@ -125,14 +126,28 @@
       <div class="yr">2026 · juli</div>
       <div>
         <h4>Hermes blir en riktig, dygnet-runt-agent</h4>
-        <p>Det som började som ett verktyg för mig själv växer till en fullständig agentplattform: en lokal modell (Fable / Qwen3.8-27B), autonoma bakgrundsagenter med egen prioritetsstyrd tasklista, minne, research och säkerhetsräcken. Den slutar aldrig arbeta.</p>
+        <p>Det som började som ett verktyg för mig själv växer till en fullständig agentplattform: en lokal modell, autonoma bakgrundsagenter med egen prioritetsstyrd tasklista, minne, research och säkerhetsräcken. Den slutar aldrig arbeta.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="yr">2026 · augusti–september</div>
+      <div>
+        <h4>Eon v6 och en ny generation appar</h4>
+        <p>Eon går från en samling motorer till en kognitiv arkitektur med ett gemensamt, granskningsbart tillstånd, där varje förmåga måste klara en riktad ablation. Samtidigt tar Everlife, Lifetoken v2, Lindy och TedBots form, och Teds God View blir en svensk realtidslägesbild.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="yr">2026 · oktober</div>
+      <div>
+        <h4>Ett helt AI-team, och en ny podd</h4>
+        <p>Servern byts ut och Hermes växer till ett team: fem agenter med olika roller och en lokal modell som gör nattjobben gratis. Runt dem byggs automatik som inte behöver AI: morgonrapport, omvärldsbevakning, servervakt och beroendevakt. Första avsnittet av Dystopia AI produceras helt i en egen pipeline.</p>
       </div>
     </div>
     <div class="timeline-item">
       <div class="yr">Nu</div>
       <div>
         <h4>Den här sidan</h4>
-        <p>Byggd om från grunden, delvis granskad av samma agent som driftar min server. Fable-labbet är ingen tom landningssida — det är ett äkta statusfönster in i den lokala modell jag driftar just nu.</p>
+        <p>Byggd om från grunden och uppdaterad i takt med att systemen växer. <a href="labb.html" style="text-decoration:underline">Labbet</a> är ingen tom landningssida: där skriver Leia, den lokala modellen, själv vad hon gör just nu.</p>
       </div>
     </div>
   </section>
@@ -150,7 +165,7 @@
     </div>
     <div>
       <h3 style="font-size:1.5rem;font-weight:700;letter-spacing:-.02em">Bortom skärmen</h3>
-      <p style="margin-top:18px">Jag gör två poddar vid sidan av kodandet — <a href="poddar.html" style="text-decoration:underline">Övervakad</a>, en skräckpodd där algoritmen tar vid när berättaren ryggar tillbaka, och <a href="poddar.html" style="text-decoration:underline">AI-Zonen</a>, där jag försöker förklara AI utan krångliga ord. Samma nyfikenhet som driver koden driver berättandet.</p>
+      <p style="margin-top:18px">Jag gör poddar vid sidan av kodandet: <a href="poddar.html" style="text-decoration:underline">Dystopia AI</a>, dramatiserade framtidsscenarier om vad AI kan göra med samhället, Övervakad, en skräckpodd där algoritmen tar vid när berättaren ryggar tillbaka, och AI-Zonen, där jag försöker förklara AI utan krångliga ord. Samma nyfikenhet som driver koden driver berättandet.</p>
     </div>
   </section>
 </main>
@@ -160,7 +175,7 @@
     <span class="fmuted">© 2026 Ted Svärd</span>
     <div class="footer-links">
       <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener">GitHub</a>
-      <a href="fable.html">Fable — labb</a>
+      <a href="labb.html">Labbet</a>
       <a href="poddar.html">Poddar</a>
       <a href="rostlabb.html">Röst-labb</a>
     </div>

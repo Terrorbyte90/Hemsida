@@ -1,6 +1,6 @@
 /* Ted Svärd — portfolio interactions.
    No frameworks. Progressive enhancement: everything works without JS except
-   the live Fable status (which has a static "offline" fallback in the markup). */
+   Leia's live status (which falls back to a static line in the markup). */
 (() => {
   'use strict';
 
@@ -109,105 +109,47 @@
   });
 
   /* ======================================================
-     FABLE LIVE STATUS
-     Reads a redacted public status JSON from the home lab via Caddy.
-     Used by: hero signal card + (legacy) data-ornith-teaser hooks.
-     Degrades gracefully when unreachable.
+     LEIA STATUS
+     Leia (local model) writes a short public status every 20 min.
+     It is filtered server-side and pushed out to the `status` branch;
+     the server itself accepts no inbound connections for this.
      ====================================================== */
-  const FABLE_STATUS = 'https://5.175.249.12.nip.io/fable-status/api/status';
-  // Control is never advertised publicly. The link is injected only after a
-  // successful request to the Tailscale-only endpoint on Titan.
-  const CONTROL_HEALTH = 'https://ryzen-ted.tailfbfb1a.ts.net:9443/control-api/health';
-  const GOD_VIEW_HEALTH = 'https://ryzen-ted.tailfbfb1a.ts.net:9444/god-view-api/health';
-  const GOD_VIEW_URL = 'https://ryzen-ted.tailfbfb1a.ts.net:9444/';
+  const LEIA_STATUS = 'https://raw.githubusercontent.com/Terrorbyte90/Hemsida/status/leia.json';
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+  const sedan = iso => {
+    const min = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+    return min < 2 ? 'nyss' : min < 60 ? `${min} min sedan` : `${Math.round(min / 60)} h sedan`;
+  };
 
-  const escapeHTML = value => String(value ?? '').replace(/[&<>\"']/g, ch => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;'
-  }[ch]));
-
-  async function enablePrivateControl() {
+  async function loadLeia() {
+    const card = document.querySelector('[data-leia-teaser]');
+    const panel = document.querySelector('[data-leia-panel]');
+    if (!card && !panel) return;
+    let d = null;
     try {
-      const res = await fetch(CONTROL_HEALTH, { cache: 'no-store', mode: 'cors' });
-      if (!res.ok) throw new Error('private endpoint unavailable');
-      const data = await res.json();
-      if (!data.ok) throw new Error('private endpoint rejected');
-      const nav = document.querySelector('.nav-links');
-      if (nav && !nav.querySelector('[data-control-link]')) {
-        const link = document.createElement('a');
-        link.href = 'control.html';
-        link.textContent = 'Control';
-        link.dataset.controlLink = 'true';
-        nav.appendChild(link);
-      }
-      const state = document.querySelector('[data-control-state]');
-      const detail = document.querySelector('[data-control-detail]');
-      if (state) state.textContent = 'Ansluten till Titan via Tailscale';
-      if (detail) detail.textContent = data.message || 'Privat anslutning verifierad.';
-      document.body.dataset.controlVerified = 'true';
-    } catch (_) {
-      // Fail closed: no nav link and no server details for public visitors.
-      const state = document.querySelector('[data-control-state]');
-      const detail = document.querySelector('[data-control-detail]');
-      if (state) state.textContent = 'Control är privat';
-      if (detail) detail.textContent = 'Anslut till Teds Tailscale-nätverk för att fortsätta.';
+      const res = await fetch(LEIA_STATUS, { cache: 'no-store' });
+      if (res.ok) d = await res.json();
+    } catch (_) { /* offline fallback below */ }
+    const stale = !d || (Date.now() - new Date(d.uppdaterad).getTime()) > 3 * 3600 * 1000;
+    if (card) {
+      const line = card.querySelector('.line');
+      const dot = card.querySelector('.pulse');
+      if (line) line.textContent = d && !stale ? d.nu : 'Leia vilar just nu.';
+      if (dot && stale) dot.style.background = 'var(--muted-on-ink)';
+    }
+    if (panel) {
+      const q = s => panel.querySelector(s);
+      q('[data-leia-now]').textContent = d ? d.nu : 'Leia går inte att nå just nu.';
+      q('[data-leia-updated]').textContent = d ? (stale ? 'senast ' : '') + sedan(d.uppdaterad) : '';
+      q('[data-leia-recent]').innerHTML = (d && d.senaste || []).map(t =>
+        `<li class="activity-item"><span class="d"></span><span class="txt">${esc(t)}</span><span class="tag"></span></li>`).join('');
+      q('[data-leia-thought]').textContent = d && d.tanke ? d.tanke : '–';
+      q('[data-leia-news]').textContent = d ? d.ai_nyheter_idag : '–';
+      q('[data-leia-uptime]').textContent = d ? `${d.driftdagar} dagar` : '–';
     }
   }
-  enablePrivateControl();
-
-  // God view is a separate private surface. It must never exist in the public
-  // DOM: the Tailscale health check is the only path that creates its link.
-  async function enablePrivateGodView() {
-    try {
-      const res = await fetch(GOD_VIEW_HEALTH, { cache: 'no-store', mode: 'cors' });
-      if (!res.ok) throw new Error('private God view unavailable');
-      const data = await res.json();
-      if (!data.ok) throw new Error('private God view rejected');
-      const nav = document.querySelector('.nav-links');
-      if (nav && !nav.querySelector('[data-god-view-link]')) {
-        const link = document.createElement('a');
-        link.href = GOD_VIEW_URL;
-        link.textContent = 'God view';
-        link.dataset.godViewLink = 'true';
-        link.setAttribute('rel', 'noopener');
-        nav.appendChild(link);
-      }
-      document.body.dataset.godViewVerified = 'true';
-    } catch (_) {
-      // Fail closed for every public visitor: no link and no endpoint details.
-      delete document.body.dataset.godViewVerified;
-    }
-  }
-  enablePrivateGodView();
-
-  function renderSignalCard(data) {
-    const card = document.querySelector('[data-ornith-teaser], [data-fable-teaser]');
-    if (!card) return;
-    const dot = card.querySelector('.pulse');
-    const line = card.querySelector('.line');
-    if (!data || !data.alive) {
-      if (dot) dot.style.background = 'var(--muted-on-ink)';
-      if (line) line.innerHTML = 'Fable vilar just nu.';
-      return;
-    }
-    const model = escapeHTML(data.model || 'Qwen3.8-27B-Fable Distill');
-    if (line) line.innerHTML = `<em>${model}</em> kör lokalt · ${escapeHTML(data.state || 'ready')}.`;
-  }
-
-  async function pollFableStatus() {
-    try {
-      const res = await fetch(FABLE_STATUS, { cache: 'no-store', mode: 'cors' });
-      if (!res.ok) throw new Error('bad status');
-      const data = await res.json();
-      renderSignalCard(data);
-    } catch (e) {
-      renderSignalCard(null);
-    }
-  }
-
-  if (document.querySelector('[data-ornith-teaser], [data-fable-teaser]')) {
-    pollFableStatus();
-    setInterval(pollFableStatus, 8000);
-  }
+  loadLeia();
+  setInterval(loadLeia, 5 * 60 * 1000);
 
   /* ======================================================
      PODCASTS: click an episode row to play it inline
@@ -367,13 +309,13 @@
   const draftEl = document.querySelector('[data-draft-text]');
   if (draftEl) {
     const LINES = [
-      'Testar en ny idé för hur Fable ska prioritera labb-jobb när kön blir lång.',
-      'Mira flaggade en avvikelse i minneskurvan — kollar om det är brus eller ett mönster.',
-      'Skissar på en snabbare inläsning för Röst-labbets sökfeed.',
-      'Ett utkast till hur nästa agent-loop ska logga sina beslut, steg för steg.',
-      'Funderar på en enklare vy för att jämföra två körningar av Fable mot varandra.',
-      'Provar en ny formulering för statuskortet — kortare, tydligare, mindre teknisk.',
-      'Ritar upp hur en framtida "Forskning"-sida kan strömma live-resultat från servern.',
+      'Leia har läst nattens AI-nyheter — tre nya modeller värda att testa i morgonrapporten.',
+      'Voicy mixar nästa avsnitt av Dystopia AI: röster klara, musiken duckas under dialogen.',
+      'Servervakten ser att disken växer — räknar ut när den blir full innan det blir ett problem.',
+      'Beroendevakten hittade en säkerhetsbrist i ett repo. Föreslår en uppdatering på egen branch.',
+      'Luna granskar en pull request medan Sofia svarar på en snabb fråga via iMessage.',
+      'Sammanställer veckans AI-forskning till ett kort underlag för nästa poddavsnitt.',
+      'Väntar på godkännande innan något skickas ut — vissa beslut ska alltid vara mänskliga.',
     ];
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     const rndInt = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;

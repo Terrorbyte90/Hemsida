@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Labbet — Teds självhostade AI-team: fem agenter, en lokal modell och automatik som arbetar dygnet runt på en egen server.">
+<title>Labbet — Ted Svärd</title>
+<link rel="canonical" href="https://tedsvard.se/labb.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Labbet — ett AI-team som aldrig går hem">
+<meta property="og:description" content="Fem agenter, en lokal modell och automatik som sköter morgonrapport, omvärldsbevakning, serverdrift och poddproduktion.">
+<meta property="og:url" content="https://tedsvard.se/labb.html">
+<meta property="og:locale" content="sv_SE">
+<meta name="theme-color" content="#F3EEE6">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%276%27 fill=%27%234B4CF0%27/%3E%3C/svg%3E">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Hem</a>
+      <a href="projekt.html">Projekt</a>
+      <a href="simulering.html">Simulering</a>
+      <a href="labb.html" class="nav-signal" aria-current="page"><span class="pulse"></span>Labbet</a>
+      <a href="telefoni.html">Telefoni</a>
+      <a href="kurser.html">Kurser</a>
+      <a href="poddar.html">Poddar</a>
+      <a href="rostlabb.html">Röst-labb</a>
+      <a href="forskning.html">Forskning</a>
+      <a href="bland/">Bland</a>
+      <a href="om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head wrap">
+  <div class="eyebrow">Självhostat · Hermes · Dygnet runt</div>
+  <h1>Ett AI-team som <em>aldrig går hem</em>.</h1>
+  <p class="lede">På en egen server kör fem AI-agenter, en lokal språkmodell och ett lager automatik som inte behöver någon modell alls. De skriver morgonrapporten, bevakar AI-världen, sköter driften, producerar poddavsnitt och säger till innan något går sönder. Jag når dem via iMessage, och de når mig.</p>
+</header>
+
+<main class="wrap">
+  <div class="monitor-grid" data-leia-panel>
+    <section class="monitor-panel reveal">
+      <div class="ph">
+        <span class="t">Leia · just nu</span>
+        <span class="t" data-leia-updated style="opacity:.7"></span>
+      </div>
+      <div class="now-playing">
+        <div class="cat">Skrivet av Leia själv</div>
+        <div class="txt" data-leia-now>Hämtar Leias status …</div>
+      </div>
+      <ul class="activity" data-leia-recent></ul>
+    </section>
+    <aside class="queue-panel reveal">
+      <div class="ph">Leias tanke</div>
+      <p data-leia-thought style="padding:4px 0 10px;line-height:1.5">…</p>
+      <ul class="queue-list">
+        <li class="queue-item"><span>AI-nyheter i dag</span><span class="cat" data-leia-news>–</span></li>
+        <li class="queue-item"><span>Servern igång</span><span class="cat" data-leia-uptime>–</span></li>
+        <li class="queue-item"><span>Modell</span><span class="cat">lokal, 0 kr/fråga</span></li>
+      </ul>
+    </aside>
+  </div>
+  <p style="margin-top:14px;max-width:72ch;color:var(--muted);font-size:.9rem">Leia väljer själv vad hon berättar här, var tjugonde minut. Hon får bara ofarlig information att välja bland, och texten granskas av ett strikt filter innan den publiceras. Servern tar inte emot några anslutningar för detta, utan statusen skickas ut därifrån.</p>
+
+  <section class="rail-head reveal" style="margin-top:96px">
+    <h2>Teamet</h2>
+  </section>
+  <section class="tracks reveal" style="margin-top:26px">
+    <article class="track">
+      <div class="n">Athena</div>
+      <h3>Huvudagenten</h3>
+      <p>Tar de svåra jobben: projekt, research i flera steg och orkestrering av de andra. Kallas också in automatiskt när något allvarligt händer och skriver då en egen lägesrapport. Modell: MiMo v2.6 Pro.</p>
+    </article>
+    <article class="track">
+      <div class="n">Sofia</div>
+      <h3>Den snabba</h3>
+      <p>Korta frågor, snabba svar. En diffusionsmodell (Mercury 2.5) som svarar på bråkdelen av tiden, för allt som inte behöver djup eftertanke.</p>
+    </article>
+    <article class="track">
+      <div class="n">Luna</div>
+      <h3>Kod och analys</h3>
+      <p>Specialist som tar uppdrag via en egen uppgiftstavla: kodgranskning, buggjakt, analys. Arbetar på egna brancher och lämnar ifrån sig resultat som går att granska. Modell: GPT-5.6 Luna.</p>
+    </article>
+    <article class="track">
+      <div class="n">Voicy</div>
+      <h3>Poddproducenten</h3>
+      <p>Gör färdiga poddavsnitt från manus: röster, egenkomponerad musik, ljudeffekter och mix. Räknar ut kostnaden innan den börjar och redovisar exakt vad varje avsnitt kostade.</p>
+    </article>
+    <article class="track">
+      <div class="n">Leia</div>
+      <h3>Den lokala</h3>
+      <p>Kör helt på serverns egen processor, utan moln och utan kostnad per fråga. Arbetar mest på natten: läser igenom dagens AI-nyheter, sammanfattar serverns läge, städar minnet och förbereder morgonen.</p>
+    </article>
+  </section>
+
+  <section class="about-grid reveal" style="margin-top:96px">
+    <div>
+      <h3 style="font-size:1.5rem;font-weight:700;letter-spacing:-.02em">Den lokala modellen</h3>
+      <p style="margin-top:18px">Leia är en <strong>Qwen3.6-35B-A3B</strong>, en Mixture-of-Experts-modell där bara runt 3 miljarder av 35 miljarder parametrar används per token. Det gör den snabb nog att köra på vanliga processorkärnor, utan grafikkort, via llama.cpp.</p>
+      <p>Den ersatte tidigare lokala modeller (Ornith, sedan Fable) när servern byttes ut. Lärdomen från bytena: en lokal modell är värd mest när den får göra det molnet är dyrt på. Långa nattjobb, upprepad sammanfattning och allt som inte får kosta per fråga.</p>
+    </div>
+    <div class="about-facts">
+      <dl>
+        <dt>Modell</dt><dd>Qwen3.6-35B-A3B</dd>
+        <dt>Arkitektur</dt><dd>Mixture-of-Experts, ~3B aktiva</dd>
+        <dt>Kvantisering</dt><dd>Q3_K_S (~15 GB)</dd>
+        <dt>Runtime</dt><dd>llama.cpp, endast CPU</dd>
+        <dt>Kostnad per fråga</dt><dd>0 kr</dd>
+        <dt>Publikt</dt><dd>Nej, bara inom labbet</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="rail-head reveal" style="margin-top:96px">
+    <h2>Automatiken</h2>
+  </section>
+  <p style="margin-top:14px;max-width:70ch;color:var(--muted)">Det mesta som händer varje dag kräver ingen AI alls. Vanliga skript gör jobbet, och en modell kopplas bara in när något faktiskt behöver bedömas. Det håller kostnaden nere och gör systemet förutsägbart.</p>
+  <section class="tracks reveal" style="margin-top:26px">
+    <article class="track">
+      <div class="n">Varje morgon</div>
+      <h3>Morgonrapporten</h3>
+      <p>Väder med konkreta råd (frost, halka, storm), kalender, viktiga mejl, elpris, serverns hälsa och Leias urval av nattens AI-nyheter. Ett meddelande, klockan nio.</p>
+    </article>
+    <article class="track">
+      <div class="n">Varannan timme</div>
+      <h3>AI-omvärlden</h3>
+      <p>Femton källor (AI-labbens bloggar, nya modeller på OpenRouter och Hugging Face, dagens forskning, Hacker News) hämtas och sparas strukturerat per dag. Leia väljer ut det som är värt att veta, och poddtips går vidare till Voicy.</p>
+    </article>
+    <article class="track">
+      <div class="n">Varje minut</div>
+      <h3>Servervakten</h3>
+      <p>Bevakar minne, tjänster, containrar och backup, och startar om det som fallit. Den tittar också framåt: hur fort disken växer, om säkerhetsuppdateringar väntar på omstart, om certifikat snart går ut.</p>
+    </article>
+    <article class="track">
+      <div class="n">Varje natt</div>
+      <h3>Beroendevakten</h3>
+      <p>Läser låsfilerna i alla aktiva repon och jämför dem mot den öppna sårbarhetsdatabasen OSV. Nya allvarliga brister blir en notis med vilken version som lagar dem.</p>
+    </article>
+    <article class="track">
+      <div class="n">Vid behov</div>
+      <h3>Hemvakten</h3>
+      <p>Elpriset, sophämtningen kvällen före och myndigheternas varningar. Små saker blir en kort notis. Det allvarligaste kallar in Athena, som skriver en riktig lägesbild.</p>
+    </article>
+    <article class="track">
+      <div class="n">Vid samtal</div>
+      <h3>Telefonen</h3>
+      <p>Athena har ett eget nummer, svarar när jag inte kan, ringer upp och bokar åt mig och rapporterar efteråt med sammanfattning och inspelning. <a href="telefoni.html" style="text-decoration:underline">Så fungerar telefonin →</a></p>
+    </article>
+    <article class="track">
+      <div class="n">Vid research</div>
+      <h3>Egen sökmotor och läsare</h3>
+      <p>En självhostad metasökmotor (SearXNG) hittar källorna, och Crawl4AI läser hela sidorna som ren text, även JavaScript-tunga sajter. Inga sök-API:er och inga nycklar.</p>
+    </article>
+  </section>
+
+  <section class="method reveal" style="margin-top:96px">
+    <h2>Skyddsräckena</h2>
+    <p>Agenterna får göra mycket själva, men några saker är alltid mänskliga beslut: att skicka mejl, publicera ett poddavsnitt, ändra i ett annat system eller spendera pengar. Nycklar ligger i ett eget valv och visas aldrig i en konversation. Ingenting i labbet exponeras publikt. Statussidor och verktyg nås bara via ett privat nätverk.</p>
+    <p>Och när en agent ger upp en idé sparas varför, så att nästa försök börjar där det förra slutade i stället för från noll.</p>
+  </section>
+
+  <section class="about-grid reveal" style="margin-top:96px">
+    <div>
+      <h3 style="font-size:1.5rem;font-weight:700;letter-spacing:-.02em">Poddfabriken</h3>
+      <p style="margin-top:18px">Ett avsnitt av <a href="poddar.html" style="text-decoration:underline">Dystopia AI</a> går från manus till färdig fil i ett flöde: manuset delas upp i repliker och ljudmarkeringar, rösterna genereras med ElevenLabs v4, musik och effekter skapas för just det avsnittet, och allt mixas med duckning under dialogen och normaliseras till poddstandard (−16 LUFS).</p>
+    </div>
+    <div>
+      <h3 style="font-size:1.5rem;font-weight:700;letter-spacing:-.02em">Minnet</h3>
+      <p style="margin-top:18px">Agenterna delar en kunskapsbas som byggs om varje natt från källan, alltså från hur servern faktiskt ser ut och inte från vad någon minns. Varje agent har dessutom ett eget långtidsminne (Hindsight) som sparar destillerade fakta i stället för hela samtal.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener">GitHub</a>
+      <a href="projekt.html">Projekt</a>
+      <a href="poddar.html">Poddar</a>
+      <a href="rostlabb.html">Röst-labb</a>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
