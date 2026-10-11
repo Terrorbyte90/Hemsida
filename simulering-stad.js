@@ -39,8 +39,9 @@
   /* ───────── Tillstånd ───────── */
   let D = null, index = null, live = true, speed = 1, simMin = 0, selected = null, follow = false, archived = false;
   let scene, camera, renderer, hemi, sun, fill, stars, rain, snow, clouds = [], water;
-  const windows = [], lamps = [], people = {}, homes = {}, lotGroups = [];
-  let yaw = 0.62, pitch = 0.78, dist = 74, autoYaw = true, dragging = false, lastX = 0, lastY = 0, pinch = 0;
+  const windows = [], lamps = [], people = {}, homes = {}, lotGroups = [], cars = [], birds = [], ducks = [];
+  let skyMat = null, waterGeo = null;
+  let yaw = 0.62, pitch = 0.72, dist = 64, autoYaw = true, dragging = false, lastX = 0, lastY = 0, pinch = 0;
   let target = new THREE.Vector3(0, 0, 3), last = performance.now(), uiT = 0, lastRenderedDay = null;
 
   const stockholmMin = () => {
@@ -105,7 +106,39 @@
     cyl(.05, .08, 3, 0x1e2633, [x, 1.5, z], scene, 6);
     const bulb = ball(.16, new THREE.MeshBasicMaterial({ color: 0x5a4a30 }), [x, 3.05, z], scene, 8); bulb.castShadow = false;
     const light = new THREE.PointLight(0xffc27a, 0, 11, 2); light.position.set(x, 3, z); scene.add(light);
-    lamps.push({ bulb, light });
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex(), color: 0xffc27a, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+    halo.scale.set(3.2, 3.2, 1); halo.position.set(x, 3.05, z); scene.add(halo);
+    lamps.push({ bulb, light, halo });
+  }
+  let _glow = null;
+  function glowTex() {
+    if (_glow) return _glow;
+    const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d');
+    const g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(.25, 'rgba(255,255,255,.45)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = g; x.fillRect(0, 0, 64, 64); return _glow = new THREE.CanvasTexture(c);
+  }
+  function grassTex() {
+    const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d');
+    x.fillStyle = '#5b7f4c'; x.fillRect(0, 0, 256, 256);
+    for (let i = 0; i < 2600; i++) { const v = Math.random(); x.fillStyle = v < .5 ? 'rgba(74,108,60,.35)' : v < .85 ? 'rgba(112,140,84,.28)' : 'rgba(150,160,100,.2)'; x.fillRect(Math.random() * 256, Math.random() * 256, 2 + Math.random() * 5, 2 + Math.random() * 5); }
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(22, 22); t.encoding = THREE.sRGBEncoding; return t;
+  }
+  function flowers(x, z, w, d) {
+    const g = group(x, z); box(w, .25, d, 0x6b4a32, [0, .12, 0], g);
+    for (let i = 0; i < w * d * 3; i++) ball(.12, [0xe5566b, 0xf2c14e, 0xf7f3e8, 0xb07ad9, 0xef8a4a][i % 5], [(Math.random() - .5) * (w - .3), .35, (Math.random() - .5) * (d - .3)], g, 5).castShadow = false;
+  }
+  function hedge(x, z, w, d) { const h = box(w, .9, d, mat(0x3f6e45, .95), [x, .45, z], scene); return h; }
+  function car(i) {
+    const g = new THREE.Group(); const col = [0xd94c3d, 0x2f6fb0, 0xf2f2ee, 0x2b2f36, 0xf0b13d, 0x5aa36a, 0x8a5ab0][i % 7];
+    box(1.3, .55, 2.6, mat(col, .4, .3), [0, .55, 0], g); box(1.15, .5, 1.4, mat(0x1d2633, .2, .4), [0, 1.05, -.15], g);
+    for (const [wx, wz] of [[-.62, .85], [.62, .85], [-.62, -.85], [.62, -.85]]) { const w = cyl(.28, .28, .2, 0x111111, [wx, .28, wz], g, 10); w.rotation.z = Math.PI / 2; }
+    const hl = new THREE.MeshBasicMaterial({ color: 0x555544 }); box(.25, .14, .05, hl, [-.4, .6, 1.31], g); box(.25, .14, .05, hl, [.4, .6, 1.31], g);
+    scene.add(g);
+    // slinga längs gatorna
+    const loops = [[[-30, -22], [30, -22], [30, 22], [-30, 22]], [[-14, -8], [14, -8], [14, 8], [-14, 8]], [[-30, -8], [-14, -8], [-14, 22], [-30, 22]], [[14, -22], [30, -22], [30, 8], [14, 8]]];
+    const L = loops[i % loops.length]; const path = [...L, L[0]].map(([x, z]) => [x + (i % 2 ? .7 : -.7), z + (i % 2 ? .7 : -.7)]);
+    if (i % 2) path.reverse();
+    return { g, path, f: Math.random(), v: .012 + Math.random() * .01, hl };
   }
   function bench(x, z, r = 0) { const g = group(x, z, r); box(1.6, .1, .5, 0x8a6446, [0, .45, 0], g); box(1.6, .5, .08, 0x8a6446, [0, .75, -.22], g); box(.08, .45, .45, 0x2b313a, [-.7, .22, 0], g); box(.08, .45, .45, 0x2b313a, [.7, .22, 0], g); }
 
@@ -231,7 +264,20 @@
     fill = new THREE.DirectionalLight(0x8fb0ff, .15); fill.position.set(-30, 40, -20); scene.add(fill);
 
     // mark, gator, torg, sjö
-    const ground = add(new THREE.PlaneGeometry(260, 260), mat(0x6f9a5a, 1), [0, 0, 0], scene, [-Math.PI / 2, 0, 0]); ground.castShadow = false;
+    const ground = add(new THREE.PlaneGeometry(260, 260), new THREE.MeshStandardMaterial({ map: grassTex(), roughness: 1 }), [0, 0, 0], scene, [-Math.PI / 2, 0, 0]); ground.castShadow = false;
+    skyMat = new THREE.ShaderMaterial({ side: THREE.BackSide, depthWrite: false, fog: false, uniforms: { top: { value: new THREE.Color(0x5d8fc7) }, hor: { value: new THREE.Color(0xcfe2f0) }, sunDir: { value: new THREE.Vector3(0, 1, 0) }, sunCol: { value: new THREE.Color(0xfff0d0) } },
+      vertexShader: 'varying vec3 vp; void main(){ vp = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+      fragmentShader: 'uniform vec3 top; uniform vec3 hor; uniform vec3 sunDir; uniform vec3 sunCol; varying vec3 vp; void main(){ float h = clamp(vp.y*1.6,0.0,1.0); vec3 c = mix(hor, top, pow(h,0.7)); float s = max(dot(normalize(vp), normalize(sunDir)),0.0); c += sunCol * (pow(s,180.0)*1.4 + pow(s,8.0)*0.18); gl_FragColor = vec4(c,1.0); }' });
+    scene.add(new THREE.Mesh(new THREE.SphereGeometry(320, 32, 16), skyMat));
+    const walk = mat(0xc9c3b6, .95);
+    for (const x of XR) for (const sx of [-2.3, 2.3]) box(1.2, .1, 64, walk, [x + sx, .05, 1], scene).castShadow = false;
+    for (const z of ZR) for (const sz of [-2.3, 2.3]) box(66, .1, 1.2, walk, [0, .052, z + sz], scene).castShadow = false;
+    flowers(-9, -5.8, 3, 1); flowers(9, -5.8, 3, 1); flowers(-9, 5.8, 3, 1); flowers(9, 5.8, 3, 1); flowers(-26, -10.6, 2, .8); flowers(26, -10.6, 2, .8); flowers(-6, -10.6, 2.2, .8); flowers(6, -10.6, 2.2, .8);
+    hedge(-13.2, 0, .6, 12); hedge(13.2, 0, .6, 12); hedge(-22, 21, 14, .6);
+    for (let i = 0; i < 7; i++) { const c = car(i); cars.push(c); }
+    for (let i = 0; i < 9; i++) { const b = new THREE.Group(); const m = new THREE.MeshBasicMaterial({ color: 0x222831, side: THREE.DoubleSide });
+      const w1 = new THREE.Mesh(new THREE.PlaneGeometry(.6, .18), m); w1.position.x = -.3; const w2 = w1.clone(); w2.position.x = .3; b.add(w1, w2); scene.add(b); birds.push({ g: b, w1, w2, r: 14 + i * 2.2, h: 18 + (i % 4) * 2, s: .25 + (i % 3) * .05, o: i * .7 }); }
+    for (let i = 0; i < 4; i++) { const d = new THREE.Group(); ball(.22, 0xf4f1e8, [0, .2, 0], d, 8); ball(.13, i ? 0x3f7a4a : 0xf4f1e8, [0, .38, .18], d, 8); box(.08, .05, .14, 0xf0a030, [0, .36, .32], d); scene.add(d); ducks.push({ g: d, o: i * 1.6, r: 1.6 + i * .5 }); }
     const asphalt = mat(0x3b4048, .95), curb = mat(0xb9b4aa, .9), line = new THREE.MeshBasicMaterial({ color: 0xe9e3cf });
     for (const x of XR) { box(3, .05, 64, asphalt, [x, .03, 1], scene).castShadow = false; box(.25, .12, 64, curb, [x - 1.6, .06, 1], scene); box(.25, .12, 64, curb, [x + 1.6, .06, 1], scene); }
     for (const z of ZR) { box(66, .06, 3, asphalt, [0, .035, z], scene).castShadow = false; }
@@ -245,7 +291,7 @@
     cyl(.35, .5, 2, 0xd8d0c0, [0, 1.3, 0], scene); cyl(1, .6, .3, 0xd8d0c0, [0, 2.3, 0], scene);
     const jet = add(new THREE.ConeGeometry(.35, 1.6, 12, 1, true), new THREE.MeshStandardMaterial({ color: 0xbfe6ff, transparent: true, opacity: .55 }), [0, 3.1, 0], scene); jet.castShadow = false; scene.userData.jet = jet;
     // sjön
-    water = add(new THREE.PlaneGeometry(200, 60), new THREE.MeshStandardMaterial({ color: 0x3d7fa6, roughness: .12, metalness: .35 }), [0, .08, 62], scene, [-Math.PI / 2, 0, 0]); water.castShadow = false;
+    waterGeo = new THREE.PlaneGeometry(200, 60, 60, 18); water = add(waterGeo, new THREE.MeshStandardMaterial({ color: 0x3d7fa6, roughness: .12, metalness: .35 }), [0, .08, 62], scene, [-Math.PI / 2, 0, 0]); water.castShadow = false;
     box(200, .1, 3, mat(0xd9c99e, 1), [0, .05, 32.5], scene).castShadow = false;
 
     // byggnader
@@ -302,7 +348,7 @@
     const parts = { la: limb(-.36, 1.3, .13, .62, shirt), ra: limb(.36, 1.3, .13, .62, shirt), ll: limb(-.14, .66, .17, .64, pants, 1), rl: limb(.14, .66, .17, .64, pants, 1) };
     const ring = new THREE.Mesh(new THREE.RingGeometry(.48, .6, 32), new THREE.MeshBasicMaterial({ color: hex, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false }));
     ring.rotation.x = -Math.PI / 2; ring.position.y = .04; g.add(ring);
-    const nl = sign(a.namn.split(' ')[0], a.farg, 2.6); nl.position.set(0, 2.45, 0); g.add(nl);
+    const nl = sign(a.namn.split(' ')[0], a.farg, 3.2); nl.position.set(0, 2.45, 0); g.add(nl);
     g.scale.setScalar(1.2); scene.add(g);
     g.userData = { parts, ring, a, hx: 0, hz: 0, walk: 0 };
     return g;
@@ -330,11 +376,13 @@
   }
 
   /* ───────── Dagens schema ───────── */
-  let AG = [], idx = {}, convs = [], council = null;
+  let AG = [], idx = {}, convs = [], council = null, chats = [], thoughts = [];
   function prepare() {
     AG = D.agenter; idx = {}; AG.forEach((a, i) => { idx[a.id] = i; a.home = i; });
     convs = (D.samtal || []).map(c => { const t = toMin(c.tid), dur = Math.max(4, c.repliker.length * .9); return { ...c, t0: t, t1: t + dur }; });
     council = D.stamma || null;
+    chats = (D.smaprat || []).map(c => ({ ...c, t0: toMin(c.tid), t1: toMin(c.tid) + Math.max(1.5, c.repliker.length * .8) }));
+    const order = {}; thoughts = (D.tankar || []).map(t => { const k = order[t.tid] = (order[t.tid] || 0) + 1; return { ...t, t0: toMin(t.tid) + 2 + (k - 1) * 5, t1: toMin(t.tid) + 2 + (k - 1) * 5 + 4.5 }; });
     for (const a of AG) a.steps = a.plan.map(p => ({ ...p, t: toMin(p.tid) })).sort((x, y) => x.t - y.t);
     // byggnader på tomter
     lotGroups.forEach(g => { while (g.children.length) g.remove(g.children[0]); });
@@ -403,6 +451,7 @@
     const dim = v === 'regn' || v === 'snö' ? .62 : v === 'moln' || v === 'dimma' ? .78 : 1;
     let sky = lerpColor(SKY, m); if (dim < 1) sky.lerp(new THREE.Color(0x8d98a6), (1 - dim) * day * 1.2);
     scene.background = sky; scene.fog.color.copy(sky);
+    if (skyMat) { skyMat.uniforms.hor.value.copy(sky).lerp(new THREE.Color(0xffffff), .18 * day); skyMat.uniforms.top.value.copy(sky).multiplyScalar(.62 + .1 * day); }
     scene.fog.near = v === 'dimma' ? 18 : 70; scene.fog.far = v === 'dimma' ? 80 : 170;
     const a = (m - 390) / (1170 - 390) * Math.PI;
     sun.position.set(Math.cos(a) * 70, Math.max(6, Math.sin(a) * 80), -30); sun.intensity = 1.35 * day * dim + .05;
@@ -411,7 +460,9 @@
     renderer.toneMappingExposure = .8 + .22 * day;
     const night = 1 - Math.min(1, day * 2.4);
     stars.material.opacity = v === 'sol' || v === 'blåst' ? night * .9 : night * .25;
-    lamps.forEach(l => { l.light.intensity = night * 1.5; l.bulb.material.color.setHex(night > .2 ? 0xffd28a : 0x5a4a30); });
+    if (skyMat) { skyMat.uniforms.sunDir.value.copy(sun.position).normalize(); skyMat.uniforms.sunCol.value.setRGB(1, .85 + .1 * day, .6 + .3 * day).multiplyScalar(day > .02 ? dim : 0); }
+    cars.forEach(c => c.hl.color.setHex(night > .3 ? 0xfff2c0 : 0x555544));
+    lamps.forEach(l => { l.halo.material.opacity = night * .55; l.light.intensity = night * 1.5; l.bulb.material.color.setHex(night > .2 ? 0xffd28a : 0x5a4a30); });
     windows.forEach((w, i) => { const on = night > .3 ? ((i * 7) % 10) < (m > 1380 || m < 330 ? 2 : 7) : (i % 9 === 0 ? 1 : 0); w.material.emissiveIntensity = on ? .9 * Math.max(night, .3) : 0; });
     const sc = P.scen.g?.userData.spot; if (sc) sc.intensity = (m > 1080 && m < 1320) ? 2.6 : 0;
   }
@@ -440,7 +491,7 @@
   const bubbleEls = {};
   function bubble(id, text, kind = '') {
     let b = bubbleEls[id]; if (!b) { b = bubbleEls[id] = document.createElement('div'); b.className = 'bubble'; bubbles.appendChild(b); }
-    if (b.dataset.t !== text) { b.dataset.t = text; b.innerHTML = text ? `<b style="color:${AG[idx[id]].farg}">${esc(AG[idx[id]].namn.split(' ')[0])}</b>${esc(text)}` : ''; }
+    if (b.dataset.t !== text) { b.dataset.t = text; b.innerHTML = text ? `<b style="color:${AG[idx[id]].farg}">${esc(AG[idx[id]].namn.split(' ')[0])}${kind === 'thought' ? ' tänker' : ''}</b>${esc(text)}` : ''; }
     b.className = 'bubble' + (text ? ' on' : '') + (kind ? ' ' + kind : '');
     return b;
   }
@@ -466,9 +517,18 @@
         if (Math.hypot(s.pos[0] - u.hx, s.pos[1] - u.hz) > 8) { u.hx = s.pos[0]; u.hz = s.pos[1]; }
         g.position.set(u.hx, 0, u.hz);
         let dh = s.heading - g.rotation.y; dh = Math.atan2(Math.sin(dh), Math.cos(dh)); g.rotation.y += dh * Math.min(1, dt * 8);
-        const walking = s.moving || (live ? false : false);
-        u.walk += dt * (walking ? 9 : 0); const sw = walking ? Math.sin(u.walk) * .6 : (s.conv ? Math.sin(now / 300 + a.home) * .12 : 0);
-        u.parts.la.rotation.x = sw; u.parts.ra.rotation.x = -sw; u.parts.ll.rotation.x = walking ? -sw : 0; u.parts.rl.rotation.x = walking ? sw : 0;
+        const walking = s.moving;
+        u.walk += dt * (walking ? 9 : 0);
+        const sit = !walking && !s.conv && ['kafe', 'bageri', 'park', 'brygga'].includes(s.place) && a.home % 2 === 0;
+        const work = !walking && !s.conv && s.place === a.arbete;
+        let la = 0, ra = 0, ll = 0, rl = 0;
+        if (walking) { const w = Math.sin(u.walk) * .6; la = w; ra = -w; ll = -w; rl = w; }
+        else if (s.conv) { la = Math.sin(now / 420 + a.home) * .35 - .2; ra = Math.sin(now / 530 + a.home * 2) * .25; }
+        else if (sit) { ll = rl = -1.35; la = ra = -.5; }
+        else if (work && ['verkstad', 'bageri', 'odling'].includes(s.place)) { ra = -1.2 + Math.abs(Math.sin(now / 260)) * .9; la = -.4; }
+        else if (work) { la = ra = -.9 + Math.sin(now / 1400 + a.home) * .08; }
+        u.parts.la.rotation.x = la; u.parts.ra.rotation.x = ra; u.parts.ll.rotation.x = ll; u.parts.rl.rotation.x = rl;
+        g.position.y = sit ? -.42 : walking ? Math.abs(Math.sin(u.walk)) * .05 : 0;
         u.ring.material.opacity = a.id === selected ? .9 : 0;
         a.now = s;
         // bubbla
@@ -480,6 +540,14 @@
           const L = council.inlagg, k = Math.floor((m - 1022) / (40 / Math.max(1, L.length)));
           if (L[k] && L[k][0] === a.id) { text = L[k][1]; kind = 'council'; }
         }
+        if (!text && !s.sleeping) {
+          const c = chats.find(c => m >= c.t0 && m < c.t1 && c.repliker.some(r => r[0] === a.id));
+          if (c) { const n = c.repliker.length, k = Math.min(n - 1, Math.floor((m - c.t0) / ((c.t1 - c.t0) / n))); if (c.repliker[k][0] === a.id) { text = c.repliker[k][1]; kind = 'chat'; } }
+        }
+        if (!text && !s.sleeping && !s.conv) {
+          const t = thoughts.find(t => t.vem === a.id && m >= t.t0 && m < t.t1);
+          if (t) { text = t.text; kind = 'thought'; }
+        }
         const b = bubble(a.id, g.visible ? text : '', kind); if (text) placeBubble(b, g);
       }
       if (follow && selected && people[selected]?.visible) target.lerp(people[selected].position, Math.min(1, dt * 2));
@@ -488,6 +556,16 @@
       const fyr = lotGroups.find(g => g.userData.beacon); if (fyr) fyr.userData.beacon.material.color.setHex(Math.sin(now / 400) > 0 ? 0xfff1b0 : 0x554a20);
       const boat = P.brygga.g?.userData.boat; if (boat) { boat.position.y = .3 + Math.sin(now / 900) * .06; boat.rotation.z = Math.sin(now / 1100) * .04; }
     }
+    const tt = now / 1000;
+    if (waterGeo) { const a = waterGeo.attributes.position; for (let i = 0; i < a.count; i++) a.setZ(i, Math.sin(a.getX(i) * .25 + tt * 1.3) * .08 + Math.cos(a.getY(i) * .4 + tt) * .06); a.needsUpdate = true; waterGeo.computeVertexNormals(); }
+    const nightAmb = D ? (simMin < 420 || simMin > 1290) : false;
+    cars.forEach((c, i) => {
+      c.g.visible = !nightAmb || i < 2;
+      c.f = (c.f + dt * c.v * (speed > 1 && !live ? Math.min(speed, 20) / 4 + 1 : 1)) % 1;
+      const [pos, h] = along(c.path, c.f); c.g.position.set(pos[0], 0, pos[1]); c.g.rotation.y = h;
+    });
+    birds.forEach(b => { const a = tt * b.s + b.o; b.g.position.set(Math.cos(a) * b.r, b.h + Math.sin(tt * 2 + b.o) * .6, Math.sin(a) * b.r * .7 - 4); b.g.rotation.y = -a; const f = Math.sin(tt * 9 + b.o) * .5; b.w1.rotation.z = f; b.w2.rotation.z = -f; b.g.visible = !nightAmb; });
+    ducks.forEach(d => { const a = tt * .15 + d.o; d.g.position.set(P.park.pos[0] - 1 + Math.cos(a) * d.r, .06, P.park.pos[1] + 1 + Math.sin(a) * d.r * .8); d.g.rotation.y = -a; });
     clouds.forEach((c, i) => { c.position.x += dt * (.6 + i * .05) * (D?.vader === 'blåst' ? 4 : 1); if (c.position.x > 110) c.position.x = -110; });
     for (const p of [rain, snow]) if (p.visible) {
       const a = p.geometry.attributes.position; const fall = p.userData.kind === 'rain' ? 34 : 3.5;
@@ -566,6 +644,7 @@
     const items = [];
     (D.handelser || []).forEach(h => items.push({ t: toMin(h.tid), html: `<span class="tag ${h.typ}">${h.typ === 'stamma' ? 'Stämma' : h.typ === 'ekonomi' ? 'Stad' : 'Händelse'}</span>${esc(h.text)}` }));
     convs.forEach((c, i) => items.push({ t: c.t0, i, html: `<span class="tag samtal">Samtal</span><b>${c.deltagare.map(NAME).join(' & ')}</b> · ${esc(placeName(c.plats))}<br>${esc(c.sammanfattning)}${c.handlingar?.length ? `<span class="acts">${c.handlingar.map(h => esc(h.text)).join(' · ')}</span>` : ''}` }));
+    chats.forEach(c => items.push({ t: c.t0, html: `<span class="tag chat">Småprat</span>${c.repliker.map(([id, t]) => `<b>${esc(NAME(id))}:</b> ${esc(t)}`).join(' ')}` }));
     (D.omplaneringar || []).forEach(c => items.push({ t: toMin(c.beslut || c.tid), html: `<span class="tag plan">Ny plan</span><b>${esc(NAME(c.vem))}</b> ändrar sig: ${esc(c.aktivitet)} · ${esc(placeName(c.plats))} ${esc(c.tid)}` }));
     convs.forEach(c => (c.planandringar || []).forEach(p => items.push({ t: c.t0 + 1, html: `<span class="tag plan">Ny plan</span><b>${esc(NAME(p.vem))}</b> efter samtalet: ${esc(p.aktivitet)} · ${esc(placeName(p.plats))} ${esc(p.tid)}` })));
     if (council?.forslag?.length && m >= 1050) items.push({ t: 1050, html: `<span class="tag stamma">Beslut</span>${council.forslag.map(f => `${esc(f.titel)}: <b>${esc(f.resultat)}</b>`).join(' · ')}` });
