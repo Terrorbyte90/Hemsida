@@ -210,3 +210,4 @@
 }
 @media(prefers-reduced-motion:reduce){.live-dot,.model-dot,.pulse-dot{animation:none}}
 .simulation-page .mesh{display:none}
+.tag.plan{background:#ec8fa022;color:#ec8fa0}.plan small em{color:#ec8fa0;font-style:normal}

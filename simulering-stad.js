@@ -271,9 +271,9 @@
     sg.setAttribute('position', new THREE.Float32BufferAttribute(sp, 3));
     stars = new THREE.Points(sg, new THREE.PointsMaterial({ color: 0xffffff, size: .9, transparent: true, opacity: 0, fog: false })); scene.add(stars);
     for (let i = 0; i < 9; i++) {
-      const c = new THREE.Group(); const m = new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: .85, roughness: 1 });
+      const c = new THREE.Group(); const m = new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: .7, roughness: 1, fog: false });
       for (let k = 0; k < 5; k++) { const b = new THREE.Mesh(new THREE.SphereGeometry(2 + Math.random() * 2, 10, 8), m); b.position.set(k * 2.6 - 5, Math.random(), Math.random() * 2); b.scale.y = .55; c.add(b); }
-      c.position.set(-90 + i * 22, 34 + Math.random() * 8, -60 + Math.random() * 110); scene.add(c); clouds.push(c);
+      c.position.set(-90 + i * 22, 78 + Math.random() * 10, -120 + Math.random() * 80); scene.add(c); clouds.push(c);
     }
     rain = particles(1600, 0x9ec8ff, .14, 'rain'); snow = particles(1100, 0xffffff, .35, 'snow');
     bindControls(); resize(); addEventListener('resize', resize);
@@ -511,7 +511,7 @@
     if (m >= SLEEP) return ['NATT', 'Alla har lagt sig', 'Dagböckerna är skrivna och Kvartersbladet har kommit ut.'];
     if (m >= 1020 && m < 1065) return ['STÄMMA', 'Stämman i stadshuset', 'Invånarna röstar om stadens förslag.'];
     const c = convs.filter(c => m >= c.t0 && m < c.t1);
-    if (c.length) return ['SAMTAL', c.map(x => x.deltagare.map(NAME).join(' & ')).join(' · '), c[0].sammanfattning];
+    if (c.length) return ['SAMTAL' + (c.length > 1 ? ` · ${c.length} PÅGÅR` : ''), c[0].deltagare.map(NAME).join(' & ') + ' · ' + placeName(c[0].plats), c[0].sammanfattning];
     const h = (D.handelser || []).filter(h => toMin(h.tid) <= m && toMin(h.tid) > m - 45 && h.typ === 'handelse').pop();
     if (h) return ['HÄNDELSE', placeName(h.plats), h.text];
     return [m < 720 ? 'FÖRMIDDAG' : m < 1020 ? 'EFTERMIDDAG' : 'KVÄLL', 'Livet i Kvarter 07', `${AG.filter(a => a.now && !a.now.sleeping && a.now.place !== 'hem').length} av ${AG.length} invånare är ute i staden.`];
@@ -544,7 +544,7 @@
       <div class="ad-stats"><div><small>Mynt</small><b>${a.mynt}</b></div><div><small>Humör</small><b>${esc(a.humor)}</b></div><div><small>Rykte</small>${bar(a.rykte)}</div><div><small>Hälsa</small>${bar(a.halsa)}</div></div>
       <p class="ad-p"><b>Personlighet</b> ${esc(a.personlighet)}</p><p class="ad-p"><b>Mål</b> ${esc(a.mal)}</p>
       ${a.tanke ? `<blockquote>”${esc(a.tanke)}”<small>Morgontanke</small></blockquote>` : ''}
-      <div class="ad-sec">Dagens plan</div><ol class="plan">${a.steps.map(s => `<li class="${s === curT ? 'cur' : s.t < m ? 'past' : ''}"><time>${s.tid}</time><span>${esc(s.aktivitet)}<small>${esc(placeName(s.plats))}</small></span></li>`).join('')}</ol>
+      <div class="ad-sec">Dagens plan</div><ol class="plan">${a.steps.map(s => `<li class="${s === curT ? 'cur' : s.t < m ? 'past' : ''}"><time>${s.tid}</time><span>${esc(s.aktivitet)}<small>${esc(placeName(s.plats))}${s.andrad ? ' · <em>ändrad under dagen</em>' : ''}</small></span></li>`).join('')}</ol>
       <div class="ad-sec">Relationer</div><ul class="rels">${rel.map(([id, r]) => `<li><span>${esc(NAME(id))}</span>${relbar(r.vanskap)}<small>${r.vanskap > 50 ? 'nära vän' : r.vanskap > 20 ? 'vän' : r.vanskap > -10 ? 'bekant' : r.vanskap > -40 ? 'ogillar' : 'ovän'}</small></li>`).join('')}</ul>
       ${mine.length ? `<div class="ad-sec">Samtal idag</div>${mine.map(c => `<p class="ad-c"><time>${c.tid}</time> ${esc(c.sammanfattning)}</p>`).join('')}` : ''}
       ${m >= 1305 && a.dagbok?.dagbok ? `<div class="ad-sec">Dagbok</div><p class="diary">${esc(a.dagbok.dagbok)}</p>${a.dagbok.insikt ? `<p class="ad-p"><b>Insikt</b> ${esc(a.dagbok.insikt)}</p>` : ''}` : ''}
@@ -566,6 +566,8 @@
     const items = [];
     (D.handelser || []).forEach(h => items.push({ t: toMin(h.tid), html: `<span class="tag ${h.typ}">${h.typ === 'stamma' ? 'Stämma' : h.typ === 'ekonomi' ? 'Stad' : 'Händelse'}</span>${esc(h.text)}` }));
     convs.forEach((c, i) => items.push({ t: c.t0, i, html: `<span class="tag samtal">Samtal</span><b>${c.deltagare.map(NAME).join(' & ')}</b> · ${esc(placeName(c.plats))}<br>${esc(c.sammanfattning)}${c.handlingar?.length ? `<span class="acts">${c.handlingar.map(h => esc(h.text)).join(' · ')}</span>` : ''}` }));
+    (D.omplaneringar || []).forEach(c => items.push({ t: toMin(c.beslut || c.tid), html: `<span class="tag plan">Ny plan</span><b>${esc(NAME(c.vem))}</b> ändrar sig: ${esc(c.aktivitet)} · ${esc(placeName(c.plats))} ${esc(c.tid)}` }));
+    convs.forEach(c => (c.planandringar || []).forEach(p => items.push({ t: c.t0 + 1, html: `<span class="tag plan">Ny plan</span><b>${esc(NAME(p.vem))}</b> efter samtalet: ${esc(p.aktivitet)} · ${esc(placeName(p.plats))} ${esc(p.tid)}` })));
     if (council?.forslag?.length && m >= 1050) items.push({ t: 1050, html: `<span class="tag stamma">Beslut</span>${council.forslag.map(f => `${esc(f.titel)}: <b>${esc(f.resultat)}</b>`).join(' · ')}` });
     const shown = items.filter(x => x.t <= m).sort((a, b) => b.t - a.t);
     const key = shown.length + ':' + (convs.find(c => m >= c.t0 && m < c.t1)?.tid || '');
