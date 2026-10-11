@@ -211,3 +211,6 @@
 @media(prefers-reduced-motion:reduce){.live-dot,.model-dot,.pulse-dot{animation:none}}
 .simulation-page .mesh{display:none}
 .tag.plan{background:#ec8fa022;color:#ec8fa0}.plan small em{color:#ec8fa0;font-style:normal}
+.bubble.thought{font-style:italic;background:#111a28d9;color:#c4cfdf;border-style:dashed;border-radius:16px}
+.bubble.chat{background:linear-gradient(165deg,#1a2a3ff2,#0d1624f0)}
+.tag.chat{background:#76d6c615;color:#9fe2d6}
