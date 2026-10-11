@@ -621,7 +621,7 @@
       <p class="ad-now">${esc(a.now?.act || '')} · <span>${esc(placeName(a.now?.place))}</span></p>
       <div class="ad-stats"><div><small>Mynt</small><b>${a.mynt}</b></div><div><small>Humör</small><b>${esc(a.humor)}</b></div><div><small>Rykte</small>${bar(a.rykte)}</div><div><small>Hälsa</small>${bar(a.halsa)}</div></div>
       <p class="ad-p"><b>Personlighet</b> ${esc(a.personlighet)}</p><p class="ad-p"><b>Mål</b> ${esc(a.mal)}</p>
-      ${a.tanke ? `<blockquote>”${esc(a.tanke)}”<small>Morgontanke</small></blockquote>` : ''}
+      ${(() => { const t = thoughts.filter(t => t.vem === a.id && t.t0 <= m).pop(); return t ? `<blockquote>”${esc(t.text)}”<small>Tänker · ${fmt(t.t0)}</small></blockquote>` : a.tanke ? `<blockquote>”${esc(a.tanke)}”<small>Morgontanke</small></blockquote>` : ''; })()}
       <div class="ad-sec">Dagens plan</div><ol class="plan">${a.steps.map(s => `<li class="${s === curT ? 'cur' : s.t < m ? 'past' : ''}"><time>${s.tid}</time><span>${esc(s.aktivitet)}<small>${esc(placeName(s.plats))}${s.andrad ? ' · <em>ändrad under dagen</em>' : ''}</small></span></li>`).join('')}</ol>
       <div class="ad-sec">Relationer</div><ul class="rels">${rel.map(([id, r]) => `<li><span>${esc(NAME(id))}</span>${relbar(r.vanskap)}<small>${r.vanskap > 50 ? 'nära vän' : r.vanskap > 20 ? 'vän' : r.vanskap > -10 ? 'bekant' : r.vanskap > -40 ? 'ogillar' : 'ovän'}</small></li>`).join('')}</ul>
       ${mine.length ? `<div class="ad-sec">Samtal idag</div>${mine.map(c => `<p class="ad-c"><time>${c.tid}</time> ${esc(c.sammanfattning)}</p>`).join('')}` : ''}
