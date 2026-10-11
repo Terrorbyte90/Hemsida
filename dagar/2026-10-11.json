@@ -1,0 +1,2008 @@
+{
+ "version": 2,
+ "dag": 1,
+ "datum": "2026-10-11",
+ "genererad": "2026-10-11T11:40:06",
+ "vader": "moln",
+ "temperatur": 12,
+ "stad": {
+  "namn": "Kvarter 07",
+  "kassa": 1258,
+  "skatt": 10,
+  "borgmastare": null,
+  "byggnader": [],
+  "lagar": [
+   "Stämman i stadshuset röstar om förslag varje dag 17:00. Enkel majoritet avgör.",
+   "Kulturkvällar på Torget: Tillåt veckovisa fria musikframträdande på torget för att öka social samvaro. (dag 1)"
+  ],
+  "rykten": [
+   "Viktor försöker manipulera August genom att sprida tvivel om Elias, men August står fast vid sitt val.",
+   "Saga är under press från Viktor och hotad av Ines granskning.",
+   "Omar har lånat ut 50 mynt till Elias för ett marknadsprojekt utan att ha en tydlig avtalad struktur.",
+   "Liv misstänker att Mira luras av Elias.",
+   "Noor och Hanna har ingått en oväntad allians där kultur köps med pengar, inte bara övertygelse."
+  ]
+ },
+ "agenter": [
+  {
+   "id": "mira",
+   "namn": "Mira Lund",
+   "alder": 34,
+   "yrke": "bibliotekarie",
+   "farg": "#76d6c6",
+   "arbete": "bibliotek",
+   "personlighet": "nyfiken, ordningsam, lite blyg men envis när det gäller kunskap",
+   "mal": "få fler att läsa och göra biblioteket till stadens hjärta",
+   "mynt": 324,
+   "humor": "tung",
+   "rykte": 50,
+   "halsa": 75,
+   "tanke": "Känns tomt utan att få göra något konstruktivt, men jag får ta det lugnt först. Kanske kan jag fixa till lite ordning innan jag möter folk.",
+   "plan": [
+    {
+     "tid": "08:00",
+     "plats": "hem",
+     "aktivitet": "Vakna och dricka kaffe"
+    },
+    {
+     "tid": "09:30",
+     "plats": "bibliotek",
+     "aktivitet": "Städa ordna böckerna"
+    },
+    {
+     "tid": "12:00",
+     "plats": "kafe",
+     "aktivitet": "Lunch och prata med Liv"
+    },
+    {
+     "tid": "14:00",
+     "plats": "bibliotek",
+     "aktivitet": "Undersök de våta böckerna"
+    },
+    {
+     "tid": "16:00",
+     "plats": "stadshus",
+     "aktivitet": "Lyssna på dagens förslag"
+    },
+    {
+     "tid": "17:30",
+     "plats": "kafe",
+     "aktivitet": "Diskutera stadsärenden"
+    },
+    {
+     "tid": "19:00",
+     "plats": "hem",
+     "aktivitet": "Skriva i min hemliga roman"
+    },
+    {
+     "tid": "21:00",
+     "plats": "hem",
+     "aktivitet": "Läsa och slappa"
+    }
+   ],
+   "relationer": {
+    "elias": {
+     "vanskap": 10,
+     "tillit": 16
+    },
+    "noor": {
+     "vanskap": 22,
+     "tillit": 20
+    },
+    "liv": {
+     "vanskap": 45,
+     "tillit": 13
+    },
+    "august": {
+     "vanskap": -5,
+     "tillit": 27
+    },
+    "saga": {
+     "vanskap": 16,
+     "tillit": 5
+    },
+    "viktor": {
+     "vanskap": 10,
+     "tillit": 27
+    },
+    "hanna": {
+     "vanskap": -3,
+     "tillit": 9
+    },
+    "omar": {
+     "vanskap": 1,
+     "tillit": 20
+    },
+    "ines": {
+     "vanskap": 12,
+     "tillit": 7
+    }
+   },
+   "insikter": [
+    "Välvilja kan vara en sårbarhet som andra utnyttjar."
+   ],
+   "dagbok": {
+    "dagbok": "Idag kändes biblioteket som den enda platsen där sanningen inte kunde säljas eller tystas. Jag insåg hur lätt det är att bli en kugge i Elias maskineri när man bara vill vara snäll, och Livs vinklar satte mig på plats. Jag valde att skydda Omar genom att dra honom undan, men priset blev min egen oro.",
+    "humor": "tung",
+    "insikt": "Välvilja kan vara en sårbarhet som andra utnyttjar.",
+    "imorgon": "Jag ska städa bland de våta böckerna och försöka glömma Elias skugga."
+   }
+  },
+  {
+   "id": "elias",
+   "namn": "Elias Berg",
+   "alder": 41,
+   "yrke": "stadsplanerare",
+   "farg": "#f1bc78",
+   "arbete": "stadshus",
+   "personlighet": "ambitiös, karismatisk, fåfäng, gillar makt och stora projekt",
+   "mal": "bli stadens första borgmästare och sätta sin prägel på staden",
+   "mynt": 510,
+   "humor": "nöjd",
+   "rykte": 50,
+   "halsa": 75,
+   "tanke": "Dagen börjar med potential – jag måste synas och låta som den som har svaren, även om verkstadsbilen är trasig. Det är mitt chans att visa ledarskap eller åtminstone fånga uppmärksamhet.",
+   "plan": [
+    {
+     "tid": "08:00",
+     "plats": "hem",
+     "aktivitet": "Klä på sig och fixa frukost"
+    },
+    {
+     "tid": "08:30",
+     "plats": "stadshus",
+     "aktivitet": "Gå in på jobbet och kolla läget"
+    },
+    {
+     "tid": "09:30",
+     "plats": "verkstad",
+     "aktivitet": "Besök trasig bil och skapa scen"
+    },
+    {
+     "tid": "11:00",
+     "plats": "kafe",
+     "aktivitet": "Ntala Liv om stadsutveckling"
+    },
+    {
+     "tid": "13:00",
+     "plats": "bageri",
+     "aktivitet": "Köp kanelbullar och njut av status"
+    },
+    {
+     "tid": "15:00",
+     "plats": "torget",
+     "aktivitet": "Håll kort tal om stadens framtid"
+    },
+    {
+     "tid": "17:00",
+     "plats": "stadshus",
+     "aktivitet": "Lägg förslag om ny borgmästarpost"
+    },
+    {
+     "tid": "19:00",
+     "plats": "kafe",
+     "aktivitet": "Diskutera förslaget med Mira"
+    },
+    {
+     "tid": "21:00",
+     "plats": "hem",
+     "aktivitet": "Vila och planera morgondagen"
+    }
+   ],
+   "relationer": {
+    "mira": {
+     "vanskap": 6,
+     "tillit": 30
+    },
+    "noor": {
+     "vanskap": -2,
+     "tillit": 26
+    },
+    "liv": {
+     "vanskap": 22,
+     "tillit": 24
+    },
+    "august": {
+     "vanskap": 14,
+     "tillit": 18
+    },
+    "saga": {
+     "vanskap": 13,
+     "tillit": 15
+    },
+    "viktor": {
+     "vanskap": -4,
+     "tillit": 26
+    },
+    "hanna": {
+     "vanskap": -2,
+     "tillit": 20
+    },
+    "omar": {
+     "vanskap": 17,
+     "tillit": 25
+    },
+    "ines": {
+     "vanskap": 17,
+     "tillit": 29
+    }
+   },
+   "insikter": [
+    "folk lånar mig pengar för visioner de inte ser, det är min största tillgång."
+   ],
+   "dagbok": {
+    "dagbok": "Jag har säkrat mitt grepp genom att lura både Saga och Omar till att finansiera mina drömmar med deras pengar. August är en hård nöt att knäcka, men värd att ha i rockärmen. Idag fick vi Kulturkvällar genom Noors insats, vilket öppnar dörrar för mina egna visningar. Jag är trött men nöjd med att ha placerat mig som den oumbärliga arkitekten i denna lilla by.",
+    "humor": "nöjd",
+    "insikt": "folk lånar mig pengar för visioner de inte ser, det är min största tillgång.",
+    "imorgon": "Jag ska träffa Ines för att diskret gräva ner Noors kulturprojekt eller erbjuda min hjälp."
+   }
+  },
+  {
+   "id": "noor",
+   "namn": "Noor Haddad",
+   "alder": 29,
+   "yrke": "musiker och kulturproducent",
+   "farg": "#ec8fa0",
+   "arbete": "scen",
+   "personlighet": "social, impulsiv, idérik, hatar tråkiga möten",
+   "mal": "få staden att leva med konserter och kultur",
+   "mynt": 261,
+   "humor": "utarmad",
+   "rykte": 50,
+   "halsa": 75,
+   "tanke": "Idag måste jag få folk att prata om kultur, annars dör vi av tråkighet här. Jag hoppar in i karavan-brygget och ser om jag kan sälja in en idé till de främmande.",
+   "plan": [
+    {
+     "tid": "08:00",
+     "plats": "hem",
+     "aktivitet": "Vakna och klä sig i färgglatt"
+    },
+    {
+     "tid": "08:30",
+     "plats": "torget",
+     "aktivitet": "Kolla vad som händer vid Fordonet"
+    },
+    {
+     "tid": "09:00",
+     "plats": "brygga",
+     "aktivitet": "Närma mig karavanerna och förhandla"
+    },
+    {
+     "tid": "12:00",
+     "plats": "kafe",
+     "aktivitet": "Fika och sälja in kulturidéer till Mira"
+    },
+    {
+     "tid": "14:00",
+     "plats": "scen",
+     "aktivitet": "Öva och testa nya låtar"
+    },
+    {
+     "tid": "16:00",
+     "plats": "stadshus",
+     "aktivitet": "Lyssna på dagens diskussioner"
+    },
+    {
+     "tid": "17:00",
+     "plats": "stadshus",
+     "aktivitet": "Lägga förslag om kulturkvällar på torget"
+    },
+    {
+     "tid": "20:00",
+     "plats": "kafe",
+     "aktivitet": "Uppmuntra till spontan musik och sång"
+    },
+    {
+     "tid": "22:00",
+     "plats": "hem",
+     "aktivitet": "Gå och vila efter intensiv dag"
+    }
+   ],
+   "relationer": {
+    "mira": {
+     "vanskap": 25,
+     "tillit": 21
+    },
+    "elias": {
+     "vanskap": 24,
+     "tillit": 16
+    },
+    "liv": {
+     "vanskap": 10,
+     "tillit": 34
+    },
+    "august": {
+     "vanskap": 19,
+     "tillit": 23
+    },
+    "saga": {
+     "vanskap": 17,
+     "tillit": 18
+    },
+    "viktor": {
+     "vanskap": -1,
+     "tillit": 27
+    },
+    "hanna": {
+     "vanskap": 6,
+     "tillit": 20
+    },
+    "omar": {
+     "vanskap": 9,
+     "tillit": 15
+    },
+    "ines": {
+     "vanskap": 13,
+     "tillit": 30
+    }
+   },
+   "insikter": [
+    "Mina relationer är transaktionella och sköra; jag kan lita på varken Mira eller Elias på sikt."
+   ],
+   "dagbok": {
+    "dagbok": "Dagen kändes som att springa maraton på glid; jag lyckades pressa ut pengar från Mira och bilda en allians med Hanna, men priset var min integritet och min plånbok. Att Ines granskade mig var outhärdligt, men det bekräftade att jag måste vara smartare, inte bara impulsiv. Kulturkvällarna är nu lagliga, vilket är en enorm seger trots att jag är nästan pank.",
+    "humor": "utarmad",
+    "insikt": "Mina relationer är transaktionella och sköra; jag kan lita på varken Mira eller Elias på sikt.",
+    "imorgon": "Jag måste hitta ett sätt att generera snabb cash eller hitta ett tak till min fest innan pengarna tar slut."
+   }
+  },
+  {
+   "id": "liv",
+   "namn": "Liv Ek",
+   "alder": 38,
+   "yrke": "lärare",
+   "farg": "#a99be8",
+   "arbete": "skola",
+   "personlighet": "omtänksam, principfast, rättvis, kan vara moraliserande",
+   "mal": "ge barnen i staden en trygg och bra uppväxt",
+   "mynt": 383,
+   "humor": "tung",
+   "rykte": 53,
+   "halsa": 75,
+   "tanke": "Dags att visa barnen att man håller ord, även när det är tråkigt väder. Kanske kan jag få ett leende idag.",
+   "plan": [
+    {
+     "tid": "08:00",
+     "plats": "hem",
+     "aktivitet": "klä på sig och äta frukost"
+    },
+    {
+     "tid": "08:30",
+     "plats": "skola",
+     "aktivitet": "förbereda dagens lektion"
+    },
+    {
+     "tid": "10:00",
+     "plats": "skola",
+     "aktivitet": "hålla lektion med eleverna"
+    },
+    {
+     "tid": "13:30",
+     "plats": "bibliotek",
+     "aktivitet": "kolla skadan på böckerna"
+    },
+    {
+     "tid": "15:00",
+     "plats": "skola",
+     "aktivitet": "samtalet med Elias"
+    },
+    {
+     "tid": "16:00",
+     "plats": "hem",
+     "aktivitet": "packa ner väskan och tänka"
+    },
+    {
+     "tid": "17:00",
+     "plats": "stadshus",
+     "aktivitet": "stämman om tull och bygg"
+    },
+    {
+     "tid": "19:00",
+     "plats": "hem",
+     "aktivitet": "läsa och gå och lägga sig"
+    }
+   ],
+   "relationer": {
+    "mira": {
+     "vanskap": 11,
+     "tillit": 11
+    },
+    "elias": {
+     "vanskap": -1,
+     "tillit": 22
+    },
+    "noor": {
+     "vanskap": -5,
+     "tillit": 27
+    },
+    "august": {
+     "vanskap": -5,
+     "tillit": 9
+    },
+    "saga": {
+     "vanskap": 19,
+     "tillit": 20
+    },
+    "viktor": {
+     "vanskap": 10,
+     "tillit": 14
+    },
+    "hanna": {
+     "vanskap": 14,
+     "tillit": 19
+    },
+    "omar": {
+     "vanskap": 3,
+     "tillit": 24
+    },
+    "ines": {
+     "vanskap": 14,
+     "tillit": 15
+    }
+   },
+   "insikter": [
+    "Att vilja hjälpa räcker inte om man inte har makten att genomdriva det, och ibland är tystnad det enda sättet att behålla sin integritet."
+   ],
+   "dagbok": {
+    "dagbok": "Att få sin egen motion om lekplats nedröstad känns som en personlig förlåtelse, trots att det var Noors kulturlag som faktiskt gick igenom. Jag känner en växande frustration över Elias grepp om stadens ekonomi och Mira passivitet, samtidigt som jag undrar hur länge jag ska stanna i en stad där principer ofta bryts av pragmatism. Kanske borde jag fokusera på att stärka barnens trygghet inom ramen istället för att krossa väggar mot makten.",
+    "humor": "tung",
+    "insikt": "Att vilja hjälpa räcker inte om man inte har makten att genomdriva det, och ibland är tystnad det enda sättet att behålla sin integritet.",
+    "imorgon": "Jag ska gå till skolan tidigt för att se till att mina elever har det bra, det är det enda jag kan kontrollera fullt ut."
+   }
+  },
+  {
+   "id": "august",
+   "namn": "August Holm",
+   "alder": 57,
+   "yrke": "reparatör",
+   "farg": "#8eb7ed",
+   "arbete": "verkstad",
+   "personlighet": "tystlåten, praktisk, skeptisk mot byråkrati och snack",
+   "mal": "att saker ska fungera och hållas hela",
+   "mynt": 374,
+   "humor": "trött",
+   "rykte": 53,
+   "halsa": 78,
+   "tanke": "Rycken i ländryggen kommer att bli jobbiga om jag inte får ordning på verkstadsdatorna först. Jag hoppas på tystnad och ett ordentligt kaffe, inget drama idag.",
+   "plan": [
+    {
+     "tid": "08:00",
+     "plats": "hem",
+     "aktivitet": "Väcker sig, tar smärttabletter"
+    },
+    {
+     "tid": "08:30",
+     "plats": "verkstad",
+     "aktivitet": "Efterlyser den trasiga hjulbulten"
+    },
+    {
+     "tid": "09:30",
+     "plats": "verkstad",
+     "aktivitet": "Försöker laga verktygsvagnen"
+    },
+    {
+     "tid": "11:00",
+     "plats": "kafe",
+     "aktivitet": "Kaffe och lyssnar på nyheterna"
+    },
+    {
+     "tid": "12:30",
+     "plats": "bageri",
+     "aktivitet": "Köper bröd, ignorerar karavanerna"
+    },
+    {
+     "tid": "14:00",
+     "plats": "verkstad",
+     "aktivitet": "Svetsar ett stativ för bulten"
+    },
+    {
+     "tid": "16:00",
+     "plats": "stadshus",
+     "aktivitet": "Observerar diskussionen om tull"
+    },
+    {
+     "tid": "18:00",
+     "plats": "hem",
+     "aktivitet": "Kollapser på soffan, vilkar"
+    }
+   ],
+   "relationer": {
+    "mira": {
+     "vanskap": 18,
+     "tillit": 16
+    },
+    "elias": {
+     "vanskap": 21,
+     "tillit": 15
+    },
+    "noor": {
+     "vanskap": -4,
+     "tillit": 13
+    },
+    "liv": {
+     "vanskap": 10,
+     "tillit": 6
+    },
+    "saga": {
+     "vanskap": 7,
+     "tillit": 24
+    },
+    "viktor": {
+     "vanskap": -6,
+     "tillit": 13
+    },
+    "hanna": {
+     "vanskap": 18,
+     "tillit": 27
+    },
+    "omar": {
+     "vanskap": 17,
+     "tillit": 33
+    },
+    "ines": {
+     "vanskap": 2,
+     "tillit": 13
+    }
+   },
+   "insikter": [
+    "Människor pratar mer än de gör, och jag måste vara försiktig med vem jag litar på när jag inte orkar."
+   ],
+   "dagbok": {
+    "dagbok": "Dagen började med att Elias och jag försökte få igång en bil som knappt var värd att rädda, men det gav oss något att göra. Viktor kom och försökte dra nytta av situationen med sina tomma löften om verktyg, men jag visste bättre än att blanda mig i hans spel. Stämman beslutade om kulturkvällar, något som inte påverkar mig direkt men som visar hur mycket tid de lägger på onödigt snack. Jag har ont i ryggen och insåg att jag kanske inte orkar lika mycket längre, vilket är jobbigt.",
+    "humor": "trött",
+    "insikt": "Människor pratar mer än de gör, och jag måste vara försiktig med vem jag litar på när jag inte orkar.",
+    "imorgon": "Jag ska vila ryggen och kanske hjälpa Elias lite mer om det behövs, men inte arbeta hårdare än nödvändigt."
+   }
+  },
+  {
+   "id": "saga",
+   "namn": "Saga Nilsson",
+   "alder": 23,
+   "yrke": "kaféägare",
+   "farg": "#f3d36b",
+   "arbete": "kafe",
+   "personlighet": "driven entreprenör, charmig, tävlingsinriktad, tänker mycket på pengar",
+   "mal": "bli stadens mest framgångsrika företagare",
+   "mynt": 315,
+   "humor": "stressad",
+   "rykte": 50,
+   "halsa": 75,
+   "tanke": "Viktor är på halsen med sin skuld, så idag gäller det att sälja kaffe som attan och smida planer för att tjäna pengar, inte bara hålla skutan flytande.",
+   "plan": [
+    {
+     "tid": "08:00",
+     "plats": "hem",
+     "aktivitet": "Väna upp och äta frukost"
+    },
+    {
+     "tid": "08:45",
+     "plats": "kafe",
+     "aktivitet": "Öppna kafét och brygga kaffe"
+    },
+    {
+     "tid": "10:00",
+     "plats": "kafe",
+     "aktivitet": "Sälja espresso till tidiga kunder"
+    },
+    {
+     "tid": "12:30",
+     "plats": "bageri",
+     "aktivitet": "Kolla karavanerna och undvika tull"
+    },
+    {
+     "tid": "14:00",
+     "plats": "kafe",
+     "aktivitet": "Diskutera marknadside med August"
+    },
+    {
+     "tid": "16:00",
+     "plats": "kafe",
+     "aktivitet": "Städa fram och serva eftermiddagskunder"
+    },
+    {
+     "tid": "17:00",
+     "plats": "stadshus",
+     "aktivitet": "Lägga förslag om ny skatt för näringsliv"
+    },
+    {
+     "tid": "19:00",
+     "plats": "kafe",
+     "aktivitet": "Stänga kafét och räkna kvarten"
+    },
+    {
+     "tid": "20:30",
+     "plats": "hem",
+     "aktivitet": "Skicka påminnelse till Viktor om betalning"
+    }
+   ],
+   "relationer": {
+    "mira": {
+     "vanskap": 4,
+     "tillit": 8
+    },
+    "elias": {
+     "vanskap": 23,
+     "tillit": 21
+    },
+    "noor": {
+     "vanskap": 4,
+     "tillit": 24
+    },
+    "liv": {
+     "vanskap": 15,
+     "tillit": 22
+    },
+    "august": {
+     "vanskap": 22,
+     "tillit": 22
+    },
+    "viktor": {
+     "vanskap": 10,
+     "tillit": 31
+    },
+    "hanna": {
+     "vanskap": 16,
+     "tillit": 7
+    },
+    "omar": {
+     "vanskap": 15,
+     "tillit": 32
+    },
+    "ines": {
+     "vanskap": 8,
+     "tillit": 14
+    }
+   },
+   "insikter": [
+    "Jag måste bli bättre på att styra omgivningen utan att visa mitt spel."
+   ],
+   "dagbok": {
+    "dagbok": "Dagen har varit en ruschning där jag tvingats balansera mellan att skydda mitt kafé och att hålla mig till gott med Elias, även om hans affärer känns osäkra. Ines varning om Viktor slog hårt, men jag insåg att jag måste hålla min maktställning hemlig för att överleva politiskt. Jag är trött på spel, men jag har lärt mig att tystnad är mitt bästa vapen just nu.",
+    "humor": "stressad",
+    "insikt": "Jag måste bli bättre på att styra omgivningen utan att visa mitt spel.",
+    "imorgon": "Jag ska äta frukost i lugn och ro och fundera på hur jag kan öka kaffeförsäljningen trots den nya kulturella lagen."
+   }
+  },
+  {
+   "id": "viktor",
+   "namn": "Viktor Strand",
+   "alder": 46,
+   "yrke": "butiksägare",
+   "farg": "#c98b6b",
+   "arbete": "butik",
+   "personlighet": "snål, misstänksam, slug, tänjer gärna på regler när ingen ser",
+   "mal": "tjäna mer pengar och få inflytande",
+   "mynt": 401,
+   "humor": "nöjd",
+   "rykte": 50,
+   "halsa": 80,
+   "tanke": "Ska kolla om Saga har betalat den där skulden idag, annars blir det ingen bra dag.",
+   "plan": [
+    {
+     "tid": "08:00",
+     "plats": "hem",
+     "aktivitet": "Vakna och klä sig"
+    },
+    {
+     "tid": "08:30",
+     "plats": "butik",
+     "aktivitet": "Öppna butiken"
+    },
+    {
+     "tid": "09:30",
+     "plats": "park",
+     "aktivitet": "Spana Saga vid dammen"
+    },
+    {
+     "tid": "10:30",
+     "plats": "butik",
+     "aktivitet": "Städa hyllor"
+    },
+    {
+     "tid": "12:00",
+     "plats": "kafe",
+     "aktivitet": "Lunch med Noor"
+    },
+    {
+     "tid": "14:00",
+     "plats": "butik",
+     "aktivitet": "Sälja till kunder"
+    },
+    {
+     "tid": "16:00",
+     "plats": "torget",
+     "aktivitet": "Lyssna på karavanprutet"
+    },
+    {
+     "tid": "17:00",
+     "plats": "stadshus",
+     "aktivitet": "Rösta om tullförslag"
+    },
+    {
+     "tid": "20:00",
+     "plats": "hem",
+     "aktivitet": "Stänga butik och räkna kassa"
+    }
+   ],
+   "relationer": {
+    "mira": {
+     "vanskap": 9,
+     "tillit": 18
+    },
+    "elias": {
+     "vanskap": 8,
+     "tillit": 33
+    },
+    "noor": {
+     "vanskap": 16,
+     "tillit": 16
+    },
+    "liv": {
+     "vanskap": 17,
+     "tillit": 30
+    },
+    "august": {
+     "vanskap": 0,
+     "tillit": 20
+    },
+    "saga": {
+     "vanskap": 1,
+     "tillit": 27
+    },
+    "hanna": {
+     "vanskap": 1,
+     "tillit": 10
+    },
+    "omar": {
+     "vanskap": 13,
+     "tillit": 19
+    },
+    "ines": {
+     "vanskap": 17,
+     "tillit": 14
+    }
+   },
+   "insikter": [
+    "Att vara snäll är en svaghet man kan utnyttja, så låt dem tro att de bestämmer."
+   ],
+   "dagbok": {
+    "dagbok": "Dagen har varit en påminnelse om att jag alltid måste vara två steg före. August är för dum för att se nyttan i mitt erbjudande, och Elias risk att krascha är stor, men Saga är min säkerhetsnät just nu. Det är skönt att stämman fällde vaktstugan, det betyder mer frihet för min handel om än inget gratis. Jag ligger lite efter med uppbetalt från Saga, men pressen kan växa till sig om jag är tålmodig. Känslan av att ha kontrollen, även om den är illusive, är det enda som räknas.",
+    "humor": "nöjd",
+    "insikt": "Att vara snäll är en svaghet man kan utnyttja, så låt dem tro att de bestämmer.",
+    "imorgon": "Jag ska kolla varanlagret noggrant för att dölja att vissa saker är gamla och fixa prislapparna på det nya godset."
+   }
+  },
+  {
+   "id": "hanna",
+   "namn": "Hanna Dahl",
+   "alder": 52,
+   "yrke": "distriktssköterska",
+   "farg": "#9bd28a",
+   "arbete": "vardcentral",
+   "personlighet": "lugn, pragmatisk, rak, ser till allas hälsa",
+   "mal": "att ingen i staden ska bli lämnad ensam",
+   "mynt": 418,
+   "humor": "trött",
+   "rykte": 50,
+   "halsa": 75,
+   "tanke": "Fick ett brev om att vårnettet i stadshuset är underdimensionerat, det måste fixas innan någon blir sjuk. Jag är trött, men ingen annan får lida för min utmattning.",
+   "plan": [
+    {
+     "tid": "08:00",
+     "plats": "hem",
+     "aktivitet": "Väcker sig och tar mediciner"
+    },
+    {
+     "tid": "08:30",
+     "plats": "vardcentral",
+     "aktivitet": "Startar jour och kontrollerar journaler"
+    },
+    {
+     "tid": "09:00",
+     "plats": "verkstad",
+     "aktivitet": "Ser över skadan på stadshusfordonet"
+    },
+    {
+     "tid": "10:30",
+     "plats": "stadshus",
+     "aktivitet": "Diskuterar vattenskador med ansvarig"
+    },
+    {
+     "tid": "12:00",
+     "plats": "bageri",
+     "aktivitet": "Äter lunch och pratar med Noor"
+    },
+    {
+     "tid": "14:00",
+     "plats": "bibliotek",
+     "aktivitet": "Tittar på våta böcker och skadar sig"
+    },
+    {
+     "tid": "15:30",
+     "plats": "brygga",
+     "aktivitet": "Luftar barnet och möter Mira"
+    },
+    {
+     "tid": "17:00",
+     "plats": "stadshus",
+     "aktivitet": "Lägger förslag om vattentäkt stadshus"
+    },
+    {
+     "tid": "21:30",
+     "plats": "hem",
+     "aktivitet": "Stänger av sig och vill sova"
+    }
+   ],
+   "relationer": {
+    "mira": {
+     "vanskap": 9,
+     "tillit": 33
+    },
+    "elias": {
+     "vanskap": 0,
+     "tillit": 32
+    },
+    "noor": {
+     "vanskap": 27,
+     "tillit": 37
+    },
+    "liv": {
+     "vanskap": 7,
+     "tillit": 34
+    },
+    "august": {
+     "vanskap": -4,
+     "tillit": 27
+    },
+    "saga": {
+     "vanskap": 17,
+     "tillit": 13
+    },
+    "viktor": {
+     "vanskap": 10,
+     "tillit": 28
+    },
+    "omar": {
+     "vanskap": 26,
+     "tillit": 37
+    },
+    "ines": {
+     "vanskap": 4,
+     "tillit": 9
+    }
+   },
+   "insikter": [
+    "Allianser är tillfälliga och ofta baserade på transaktioner, inte ömsesidig värdering."
+   ],
+   "dagbok": {
+    "dagbok": "Det känns tungt att bära andras bekymmer, särskilt när jag själv knaprar på nerverna. Men att Noor och jag hittade ett sätt att samarbeta ger en liten tröst i kaoset. Jag ser tydligare nu hur pengarna styr även där vi vill att kulturen ska vara fri. Idag var det en dag av kompromisser, inte segrar.",
+    "humor": "trött",
+    "insikt": "Allianser är tillfälliga och ofta baserade på transaktioner, inte ömsesidig värdering.",
+    "imorgon": "Jag ska se till att få en riktigt lång paus och inte ta på mig fler projekt än nödvändigt."
+   }
+  },
+  {
+   "id": "omar",
+   "namn": "Omar Farah",
+   "alder": 31,
+   "yrke": "bagare och odlare",
+   "farg": "#e59a5c",
+   "arbete": "bageri",
+   "personlighet": "varm, hårt arbetande, drömmande, konflikträdd",
+   "mal": "starta en marknad där alla kan sälja det de gör",
+   "mynt": 335,
+   "humor": "lugn",
+   "rykte": 50,
+   "halsa": 75,
+   "tanke": "Jag måste få till den här marknadsideén, men jag vet inte hur jag ska börja utan att göra någon ledsen. Kanske kan jag börja med att prata med de jag litar på lite grann.",
+   "plan": [
+    {
+     "tid": "08:00",
+     "plats": "hem",
+     "aktivitet": "Väcka, klä på sig, äta frukost"
+    },
+    {
+     "tid": "12:00",
+     "plats": "bageri",
+     "aktivitet": "Ta paus, äta lunch ensam"
+    },
+    {
+     "tid": "13:00",
+     "plats": "bageri",
+     "aktivitet": "Arbeta vidare med beställningar och bak"
+    },
+    {
+     "tid": "16:00",
+     "plats": "park",
+     "aktivitet": "Gå dit för att tänka på marknadsplanen"
+    },
+    {
+     "tid": "17:00",
+     "plats": "stadshus",
+     "aktivitet": "Lyssna på stämman och överväga förslag"
+    },
+    {
+     "tid": "18:00",
+     "plats": "kafe",
+     "aktivitet": "Prova att prata med Elias om marknaden"
+    },
+    {
+     "tid": "20:00",
+     "plats": "hem",
+     "aktivitet": "Återhem, äta middag, planera imorgon"
+    },
+    {
+     "tid": "21:30",
+     "plats": "hem",
+     "aktivitet": "Gå och lägga sig, tänka på drömmen"
+    }
+   ],
+   "relationer": {
+    "mira": {
+     "vanskap": 20,
+     "tillit": 28
+    },
+    "elias": {
+     "vanskap": 23,
+     "tillit": 38
+    },
+    "noor": {
+     "vanskap": -1,
+     "tillit": 12
+    },
+    "liv": {
+     "vanskap": -2,
+     "tillit": 5
+    },
+    "august": {
+     "vanskap": 1,
+     "tillit": 13
+    },
+    "saga": {
+     "vanskap": 20,
+     "tillit": 11
+    },
+    "viktor": {
+     "vanskap": 3,
+     "tillit": 34
+    },
+    "hanna": {
+     "vanskap": 10,
+     "tillit": 29
+    },
+    "ines": {
+     "vanskap": 22,
+     "tillit": 26
+    }
+   },
+   "insikter": [
+    "Jag litar mer på Mira än Elias just nu."
+   ],
+   "dagbok": {
+    "dagbok": "Jag känner mig tung av oro över Elias och pengarna, men Mira gav mig en känsla av lugn. Att stämman godkände kulturkvällarna kändes som en liten seger, även om jag inte fick min marknad. Jag inser att jag lätt låter andra ta kontrollen när jag är rädd för konflikt.",
+    "humor": "lugn",
+    "insikt": "Jag litar mer på Mira än Elias just nu.",
+    "imorgon": "Jag ska ägna tiden åt att baka och tänka ut en egen, säker plan för marknaden utan Elias."
+   }
+  },
+  {
+   "id": "ines",
+   "namn": "Ines Kraft",
+   "alder": 27,
+   "yrke": "journalist på Kvartersbladet",
+   "farg": "#d58fe0",
+   "arbete": "redaktion",
+   "personlighet": "skarp, nyfiken, kritisk, vill avslöja maktmissbruk",
+   "mal": "att Kvartersbladet ska granska makten och bli läst av alla",
+   "mynt": 316,
+   "humor": "trött",
+   "rykte": 50,
+   "halsa": 78,
+   "tanke": "En krossad hjulbult är en sak, men varför den krossades kan vara en annan. Jag måste kolla verkstaden. Jag kan inte låta kommunala tillgångar slösas bort om ingen äger ansvaret.",
+   "plan": [
+    {
+     "tid": "08:00",
+     "plats": "hem",
+     "aktivitet": "vakna och klä sig"
+    },
+    {
+     "tid": "08:45",
+     "plats": "verkstad",
+     "aktivitet": "undersök krossad hjulbult"
+    },
+    {
+     "tid": "09:30",
+     "plats": "redaktion",
+     "aktivitet": "skriv ledare om försummaelse"
+    },
+    {
+     "tid": "12:30",
+     "plats": "bageri",
+     "aktivitet": "höra på karavanens krav"
+    },
+    {
+     "tid": "14:00",
+     "plats": "stadshus",
+     "aktivitet": "snacka med källan i hemlighet"
+    },
+    {
+     "tid": "16:30",
+     "plats": "torget",
+     "aktivitet": "diskutera tullkravet med folk"
+    },
+    {
+     "tid": "17:00",
+     "plats": "stadshus",
+     "aktivitet": "lämna förslag om vaktstuga"
+    },
+    {
+     "tid": "19:00",
+     "plats": "kafe",
+     "aktivitet": "fika med Viktor och granska"
+    },
+    {
+     "tid": "21:00",
+     "plats": "hem",
+     "aktivitet": "färdigställa artikeln"
+    }
+   ],
+   "relationer": {
+    "mira": {
+     "vanskap": 11,
+     "tillit": 16
+    },
+    "elias": {
+     "vanskap": -1,
+     "tillit": 24
+    },
+    "noor": {
+     "vanskap": -4,
+     "tillit": 30
+    },
+    "liv": {
+     "vanskap": 3,
+     "tillit": 29
+    },
+    "august": {
+     "vanskap": 0,
+     "tillit": 24
+    },
+    "saga": {
+     "vanskap": 6,
+     "tillit": 15
+    },
+    "viktor": {
+     "vanskap": 19,
+     "tillit": 5
+    },
+    "hanna": {
+     "vanskap": 3,
+     "tillit": 21
+    },
+    "omar": {
+     "vanskap": 4,
+     "tillit": 17
+    }
+   },
+   "insikter": [
+    "Ingen lyssnar på varningar när pengar är inblandade, man måste bevisa brottet."
+   ],
+   "dagbok": {
+    "dagbok": "Dagen har varit en smärta för nerverna men nödvändig för sanningen. Att se hur Noor och Elias samarbetar, trots mina varningar, visar att pengar ofta väger tyngre än integritet. Jag känner mig mer ensam än någonsin med min sanning, men också mer bestämd.",
+    "humor": "trött",
+    "insikt": "Ingen lyssnar på varningar när pengar är inblandade, man måste bevisa brottet.",
+    "imorgon": "Jag måste hitta bevis för att koppla Viktor till karavanernas tullinkrämningar."
+   }
+  }
+ ],
+ "handelser": [
+  {
+   "tid": "08:15",
+   "typ": "handelse",
+   "plats": "verkstad",
+   "text": "Fordonet till stadshuset krossar en hjulbult på torget."
+  },
+  {
+   "tid": "12:30",
+   "typ": "handelse",
+   "plats": "bageri",
+   "text": "En främmande karavan kräver in 'tull' för att få sälja vid dammen."
+  },
+  {
+   "tid": "16:45",
+   "typ": "handelse",
+   "plats": "bibliotek",
+   "text": "Böckerna i barnavdelningen är våta efter ett sprucket rör."
+  },
+  {
+   "tid": "17:00",
+   "typ": "stamma",
+   "plats": "stadshus",
+   "text": "Stämman samlas i stadshuset"
+  }
+ ],
+ "samtal": [
+  {
+   "tid": "09:00",
+   "plats": "verkstad",
+   "deltagare": [
+    "hanna",
+    "ines"
+   ],
+   "repliker": [
+    [
+     "hanna",
+     "Ines, vad är det där för strul med bulten? Det ser ut som om det var avsiktligt."
+    ],
+    [
+     "ines",
+     "Det ser ut som misshandel, Hanna. En hjulbult går inte sönder av sig själv. Vem hade tillgång till verkstaden igår kväll?"
+    ],
+    [
+     "hanna",
+     "Endast jag och borgmästaren... om det fanns en. Men jag var här hela dagen. Kolla loggboken."
+    ],
+    [
+     "ines",
+     "Loggboken är tom. Intressant. Det är lättare att låta som om ingen var här än att erkänna slarv."
+    ],
+    [
+     "hanna",
+     "Jag sköter mina saker. Men om du tror att jag saboterar stadsfordonen så har du fel. Jag är trött, inte galen."
+    ],
+    [
+     "ines",
+     "Trött på att dölja saker? Jag kommer fråga Kalle vid kafeet imorgon. Han ser allt."
+    ],
+    [
+     "hanna",
+     "Gör det inte. Kalle är gammal och har minnesproblem. Du vill inte starta en konspirationsteori om inget finns."
+    ],
+    [
+     "ines",
+     "Jag startar ingen historia. Jag följer spåren. Däremot, om du vet vem som var här... säg det nu."
+    ],
+    [
+     "hanna",
+     "Jag vet inget. Men om du vill ha mina pengar tillbaka för 'skadestånd' för att du misstänkte mig, så får du vänta."
+    ],
+    [
+     "ines",
+     "Jag vill inte ha dina pengar. Jag vill sanningen. Och Hanna? Var försiktig. Jag lurar inte."
+    ]
+   ],
+   "sammanfattning": "Hanna och Ines pratade.",
+   "handlingar": []
+  },
+  {
+   "tid": "09:40",
+   "plats": "verkstad",
+   "deltagare": [
+    "august",
+    "elias"
+   ],
+   "repliker": [
+    [
+     "elias",
+     "August! Perfekt träff. Har du sett den där gamla volvon? Den är redo för en renässans, precis min stil."
+    ],
+    [
+     "august",
+     "Den är trasa. Bryt ut. Jag fixar inga drömmar, bara mekanik."
+    ],
+    [
+     "elias",
+     "Aha, tystlåten som vanligt. Men tänk på vad det skulle betyda för stadens rykte. Vi kan börja med en enkel reparation, jag ordnar meddelanden."
+    ],
+    [
+     "august",
+     "Du ordnar snack. Jag fixar verktyg. Om du rör min vagn får du ut."
+    ],
+    [
+     "elias",
+     "Okej, lugn. Vi har en deal. Jag hjälper dig lyfta, du låter mig stå bredvid och se proffs ut. Deal?"
+    ],
+    [
+     "august",
+     "Det där är en bra affär. Vi kör."
+    ]
+   ],
+   "sammanfattning": "Elias övertalar August att samarbeta med en trasig bil för att öka sitt rykte, vilket August accepterar mot en enkel arbetsdelning.",
+   "handlingar": []
+  },
+  {
+   "tid": "11:00",
+   "plats": "kafe",
+   "deltagare": [
+    "elias",
+    "saga"
+   ],
+   "repliker": [
+    [
+     "elias",
+     "Saga, titta ut. Det här torget är en öken. Men med rätt vision... ja, det blir en arena."
+    ],
+    [
+     "saga",
+     "En arena för vem, Elias? Du har ju fortfarande samma trasiga bil som blockerar ingången till bageriet."
+    ],
+    [
+     "elias",
+     "Det är inte en bil, det är en konstinstallation av stadsförnyelse. Men jag är seriös. Jag vill lansera 'Kvarter 07:n'. Ett märke."
+    ],
+    [
+     "saga",
+     "Ett märke som kostar vad? Och vem ska betala? Jag behöver pengar, inte sloganer. Viktor pressar mig hårt."
+    ],
+    [
+     "elias",
+     "Jag har en idé. Vi gör en stor lanseringsfest. Jag bjuder på intrycket och presen, du bjuder på lokal och dryck. Vi delar vinsten."
+    ],
+    [
+     "saga",
+     "Delar vinsten? Eller du tar pengarna och jag får räkna ut skatten? Vad gör du om festen drar in ingenting?"
+    ],
+    [
+     "elias",
+     "Det drar in. Lita på mig. Jag är den som har svaren. Ge mig en chans att visa att jag är värd min position."
+    ],
+    [
+     "saga",
+     "Okej. Jag lånar dig 50 mynt till reklam. Men jag vill ha 40 procent av intäkterna, inte 20."
+    ],
+    [
+     "elias",
+     "Accepterat. Du kommer att se. Det här är början på något stort."
+    ]
+   ],
+   "sammanfattning": "Elias försöker sälja in sin stadsutvecklingsvision till Saga och lyckas övertala henne att låna honom 50 mynt för en kommande fest, i utbyte mot en andel i vinsten.",
+   "handlingar": [
+    {
+     "typ": "lana_ut",
+     "vem": "saga",
+     "till": "elias",
+     "mynt": 50,
+     "text": "Saga lånar Elias 50 mynt till reklamkampanjen för hans fest."
+    }
+   ]
+  },
+  {
+   "tid": "12:00",
+   "plats": "kafe",
+   "deltagare": [
+    "mira",
+    "noor"
+   ],
+   "repliker": [
+    [
+     "noor",
+     "Mira! Du ser ut att ha fastnat i en bok igen. Hjälp, jag dör av tråkighet om jag inte hittar på något kulturladdat omgående."
+    ],
+    [
+     "mira",
+     "Noor, lugna ner dig lite. Jag funderade på att starta en bokcirkel här på kaféet, men det känns kanske för... lugnt för dig?"
+    ],
+    [
+     "noor",
+     "Lugt är dött! Tänk dig en live-musikkväll vid brunnfontänen. Jag spelar, folk dansar, Elias får ett hjärtinfarkt av glädje. Vi kan kalla det 'Kvarter 07 Live'. Jag behöver bara 100 mynt till reklam."
+    ],
+    [
+     "mira",
+     "100 mynt? Det är mycket. Men... om vi gör det till en bokcirkel med bakom kulisserna-författarmöten, så kanske jag kan dela ut 50 mynt från 'bibliotekets fonder' om du lovar att bjuda på läsk."
+    ],
+    [
+     "noor",
+     "Läsk? Mira, du är en skatt. 50 mynt och en halv fixad fest. Deal! Jag lovar att inte hänga upp mina trasiga strumpbyxor på scenen."
+    ],
+    [
+     "mira",
+     "Ja ja, du får pengarna. Men kolla upp att Elias inte försöker sälja in en 'elektrisk fiol-konstinstallation' i sista stund. Jag orkar inte med hans visioner."
+    ],
+    [
+     "noor",
+     "Det blir perfekt. Lita på mig."
+    ],
+    [
+     "mira",
+     "Okej. Skickar kvittot sen. Jag måste nu tillbaka till mina böcker innan någon frågar om öppettider."
+    ]
+   ],
+   "sammanfattning": "Noor lyckas övertyga Mira att låna ut 50 mynt för en blivande kulturfest i utbyte mot lite läsk och lov om tystnad kring Elias inblandning.",
+   "handlingar": [
+    {
+     "typ": "ge_mynt",
+     "vem": "mira",
+     "till": "noor",
+     "mynt": 50,
+     "text": "Låna ut 50 mynt för reklam till kulturfesten."
+    },
+    {
+     "typ": "lova",
+     "vem": "noor",
+     "till": "mira",
+     "text": "Lova att hålla Elias borta från evenemanget."
+    }
+   ]
+  },
+  {
+   "tid": "12:00",
+   "plats": "bageri",
+   "deltagare": [
+    "hanna",
+    "omar"
+   ],
+   "repliker": [
+    [
+     "hanna",
+     "Omar, du ser ut som en som har fått ett hjärtslag på löpande band igen. Är det brödet eller något annat som gnager?"
+    ],
+    [
+     "omar",
+     "Åh, Hanna. Nej, det är bara... tankar. Om framtiden. Om att få saker att hända. Du ser ut att ha det klart också, vad gäller?"
+    ],
+    [
+     "hanna",
+     "Ja, vi har en del att ställa till med. Vårnettet i stadshuset är en katastrof. Men jag tänker mer på mig själv. Jag är trött, Omar. Så trött."
+    ],
+    [
+     "omar",
+     "Trött? På jobbet? Du är ju... ja, du är bäst på det där. Men du borde vila. Ibland måste man bara sluta prestera."
+    ],
+    [
+     "hanna",
+     "Sluta prestera? Det är jobbet. Men jag vill ju inte vara ensamma kvar här. Är du inte ensam nu med, om du tänker efter?"
+    ],
+    [
+     "omar",
+     "Nej, jag... jag har mina drömmar. En marknad. Allas marknad. Det känns viktigt. Men ja, det är lite tyst ibland."
+    ],
+    [
+     "hanna",
+     "Då lyssna nu. Jag ger dig 20 mynt. Köp dig en kaka eller nåt. Du behöver lite energi för att driva den där idén. Och sova lite mer."
+    ],
+    [
+     "omar",
+     "Tack, Hanna. Det betyder mycket. Jag ska inte bara köpa kaka, jag ska börja planera ordentligt. Du borde också låta oss ta hand om dig lite grann."
+    ]
+   ],
+   "sammanfattning": "Hanna uppmuntrar den nervöse Omar med matpengar och uppmaning till vila, samtidigt som hon erkänner sin egen utmattning.",
+   "handlingar": [
+    {
+     "typ": "ge_mynt",
+     "vem": "hanna",
+     "till": "omar",
+     "mynt": 20,
+     "text": "Ge Omar 20 mynt för att köpa mat och vila."
+    }
+   ]
+  },
+  {
+   "tid": "12:00",
+   "plats": "kafe",
+   "deltagare": [
+    "august",
+    "viktor"
+   ],
+   "repliker": [
+    [
+     "viktor",
+     "Så, August. Hörde att du hänger med Elias nu? Den killen har mer planer än en fullskalig brandkommisär. Vad är det för 'trasig bil' du ska reparera?"
+    ],
+    [
+     "august",
+     "Det är en V6:a från sextiotalet. Den har bara läckt olja och kranglat med tändstiften. Jag fixar den, han står och håller verktygen. Det är ärligt arbete."
+    ],
+    [
+     "viktor",
+     "Ärligt? Elias är inte ärlig, han är en svävare. Men bra, jag gillar folk som faktiskt gör något. Återigen, min butik har nya flöden. Du behöver verktyg? Jag kan... låna ut några till ett rimligt pris, förstås."
+    ],
+    [
+     "august",
+     "Jag har verktyg, Viktor. Jag har ont i ryggen av att lyfta tungt, men jag behöver inte dina påhittade lån. Jag köper bara det jag behöver."
+    ],
+    [
+     "viktor",
+     "Pass på med ryggen, gamla vän. En fallite reparatör är inget bra inslag i staden. Och kolla in Saga, hon ser lite för snäll ut mot Elias. Du kan behöva veta vem som faktiskt betalar räkningarna."
+    ],
+    [
+     "august",
+     "Jag ser vad jag ser. Elias lyfte, jag hjälpte till. Det var allt. Jag har ett kaffe att dricka nu."
+    ]
+   ],
+   "sammanfattning": "Viktor ifrågasätter Augusts samarbete med Elias och försöker locka honom med verktygslån, men August avvisar det och fokuserar på sitt jobb och sin ryggont.",
+   "handlingar": [
+    {
+     "typ": "ljuga",
+     "vem": "viktor",
+     "till": "august",
+     "text": "Försöker få August att tvivla på Elias ärlighet och påpeka hans egen finansiella situation."
+    },
+    {
+     "typ": "hjalpa",
+     "vem": "august",
+     "till": "viktor",
+     "text": "Ignorerar Viktors försök till manipulation och behåller sin integritet."
+    }
+   ]
+  },
+  {
+   "tid": "12:40",
+   "plats": "bageri",
+   "deltagare": [
+    "ines",
+    "saga"
+   ],
+   "repliker": [
+    [
+     "ines",
+     "Så här är alltså situationen med karavanerna. Ni undviker tull, vi granskar förseelser. Det är en balansgång ni dansar på, Saga."
+    ],
+    [
+     "saga",
+     "Balansering är min grej, Ines. Om jag stänger av er så stänger jag av er. Om jag låter er göra det frikostigt så har ni inget att skriva. Jag föredrar den senare."
+    ],
+    [
+     "ines",
+     "Och vad har du att köpa med tystnad? Eller är det Viktor som puttar på dig igen? Jag hör att han har snurriga affärer i kafeet."
+    ],
+    [
+     "saga",
+     "Viktor är min affärspartner. Och min källa. Som du kanske vet. Men låt oss vara ärliga, jag behöver inte din hjälp. Jag behöver att du tittar bort."
+    ],
+    [
+     "ines",
+     "Det där var nästan ett erkännande. Eller ett hot? Jag är bara intresserad av sanningen om karavanernas tull och... Elias. Han är lite för smart för sin egen skull."
+    ],
+    [
+     "saga",
+     "Elias är bara en kunds kund. Om du vill granska någon, granska den som styr reglerna. Men passa dig för att bita i handen som matar dig. Jag är hungrig."
+    ],
+    [
+     "ines",
+     "Intressant. Jag minns det. Men jag har min egen källa också. Vi ses senare, Saga. Jag har verkstaden att titta på."
+    ],
+    [
+     "saga",
+     "Gå bara. Och Ines? Ta med lite kaffe nästa gång. Det löser fler problem än du tror."
+    ]
+   ],
+   "sammanfattning": "Ines konfronterar Saga om karavanernas tullkretsar och antyder att Viktor kontrollerar Saga, vilket leder till en varning om att hålla tyst för att undvika att bli granskad.",
+   "handlingar": [
+    {
+     "typ": "lova",
+     "vem": "ines",
+     "till": "saga",
+     "text": "Jag kommer att hålla koll på dig, men jag lovar att inte skriva något ännu om du håller det lugnt."
+    },
+    {
+     "typ": "ljuga",
+     "vem": "saga",
+     "till": "ines",
+     "text": "Jag har inget att dölja, vi har inga problem med lagen."
+    }
+   ]
+  },
+  {
+   "tid": "13:00",
+   "plats": "bageri",
+   "deltagare": [
+    "elias",
+    "omar"
+   ],
+   "repliker": [
+    [
+     "elias",
+     "Kanelbullar, Omar! Perfekt val. Jag behöver något sött för att hålla ihop mina tankar om stadens framtid."
+    ],
+    [
+     "omar",
+     "Hej Elias. Bullarna är nybakta. Hur står det till? Du såg... upptagen ut."
+    ],
+    [
+     "elias",
+     "Alltid i rörelse för att göra detta ställe bättre. Jag funderar på att lansera en marknad. En plats där alla kan sälja sina varor. Kanske något för dig?"
+    ],
+    [
+     "omar",
+     "En marknad? Det... det är en idé jag har brottats med. Jag är lite osäker på hur jag ska börja. Behöver inte skada någon."
+    ],
+    [
+     "elias",
+     "Just det! Exakt. Med rätt struktur och lite PR kan vi få igång det. Jag har planerna, du har händet. Vi kan kombinera det."
+    ],
+    [
+     "omar",
+     "Jag... jag litar på dig, Elias. Men jag har inte mycket kapital just nu. Kanske en liten låne? För ingredienser?"
+    ],
+    [
+     "elias",
+     "Låna? Nej, nej. Investera. Ge mig 50 mynt för att sätta igång marknadsledningen, så får du en del av vinsten och äran."
+    ],
+    [
+     "omar",
+     "50 mynt? Det är mycket. Men jag vill ju verkligen att det ska funka. Okej. Här."
+    ],
+    [
+     "elias",
+     "Utmärkt! Du kommer att se att detta är början på något stort. Nu ska jag ut och sprida glädjen, och bullen."
+    ],
+    [
+     "omar",
+     "Tack, Elias. Hoppas du har rätt."
+    ],
+    [
+     "elias",
+     "Jag har alltid rätt, Omar. Det är min grej."
+    ]
+   ],
+   "sammanfattning": "Elias övertalar den nervöse Omar att låna ut 50 mynt för att starta en marknad, trots att Elias inte har någon konkret plan.",
+   "handlingar": [
+    {
+     "typ": "lana_ut",
+     "vem": "omar",
+     "till": "elias",
+     "mynt": 50,
+     "text": "Låner 50 mynt till Elias för marknadsprojekt."
+    }
+   ]
+  },
+  {
+   "tid": "14:00",
+   "plats": "bibliotek",
+   "deltagare": [
+    "liv",
+    "mira"
+   ],
+   "repliker": [
+    [
+     "liv",
+     "Hej Mira. Jag såg er prata med Noor tidigare. Det lät... komplicerat."
+    ],
+    [
+     "mira",
+     "Liv? Vad menar du? Vi diskuterade bara bokhyllor."
+    ],
+    [
+     "liv",
+     "Jag oroar mig för stadens framtid. Och för dig. Det här med hemligheter smiter in."
+    ],
+    [
+     "mira",
+     "Du har ingen aning om vad som egentligen pågår. Varför kommer du hit? För att döma?"
+    ]
+   ],
+   "sammanfattning": "Liv konfronterar Mira om de uppenbara ekonomiska banden och Elias inblandning, vilket får Mira att bli defensiv och dra sig undan.",
+   "handlingar": [
+    {
+     "typ": "hjalpa",
+     "vem": "liv",
+     "till": "mira",
+     "text": "Liv försöker varna Mira men blir avvisad."
+    }
+   ]
+  },
+  {
+   "tid": "16:00",
+   "plats": "stadshus",
+   "deltagare": [
+    "ines",
+    "noor"
+   ],
+   "repliker": [
+    [
+     "ines",
+     "Du verkar lite... upptagen, Noor. Elias verkar ha ett grepp på många av oss just nu."
+    ],
+    [
+     "noor",
+     "Det är bara att få igång något, Ines. En kulturfest behöver inte vara en affärsplan, det är känsla."
+    ],
+    [
+     "ines",
+     "Känsla kostar. Och Elias har precis lånat ut pengar till sig själv genom Omar. Det är ingen bra start."
+    ],
+    [
+     "noor",
+     "Omar litar på mig. Och jag litar på att det här kan bli bra. Varför måste du alltid leta efter fällor?"
+    ],
+    [
+     "ines",
+     "För att fällor ofta är byggt av människor som lovar för mycket. Håll tungan rakt i munnen om du vill att jag ska skriva positivt om din fest."
+    ],
+    [
+     "noor",
+     "Ja ja, journalistisk balans. Jag ska försöka. Men lova att du ger oss chansen också."
+    ]
+   ],
+   "sammanfattning": "Ines ifrågasätter Noors förtroende för Elias och deras ekonomiska transaktioner, medan Noor försvarar sin impulsiva natur och önskemål om kulturell frihet.",
+   "handlingar": []
+  },
+  {
+   "tid": "18:00",
+   "plats": "stadshus",
+   "deltagare": [
+    "hanna",
+    "noor"
+   ],
+   "repliker": [
+    [
+     "hanna",
+     "Noor, vi har inga pengar till festivaler när taket läcker och folk blir sjuka. Prioritera hälsa, inte konst."
+    ],
+    [
+     "noor",
+     "Hanna, du är trött och snäva. Staden dör av tråkighet om vi bara stirrar på våra sår. Jag behöver torget för att få folk att känna något."
+    ],
+    [
+     "hanna",
+     "Tråkighet dödar inte. Vattuskador gör det. Jag lägger fram förslaget om vattentäkten nu. Din kulturkväll kan vänta till någon har pengar."
+    ],
+    [
+     "noor",
+     "Vänta... jag kan skänka 100 mynt till ditt tak om du lyssnar på min idé. En konsert på torget, bara ljud, ingen dyr scen. Det är gratis för kassan."
+    ],
+    [
+     "hanna",
+     "100 mynt? Det är en hel del. Men om det håller och du menar det allvar... jag röstar för ditt förslag med villkor att du täcker kostnaden."
+    ],
+    [
+     "noor",
+     "Deal. Här är mina 100 mynt. Nu är vi samma lag, sköterska. Vänta, jag måste fixa ljudutrustningen själv."
+    ],
+    [
+     "hanna",
+     "Visa upp kvittot till mig sen. Jag har ont i ryggen bara av att tänka på det här mötet."
+    ],
+    [
+     "noor",
+     "Du kommer få se. Det här blir starten på något riktigt, Hanna. Jag lovar."
+    ]
+   ],
+   "sammanfattning": "Hanna och Noor kommer överens där Noor finansierar Hannas vattenprojekt mot att Hoppa på hennes kulturförslag, vilket skapar en tillfällig allians.",
+   "handlingar": [
+    {
+     "typ": "ge_mynt",
+     "vem": "noor",
+     "till": "hanna",
+     "mynt": 100,
+     "text": "Noor ger Hanna 100 mynt för att säkra stöd för kulturkvällarna."
+    },
+    {
+     "typ": "lova",
+     "vem": "hanna",
+     "till": "noor",
+     "text": "Hanna lovar att rösta för Noors förslag om betalningen är bekraftad."
+    }
+   ]
+  },
+  {
+   "tid": "18:00",
+   "plats": "kafe",
+   "deltagare": [
+    "mira",
+    "omar"
+   ],
+   "repliker": [
+    [
+     "omar",
+     "Hej Mira... jag är lite nervös. Elias sa att marknaden ska starta ikväll, men jag har inga bröd att sälja än."
+    ],
+    [
+     "mira",
+     "Marknad? Elias sa inte mycket om detaljerna för mig heller. Men jag har några gamla tidningar och böcker i förrådet om du vill ha reklammaterial."
+    ],
+    [
+     "omar",
+     "Tack. Det är snällt. Jag vet inte om jag orkar vara där... Elias verkar ha full kontroll nu när jag har betalat. Vad ska jag göra om det inte funkar?"
+    ],
+    [
+     "mira",
+     "Ta det lugnt. Om det inte funkar, förlora inte hela din spara. Vi kan alltid börja smått här på biblioteket. Det är säkrare."
+    ],
+    [
+     "omar",
+     "Du har rätt. Jag litar på dig mer än på Elias just nu. Kanske ska vi bara avbryta marknaden och fokusera på något mindre?"
+    ]
+   ],
+   "sammanfattning": "Omar berättar för Mira om sin nervositet kring marknaden och Elias kontroll, och Mira föreslår att de istället fokuserar på säkrare alternativ som biblioteket.",
+   "handlingar": []
+  }
+ ],
+ "stamma": {
+  "tid": "17:00",
+  "narvarande": [
+   "mira",
+   "elias",
+   "noor",
+   "liv",
+   "august",
+   "saga",
+   "viktor",
+   "hanna",
+   "omar",
+   "ines"
+  ],
+  "forslag": [
+   {
+    "typ": "skatt",
+    "titel": "Nedsatt skatt för nya företag",
+    "beskrivning": "Halverad skatt de första tre månaderna för att locka fler företagare.",
+    "bygg": null,
+    "skatt": 5,
+    "kandidat": null,
+    "av": "saga",
+    "id": "f1-1",
+    "roster": {
+     "mira": {
+      "rost": "nej",
+      "motivering": "Skatteavvikelser skapar otydlighet, jag föredrar transparens."
+     },
+     "elias": {
+      "rost": "ja",
+      "motivering": "Jag behöver skattefrihet för att etablera mig som ledare och dra till sig kapital. Detta gynnar min aganda direkt."
+     },
+     "noor": {
+      "rost": "ja",
+      "motivering": "Om fler företag kommer, får jag fler spelningar och pengar till min egen verksamhet."
+     },
+     "liv": {
+      "rost": "nej",
+      "motivering": "Att sänka skatten för nya företag gynnar bara de rika och förlorar stadens intäkter långsiktigt. Vi har inte råd med att underfinansiera oss själva."
+     },
+     "august": {
+      "rost": "nej",
+      "motivering": "Inget företag kommer hit. Skatten är redan för hög."
+     },
+     "saga": {
+      "rost": "ja",
+      "motivering": "Livsavgifterna äter upp vinsten. Behöver luft för att expandera."
+     },
+     "viktor": {
+      "rost": "ja",
+      "motivering": "Halverad skatt gynnar mig direkt som butiksägare och min vinstmarginal ökar."
+     },
+     "hanna": {
+      "rost": "nej",
+      "motivering": "Risken för oärliga företag är stor, och vi har inte råd med skattebortfall."
+     },
+     "omar": {
+      "rost": "ja",
+      "motivering": "Min dröm om marknad behöver stöd. Halverad skatt hjälper mig och andra att börja."
+     },
+     "ines": {
+      "rost": "nej",
+      "motivering": "Skattesänkningar gynnar bara dem som har, inte staden. Jag kräver transparens, inte subventioner."
+     }
+    },
+    "ja": 5,
+    "nej": 5,
+    "resultat": "avslag"
+   },
+   {
+    "typ": "bygg",
+    "titel": "Ny lekplats",
+    "beskrivning": "Bygg en säker lekplats för att ge barnen en bra miljö.",
+    "bygg": "lekplats",
+    "skatt": 0,
+    "kandidat": null,
+    "av": "liv",
+    "id": "f1-2",
+    "roster": {
+     "mira": {
+      "rost": "ja",
+      "motivering": "Barnens framtid och gemensamma utrymmen är viktigt."
+     },
+     "elias": {
+      "rost": "nej",
+      "motivering": "Barns lekplatser är tråkigt slöseri med resurser som borde gå till infrastruktur som ökar vårt värde."
+     },
+     "noor": {
+      "rost": "nej",
+      "motivering": "Lekplatser är tråkigt. Vi behöver liv, inte barnskrik."
+     },
+     "liv": {
+      "rost": "ja",
+      "motivering": "Detta är mitt huvudärende. Barnen behöver en trygg plats att leka på, och 300 mynt är en investering i framtidens trygghet."
+     },
+     "august": {
+      "rost": "nej",
+      "motivering": "Ingen barnfamilj bor här. Pengarna blir bättre använt."
+     },
+     "saga": {
+      "rost": "nej",
+      "motivering": "Barn är bra för framtida kunder, men 300 mynt är för dyrt just nu. Kan vänta."
+     },
+     "viktor": {
+      "rost": "nej",
+      "motivering": "Lekplatser är en slöseri med skattepengar som borde gå till att skydda mina tillgångar."
+     },
+     "hanna": {
+      "rost": "ja",
+      "motivering": "Barnens välmående är prioritet ett."
+     },
+     "omar": {
+      "rost": "ja",
+      "motivering": "Barn är framtidens ryggrad. En lekplats är viktig för gemenskapen."
+     },
+     "ines": {
+      "rost": "ja",
+      "motivering": "Barnens framtid är viktigare än kassan. 300 mynt är en bra investering."
+     }
+    },
+    "pris": 300,
+    "ja": 5,
+    "nej": 5,
+    "resultat": "avslag"
+   },
+   {
+    "typ": "lag",
+    "titel": "Kulturkvällar på Torget",
+    "beskrivning": "Tillåt veckovisa fria musikframträdande på torget för att öka social samvaro.",
+    "bygg": null,
+    "skatt": 0,
+    "kandidat": null,
+    "av": "noor",
+    "id": "f1-3",
+    "roster": {
+     "mira": {
+      "rost": "ja",
+      "motivering": "Kultur och samvaro stärker båndet i staden, passade mig."
+     },
+     "elias": {
+      "rost": "nej",
+      "motivering": "Kultur är en lyx vi inte har råd med. Vi behöver ordning, inte musik."
+     },
+     "noor": {
+      "rost": "ja",
+      "motivering": "Detta är mitt hjärta. Staden måste andas kultur, inte bara handla."
+     },
+     "liv": {
+      "rost": "ja",
+      "motivering": "Kultur och gemenskap är viktigt för stadens själ. Det kostar inga extra medel och stärker banden mellan oss."
+     },
+     "august": {
+      "rost": "nej",
+      "motivering": "Störande buller. Jag vill ha fred och ro."
+     },
+     "saga": {
+      "rost": "nej",
+      "motivering": "Ljud från musik stökar med kunderna och drar inte nya besökare."
+     },
+     "viktor": {
+      "rost": "ja",
+      "motivering": "Mer folk på torget betyder fler kunder till min butik."
+     },
+     "hanna": {
+      "rost": "ja",
+      "motivering": "Social samvaro stärker hälsan, och det kostar inget."
+     },
+     "omar": {
+      "rost": "ja",
+      "motivering": "Jag vill se mer liv på torget, inte bara affärer. Musik binder ihop oss."
+     },
+     "ines": {
+      "rost": "ja",
+      "motivering": "Kultur binder ihop oss. Jag stöder social samvaro."
+     }
+    },
+    "ja": 7,
+    "nej": 3,
+    "resultat": "bifall – ny lag"
+   },
+   {
+    "typ": "bygg",
+    "titel": "Bygg vaktstuga på torget",
+    "beskrivning": "För att säkerställa ordning och skydda stadens tillgångar mot utpressning och försummaelse.",
+    "bygg": "vaktstuga",
+    "skatt": 0,
+    "kandidat": null,
+    "av": "ines",
+    "id": "f1-4",
+    "roster": {
+     "mira": {
+      "rost": "nej",
+      "motivering": "Ökad bevakning och kontroll känns som ett hot mot den fria staden."
+     },
+     "elias": {
+      "rost": "ja",
+      "motivering": "En vaktstuga visar på stark ledarskap och skyddar mina projekt. Ines förslag är bra, även om hon är en irritationskälla."
+     },
+     "noor": {
+      "rost": "nej",
+      "motivering": "Ines vill styra över oss med vakter? Absolut inte. Jag röstar mot kontroll."
+     },
+     "liv": {
+      "rost": "nej",
+      "motivering": "En vaktstuga känns som en överdriven reaktion och en symbol på att vi inte litar på varandra. Det är dyrt och onödigt just nu."
+     },
+     "august": {
+      "rost": "ja",
+      "motivering": "Det behövs. Inget skit ska hända här."
+     },
+     "saga": {
+      "rost": "ja",
+      "motivering": "Viktor hotar mig. Behöver ordning och reda, och någon att vända sig till."
+     },
+     "viktor": {
+      "rost": "nej",
+      "motivering": "Vaktstugor är dyra och jag misstänker att Ines använder det som ursäkt för att öka sin egen makt på min bekostnad."
+     },
+     "hanna": {
+      "rost": "nej",
+      "motivering": "Vi behöver inga väktare, vi behöver sammanhållning."
+     },
+     "omar": {
+      "rost": "nej",
+      "motivering": "Vaktstuga känns som misstroende och kontroll. Jag vill ha förtroende, inte polisering."
+     },
+     "ines": {
+      "rost": "ja",
+      "motivering": "Vi behöver ordning. Utan säkerhet blir vi ett mål för utpressning, vilket jag redan misstänker sker."
+     }
+    },
+    "pris": 400,
+    "ja": 4,
+    "nej": 6,
+    "resultat": "avslag"
+   }
+  ],
+  "beslutsfor": true,
+  "inlagg": [
+   [
+    "mira",
+    "Jag röstar nej mot vaktstugan, vi behöver mer öppenhet, inte murar."
+   ],
+   [
+    "elias",
+    "Vi måste sluta prata om känslor och börja bygga en stad som fungerar! Skattesänkningar lockar liv, och ordning skyddar tillväxten."
+   ],
+   [
+    "noor",
+    "Ni kan inte köpa in en känsla av trygghet med murar! Ge oss musik istället för polisväktare!"
+   ],
+   [
+    "liv",
+    "Vi måste välja framtidens barn, inte dagens misstro. Jag röstar ja till lekplatsen."
+   ],
+   [
+    "august",
+    "Lyssna. Jag har ont i ryggen och orkar inte med era drömmar. Rök inte här. Gå hem."
+   ],
+   [
+    "saga",
+    "Vi måste se till att näringslivet får luft, annars torkar kassan ut. Och vi behöver någon som håller ordning, vi har ju problem."
+   ],
+   [
+    "viktor",
+    "Våra skattepengar ska gå till att gynna näringslivet, inte till dyra monument eller onödig bevakning. Saga vet vad jag menar."
+   ],
+   [
+    "hanna",
+    "Vi kan inte bygga vaktstugor på bekostnad av barnens lekplatser. Låt oss fokusera på att bygga ihop staden, inte stänga in den."
+   ],
+   [
+    "omar",
+    "Vi borde bygga en marknad först. Det skapar jobb och glädje, inte bara skyddsmurar."
+   ],
+   [
+    "ines",
+    "Vi kan inte fortsätta att sitta på händerna medan maktmissbruk spås i skuggan. Vaktstugan är nödvändig, inte byråkratisk."
+   ]
+  ]
+ },
+ "tidning": {
+  "rubrik": "Granskning: Mörka affärer kring fest och tull? Ines Kraft avslöjar kopplingar",
+  "ingress": "Kvarter 07 skakas av rykten om oegentligheter. Jag, Ines Kraft, har granskat påståendena om att borgmästare Saga lånar ut pengar till Elias marknadsprojekt och om att Viktor kontrollerar karavanerna. Det visar sig att pengar rinner dit det inte hör hemma.",
+  "notiser": [
+   "Saga lånat ut 50 mynt till Elias för en fest utan styrelsebeslut. Detta är ett missbruk av förtroende.",
+   "Viktor misstänks styra tullinkrävningen vid dammen. Om detta stämmer är det olagligt.",
+   "Noor och Hanna har ingått en affär: 100 mynt mot politiskt stöd. Demokratin säljs för pengar.",
+   "Omar har lånat 50 mynt från Elias utan avtal. En farlig väg in i skulderna."
+  ]
+ },
+ "statistik": {
+  "anrop": 46,
+  "tokens": 18460,
+  "sekunder": 2069
+ }
+}
