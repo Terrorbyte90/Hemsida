@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Luna — en svensk Mixture-of-Experts-språkmodell som Ted Svärd tränat helt från grunden, med en MacBook och 11 dollar i molnberäkning.">
+<title>Luna — svensk AI från grunden · Ted Svärd</title>
+<link rel="canonical" href="https://tedsvard.se/luna.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Luna — en svensk språkmodell tränad från grunden">
+<meta property="og:description" content="1 miljard parametrar, 16 experter, egen svensk tokenizer. Byggd av en person, med en MacBook och 11 dollar.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23101114%27/%3E%3Cpath d=%27M20 8a9 9 0 1 0 4 15A7 7 0 0 1 20 8z%27 fill=%27%23FFC878%27/%3E%3C/svg%3E">
+<style>
+.luna-steps{ list-style:none; padding:0; margin:26px 0 0; display:grid; gap:14px; counter-reset:s; }
+.luna-steps li{ counter-increment:s; display:grid; grid-template-columns:44px 1fr; gap:16px; align-items:start;
+  padding:20px 22px; border-radius:18px; background:var(--glass); border:1px solid var(--glass-border);
+  backdrop-filter:blur(24px) saturate(180%); -webkit-backdrop-filter:blur(24px) saturate(180%); }
+.luna-steps li::before{ content:counter(s,decimal-leading-zero); font-family:var(--mono); font-size:.8rem; color:var(--signal-dim); padding-top:4px; }
+.luna-steps h3{ font-family:var(--sans); font-weight:700; font-size:1.08rem; letter-spacing:-.01em; }
+.luna-steps p{ margin-top:6px; color:var(--ink-soft); line-height:1.6; }
+.luna-two{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:26px; }
+.luna-two .about-facts h3{ font-family:var(--sans); font-weight:700; font-size:1.1rem; }
+.luna-two ul{ margin:14px 0 0; padding-left:1.1em; color:var(--ink-soft); line-height:1.75; }
+.luna-budget{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:26px; }
+.luna-budget .about-facts .big{ font-family:var(--serif); font-style:italic; font-size:clamp(2.4rem,5vw,3.4rem); line-height:1; color:var(--signal-dim); }
+.luna-budget .about-facts p{ margin-top:10px; color:var(--ink-soft); line-height:1.55; font-size:.96rem; }
+@media (max-width:820px){ .luna-two, .luna-budget, .about-grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap row">
+    <a class="brand" href="index.html"><span class="dot"></span>Ted Svärd</a>
+    <button class="menu-toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+      <a href="index.html">Hem</a>
+      <a href="projekt.html">Projekt</a>
+      <a href="luna.html" aria-current="page">Luna</a>
+      <a href="simulering.html">Simulering</a>
+      <a href="ornith.html" class="nav-signal"><span class="pulse"></span>Ornith</a>
+      <a href="kurser.html">Kurser</a>
+      <a href="forskning.html">Forskning</a>
+      <a href="om-mig.html">Om mig</a>
+    </div>
+  </div>
+</nav>
+
+<header class="ornith-hero wrap">
+  <div class="eyebrow">Egen språkmodell · Tränad från grunden</div>
+  <h1 style="font-family:var(--sans);font-weight:700;letter-spacing:-.03em;font-size:clamp(2.2rem,5vw,3.8rem);margin-top:18px">
+    Luna — en svensk AI som jag <em style="font-family:var(--serif);font-weight:400;color:var(--signal)">byggt själv</em>.
+  </h1>
+  <p class="lede" style="margin-top:18px;max-width:62ch;color:var(--ink-soft);font-size:1.08rem;line-height:1.6">
+    Inte en finjusterad kopia av någon annans modell, utan en språkmodell som jag tränat helt från noll:
+    egen arkitektur, egen svensk tokenizer, egen datapipeline. Allt gjort med min MacBook
+    och elva dollar i molnberäkning, på tre dagar.
+  </p>
+  <div class="status-line">
+    <span class="dot"></span>
+    <span>Tränas just nu · oktober 2026</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="about-grid reveal">
+    <div>
+      <p>Luna är en <strong>Mixture-of-Experts-modell</strong>. I stället för att hela nätverket räknar på varje ord
+        finns 16 specialiserade "experter", och en router väljer de två som passar bäst för varje token.
+        Modellen har drygt en miljard parametrar totalt men använder bara cirka 173 miljoner åt gången.
+        Därför är den snabb nog att köras på en laptop eller till och med en telefon.</p>
+      <p>Målet var enkelt att formulera och svårt att nå: <strong>så bra svenska samtal som möjligt</strong>,
+        och därefter så mycket svensk och <strong>modern</strong> kunskap som möjligt. Därför är nästan allt Luna
+        läst svenska, och slutet av träningen viktas mot texter från 2023–2026 och mot samtal.</p>
+      <p>Jag ville se hur långt man kan komma som en enda person med vanlig hårdvara och en budget som
+        motsvarar en lunch. Svaret är Luna.</p>
+    </div>
+    <div class="about-facts">
+      <dl>
+        <dt>Arkitektur</dt><dd>Sparse Mixture-of-Experts, decoder-transformer</dd>
+        <dt>Parametrar</dt><dd>1,03 miljarder totalt · 173 M aktiva</dd>
+        <dt>Experter</dt><dd>16 st, 2 aktiva per token</dd>
+        <dt>Lager</dt><dd>16 · GQA · RoPE · QK-norm · SwiGLU</dd>
+        <dt>Tokenizer</dt><dd>Egen svensk BPE, 32 768 tokens (~1,6 per ord)</dd>
+        <dt>Kontext</dt><dd>2 048 tokens</dd>
+        <dt>Träningsdata</dt><dd>~1,6 miljarder tokens, i huvudsak svenska</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="rail-head reveal"><h2>Så byggde jag den</h2></section>
+  <ol class="luna-steps reveal">
+    <li><div><h3>Svensk tokenizer</h3><p>Jag tränade en egen ordstyckare på svensk text. Den delar svenska meningar i ungefär 40 % färre bitar än engelska modeller gör, och det gör Luna både snabbare och smartare per beräkning.</p></div></li>
+    <li><div><h3>Data och kvalitetsfilter</h3><p>Svenska webbsidor (FineWeb-2), hela svenska Wikipedia från oktober 2026 utan botgenererade stubbar, och färska svenska sidor från Common Crawl september 2026. En egen klassificerare sorterar fram den bästa fjärdedelen av webben.</p></div></li>
+    <li><div><h3>Modellen</h3><p>Arkitekturen är skriven från grunden i PyTorch, med expert-routing och lastbalansering inspirerad av DeepSeek-V3 och optimeraren Muon.</p></div></li>
+    <li><div><h3>Förträning</h3><p>Ett dygn på en enda hyrd GPU (NVIDIA A40) läser Luna drygt en och en halv miljard tokens svenska. På slutet ligger fokus på modern text och dialoger.</p></div></li>
+    <li><div><h3>Samtalsträning</h3><p>Medan GPU:n tränade genererade min MacBook tiotusentals naturliga svenska dialoger med en öppen lärarmodell. Vardagsprat, råd, förklaringar och fakta från aktuella Wikipedia-artiklar lär Luna att föra ett samtal.</p></div></li>
+    <li><div><h3>Finslipning</h3><p>Preferensträning (DPO) där Luna lär sig föredra naturliga, varma och korrekta svar, följt av utvärdering i riktiga samtal.</p></div></li>
+  </ol>
+
+  <section class="rail-head reveal"><h2>Budgeten</h2></section>
+  <section class="luna-budget reveal">
+    <div class="about-facts"><div class="big">$11</div><p>Det var hela molnbudgeten. Den räckte till ungefär 17 timmar på en A40-GPU via RunPod.</p></div>
+    <div class="about-facts"><div class="big">1</div><p>MacBook Pro (M4 Max). Den skötte datarensning, tokenizer, generering av dialoger, finjustering och utvärdering.</p></div>
+    <div class="about-facts"><div class="big">3</div><p>dagar från idé till färdig modell. Allt planerat, kodat och tränat av mig.</p></div>
+  </section>
+
+  <section class="rail-head reveal"><h2>Ärligt talat</h2></section>
+  <section class="luna-two reveal">
+    <div class="about-facts">
+      <h3>Det Luna är bra på</h3>
+      <ul>
+        <li>Naturlig, flytande svenska</li>
+        <li>Vardagssamtal och enkla förklaringar</li>
+        <li>Vänlig, rak ton</li>
+        <li>Att vara snabb och liten nog för en laptop</li>
+      </ul>
+    </div>
+    <div class="about-facts">
+      <h3>Det Luna inte är</h3>
+      <ul>
+        <li>Inte i närheten av ChatGPT eller Claude</li>
+        <li>Hittar ibland på detaljer, så lita inte på fakta blint</li>
+        <li>Svag på matte, kod och långa resonemang</li>
+        <li>Ett första steg, inte ett slutmål</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="rail-head reveal"><h2>Nästa steg</h2></section>
+  <section class="about-grid reveal" style="margin-top:26px">
+    <div>
+      <p>Allt är byggt för att kunna fortsätta. Med mer beräkningskraft kan Luna växa till flera miljarder parametrar, lära av större lärarmodeller och läsa i stort sett all god svensk text som finns. Målet på sikt är en öppen svensk modell som håller jämna steg med de bästa små modellerna på svenska, och som kan köras här i Sverige utan att data lämnar landet.</p>
+    </div>
+    <div class="about-facts">
+      <dl>
+        <dt>Luna 2</dt><dd>~2 miljarder parametrar, längre träning</dd>
+        <dt>Destillation</dt><dd>Lär av större lärarmodeller</dd>
+        <dt>Öppen</dt><dd>Planen är att släppa vikterna fritt</dd>
+      </dl>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <span class="fmuted">© 2026 Ted Svärd</span>
+    <div class="footer-links">
+      <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener">GitHub</a>
+      <a href="projekt.html">Projekt</a>
+      <a href="ornith.html">Ornith</a>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
