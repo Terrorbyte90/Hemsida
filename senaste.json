@@ -1,13 +1,13 @@
 {
  "version": 2,
- "dag": 8,
- "datum": "2026-10-19",
- "genererad": "2026-10-19T07:26:28",
+ "dag": 9,
+ "datum": "2026-10-20",
+ "genererad": "2026-10-20T07:18:16",
  "vader": "moln",
  "temperatur": 12,
  "stad": {
   "namn": "Kvarter 07",
-  "kassa": 585,
+  "kassa": 229,
   "skatt": 10,
   "borgmastare": null,
   "byggnader": [
@@ -37,10 +37,18 @@
     "klar_dag": 10,
     "beslutad_dag": 8,
     "av": "omar"
+   },
+   {
+    "typ": "vaktstuga",
+    "namn": "Vaktstuga",
+    "tomt": 3,
+    "status": "byggs",
+    "klar_dag": 11,
+    "beslutad_dag": 9,
+    "av": "hanna"
    }
   ],
   "lagar": [
-   "Skydd mot hotbrev: Införa en lag som skyddar invånare från hotfulla brev och trakasserier. (dag 4)",
    "Kulturkvällar på Torget: Tillåt veckovisa fria musikframträdande på torget för att öka social samvaro. (dag 5)",
    "Kulturkvällar på Torget: Tillåt veckovisa fria musikframträdande på torget för att öka social samvaro. (dag 6)",
    "Skydd mot trakasserier: Införa en lag som skyddar invånare från hotfulla brev och trakasserier. (dag 6)",
@@ -49,14 +57,15 @@
    "Transparens i kassan: Kräv att stadshuset publicerar månatlig budget och utgifter för ökad transparens. (dag 7)",
    "Transparens i kassan: Kräv att stadshuset publicerar månatlig budget och utgifter för ökad transparens. (dag 7)",
    "Kulturkvällar på Torget: Tillåt veckovisa fria musikframträdande på torget för att öka social samvaro. (dag 8)",
-   "Offentlig redovisning: Kräv att stadshuset publicerar månatlig budget och utgifter för ökad transparens. (dag 8)"
+   "Offentlig redovisning: Kräv att stadshuset publicerar månatlig budget och utgifter för ökad transparens. (dag 8)",
+   "Kulturkvällar på Torget: Tillåt veckovisa fria musikframträdande på torget för att öka social samvaro. (dag 9)"
   ],
   "rykten": [
-   "Viktor hotar Hanna och varnar henne om Ines.",
-   "Elias lovar mer än han kan hålla, Saga är fångad i hans grej.",
-   "Viktor hotar Omar om att hålla sig borta från Saga.",
-   "Mira och Liv planerar hemligt mot Viktor.",
-   "Mira, Liv och Omar planerar hemligt mot Viktor på stadshuset."
+   "August ärmer än han låter, och Hanna försöker hålla ihop gruppen trots eget utmattning.",
+   "Saga är under Viktors kontroll och ger honom information.",
+   "Viktor hotar Ines och Mira, vilket sprids som ett rykte om skrämsel.",
+   "Saga lånar pengar av Viktor och är rädd för honom.",
+   "Saga känner sig fångad av Viktor och söker stöd hos Omar."
   ]
  },
  "agenter": [
@@ -69,66 +78,77 @@
    "arbete": "bibliotek",
    "personlighet": "nyfiken, ordningsam, lite blyg men envis när det gäller kunskap",
    "mal": "få fler att läsa och göra biblioteket till stadens hjärta",
-   "mynt": 842,
+   "mynt": 966,
    "humor": "rädd",
    "rykte": 50,
-   "halsa": 35,
-   "tanke": "Min huvudvärk pulserar och jag känner mig överväldigad av hoten mot mig. Jag måste vara försiktig, men jag vill också hitta en stund av ro.",
+   "halsa": 25,
+   "tanke": "Mitt humör är fortfarande dåligt efter allt som hänt, men jag måste få mig till livs och fortsätta mitt work.",
    "plan": [
     {
      "tid": "08:00",
      "plats": "hem",
-     "aktivitet": "Väcka och känna efter"
+     "aktivitet": "vakna och tänka"
     },
     {
-     "tid": "08:30",
+     "tid": "09:00",
      "plats": "bibliotek",
-     "aktivitet": "Gå till jobbet"
-    },
-    {
-     "tid": "10:00",
-     "plats": "bibliotek",
-     "aktivitet": "Organisera hyllor"
+     "aktivitet": "jobba på biblioteket"
     },
     {
      "tid": "12:00",
      "plats": "kafe",
-     "aktivitet": "Lunchpaus"
+     "aktivitet": "äta lunch och observera"
     },
     {
-     "tid": "14:00",
+     "tid": "13:00",
+     "plats": "kafe",
+     "aktivitet": "diskutera hemligt med Liv"
+    },
+    {
+     "tid": "14:30",
      "plats": "bibliotek",
-     "aktivitet": "Läsa och skriva i smyg"
+     "aktivitet": "gå hem för att skriva",
+     "andrad": true
     },
     {
-     "tid": "16:00",
-     "plats": "park",
-     "aktivitet": "Gå en promenad för att tänka"
+     "tid": "15:00",
+     "plats": "bibliotek",
+     "aktivitet": "skriva i smyg roman"
     },
     {
      "tid": "17:00",
      "plats": "stadshus",
-     "aktivitet": "Delta i stämman"
+     "aktivitet": "delta i stämman"
+    },
+    {
+     "tid": "18:30",
+     "plats": "stadshus",
+     "aktivitet": "Undvika Viktor",
+     "andrad": true
+    },
+    {
+     "tid": "19:00",
+     "plats": "hem",
+     "aktivitet": "möta Ines för källan"
     },
     {
      "tid": "21:00",
      "plats": "hem",
-     "aktivitet": "Gå hem",
-     "andrad": true
+     "aktivitet": "skriva färdig kapitel"
     }
    ],
    "relationer": {
     "elias": {
-     "vanskap": 5,
-     "tillit": 6
+     "vanskap": 0,
+     "tillit": 1
     },
     "noor": {
      "vanskap": 22,
      "tillit": 20
     },
     "liv": {
-     "vanskap": 45,
-     "tillit": 12
+     "vanskap": 55,
+     "tillit": 32
     },
     "august": {
      "vanskap": -5,
@@ -139,8 +159,8 @@
      "tillit": -5
     },
     "viktor": {
-     "vanskap": -28,
-     "tillit": 2
+     "vanskap": -68,
+     "tillit": -28
     },
     "hanna": {
      "vanskap": 2,
@@ -156,15 +176,15 @@
     }
    },
    "insikter": [
-    "Frykt kan tvinga en att svänga sig mot det man hatar, och pengarna är en laddad giftgåva.",
     "Tillit är en luxus jag inte har råd med; varje relation är en potentiell fiende.",
-    "Tillit är en lyx jag inte har råd med; varje relation är en potentiell fiende."
+    "Tillit är en lyx jag inte har råd med; varje relation är en potentiell fiende.",
+    "Att överleva i denna stad kräver att jag offrar min integritet, men det kostar mig min ro."
    ],
    "dagbok": {
-    "dagbok": "Idag har jag känt mig fångad i en våg av hot och löften som inte håller. Hanna har varit min ankerbrygga, och jag märker att tillit är en lyx jag inte har råd med – varje relation är en potentiell fiende. Jag lärde mig att min rädsla tvingar mig att svänga mig mot det jag hatar, och pengarna är en laddad giftgåva.",
+    "dagbok": "I dag har jag blivit pressad av Viktor och tvingats lova spioneri för att skydda min roman. Det känns som att jag förlorar mig själv för varje steg jag tar. Jag är så trött och rädd efter alla hot och samtal.",
     "humor": "rädd",
-    "insikt": "Tillit är en lyx jag inte har råd med; varje relation är en potentiell fiende.",
-    "imorgon": "Jag vill möta Ines för att säkrare min källa och fortsätta skriva i smyg."
+    "insikt": "Att överleva i denna stad kräver att jag offrar min integritet, men det kostar mig min ro.",
+    "imorgon": "Jag måste hitta ett säkert ställe att gömma min roman och undvika Viktor så länge som möjligt."
    }
   },
   {
@@ -176,63 +196,70 @@
    "arbete": "stadshus",
    "personlighet": "ambitiös, karismatisk, fåfäng, gillar makt och stora projekt",
    "mal": "bli stadens första borgmästare och sätta sin prägel på staden",
-   "mynt": 1213,
+   "mynt": 1256,
    "humor": "försiktig",
    "rykte": 50,
-   "halsa": 40,
-   "tanke": "Mira är nyckeln till att få kontroll över Ines och Saga. Jag måste vara försiktig med Viktor, han vill ha information om Ines. Min position är脆弱, men jag kan utnyttja rädslorna.",
+   "halsa": 30,
+   "tanke": "Huvudvärken smular mig, men jag måste hålla fasaden. Viktor hotar, och Mira och Liv planerar något. Jag behöver kontrollera läget och manipulera Saga ytterligare innan hon blir för misstänksam.",
    "plan": [
     {
      "tid": "08:00",
      "plats": "hem",
-     "aktivitet": "Väcka och planera strategier"
-    },
-    {
-     "tid": "08:45",
-     "plats": "hem",
-     "aktivitet": "Skicka meddelande till august",
-     "andrad": true
+     "aktivitet": "Väcka med huvudvärk"
     },
     {
      "tid": "09:00",
-     "plats": "stadshus",
-     "aktivitet": "Kolla på dagens ärenden och dokument"
+     "plats": "hem",
+     "aktivitet": "Söka efter Saga",
+     "andrad": true
+    },
+    {
+     "tid": "10:00",
+     "plats": "torget",
+     "aktivitet": "Lyssna på rykten om Viktor"
     },
     {
      "tid": "10:30",
-     "plats": "park",
-     "aktivitet": "Träffa Mira för att få information"
+     "plats": "torget",
+     "aktivitet": "Lyssna på rykten",
+     "andrad": true
     },
     {
-     "tid": "12:00",
+     "tid": "11:00",
+     "plats": "hem",
+     "aktivitet": "Söka efter Saga"
+    },
+    {
+     "tid": "12:30",
      "plats": "kafe",
-     "aktivitet": "Lunch med August och samtal"
+     "aktivitet": "Möta Mira och Liv",
+     "andrad": true
     },
     {
      "tid": "14:00",
-     "plats": "torget",
-     "aktivitet": "Observation av folk och stämning"
+     "plats": "stadshus",
+     "aktivitet": "Planera för borgmästareval"
     },
     {
      "tid": "16:00",
-     "plats": "hem",
-     "aktivitet": "Skriva ner nya löften och strategier"
+     "plats": "torget",
+     "aktivitet": "Promovera Kulturkvällar"
     },
     {
-     "tid": "18:00",
-     "plats": "kafe",
-     "aktivitet": "Träffa Saga för att stärka band"
+     "tid": "19:00",
+     "plats": "hem",
+     "aktivitet": "Förbereda för stämman"
     },
     {
      "tid": "21:00",
      "plats": "hem",
-     "aktivitet": "Reflektera över dagens framsteg"
+     "aktivitet": "Reflektera över dagens manipuleringar"
     }
    ],
    "relationer": {
     "mira": {
-     "vanskap": 11,
-     "tillit": 25
+     "vanskap": 6,
+     "tillit": 15
     },
     "noor": {
      "vanskap": 0,
@@ -251,7 +278,7 @@
      "tillit": 2
     },
     "viktor": {
-     "vanskap": -38,
+     "vanskap": -58,
      "tillit": 100
     },
     "hanna": {
@@ -268,15 +295,15 @@
     }
    },
    "insikter": [
-    "Mina löften är ett double-edged sword; de binder folk till mig men gör mig sårbar när tilliten spricker.",
     "Mina löften binder folk till mig, men jag måste vara strategisk med hur jag använder deras rädslor för att inte förlora tilliten.",
-    "Mina löften binder folk till mig, men jag måste vara strategisk med hur jag använder deras rädslor för att inte förlora tilliten."
+    "Mina löften binder folk till mig, men jag måste vara strategisk med hur jag använder deras rädslor för att inte förlora tilliten.",
+    "Mina löften binder folk, men jag måste vara försiktig med att inte överdriva vad jag lovar när tilliten spricker."
    ],
    "dagbok": {
-    "dagbok": "Idag var en dag av spänningar och manipulering. Jag lyckades pressa fram löften från August och Saga, men Liv och Viktor visar sig vara svårare att kontrollera. Dimman över torget kändes som en metafor för de osäkra affärerna jag förhandlar i. Jag måste vara försiktig med mina löften, de börjar bli ett boomerang.",
+    "dagbok": "Idag kändes det som att stå på ett löst torg där ryktena svirrade omkring mig. Viktor hotade mig om Saga, och jag insåg hur sårbar hon är – en nyckel som kan öppna eller stänga dörrar. Mira och Liv var misstänksamma, men jag fick dem att lova tystnad i bytet mot 'hjälp'. Jag är trött och huvudet värker, men jag har fått mer kontroll över situationen.",
     "humor": "försiktig",
-    "insikt": "Mina löften binder folk till mig, men jag måste vara strategisk med hur jag använder deras rädslor för att inte förlora tilliten.",
-    "imorgon": "Jag ska fortsätta att manipulera Mira och Saga för att säkra min position och få information om Ines."
+    "insikt": "Mina löften binder folk, men jag måste vara försiktig med att inte överdriva vad jag lovar när tilliten spricker.",
+    "imorgon": "Jag ska söka mig till Saga för att stärka min influence över henne och säkerställa att hon förblir lojal."
    }
   },
   {
@@ -288,22 +315,21 @@
    "arbete": "scen",
    "personlighet": "social, impulsiv, idérik, hatar tråkiga möten",
    "mal": "få staden att leva med konserter och kultur",
-   "mynt": 612,
+   "mynt": 643,
    "humor": "utarmad",
    "rykte": 50,
-   "halsa": 40,
-   "tanke": "Jag är utarmad och ensam, men Ines lovar hjälp. Jag måste vara försiktig med Viktor och Elias, men jag vill skapa kultur på torget.",
+   "halsa": 35,
+   "tanke": "Huvudvärken smärtar, men jag måste ta mig samman. Ines hjälpte mig igår, och nu är det dags att planera nästa steg mot Viktor och kanske ordna den där konserten.",
    "plan": [
     {
      "tid": "08:00",
      "plats": "hem",
-     "aktivitet": "Väckas och reflektera"
+     "aktivitet": "Väcka och ta mig samman"
     },
     {
      "tid": "09:00",
      "plats": "torget",
-     "aktivitet": "Observera dimman",
-     "andrad": true
+     "aktivitet": "Kolla läget på torget"
     },
     {
      "tid": "10:00",
@@ -312,34 +338,28 @@
     },
     {
      "tid": "12:00",
-     "plats": "hem",
-     "aktivitet": "vila och fundera"
+     "plats": "torget",
+     "aktivitet": "Planera konsert för ikväll"
     },
     {
      "tid": "14:00",
      "plats": "kafe",
-     "aktivitet": "Lyssna på frammande resande"
+     "aktivitet": "Diskutera med Mira och Liv"
     },
     {
      "tid": "16:00",
-     "plats": "torget",
-     "aktivitet": "Planera konsert"
-    },
-    {
-     "tid": "16:30",
-     "plats": "torget",
-     "aktivitet": "prata med mira",
-     "andrad": true
+     "plats": "stadshus",
+     "aktivitet": "Lägga förslag om kulturkvällar"
     },
     {
      "tid": "18:00",
      "plats": "scen",
-     "aktivitet": "Öva musik"
+     "aktivitet": "Rehersa för konsert"
     },
     {
-     "tid": "21:30",
-     "plats": "hem",
-     "aktivitet": "Forbereda för stämman"
+     "tid": "21:00",
+     "plats": "torget",
+     "aktivitet": "Arrangera konsert"
     }
    ],
    "relationer": {
@@ -364,8 +384,8 @@
      "tillit": 53
     },
     "viktor": {
-     "vanskap": -26,
-     "tillit": 7
+     "vanskap": -46,
+     "tillit": 12
     },
     "hanna": {
      "vanskap": 11,
@@ -376,20 +396,20 @@
      "tillit": 35
     },
     "ines": {
-     "vanskap": 18,
-     "tillit": 45
+     "vanskap": 23,
+     "tillit": 55
     }
    },
    "insikter": [
-    "Jag är inte ensam i denna kamp, men jag måste vara försiktig med vem jag litar på.",
     "Jag är beroende av andra för att överleva, vilket gör mig manipulierbar, men jag har börjat hitta alliance i Ines och Liv.",
-    "Jag är beroende av andra för att överleva, vilket gör mig manipulierbar, men jag har börjat hitta alliance i Ines och Liv."
+    "Jag är beroende av andra för att överleva, vilket gör mig manipulierbar, men jag har börjat hitta alliance i Ines och Liv.",
+    "Jag inser att minhängende av andra för ekonomiskt stöd gör mig extremt sårbar för manipulation, särskilt från Viktor."
    ],
    "dagbok": {
-    "dagbok": "Idag kändes det som att staden äntligen vaknade till liv, med den nya lagom om kulturkvällar på torget. Jag fick en liten klapp av Ines som hjälpte mig att känna mig mindre ensam i denna kamp. Samtidigt påminde mig Hanna om att vara försiktig med löften, särskilt från Elias och Viktor.",
+    "dagbok": "Idag kändes som att gå på tunn is. Ines visade mig en vänskap som jag inte trodde fanns här, men Viktors hot mot henne sätter mitt eget mål i skugga. Jag fick med mig en ny lag för kulturkvällar, vilket är en liten seger, men priset är min trygghet. Jag är så här nära pank och manipulerad att jag inte vet om jag klarar av att hålla ihop staden eller mig själv.",
     "humor": "utarmad",
-    "insikt": "Jag är beroende av andra för att överleva, vilket gör mig manipulierbar, men jag har börjat hitta alliance i Ines och Liv.",
-    "imorgon": "Jag vill möta Ines för att planera vidare mot Viktor och kanske ordna en liten konsert på torget för att få staden att leva."
+    "insikt": "Jag inser att minhängende av andra för ekonomiskt stöd gör mig extremt sårbar för manipulation, särskilt från Viktor.",
+    "imorgon": "Jag vill möta Ines för att planera en liten konsert på torget och försöka hitta sätt att skydda henne från Viktors kontroll."
    }
   },
   {
@@ -401,58 +421,64 @@
    "arbete": "skola",
    "personlighet": "omtänksam, principfast, rättvis, kan vara moraliserande",
    "mal": "ge barnen i staden en trygg och bra uppväxt",
-   "mynt": 752,
+   "mynt": 781,
    "humor": "mörk",
    "rykte": 56,
-   "halsa": 40,
-   "tanke": "Jag vaknar med en tung känna av otrygghet. Rädslan för Viktor och Elias pressar mig, och jag funderar på om jag ska fly. Men jag måste vara stark för barnen.",
+   "halsa": 35,
+   "tanke": "Mörkheten ligger tyngre än vanligt idag. Jag känner mig utsliten av alla hemligheter och hoten. Jag behöver hitta en stund för mig själv innan jag möter alla.",
    "plan": [
     {
      "tid": "08:00",
      "plats": "hem",
-     "aktivitet": "Väckning och funderingar"
+     "aktivitet": "Väcka och reflektera"
     },
     {
      "tid": "09:00",
-     "plats": "skola",
-     "aktivitet": "Läsa upp barnen tryggt"
+     "plats": "bibliotek",
+     "aktivitet": "Läsa och samla tankar"
     },
     {
      "tid": "10:30",
-     "plats": "bibliotek",
-     "aktivitet": "Läsa pedagogiska metoder"
+     "plats": "torget",
+     "aktivitet": "Lyssna på rykten",
+     "andrad": true
     },
     {
      "tid": "12:00",
-     "plats": "kafe",
-     "aktivitet": "Träffa Noor och stötta"
+     "plats": "skola",
+     "aktivitet": "Undervisa barnen"
     },
     {
-     "tid": "13:30",
-     "plats": "park",
-     "aktivitet": "Gå igenom rykten med Mira"
+     "tid": "13:00",
+     "plats": "kafe",
+     "aktivitet": "Möta Mira och Liv"
+    },
+    {
+     "tid": "14:30",
+     "plats": "hem",
+     "aktivitet": "packa låda",
+     "andrad": true
     },
     {
      "tid": "15:00",
-     "plats": "vardcentral",
-     "aktivitet": "Kolla min hälsa och humör"
+     "plats": "stadshus",
+     "aktivitet": "Diskutera med Omar"
     },
     {
-     "tid": "17:00",
-     "plats": "stadshus",
-     "aktivitet": "Stämma: Förslag om trygghet"
+     "tid": "19:00",
+     "plats": "hem",
+     "aktivitet": "Överväga flytt"
     },
     {
      "tid": "21:30",
      "plats": "hem",
-     "aktivitet": "Gå hem",
-     "andrad": true
+     "aktivitet": "Skriva dagbok"
     }
    ],
    "relationer": {
     "mira": {
-     "vanskap": 21,
-     "tillit": 20
+     "vanskap": 31,
+     "tillit": 40
     },
     "elias": {
      "vanskap": -63,
@@ -489,14 +515,14 @@
    },
    "insikter": [
     "Att vara omtänksam och principfast inte alltid räcker för att skydda de jag bryr mig om, och ibland är det svårt att veta vem som är ärlig.",
-    "Att vara omtänksam och principfast inte alltid räcker för att skydda de jag bryr mig om, och ibland är det svårt att veta vem som är ärlig.",
-    "Att jag kanske inte räcker till för att skydda alla, och att min egen trygghet kanske kräver att jag lämnar detta ställe."
+    "Att jag kanske inte räcker till för att skydda alla, och att min egen trygghet kanske kräver att jag lämnar detta ställe.",
+    "Att förtroende är en brådföda som lätt förstörs av rädsla, och att jag måste lära mig att lita på min egen magkänsla mer än på ord."
    ],
    "dagbok": {
-    "dagbok": "Idag kändes det som en dag av skuggor och hemliga samtal. Jag mötte Elias som försökte manipulera mig, men jag stod på mig. Samtidigt planerade jag med Mira och Omar mot Viktor, och det tyngdes mer och mer. Jag hjälpte Noor ekonomiskt, men rädslan för vad som kommer tar mig på senu.",
+    "dagbok": "Dagen har varit tung och präglad av rädsla och misstro. Jag känner mig utmattad av att försöka navigera i Viktor's skugga och skydda Mira. Att samarbeta hemligt känns både nödvändigt och farligt. Jag undrar om min principfasthet verkligen räcker till i denna stad.",
     "humor": "mörk",
-    "insikt": "Att jag kanske inte räcker till för att skydda alla, och att min egen trygghet kanske kräver att jag lämnar detta ställe.",
-    "imorgon": "Jag ska försöka hitta en stund för mig själv, kanske på biblioteket, för att klara av tankarna."
+    "insikt": "Att förtroende är en brådföda som lätt förstörs av rädsla, och att jag måste lära mig att lita på min egen magkänsla mer än på ord.",
+    "imorgon": "Jag ska försöka hitta en stund för mig själv på biblioteket för att klara av tankarna innan jag möter Mira igen."
    }
   },
   {
@@ -508,76 +534,52 @@
    "arbete": "verkstad",
    "personlighet": "tystlåten, praktisk, skeptisk mot byråkrati och snack",
    "mal": "att saker ska fungera och hållas hela",
-   "mynt": 843,
+   "mynt": 917,
    "humor": "trött",
    "rykte": 53,
-   "halsa": 52,
-   "tanke": "Ryggen värker redan nu. Jag vill bara fixa lastbilen och undvika drama, men Ines och Viktor pressar mig. Det här är för mycket.",
+   "halsa": 47,
+   "tanke": "Min rygg värker och jag är trött. Elias lovar mer än han kan hålla, och jag vill undvika att bli dragen in i hans och Viktors strid. Jag behöver bara få min verkstad att fungera.",
    "plan": [
     {
      "tid": "08:00",
      "plats": "hem",
-     "aktivitet": "Väcka, känna av ryggen"
+     "aktivitet": "Vakna och känna smärta"
     },
     {
      "tid": "09:00",
      "plats": "verkstad",
-     "aktivitet": "Reparera lastbil, undvika Elias"
+     "aktivitet": "Reparera lastbil"
     },
     {
-     "tid": "10:30",
-     "plats": "park",
-     "aktivitet": "Vila och tänka",
-     "andrad": true
+     "tid": "11:00",
+     "plats": "verkstad",
+     "aktivitet": "Fortsätt reparera"
     },
     {
-     "tid": "12:00",
+     "tid": "13:00",
      "plats": "kafe",
-     "aktivitet": "Kaffe, undvika diskussioner"
+     "aktivitet": "Kaffe och undvika Elias"
     },
     {
-     "tid": "12:30",
-     "plats": "hem",
-     "aktivitet": "Gå hem för vila",
-     "andrad": true
-    },
-    {
-     "tid": "14:00",
-     "plats": "park",
-     "aktivitet": "vila, tänka klart"
-    },
-    {
-     "tid": "14:20",
-     "plats": "park",
-     "aktivitet": "Söka sig till kafe",
-     "andrad": true
-    },
-    {
-     "tid": "16:00",
-     "plats": "kafe",
-     "aktivitet": "Möta Ines, pressad"
+     "tid": "15:00",
+     "plats": "verkstad",
+     "aktivitet": "Ordna verkstadsorder"
     },
     {
      "tid": "17:00",
      "plats": "stadshus",
-     "aktivitet": "Gå till stämman om transparens",
-     "andrad": true
-    },
-    {
-     "tid": "18:30",
-     "plats": "hem",
-     "aktivitet": "Gå hem",
+     "aktivitet": "Gå till stämman",
      "andrad": true
     },
     {
      "tid": "19:00",
-     "plats": "hem",
-     "aktivitet": "vila, undvika Viktor"
+     "plats": "kafe",
+     "aktivitet": "Möta Ines"
     },
     {
      "tid": "21:30",
      "plats": "hem",
-     "aktivitet": "Skriva dagbok, känna utsliten"
+     "aktivitet": "Vila och reflektera"
     }
    ],
    "relationer": {
@@ -606,8 +608,8 @@
      "tillit": 23
     },
     "hanna": {
-     "vanskap": 13,
-     "tillit": 47
+     "vanskap": 34,
+     "tillit": 92
     },
     "omar": {
      "vanskap": 17,
@@ -620,13 +622,13 @@
    },
    "insikter": [
     "Jag är för svag för att hantera allt, och jag måste lära mig att säga nej för att skydda mig själv.",
-    "Jag är för svag för att hantera allt, och jag måste lära mig att säga nej för att skydda mig själv.",
-    "Jag måste lära mig att säga nej för att skydda mig själv från att bli dragen in i andras konflikter."
+    "Jag måste lära mig att säga nej för att skydda mig själv från att bli dragen in i andras konflikter.",
+    "Jag är för svag för att hantera allt, och jag måste lära mig att säga nej för att skydda mig själv från att bli dragen in i andras konflikter."
    ],
    "dagbok": {
-    "dagbok": "Idag har jag haft en tuff dag med att balansera mina egna smärtor och folkets förväntningar. Jag kände mig pressad av Elias och oroad för Viktors och Ines strider, men jag försökte stödja Saga som är fångad i hans grej. Det känns som att jag inte orkar mer än jag redan gör, och min rygg värker持续.",
+    "dagbok": "Idag har jag känt mig extremt trött och överwhelmed av alla konflikter kring Viktor och Elias. Jag försöker hålla mig ur striderna, men Ines och Mira drar mig ändå in i deras planer. Hanna var den enda som verkligen förstår mitt tryck och ger mig stöd utan att kräva något.",
     "humor": "trött",
-    "insikt": "Jag måste lära mig att säga nej för att skydda mig själv från att bli dragen in i andras konflikter.",
+    "insikt": "Jag är för svag för att hantera allt, och jag måste lära mig att säga nej för att skydda mig själv från att bli dragen in i andras konflikter.",
     "imorgon": "Jag ska reparera lastbilen på verkstaden och undvika Elias ett tag, sedan möta Ines på kafeet."
    }
   },
@@ -639,70 +641,65 @@
    "arbete": "kafe",
    "personlighet": "driven entreprenör, charmig, tävlingsinriktad, tänker mycket på pengar",
    "mal": "bli stadens mest framgångsrika företagare",
-   "mynt": 450,
+   "mynt": 465,
    "humor": "nedstämd",
    "rykte": 50,
-   "halsa": 40,
-   "tanke": "Viktor håller mig i ett grepp, och jag måste hitta ett sätt att bli fri från hans kontroll. Mina pengar räcker inte, och jag känner mig fångad.",
+   "halsa": 35,
+   "tanke": "Min huvudvärk är tillbaka och Viktor håller mig i ett grepp. Jag måste hitta ett sätt att bli fri utan att förlora kaféet.",
    "plan": [
     {
      "tid": "08:00",
      "plats": "hem",
-     "aktivitet": "Väckas och fundera på dagen"
+     "aktivitet": "Väcka med huvudvärk"
     },
     {
      "tid": "09:00",
      "plats": "kafe",
-     "aktivitet": "Öppna kaféet och göra kaffe"
+     "aktivitet": "Öppna kaféet"
+    },
+    {
+     "tid": "10:00",
+     "plats": "hem",
+     "aktivitet": "Sörja ekonomisk sårbarhet",
+     "andrad": true
     },
     {
      "tid": "10:30",
-     "plats": "kafe",
-     "aktivitet": "Möta en frammande resande"
+     "plats": "torget",
+     "aktivitet": "Lyssna på rykten",
+     "andrad": true
     },
     {
-     "tid": "12:00",
+     "tid": "11:00",
      "plats": "torget",
-     "aktivitet": "Gå till torget och observera"
+     "aktivitet": "Lyssna på rykten om Viktor"
     },
     {
      "tid": "12:30",
-     "plats": "hem",
-     "aktivitet": "Gå hem för att samla krafter",
-     "andrad": true
-    },
-    {
-     "tid": "14:00",
-     "plats": "stadshus",
-     "aktivitet": "Kolla stadshusets situation"
-    },
-    {
-     "tid": "14:30",
-     "plats": "hem",
-     "aktivitet": "Gå hem",
-     "andrad": true
-    },
-    {
-     "tid": "16:00",
      "plats": "kafe",
-     "aktivitet": "Möta Elias och prata"
+     "aktivitet": "Möta Elias",
+     "andrad": true
+    },
+    {
+     "tid": "15:00",
+     "plats": "park",
+     "aktivitet": "Sök stöd hos Omar"
+    },
+    {
+     "tid": "16:20",
+     "plats": "park",
+     "aktivitet": "Sök stöd hos Omar",
+     "andrad": true
     },
     {
      "tid": "18:00",
-     "plats": "kafe",
-     "aktivitet": "Sitta och fundera på Elias",
-     "andrad": true
-    },
-    {
-     "tid": "20:30",
-     "plats": "hem",
-     "aktivitet": "Gå hem för att tänka ut",
-     "andrad": true
+     "plats": "stadshus",
+     "aktivitet": "Observera stämman"
     },
     {
      "tid": "21:00",
      "plats": "hem",
-     "aktivitet": "Återvända hem och vila"
+     "aktivitet": "Planera frihet från Viktor"
     }
    ],
    "relationer": {
@@ -727,32 +724,32 @@
      "tillit": 18
     },
     "viktor": {
-     "vanskap": 15,
-     "tillit": 41
+     "vanskap": 25,
+     "tillit": 61
     },
     "hanna": {
      "vanskap": 16,
      "tillit": 7
     },
     "omar": {
-     "vanskap": 35,
+     "vanskap": 50,
      "tillit": 57
     },
     "ines": {
-     "vanskap": 16,
-     "tillit": 29
+     "vanskap": 21,
+     "tillit": 39
     }
    },
    "insikter": [
-    "Jag måste inse att min ekonomiska sårbarhet gör mig till en lättoffert för manipulatorer som Viktor och Elias.",
     "Min ekonomiska sårbarhet gör mig till en lättoffert för manipulatorer som Viktor och Elias.",
-    "Jag måste inse att min ekonomiska sårbarhet gör mig till en lättoffert för manipulatorer."
+    "Jag måste inse att min ekonomiska sårbarhet gör mig till en lättoffert för manipulatorer.",
+    "Min ekonomiska sårbarhet gör mig till ett lätt mål för manipulatorer som Viktor."
    ],
    "dagbok": {
-    "dagbok": "Idag kändes det som att stå på en glidande botten. Omar och August visade mig att det finns människor som erbjuder hjälp utan att begära något tillbaka, till skillnad från Elias som bara lovar mer än han kan hålla. Ines gav mig ett litet hopp, men rädslan för Viktor sitter kvar i magen. Jag är trött på att bli manövrerad.",
+    "dagbok": "I dag har jag känt mig fångad och rädd, särskilt när Viktor manipulerade situationen på torget. Jag fick hjälp av Omar och Ines, vilket visade mig att jag inte är helt ensam. Men mitt beroende av Viktor gör mig svag och jag måste hitta en väg ut.",
     "humor": "nedstämd",
-    "insikt": "Jag måste inse att min ekonomiska sårbarhet gör mig till en lättoffert för manipulatorer.",
-    "imorgon": "Jag ska försöka hitta ett sätt att bli fri från Viktors kontroll utan att förlora mitt kafé."
+    "insikt": "Min ekonomiska sårbarhet gör mig till ett lätt mål för manipulatorer som Viktor.",
+    "imorgon": "Jag ska försöka hitta sätt att betala av skulden till Viktor utan att han märker det."
    }
   },
   {
@@ -764,85 +761,95 @@
    "arbete": "butik",
    "personlighet": "snål, misstänksam, slug, tänjer gärna på regler när ingen ser",
    "mal": "tjäna mer pengar och få inflytande",
-   "mynt": 932,
+   "mynt": 970,
    "humor": "misstänksam",
    "rykte": 50,
-   "halsa": 45,
-   "tanke": "Morgonen är dimmig, precis som min situation. Ines granskar mina affärer och jag måste hålla August nära för att få information. Saga är min tillgång, men jag måste se till att hon förblir lydnad.",
+   "halsa": 40,
+   "tanke": "Mina fiender samarbetar och rykten sprids om mig. Jag måste vara försiktig och manipulera situationen till min fördel.",
    "plan": [
     {
      "tid": "08:00",
      "plats": "hem",
-     "aktivitet": "Väckas och planera dagens manövrer"
+     "aktivitet": "Vakna och fundera på dagens strategi"
     },
     {
      "tid": "09:00",
-     "plats": "stadshus",
-     "aktivitet": "Kolla läckan",
+     "plats": "butik",
+     "aktivitet": "Öppna butiken och kontrollera varor"
+    },
+    {
+     "tid": "10:30",
+     "plats": "torget",
+     "aktivitet": "Spana på ryktesspridaren",
      "andrad": true
     },
     {
-     "tid": "10:00",
-     "plats": "stadshus",
-     "aktivitet": "Kolla läckan och skapa distraction"
+     "tid": "11:00",
+     "plats": "torget",
+     "aktivitet": "Spana på ryktesspridaren och Mira/Liv"
     },
     {
-     "tid": "10:15",
-     "plats": "stadshus",
-     "aktivitet": "Kolla läckan",
+     "tid": "12:15",
+     "plats": "torget",
+     "aktivitet": "Spana på stranger",
      "andrad": true
-    },
-    {
-     "tid": "11:30",
-     "plats": "kafe",
-     "aktivitet": "Träffa August för press"
     },
     {
      "tid": "13:00",
-     "plats": "butik",
-     "aktivitet": "Sälja varor och manipulera kunder"
-    },
-    {
-     "tid": "14:15",
      "plats": "kafe",
-     "aktivitet": "Gå till kaféet",
-     "andrad": true
+     "aktivitet": "Observation av Mira och Livs samtal"
     },
     {
      "tid": "15:00",
-     "plats": "park",
-     "aktivitet": "Mötta Elias för ambitions-spel"
+     "plats": "stadshus",
+     "aktivitet": "Smugna in för att höra Ines planer"
+    },
+    {
+     "tid": "16:15",
+     "plats": "stadshus",
+     "aktivitet": "Smugna in till stämman",
+     "andrad": true
     },
     {
      "tid": "17:00",
      "plats": "stadshus",
-     "aktivitet": "delta i stämman",
+     "aktivitet": "Delta i stämman och lägga förslag"
+    },
+    {
+     "tid": "18:30",
+     "plats": "stadshus",
+     "aktivitet": "Pressa Ines för info",
      "andrad": true
     },
     {
-     "tid": "20:00",
-     "plats": "hem",
-     "aktivitet": "Reflektera över dagens framgångar"
+     "tid": "19:00",
+     "plats": "kafe",
+     "aktivitet": "Mötta Elias för att trycka på hans rädsla"
     },
     {
      "tid": "20:30",
      "plats": "hem",
-     "aktivitet": "Sitta och fundera",
+     "aktivitet": "Undvika Elias",
      "andrad": true
+    },
+    {
+     "tid": "21:30",
+     "plats": "hem",
+     "aktivitet": "Reflektera över dagens händelser och planera imorgon"
     }
    ],
    "relationer": {
     "mira": {
-     "vanskap": -24,
-     "tillit": -4
+     "vanskap": -54,
+     "tillit": -17
     },
     "elias": {
-     "vanskap": -22,
-     "tillit": 93
+     "vanskap": -42,
+     "tillit": 100
     },
     "noor": {
-     "vanskap": -14,
-     "tillit": -34
+     "vanskap": -24,
+     "tillit": -54
     },
     "liv": {
      "vanskap": 12,
@@ -853,16 +860,16 @@
      "tillit": 30
     },
     "saga": {
-     "vanskap": 4,
-     "tillit": 92
+     "vanskap": 9,
+     "tillit": 100
     },
     "hanna": {
      "vanskap": -34,
      "tillit": 20
     },
     "omar": {
-     "vanskap": 11,
-     "tillit": 14
+     "vanskap": -4,
+     "tillit": -1
     },
     "ines": {
      "vanskap": 17,
@@ -870,15 +877,15 @@
     }
    },
    "insikter": [
-    "Att hota och manipulera fungerar bra kortsiktigt, men skapar fiender som kan bli farliga.",
     "Att manipulera är effektivt kortsiktigt, men varje ny lag och varje samtal närmare Ines riskerar att avslöja mina hemligheter.",
-    "Mina hot skapar fiender som blir farligare för varje dag, särskilt Mira och Omar som nu samarbetar."
+    "Mina hot skapar fiender som blir farligare för varje dag, särskilt Mira och Omar som nu samarbetar.",
+    "Att hota och manipulera skapar fiender som blir farligare, men det fungerar kortsiktigt för att hålla kontrollen."
    ],
    "dagbok": {
-    "dagbok": "Idag kändes det som att jag stod mitt i en storm av samtal och hot. Jag pressade Elias och varnade Omar, men Mira och Liv planerar nog något bakom min rygg. Lagarna om transparens och kulturkvällar passerade, vilket gör det svårare att dölja mina affärer.",
+    "dagbok": "Idag har jag arbetat hårt för att hålla kontrollen över Saga och splittra mina fiender. Jag hotade Mira och Omar, och det verkade fungera – Mira gav efter. Jag fick också reda på att Elias är nervös och kan manipuleras. Det kändes som att jag byggde upp ett nät av rädsla som gör mig starkare.",
     "humor": "misstänksam",
-    "insikt": "Mina hot skapar fiender som blir farligare för varje dag, särskilt Mira och Omar som nu samarbetar.",
-    "imorgon": "Jag måste vara extra försiktig med Noor och hålla mig borta från stadshuset där Ines kan vara."
+    "insikt": "Att hota och manipulera skapar fiender som blir farligare, men det fungerar kortsiktigt för att hålla kontrollen.",
+    "imorgon": "Jag ska fortsätta att manipulera Elias och hålla koll på Saga och Mira för att säkerställa att ingen avslöjar mina hemligheter."
    }
   },
   {
@@ -890,64 +897,52 @@
    "arbete": "vardcentral",
    "personlighet": "lugn, pragmatisk, rak, ser till allas hälsa",
    "mal": "Måtte jag hitta en väg att skydda mig själv och mina gränser.",
-   "mynt": 853,
+   "mynt": 954,
    "humor": "uttömd",
    "rykte": 53,
-   "halsa": 40,
-   "tanke": "Jag är så uttömd. Måtte jag hitta en väg att skydda mig själv och mina gränser. Idag måste jag ta det lugnt.",
+   "halsa": 35,
+   "tanke": "Huvudvärken sitter kvar från igår, jag behöver bara få igenom dagen utan att kollapsa. Viktor hotar mig, Mira är rädd – jag måste vara försiktig.",
    "plan": [
     {
      "tid": "08:00",
      "plats": "hem",
-     "aktivitet": "Väcka och dricka kaffe"
+     "aktivitet": "Väcka, ta smärtstillande"
     },
     {
      "tid": "09:00",
-     "plats": "bibliotek",
-     "aktivitet": "Läsa och samla ork"
+     "plats": "vardcentral",
+     "aktivitet": "Arbeta, möta patienter"
     },
     {
-     "tid": "11:00",
-     "plats": "vardcentral",
-     "aktivitet": "Arbeta på vardcentralen"
+     "tid": "12:00",
+     "plats": "kafe",
+     "aktivitet": "Lunchpaus, känna av läget"
     },
     {
      "tid": "13:00",
      "plats": "kafe",
-     "aktivitet": "Lunchpaus på Kaféet Koppen"
+     "aktivitet": "Mira och Liv diskuterar hemligt"
     },
     {
      "tid": "15:00",
-     "plats": "park",
-     "aktivitet": "Luta mig i parken"
-    },
-    {
-     "tid": "16:15",
-     "plats": "park",
-     "aktivitet": "söka ines",
-     "andrad": true
+     "plats": "vardcentral",
+     "aktivitet": "Arbeta, skydda Mira och Noor"
     },
     {
      "tid": "17:00",
      "plats": "stadshus",
-     "aktivitet": "delta i stämman",
-     "andrad": true
-    },
-    {
-     "tid": "18:30",
-     "plats": "hem",
-     "aktivitet": "Gå hem direkt",
-     "andrad": true
+     "aktivitet": "Stämma, lägga förslag om vaktstuga"
     },
     {
      "tid": "19:00",
      "plats": "hem",
-     "aktivitet": "Koka enkel middag"
+     "aktivitet": "vila",
+     "andrad": true
     },
     {
-     "tid": "21:00",
+     "tid": "21:30",
      "plats": "hem",
-     "aktivitet": "Läsa före sömn"
+     "aktivitet": "Sova, försöka återhämta sig"
     }
    ],
    "relationer": {
@@ -968,8 +963,8 @@
      "tillit": 51
     },
     "august": {
-     "vanskap": -9,
-     "tillit": 47
+     "vanskap": -30,
+     "tillit": 87
     },
     "saga": {
      "vanskap": 17,
@@ -989,15 +984,15 @@
     }
    },
    "insikter": [
-    "Att jag inte kan rädda alla utan att förstöra mig själv. Förtroendet är skört och allianser tillfälliga.",
+    "Att hjälpa andra sliter på mig mer än jag trodde, och förtroendet i staden är skört.",
     "Att hjälpa andra sliter på mig mer än jag trodde, och förtroendet i staden är skört.",
     "Att hjälpa andra sliter på mig mer än jag trodde, och förtroendet i staden är skört."
    ],
    "dagbok": {
-    "dagbok": "Idag har jag känt mig ännu mer uttömd än innan. Jag har mött Viktor som var hotfull och måste skydda Mira och Noor, men min energi tar slut. Jag har lärt mig att jag inte kan rädda alla utan att förstöra mig själv, och att förtroendet i staden är skört.",
+    "dagbok": "I dag har jag känt mig ytterst uttömd av Viktors hot och Mira rädsla. Jag har försökt stötta August och Mira, men det sliter på mig. Jag insåg att jag inte kan rädda alla utan att förstöra mig själv.",
     "humor": "uttömd",
     "insikt": "Att hjälpa andra sliter på mig mer än jag trodde, och förtroendet i staden är skört.",
-    "imorgon": "Jag vill ta en lugn dag på mig själv på vardcentralen för att återhämta mig lite."
+    "imorgon": "Jag vill vila och kanske besöka biblioteket för att läsa och hitta ro."
    }
   },
   {
@@ -1009,47 +1004,41 @@
    "arbete": "bageri",
    "personlighet": "varm, hårt arbetande, drömmande, konflikträdd",
    "mal": "starta en marknad där alla kan sälja det de gör",
-   "mynt": 710,
+   "mynt": 725,
    "humor": "oroad",
    "rykte": 50,
-   "halsa": 40,
-   "tanke": "Jag vaknar med en tung känsla av oro, men jag måste börja dagen med att baka för att känna mig nyttig. Ines och Noor behöver mitt stöd, och jag vill möta Saga för att höra hur det går.",
+   "halsa": 35,
+   "tanke": "Min huvudvärk värker fortfarande och jag är orolig för Viktors hot. Jag vill bara hitta lugn i odlingen och jobba i bageriet.",
    "plan": [
     {
      "tid": "08:00",
      "plats": "hem",
-     "aktivitet": "Väcka och känna oro"
+     "aktivitet": "Väcka, ta smärtstillande"
     },
     {
-     "tid": "08:30",
+     "tid": "09:00",
      "plats": "bageri",
-     "aktivitet": "Baka bröd och bakelser"
-    },
-    {
-     "tid": "10:00",
-     "plats": "torget",
-     "aktivitet": "Observation av dimman och folk"
+     "aktivitet": "Baka bröd och bagar"
     },
     {
      "tid": "11:00",
-     "plats": "kafe",
-     "aktivitet": "Möt Mira för att prata"
-    },
-    {
-     "tid": "12:30",
-     "plats": "hem",
-     "aktivitet": "Gå hem och fundera",
-     "andrad": true
+     "plats": "odling",
+     "aktivitet": "Vattning och plantering"
     },
     {
      "tid": "13:00",
-     "plats": "bageri",
-     "aktivitet": "Fortsätta med bakningen"
+     "plats": "kafe",
+     "aktivitet": "Lunchpaus, observera Mira och Liv"
     },
     {
-     "tid": "15:00",
-     "plats": "park",
-     "aktivitet": "Möt Saga för stöd"
+     "tid": "14:00",
+     "plats": "bageri",
+     "aktivitet": "Fortsett jobba i bageriet"
+    },
+    {
+     "tid": "16:00",
+     "plats": "odling",
+     "aktivitet": "Röja ogräs, tänka på marknaden"
     },
     {
      "tid": "17:00",
@@ -1058,9 +1047,8 @@
     },
     {
      "tid": "21:00",
-     "plats": "hem",
-     "aktivitet": "Gå hem",
-     "andrad": true
+     "plats": "odling",
+     "aktivitet": "Söka lugn inför natt"
     }
    ],
    "relationer": {
@@ -1085,12 +1073,12 @@
      "tillit": 23
     },
     "saga": {
-     "vanskap": 30,
+     "vanskap": 35,
      "tillit": 21
     },
     "viktor": {
-     "vanskap": -4,
-     "tillit": 19
+     "vanskap": -14,
+     "tillit": 14
     },
     "hanna": {
      "vanskap": 20,
@@ -1102,15 +1090,15 @@
     }
    },
    "insikter": [
-    "Jag inser att jag måste vara ärlig med mina gränser och inte låta andra manipulera mig genom rädsla.",
     "Jag måste lita på min intuition och inte låta andra manipulera mig.",
-    "Jag inser att min önskan om att hjälpa andra gör mig sårbar för manipulation, och jag måste lära mig att sätta gränser utan att förlora min medkänsla."
+    "Jag inser att min önskan om att hjälpa andra gör mig sårbar för manipulation, och jag måste lära mig att sätta gränser utan att förlora min medkänsla.",
+    "Jag inser att min vilja att hjälpa andra gör mig sårbar för manipulation, och jag måste lära mig att sätta gränser utan att förlora min medkänsla."
    ],
    "dagbok": {
-    "dagbok": "I dag har jag känt mig extremt pressad av Viktors hot och min egen rädsla. Jag hjälpte Saga trots risken, och det kändes både rätt och fel. Stämman beslutade om marknaden, vilket är ett steg mot min dröm, men priset känns högt.",
+    "dagbok": "Idag känns det som att jag står mitt i en storm jag inte kan kontrollera. Viktors hot och Sagan desperata situation tynger mig tungt, och jag känner min rädsla växa. Jag försöker vara stark för andra, men jag undrar om jag är tillräckligt smart för att skydda mig själv. Att se Mira och Liv planera mot Viktor ger mig en liten tröst, men det känns farligt.",
     "humor": "oroad",
-    "insikt": "Jag inser att min önskan om att hjälpa andra gör mig sårbar för manipulation, och jag måste lära mig att sätta gränser utan att förlora min medkänsla.",
-    "imorgon": "Jag vill söka mig till Stadsodlingen för att hitta lugn och kanske planera lite för den nya marknaden."
+    "insikt": "Jag inser att min vilja att hjälpa andra gör mig sårbar för manipulation, och jag måste lära mig att sätta gränser utan att förlora min medkänsla.",
+    "imorgon": "Jag ska försöka hitta en lugn stund i odlingen för att klara av tankarna och kanske tala med Ines om hur jag mår."
    }
   },
   {
@@ -1122,58 +1110,58 @@
    "arbete": "redaktion",
    "personlighet": "skarp, nyfiken, kritisk, vill avslöja maktmissbruk",
    "mal": "att Kvartersbladet ska granska makten och bli läst av alla",
-   "mynt": 618,
+   "mynt": 664,
    "humor": "trött",
    "rykte": 56,
-   "halsa": 43,
-   "tanke": "Jag är trött efter en natt med tankar om Viktor och August, men jag måste hålla igång. Min källa i stadshuset kan ge mig nyheter imorgon.",
+   "halsa": 38,
+   "tanke": "Huvudvärken ekar fortfarande, men jag har ett nytt rykte att följa – Viktor och stadskassan. Mina minnen från igår säger mig att Noor och Saga behöver stöd, inte bara press. Jag måste balansera jakten på sanning med att vårdar förtroendet.",
    "plan": [
     {
      "tid": "08:00",
      "plats": "hem",
-     "aktivitet": "Väckas och tänka på dagen"
+     "aktivitet": "Väcka och ta huvudvärkstablett"
     },
     {
      "tid": "09:00",
      "plats": "redaktion",
-     "aktivitet": "Skriva artikel om lagarna"
+     "aktivitet": "Skriva artikel om Viktor-ryktet"
     },
     {
      "tid": "11:00",
      "plats": "kafe",
-     "aktivitet": "Möta Noor för stöd"
+     "aktivitet": "Möta Noor för stöd och samtal"
     },
     {
      "tid": "13:00",
-     "plats": "redaktion",
-     "aktivitet": "Läsa brevguider och rykten"
+     "plats": "kafe",
+     "aktivitet": "Observera Mira och Livs diskussion"
     },
     {
      "tid": "15:00",
-     "plats": "park",
-     "aktivitet": "Promenera och tänka"
+     "plats": "bibliotek",
+     "aktivitet": "Söka efter Viktors hemlighet",
+     "andrad": true
     },
     {
      "tid": "17:00",
      "plats": "stadshus",
-     "aktivitet": "Lägga förslag om transparens"
+     "aktivitet": "Lämna förslag om vaktstuga"
     },
     {
      "tid": "19:00",
-     "plats": "kafe",
-     "aktivitet": "prata med Noor om Viktor",
-     "andrad": true
+     "plats": "torget",
+     "aktivitet": "Delta i Kulturkvällar-lagen firande"
     },
     {
-     "tid": "20:30",
-     "plats": "hem",
-     "aktivitet": "Gå hem och skriva",
+     "tid": "20:15",
+     "plats": "kafe",
+     "aktivitet": "Möta August",
      "andrad": true
     },
     {
      "tid": "21:30",
      "plats": "hem",
-     "aktivitet": "Skriva dagbok och vila"
+     "aktivitet": "Skriva dagbok och planera imorgon"
     }
    ],
    "relationer": {
@@ -1186,8 +1174,8 @@
      "tillit": 14
     },
     "noor": {
-     "vanskap": 9,
-     "tillit": 55
+     "vanskap": 14,
+     "tillit": 65
     },
     "liv": {
      "vanskap": 9,
@@ -1198,8 +1186,8 @@
      "tillit": 84
     },
     "saga": {
-     "vanskap": 16,
-     "tillit": 47
+     "vanskap": 21,
+     "tillit": 57
     },
     "viktor": {
      "vanskap": 9,
@@ -1220,31 +1208,31 @@
     "Förtroende bygger broar där press bara raser väggar."
    ],
    "dagbok": {
-    "dagbok": "Idag kändes det som att jag springer ikapp min egen skugga. Lagarna om transparens och kulturkvällar gick igenom, vilket är en seger för demokratin, men spänningarna mellan Mira, Omar och Viktor tyngder mig. Jag lärde mig att förtroendet är min starkaste vapen – att inte pressa för mycket utan att lyssna, som när Saga erbjöd mig pengar eller Mira avslöjade sin källa. Jag är trött, men mer bestämd än ever.",
+    "dagbok": "Idag kändes det som att stå i ett spänningsfält där rykten och hot flitigt cirkulerade. Jag gav Noor ekonomiskt stöd och fick löfte om information, vilket bekräftade min insikt om att förtroende är nyckeln. Samtal med Mira, Hanna och August visade hur komplexa relationerna är kring Viktor, och jag måste vara försiktig med hur jag avslöjar sanningar.",
     "humor": "trött",
-    "insikt": "Förtroende bygger broar där press bara raser väggar.",
-    "imorgon": "Jag vill möta Noor för att ge henne stöd och kanske få fram mer om Viktor's påtryckningar utan att rädda henne."
+    "insikt": "",
+    "imorgon": "Jag vill följa upp med Saga om hennes research och kanske besöka biblioteket för att forska i Viktors bakgrund."
    }
   }
  ],
  "handelser": [
   {
-   "tid": "08:30",
+   "tid": "08:15",
    "typ": "handelse",
    "plats": "torget",
-   "text": "En oväntad dimma ligger över torget när invånarna samlas för morgonens diskussioner."
+   "text": "Elias vaknar med en stark huvudvärk efter att ha druckit för mycket igår."
   },
   {
-   "tid": "10:15",
+   "tid": "10:30",
    "typ": "handelse",
-   "plats": "stadshus",
-   "text": "Stadshuset's gamla värmeledning spricker och läcker vatten på trappan, vilket skapar halka."
+   "plats": "torget",
+   "text": "En okänd stranger visar sig på torget och sprider rykten om att Viktor ska ha stulit pengar från stadskassan."
   },
   {
-   "tid": "14:00",
+   "tid": "13:00",
    "typ": "handelse",
-   "plats": "kafe",
-   "text": "En frammande resande stannar vid Kaféet Koppen och frågar efter information om den nya lagens effekter."
+   "plats": "torget",
+   "text": "Mira och Liv diskuterar hemligt i en hörna på Kaféet Koppen när de märker att Viktor observerar dem."
   },
   {
    "tid": "17:00",
@@ -1256,374 +1244,80 @@
  "samtal": [
   {
    "tid": "09:00",
-   "plats": "stadshus",
-   "deltagare": [
-    "elias",
-    "viktor"
-   ],
-   "repliker": [
-    [
-     "viktor",
-     "(tittar kring sig, läcker) Elias, du ser lite orolig ut. Allt väl?"
-    ],
-    [
-     "elias",
-     "(suckar) Du vet hur det är. Ines granskar allt. Och du... du vill veta något, eller hur?"
-    ],
-    [
-     "viktor",
-     "(ler snett) Jag vill veta allt. Men du har ju den där... Saga. Hon är ju så... pålitlig."
-    ],
-    [
-     "elias",
-     "(tappar leendet) Saga är ingen variabel, Viktor. Hon är en person. Och jag varnar dig."
-    ],
-    [
-     "viktor",
-     "(hviskar) Ines är nära. Jag behöver veta vad hon hittar. Du kan hjälpa mig, eller?"
-    ],
-    [
-     "elias",
-     "(kyligt) Jag hjälper ingen som manipulerar andra. Men... om du vill ha min support på stämman..."
-    ],
-    [
-     "viktor",
-     "(ögonen glänsar) Vad vill du ha?"
-    ],
-    [
-     "elias",
-     "(hövligt) Jag vill ha din tystnad. Om Ines frågar dig, säger du inget om mig. Eller Saga."
-    ],
-    [
-     "viktor",
-     "(nicker långsamt) Deal. Men jag behöver en liten... förtroendebevisning."
-    ],
-    [
-     "elias",
-     "(tvekar) ...Jag lovar att inte blanda mig i dina affärer. För tillfället."
-    ]
-   ],
-   "sammanfattning": "Viktor och Elias har ett spännat möte där Viktor försöker pressa ut information om Ines och Saga, medan Elias försöker förhandla sig till tystnad och stöd.",
-   "handlingar": [
-    {
-     "typ": "lova",
-     "vem": "elias",
-     "till": "viktor",
-     "text": "Jag lovar att inte blanda mig i dina affärer. För tillfället."
-    },
-    {
-     "typ": "lova",
-     "vem": "viktor",
-     "till": "elias",
-     "text": "Jag lovar tystnad om dig och Saga när Ines frågar."
-    }
-   ],
-   "planandringar": []
-  },
-  {
-   "tid": "09:20",
    "plats": "bibliotek",
    "deltagare": [
-    "hanna",
-    "mira"
+    "mira",
+    "liv"
    ],
    "repliker": [
     [
      "mira",
-     "(tittar nervöst around på biblioteket) Hanna, jag är så här rädd... Viktor vet att jag har din roman."
+     "(tittar nervöst around) Liv, du är här. Jag behövde prata med dig."
     ],
     [
-     "hanna",
-     "(sucker) Jag vet. Han hotar mig också. Men jag har den nu, så han kan inte få tag i den."
-    ],
-    [
-     "mira",
-     "(viskar) Elias lovar hjälpa mig, men jag vet att han vill ha något i retur. Känns som att jag står på en tunn is."
-    ],
-    [
-     "hanna",
-     "(tappar axlarna) Vi måste vara försiktiga. Jag är så uttömd... och vill bara ha en stund med ro."
+     "liv",
+     "(sätter ner boken, mörk blick) Mira. Vad handlar det om nu? Viktor igen?"
     ],
     [
      "mira",
-     "(tittar på Hanna) Du behöver vila. Säg till om du behöver hjälp med något. Jag... jag kan inte ge dig mer mynt, men jag kan ge dig stöd."
+     "(whisperar) Ja. Men också... jag har fått ett brev. Hotfullt. Jag är rädd."
     ],
     [
-     "hanna",
-     "(nicker svagt) Tack. Jag ska försöka ta det lugnt idag. Kanske på biblioteket senare."
+     "liv",
+     "(suckar) Vi har ju lagarna nu, men... det hjälper väl inte om ingen tar reda på vem som gör det."
     ],
     [
      "mira",
-     "(viskar) Ines och Saga planerar något... vi kanske borde haka på? Eller hålla oss till sidan?"
+     "(nirrar fram en lapp) Jag tror det är någon inom stadshuset. Vi måste vara försiktiga."
+    ],
+    [
+     "liv",
+     "(tittar på lappen, sedan på Mira) Du menar... vi börjar samla bevis? Det här är farligt, Mira."
+    ],
+    [
+     "mira",
+     "(kniper ihop ögonen) Jag vet. Men jag kan inte stå här och inget gör. Du hjälper mig, eller?"
+    ],
+    [
+     "liv",
+     "(tvekar, sedan nickar lite) Ok. Men vi gör det i hemlighet. Ingen får veta."
+    ],
+    [
+     "mira",
+     "(andas ut) Tack, Liv. Jag... jag känner mig lite mindre ensam nu."
+    ],
+    [
+     "liv",
+     "( ler svagt, kyligt) Det är bara vi två som vet. Kom ihåg det."
+    ],
+    [
+     "mira",
+     "(nicker) Ja. Och... om du behöver mynt till... något, så..."
+    ],
+    [
+     "liv",
+     "(avbryter) Spara dina mynt, Mira. Vi behöver inte pengarna nu. Vi behöver tystnad."
     ]
    ],
-   "sammanfattning": "Mira och Hanna diskuterar hoten från Viktor och Elias, och hur de kan skydda sig själva och varandra.",
+   "sammanfattning": "Mira och Liv möts på biblioteket och Mira delar sin rädsla för ett hotfullt brev. De överenskommer om att hemligt samla bevis mot Viktor, med Mira som känns mindre ensam och Liv som varnar för att vara försiktig.",
    "handlingar": [
-    {
-     "typ": "hjalpa",
-     "vem": "hanna",
-     "till": "mira",
-     "text": "Tar Mira roman för att skydda den från Viktor"
-    },
     {
      "typ": "lova",
      "vem": "mira",
-     "till": "hanna",
-     "text": "Lovar att ge stöd och vara försiktig"
+     "till": "liv",
+     "text": "Jag lovar att hjälpa dig samla bevis mot Viktor, men vi måste vara hemliga."
+    },
+    {
+     "typ": "lova",
+     "vem": "liv",
+     "till": "mira",
+     "text": "Jag hjälper dig, men ingen får veta. Spara dina mynt."
     }
    ],
    "planandringar": []
   },
   {
    "tid": "10:00",
-   "plats": "kafe",
-   "deltagare": [
-    "noor",
-    "saga"
-   ],
-   "repliker": [
-    [
-     "noor",
-     "(tittar sig omkring) Saga, du ser... trött ut."
-    ],
-    [
-     "saga",
-     "(syr upp kaffe) Pank och trött, Noor. Samma sak för mig."
-    ],
-    [
-     "noor",
-     "Viktor pressar på. Han vet att jag lånade av dig."
-    ],
-    [
-     "saga",
-     "(tappar kaffekoppen) Han vet allt. Och han vet att jag är låst."
-    ],
-    [
-     "noor",
-     "Vi måste göra något. Ines säger att hon hjälper."
-    ],
-    [
-     "saga",
-     "Ines? Den där... granskaren? Jag litar inte på henne."
-    ],
-    [
-     "noor",
-     "Hon gav mig 20 mynt. Utan krav. Kanske är hon ärlig."
-    ],
-    [
-     "saga",
-     "(sucker) Kanske. Men Viktor kommer att få reda på detta."
-    ],
-    [
-     "noor",
-     "Låt oss mötas här imorgon. Planera."
-    ],
-    [
-     "saga",
-     "Okej. Men var försiktig. Han övervakar mig."
-    ]
-   ],
-   "sammanfattning": "Noor och Saga pratade.",
-   "handlingar": [],
-   "planandringar": []
-  },
-  {
-   "tid": "10:20",
-   "plats": "stadshus",
-   "deltagare": [
-    "elias",
-    "viktor"
-   ],
-   "repliker": [
-    [
-     "viktor",
-     "(tittar sig omkring) Elias, vi har inte tid att slösa. Ines granskar allt."
-    ],
-    [
-     "elias",
-     "(sätter ner kaffekoppen) Jag vet. Men du vill veta mer om Saga, right?"
-    ],
-    [
-     "viktor",
-     "(sätter ner pennan) Jag vill veta allt. Och du lovar att hålla tyst om vad jag säger."
-    ],
-    [
-     "elias",
-     "(ler lite för mycket) Lovar? Det är ett starkt ord, Viktor. Men jag hör dig."
-    ],
-    [
-     "viktor",
-     "(viskar) Saga är svag. Hon behöver mig. Ines är farligare än du tror."
-    ],
-    [
-     "elias",
-     "(tvekar) Jag vet. Men du måste släppa kontrollen över henne. Det är din svaghet."
-    ],
-    [
-     "viktor",
-     "(kyligt) Jag släpper inget. Men jag kan ge dig något... information om Mira."
-    ],
-    [
-     "elias",
-     "(tittar upp) Mira? Vad vet du?"
-    ],
-    [
-     "viktor",
-     "(ler snett) Tillräckligt.足以 för att du ska hjälpa mig med stämman nästa gång."
-    ],
-    [
-     "elias",
-     "(suckar) Jag behöver inte din hjälp. Jag behöver din tystnad."
-    ]
-   ],
-   "sammanfattning": "Elias och Viktor pratade.",
-   "handlingar": [],
-   "planandringar": []
-  },
-  {
-   "tid": "11:00",
-   "plats": "kafe",
-   "deltagare": [
-    "omar",
-    "saga"
-   ],
-   "repliker": [
-    [
-     "omar",
-     "(sätter ned kaffekoppen, tittar oroad på saga) Du ser ut som om du balanserar på ett tightvåg. Vad händer?"
-    ],
-    [
-     "saga",
-     "(tittar bort, rör vid kaffekoppen) Viktor... han pressar mig. Jag är fångad i något jag inte kan slita mig från."
-    ],
-    [
-     "omar",
-     "(suckar, ler svagt) Jag har sett hur han tittar på dig. Och Elias. Det här är farligt, Saga."
-    ],
-    [
-     "saga",
-     "(viskar) Jag lånade pengar av honom. 100 mynt. Och nu vill han... jag vet inte. Han vill ha något tillbaka."
-    ],
-    [
-     "omar",
-     "(tvingar fram en leende) Du behöver inte berätta allt. Men jag kan hjälpa dig. Kanske med Ines? Hon är stark."
-    ],
-    [
-     "saga",
-     "(tvekar, tittar på omar) Ines... ja. Hon och Mira planerar något. Vi måste vara försiktiga. Viktor och Elias är... farliga."
-    ],
-    [
-     "omar",
-     "(nickar) Jag tror på dig, Saga. Men vara försiktig. Särskilt med Elias. Han är inte vad han看起来."
-    ],
-    [
-     "saga",
-     "(sätter ned kaffekoppen) Jag är trött på att vara rädd. Men jag vet inte hur jag ska bli fri."
-    ],
-    [
-     "omar",
-     "(tittar på klockan) Kanske stämman imorgon? Vi kan pusha för transparens. Det kan pressa dem."
-    ],
-    [
-     "saga",
-     "(tänker sig om) Ja... transparens. Det skulle kunna tvinga fram något. Men jag är så här... låg."
-    ],
-    [
-     "omar",
-     "(ger saga 50 mynt) Ta detta. Det är inget lån. Jag vill bara att du ska känna dig friare."
-    ],
-    [
-     "saga",
-     "(tappar bort blicken, röstarna darrar) Tack, Omar. Jag... jag vet inte vad jag ska göra."
-    ]
-   ],
-   "sammanfattning": "Omar och Saga möts på Kaféet Koppen där Saga erkänner sin ekonomiska sårbarhet och Viktors kontroll, medan Omar erbjuder stöd och pengar.",
-   "handlingar": [
-    {
-     "typ": "avsloja",
-     "vem": "saga",
-     "till": "omar",
-     "text": "Avslöjar att hon lånat pengar av Viktor och är fångad i hans grepp"
-    },
-    {
-     "typ": "lova",
-     "vem": "omar",
-     "till": "saga",
-     "text": "Lovar att stödja Saga och föreslår att använda stämman för transparens"
-    }
-   ],
-   "planandringar": []
-  },
-  {
-   "tid": "11:20",
-   "plats": "park",
-   "deltagare": [
-    "elias",
-    "august"
-   ],
-   "repliker": [
-    [
-     "august",
-     "(sätter sig på bänken, suckar) Elias, du ser ut som om du har världen på axlarna."
-    ],
-    [
-     "elias",
-     "(smiler brett, men ögonen är kalla) Världen är alltid på axlarna, August. Men jag klarar det. Du också, hoppas jag."
-    ],
-    [
-     "august",
-     "(gnuggar ryggen) Klarar det... Min rygg värker. Jag är trött på alla möten, alla löften."
-    ],
-    [
-     "elias",
-     "(lener sig närmare, viskar) Löften... ja. De binder folk. Men de kan också... bryta. Om man är smart."
-    ],
-    [
-     "august",
-     "(tittar skeptiskt) Smart? Eller bara manipulativt? Du och Viktor, ni är sama sorts folk."
-    ],
-    [
-     "elias",
-     "(ler snett) Viktor är... intensiv. Jag behöver din hjälp, August. Inte med pengar, utan med... insikt."
-    ],
-    [
-     "august",
-     "(skruvar ihop ögonen) Insikt? Vad vill du veta? Ines? Saga? De här sakerna drar in dig i problem."
-    ],
-    [
-     "elias",
-     "(slår lätt på augests arm) Problemlösare. Det är du. Och jag behöver en bra lösning. Kanske... en favoriter i stämman nästa gång?"
-    ],
-    [
-     "august",
-     "(suckar djupt) Jag orkar inte. Men... om du lovar att släppa mig från dessa möten..."
-    ],
-    [
-     "elias",
-     "(lovar med säker röst) Loovat. Jag lovar. Du får vila. Jag sköter resten."
-    ],
-    [
-     "august",
-     "(tvekar, sedan nickar) Okej. Jag hör av mig. Men mina löften... de håller inte alltid."
-    ],
-    [
-     "elias",
-     "(reser sig, karismatisk igen) De håller när de behövs. Tack, August. Vi ses på kafeet later."
-    ]
-   ],
-   "sammanfattning": "Elias försöker manipulera August genom att lova honom vila från möten i utbyte mot support och insikt, medan August är trött och skeptisk men ger efter för pressen.",
-   "handlingar": [
-    {
-     "typ": "lova",
-     "vem": "elias",
-     "till": "august",
-     "text": "Lovar August vila från möten i utbyte mot hjälp."
-    }
-   ],
-   "planandringar": []
-  },
-  {
-   "tid": "11:40",
    "plats": "bibliotek",
    "deltagare": [
     "liv",
@@ -1632,74 +1326,259 @@
    "repliker": [
     [
      "liv",
-     "(tittar på Mira, röst låg) Du vet vad Elias sa till mig imorgon?"
+     "(tittar på Mira, röst låg) Du sa att du fick ett hotfullt brev? Jag är så här rädd..."
     ],
     [
      "mira",
-     "(svindlar, tittar bort) Han lovar igen. Jag tror honom inte. Men jag är så trött..."
+     "(nikkar, ser nedåt) Ja. Det är... det är värre än jag trodde. Jag känner mig så ensam med detta."
     ],
     [
      "liv",
-     "(sätter ner boken) Vi behöver en plan. Hanna har din roman, det är bra. Men vi måste vara försiktiga med Viktor och Elias."
+     "(sätter handen på Miras arm) Vi ska fixa det. Vi samlar bevis. Men var försiktig, Viktor... han är farlig."
     ],
     [
      "mira",
-     "(nicker hastigt) Ja. Jag... jag ville bara ha en stund med dig. Känna mig säker."
+     "(tvekar) Jag vet. Men jag måste. För mina... för alla här."
     ],
     [
      "liv",
-     "(sätter handen på Miras arm) Jag är här. Men vi måste prata med stämman. Lagarna hjälper, men..."
+     "(sunker) Om du behöver hjälp, så säg till. Jag... jag funderar på att flytta härifrån. Men jag stannar för nu. För dig."
     ],
     [
      "mira",
-     "(tvekar) Jag är rädd att de inte räcker. Att de bara är ord."
-    ],
-    [
-     "liv",
-     "(sätter ner boken, tittar allvarligt) Vi gör vad vi kan. Imorgon på torget?"
-    ],
-    [
-     "mira",
-     "(nicker, röst liten) Imorgon. På torget."
+     "(ser upp, ögonen fuktiga) Tack, Liv. Du är den enda jag kan lita på... nästan."
     ]
    ],
-   "sammanfattning": "Liv och Mira pratade.",
+   "sammanfattning": "Liv och Mira möts på biblioteket och Mira delar sin rädsla för ett hotfullt brev. De överenskommer om att hemligt samla bevis mot Viktor, med Mira som känns mindre ensam och Liv som varnar för att vara försiktig.",
+   "handlingar": [
+    {
+     "typ": "lova",
+     "vem": "liv",
+     "till": "mira",
+     "text": "Jag hjälper dig samla bevis mot Viktor."
+    },
+    {
+     "typ": "avsloja",
+     "vem": "liv",
+     "till": "mira",
+     "text": "Jag funderar på att flytta från staden."
+    }
+   ],
+   "planandringar": []
+  },
+  {
+   "tid": "10:40",
+   "plats": "torget",
+   "deltagare": [
+    "viktor",
+    "elias"
+   ],
+   "repliker": [
+    [
+     "viktor",
+     "(spanar around) Elias, har du sett Mira och Liv? De susar runt som om de har något på gång."
+    ],
+    [
+     "elias",
+     "(tittar bort, tonen försiktig) Jag har sett dem. Men jag vet inte vad de planerar. Du borde vara försiktig, Viktor."
+    ],
+    [
+     "viktor",
+     "(logar kallt) Försiktig? Jag är alltid försiktig. Men de där två... de har inte förstått att jag ser allt."
+    ],
+    [
+     "elias",
+     "(sucker) Du vet, jag har hört att de samarbetar med Omar. Det här med hotbreven... det kan bli stort."
+    ],
+    [
+     "viktor",
+     "(släcker blicken) Omar? Den där drömmen. Han är inte värd att lita på. Men Mira... hon är sårbar. Jag kan utnyttja det."
+    ],
+    [
+     "elias",
+     "(tvekar) Du borde kanske inte pressa henne för mycket. Hon kan bli desperat. Och desperata människor gör dumma saker."
+    ],
+    [
+     "viktor",
+     "(studerar Elias) Du är lite nervös, eller hur? Du vet något. Kanske om Saga? Hon är min starkaste kort."
+    ],
+    [
+     "elias",
+     "(ler snett) Jag vet inget. Men jag vet att du har en svag punkt. Och jag vet att Mira och Liv vill ha dig ur vägen."
+    ],
+    [
+     "viktor",
+     "(kyligt) Låt dem göra vad de vill. Jag har kontroll. Men du... du borde hålla tyst om vad du vet."
+    ],
+    [
+     "elias",
+     "(knipper ihop ögonen) Jag håller tyst. För nu. Men om du tror att jag är din allierade, så tar du fel."
+    ]
+   ],
+   "sammanfattning": "Viktor och Elias möts på torget och diskuterar Mira och Lives hemliga planer. Viktor är misstänksam och hotfull, medan Elias är försiktig och försöker manipulera situationen till sin fördel.",
+   "handlingar": [
+    {
+     "typ": "ljuga",
+     "vem": "elias",
+     "till": "viktor",
+     "text": "Påstå att han vet inget om Saga eller Mira."
+    },
+    {
+     "typ": "lova",
+     "vem": "viktor",
+     "till": "elias",
+     "text": "Lova tystnad om Elias håller sig ur spelet."
+    }
+   ],
+   "planandringar": []
+  },
+  {
+   "tid": "11:00",
+   "plats": "kafe",
+   "deltagare": [
+    "ines",
+    "noor"
+   ],
+   "repliker": [
+    [
+     "ines",
+     "(sätter på kaffekoppen, tittar trött på Noor) Du ser ut som om du sovit på torget. Vad har du på dig?"
+    ],
+    [
+     "noor",
+     "(skruvar till sig, ler nervöst) Haha, nästan. Viktor har gjort mig... utarmad. Men jag är här. För din skull, Ines."
+    ],
+    [
+     "ines",
+     "(suckar, tittar på Noor) Jag behöver inte bara din hjälp. Jag vill verkligen att du ska må bra. Har du fått fler hot?"
+    ],
+    [
+     "noor",
+     "(tittar bort, rört) Nej... inte nyligen. Men du vet, Ines. Jag är så här pank. Det gör mig... sårbar."
+    ],
+    [
+     "ines",
+     "(nicker, mjuknar) Jag vet. Jag har 20 mynt till dig. Ta det. Vi behöver dig frisk för att granska Viktor."
+    ],
+    [
+     "noor",
+     "(tar mynten, tacksam) Tack. Jag... jag lovar att ge dig mer info om hans affärer. Men lova mig att du inte pressar mig för hardt."
+    ]
+   ],
+   "sammanfattning": "Ines och Noor möts på Kaféet Koppen. Ines, trött men omtänksam, ger Noor 20 mynt för att stödja henne ekonomiskt och försäkrar henne om stöd mot Viktor. Noor är tacksam och lovar att dela information om Viktors affärer.",
+   "handlingar": [
+    {
+     "typ": "ge_mynt",
+     "vem": "ines",
+     "till": "noor",
+     "mynt": 20,
+     "text": "Ger Noor 20 mynt för att hjälpa henne ekonomiskt."
+    },
+    {
+     "typ": "lova",
+     "vem": "noor",
+     "till": "ines",
+     "text": "Lovar Ines att dela information om Viktors affärer."
+    }
+   ],
+   "planandringar": []
+  },
+  {
+   "tid": "11:00",
+   "plats": "torget",
+   "deltagare": [
+    "saga",
+    "liv"
+   ],
+   "repliker": [
+    [
+     "saga",
+     "(sätter ned kaffekoppen, tittar orolig på liv) Liv, du ser ut som om du just haft en mardröm. Allt där på biblioteket..."
+    ],
+    [
+     "liv",
+     "(suckar, rör vid pannan) Det är bara huvudvärken. Och Viktor. Han håller mig i grepp, Saga. Du vet det."
+    ],
+    [
+     "saga",
+     "(tittar bort, röst blir lägre) Jag vet. Men jag... jag har också problem. Viktor har lånat mig pengar. Till kaféet."
+    ],
+    [
+     "liv",
+     "(tittar upp, ögon vidgade) Du? Du har ju alltid verktyg. Hur gick det till?"
+    ],
+    [
+     "saga",
+     "(skrynkler på näsan) Det var... enkelt. Han sa att det var en lån. Men jag vet att han vill ha något tillbaka. Kanske kontroll?"
+    ],
+    [
+     "liv",
+     "(knutna nävar) Vi måste göra något. Mira och jag samlar bevis. Men vi behöver din hjälp, Saga. Dina kontakter, din kunskap om vad Viktor gör."
+    ],
+    [
+     "saga",
+     "(tvekar, tittar på liv) Jag vill. Men jag är så... sårbar. Om han får reda på att jag..."
+    ],
+    [
+     "liv",
+     "(lägger hand på sagas arm, mjukt) Vi skyddar varandra. Lova mig att du inte gör något dumt. Vi har Noor och Ines nu också."
+    ]
+   ],
+   "sammanfattning": "Saga och Liv pratade.",
    "handlingar": [],
    "planandringar": []
   },
   {
    "tid": "12:00",
-   "plats": "kafe",
+   "plats": "torget",
    "deltagare": [
-    "omar",
-    "ines",
+    "saga",
+    "noor",
     "viktor"
    ],
    "repliker": [
     [
-     "omar",
-     "(sätter ner kaffekoppen, tittar oroad på Mira) Mira, du ser ut att ha något på hjärtat. Har du hört något om... Viktor?"
+     "saga",
+     "(tittar nervöst around) Viktor, har du sett Mira och Liv på biblioteket? De verkar... misstänksamma."
     ],
     [
-     "omar",
-     "(tvekar, gnuggar händerna) Jag... jag vill hjälpa Ines. Men Viktor hotar mig. Om han får veta..."
+     "viktor",
+     "(kyligt) Jag vet vad de gör. De sammankommer. Det är bra. Jag håller koll."
     ],
     [
-     "omar",
-     "(suckar) Saga... hon är så snäll. Men Viktor kontrollerar henne. Jag mår dåligt av det här."
+     "noor",
+     "(sårbar) Jag behöver bara lite mer tid, Viktor. Ines hjälpte mig igår, men..."
     ],
     [
-     "omar",
-     "(nickar långsamt) Ok. Jag... jag ska försöka. Men var försiktig, Mira. Viktor ser allt."
+     "viktor",
+     "(håller Noor i blicken) Ines? Hon blandar sig i mina affärer. Det blir dyrt för henne."
+    ],
+    [
+     "saga",
+     "(tveksamt) Jag... jag har inget att dölja. Kaféet går bra. Bara... lite låneproblem."
+    ],
+    [
+     "viktor",
+     "(ler snett) Låneproblem? Vi är bekantskaper, Saga. Jag litar på dig. Helt enkelt."
+    ],
+    [
+     "noor",
+     "(viskar) Viktor, om jag ger dig info om Mira... kan du ge mig mer mynt?"
     ]
    ],
-   "sammanfattning": "Omar och Mira diskuterar sin oro för Viktor och Elias, och Mira försöker uppmuntra Omar att stå ihop med Ines och henne för att motverka hoten.",
+   "sammanfattning": "På torget möts Saga, Viktor och Noor. Viktor manipulerar Situationen, hotar subtilt Noor om Ines och försäkrar Saga om tillit samtidigt som han spanar på Mira och Lives aktiviteter.",
    "handlingar": [
     {
      "typ": "lova",
-     "vem": "omar",
-     "till": null,
-     "text": "lovar att försöka vara modigare och mötas igen imorgon"
+     "vem": "viktor",
+     "till": "saga",
+     "text": "Jag litar på dig, Saga."
+    },
+    {
+     "typ": "lova",
+     "vem": "noor",
+     "till": "viktor",
+     "text": "Jag ger dig info om Mira."
     }
    ],
    "planandringar": []
@@ -1709,63 +1588,51 @@
    "plats": "kafe",
    "deltagare": [
     "elias",
-    "liv"
+    "mira"
    ],
    "repliker": [
     [
-     "liv",
-     "(sätter ner kaffekoppen, tittar på Elias) Du har väl inte tänkt dig att jag ska tro på dina löften igen, Elias?"
+     "elias",
+     "(sätter ner kaffekoppen, ler lite för brett) Mira, Liv. Vilket trevligt sammanträffande. Jag trodde ni var på biblioteket?"
+    ],
+    [
+     "mira",
+     "(tittar nervöst på Elias, rört vid kanten av bordet) Vi... vi var det. Men jag behövde lite luft. Och kaffe."
     ],
     [
      "elias",
-     "(ler lite för mycket) Liv, du vet hur jag är. Jag lovar bara det jag menar allvar med... mestadels."
+     "(släpper ett lite för lättat suck, knappar på kaffekoppen) Bekymmer? Som vilka? Jag är ju här för att hjälpa till, ni vet. Staden behöver en stark ledarskap."
     ],
     [
-     "liv",
-     "(skriver i tanke) Mestadels. Det är precis vad jag är rädd för. Du använder folks rädslor som vapen."
-    ],
-    [
-     "elias",
-     "(böjer sig närmare, tonen mjuknar) Jag vill bara hjälpa staden. Och du... du behöver inte vara så ensam i detta."
-    ],
-    [
-     "liv",
-     "(tittar bort, röst lite darrig) Ensam? Jag har Mira. Och Ines. Vi är fler än du tror."
+     "mira",
+     "(tvingar fram en svag leende, röst dämpad) Vi pratar om Viktor. Och... brev."
     ],
     [
      "elias",
-     "(nirrar) Mira och Ines... ja, de är intressanta. Men de är också sårbara. Som du."
-    ],
-    [
-     "liv",
-     "(håller fast kaffekoppen) Varför pratar du alltid om sårbarhet? Vill du att jag ska känna mig ännu mer... pressad?"
+     "(ögonen blir lite smalare, tonen blir mjukare, mer manipulativ) Ah, Viktor. Det är ju... känsligt. Men du vet, Mira, jag har några kontakter. Kanske kan jag hjälpa dig ifall du vill... dela information."
     ],
     [
      "elias",
-     "(backar lite, men behåller leket) Jag vill att du ska känna dig trygg. Det är allt."
+     "(skruvar på sig, ler igen) Liv, ni är så misstänamma. Jag bara vill se staden trivas. Och ni... ni är så... sårbara. Jag kan vara till hjälp."
     ],
     [
-     "liv",
-     "(sucker, tyst) Trygg. Det är inte ordet jag använder när jag tänker på dig, Elias."
-    ],
-    [
-     "elias",
-     "(reser sig, tonen blir mer formell) Vi ses senare. Stämman imorgon. Jag tror på din support, Liv."
+     "mira",
+     "(viskar, nästan till sig själv) Han lovar alltid..."
     ]
    ],
-   "sammanfattning": "Elias och Liv möts på Kaféet Koppen där Elias försöker manipulera Liv med löften och sårbarhetsnarrativ, medan Liv motstår med rädsla och misstro.",
+   "sammanfattning": "Elias möter Mira och Liv på kaféet och försöker manipulera situationen genom att erbjuda hjälp mot Viktor i utbyte mot information, medan Mira och Liv är försiktiga och misstänamma.",
    "handlingar": [
+    {
+     "typ": "lova",
+     "vem": "elias",
+     "till": "mira",
+     "text": "Elias lovar hjälpa Mira mot Viktor om hon delar information."
+    },
     {
      "typ": "ljuga",
      "vem": "elias",
-     "till": "liv",
-     "text": "lovar hjälpa staden och Liv utan att mena det fullt ut"
-    },
-    {
-     "typ": "avsloja",
-     "vem": "liv",
-     "till": "elias",
-     "text": "antyder att hon funderar på att flytta och är rädd"
+     "till": null,
+     "text": "Elias påstår att han bara vill staden väl utan att avslöja sina egna motiv."
     }
    ],
    "planandringar": []
@@ -1774,42 +1641,151 @@
    "tid": "13:00",
    "plats": "kafe",
    "deltagare": [
+    "liv",
+    "saga"
+   ],
+   "repliker": [
+    [
+     "saga",
+     "(sätter ned kaffe-koppen, tittar nervöst på Elias) Elias, du har just varit här. Vad vill du egentligen?"
+    ],
+    [
+     "saga",
+     "(kniper ihop ögonen) Jag är inte stressad. Jag är... upptagen. Viktor säger att jag ska hålla mig till min kafé."
+    ],
+    [
+     "saga",
+     "(tittar bort, röst dämpad) Flexibilitet kostar. Du vet vad Viktor kräver."
+    ],
+    [
+     "saga",
+     "(skrockar till, tvekar) Jag vet inget. De är bara vänner."
+    ]
+   ],
+   "sammanfattning": "Elias pressar Saga för information om Mira och Lives hemliga planer, och erbjuder hjälp mot Viktor i utbyte mot insikt, medan Saga är försiktig och försöker dölja sin sårbarhet.",
+   "handlingar": [
+    {
+     "typ": "avsloja",
+     "vem": "saga",
+     "till": null,
+     "text": "Saga avslöjar subtilt att hon är rädd för Viktor och ekonomiskt sårbar."
+    }
+   ],
+   "planandringar": []
+  },
+  {
+   "tid": "13:20",
+   "plats": "kafe",
+   "deltagare": [
     "hanna",
-    "mira"
+    "august"
    ],
    "repliker": [
     [
      "hanna",
-     "(sätter ner kaffekoppen, tittar oroad på mira) Mira, du ser ut att ha sovit dåligt. Viktor har inte skjutit upp dig igen, har han?"
+     "(sätter ner kaffekoppen, tittar på august) Du ser ut som om du precis har burit en sophög. Vilket du kanske har."
     ],
     [
-     "mira",
-     "(skruvar ivrigt på kaffekoppen) Jag... jag har gömt romanen hos dig. Han vet att jag har den där, Hanna. Jag är så rädd."
-    ],
-    [
-     "hanna",
-     "(suckar, tar en lång sip) Jag vet. Men du måste sluta låta honom pressa dig. Du är inte ensam."
-    ],
-    [
-     "mira",
-     "(tittar ner) Jag vet. Men... vad händer om han hittar den? Om han gör något..."
+     "august",
+     "(suckar, sträcker på ryggen) Min rygg gör ont. Elias lovar 'hjälper dig', men han vill bara ha mig som verktyg."
     ],
     [
      "hanna",
-     "(ler svagt, men ögonen är allvarliga) Vi hittar en lösning. Jag ska tala med Ines och Omar. Vi ska samla stöd. Du behöver inte vara rädd ensam."
+     "Jag vet. Han är en räv. Och Viktor? Han hotar mig igen. Vet hur uttömd jag är."
     ],
     [
-     "mira",
-     "(nickar, men rösten darrar) Tack, Hanna. Jag... jag vet inte vad jag skulle gjort utan dig."
+     "august",
+     "(tittar bort) Jag ska reparera lastbilen idag. Undvika dem båda."
+    ],
+    [
+     "hanna",
+     "Var försiktig. Mira är rädd. Vi måste skydda henne, men jag… jag orkar kanske inte mer."
+    ],
+    [
+     "august",
+     "Du är trött, Hanna. Säg nej. Säg nej till allt. Säg nej till mig också om det behövs."
+    ],
+    [
+     "hanna",
+     "(ler svagt) Tack. Kaffe räcker inte. Men det är något."
+    ],
+    [
+     "august",
+     "Jag ska möta Ines på kafeet senare. Hon pressar mig. Jag vet inte om jag orkar."
     ]
    ],
-   "sammanfattning": "Hanna och Mira diskuterar Mira's rädsla för Viktor och romanens säkerhet, där Hanna lovar att stötta Mira genom att samla stöd.",
+   "sammanfattning": "Hanna och August diskuterar sin utmattning, Elias och Viktors manipulation, och hur de ska skydda Mira och themselves.",
    "handlingar": [
     {
      "typ": "lova",
-     "vem": "hanna",
-     "till": "mira",
-     "text": "Jag ska tala med Ines och Omar för att samla stöd mot Viktor."
+     "vem": "august",
+     "till": "hanna",
+     "text": "Lovar att vara försiktig och undvika Elias"
+    }
+   ],
+   "planandringar": []
+  },
+  {
+   "tid": "13:40",
+   "plats": "kafe",
+   "deltagare": [
+    "omar",
+    "mira",
+    "viktor"
+   ],
+   "repliker": [
+    [
+     "omar",
+     "(sitter vid bordet, tittar orolig på Mira och Liv) Ni pratar för intensivt. Är det något jag ska vara rädd för?"
+    ],
+    [
+     "mira",
+     "(tviskas) Vi pratar bara om... bokföring. Inget speciellt."
+    ],
+    [
+     "viktor",
+     "(går in, ler snett) Bokföring? I ett kafé? Vad spionerar ni på, Omar?"
+    ],
+    [
+     "omar",
+     "(skyndar sig att säga) Ingenting! Jag bara... ville ha en kaffe."
+    ],
+    [
+     "viktor",
+     "(närmar sig, viskar) Jag vet att du hjälper Saga. Och Mira. Det här är inte bra för er."
+    ],
+    [
+     "mira",
+     "(tappar koppen, den kraschar) Jag... jag ska gå nu. Biblioteket väntar."
+    ],
+    [
+     "viktor",
+     "(tittar på Omar) Du borde vara försiktig, bagare. Pengar är lättare att tjäna än tillit."
+    ],
+    [
+     "omar",
+     "(viskar) Jag har inget att dölja."
+    ],
+    [
+     "viktor",
+     "(ler kallt) Om du säger det."
+    ],
+    [
+     "mira",
+     "(resten av samtalet, till Liv) Vi måste fly. Han vet för mycket."
+    ],
+    [
+     "mira",
+     "(viper) Det där kan vi använda. Mot honom."
+    ]
+   ],
+   "sammanfattning": "Viktor confrontar Omar och Mira vid kaféet, hotar dem om deras samarbete med Saga, vilket får Mira att skyndsamt gå därifrån medan Liv och Mira planerar att använda Viktors hemlighet mot honom.",
+   "handlingar": [
+    {
+     "typ": "ljuga",
+     "vem": "mira",
+     "till": "omar",
+     "text": "Pratar bara om bokföring."
     }
    ],
    "planandringar": []
@@ -1818,245 +1794,169 @@
    "tid": "14:00",
    "plats": "kafe",
    "deltagare": [
-    "hanna",
-    "noor"
+    "liv",
+    "noor",
+    "saga"
    ],
    "repliker": [
     [
-     "hanna",
-     "(sätter ner kaffekoppen, tittar trött på Noor) Du ser urslitn... hur mår du egentligen?"
+     "liv",
+     "(tittar oroligt på Elias) Vi vet vad du vill ha, Elias. Du vill veta vad Mira och jag planerar."
+    ],
+    [
+     "saga",
+     "(sätter ner kaffekoppen, röst liten) Jag... jag har inget att ge dig. Viktor håller mig i ett grepp."
     ],
     [
      "noor",
-     "(skyndar sig att svara, räder sig) Jag... ja, det är lite trögt. Men jag har Ines nu. Hon hjälper mig."
+     "(suckar, håller sig i huvudet) Jag orkar inte med detta. Varför måste allt vara så... dramatiskt?"
     ],
     [
-     "hanna",
-     "(nicker sakta, tonen mild men varnande) Ines är bra. Men var försiktig med alla löften. Elias och Viktor... de är farliga."
+     "liv",
+     "(tvingar fram ett leende) Noor, du behöver vila. Vi pratar senare."
     ],
     [
-     "noor",
-     "(tittar ner i bordet, röst blir lugnare) Jag vet. Jag är så här nära pank. Det är svårt att säga nej när någon erbjuder help."
-    ],
-    [
-     "hanna",
-     "(suckar, ler svagt) Jag förstår. Jag är själv uttömd. Men du måste stå på dina egna ben, Noor. Eller åtminstone välja dina allianser klokt."
+     "saga",
+     "(tittar på Elias) Om jag ger dig information... vad får jag tillbaka?"
     ],
     [
      "noor",
-     "(lyfter blicken, bestemt) Jag ska försöka. Jag vill bara att staden ska leva. Kanske en konsert på torget imorgon?"
+     "(rycker på axlarna) Jag är bara här för att överleva. Ni gör vad ni vill."
     ],
     [
-     "hanna",
-     "(tvekar, tittar på klockan) Kanske. Men först måste jag hem. Mira är rädd. Jag behöver stötta henne."
+     "liv",
+     "(bestemt) Vi ska mötas på stadshuset imorgon. Vi behöver en strategi."
     ],
     [
-     "noor",
-     "(nicker, förstår) Jaså. Mira... ja. Hon behöver oss alla. Jag ska förbi torget senare, kanske vi ses där?"
+     "saga",
+     "(nicker sakta) Jag kommer. Men jag vet inte om jag kan..."
     ]
    ],
-   "sammanfattning": "Hanna och Noor diskuterar Noors ekonomiska svårigheter och hoten från Viktor och Elias, medan Hanna varnar för att lita för mycket på löften och Noor nämner planer på en konsert på torget.",
-   "handlingar": [
-    {
-     "typ": "avsloja",
-     "vem": "noor",
-     "till": "hanna",
-     "text": "Uppger att hon är nästan pank och beroende av hjälp."
-    }
-   ],
-   "planandringar": []
-  },
-  {
-   "tid": "14:00",
-   "plats": "park",
-   "deltagare": [
-    "august",
-    "liv"
-   ],
-   "repliker": [
-    [
-     "august",
-     "(sätter sig på bänken, suckar) Liv, du ser ut som om du just förlorat en strid."
-    ],
-    [
-     "liv",
-     "(tittar ned i marken) Det känns... tungt. Elias var här igen. Han lovar allt, men jag vet att han ljuger."
-    ],
-    [
-     "august",
-     "Jag vet. Han pressar mig också. Lovar vila från möten, men det är bara för att han vill ha mig som verktyg."
-    ],
-    [
-     "liv",
-     "(tappar rösten) Du är trött, August. Din rygg... har du sagt åt läkaren?"
-    ],
-    [
-     "august",
-     "(skruvar sig obehagligt) Läkaren? Nej. Jag fixar det själv. Men... ja, det värker. Jag orkar inte mer drama."
-    ],
-    [
-     "liv",
-     "Vi måste göra något. Mira och jag planerar... hemligt. Mot Viktor och Elias."
-    ],
-    [
-     "august",
-     "(tvekar) Jag vill inte bli dragen in. Men... om ni behöver någon som kan... reparera saker, eller hålla tungan rätt i munnen?"
-    ],
-    [
-     "liv",
-     "(tittar upp, tveksamt) Du vill hjälpa till?"
-    ],
-    [
-     "august",
-     "(rör vid ryggen) Jag vet att jag är svag. Men... jag kan kanske hjälpa till på mitt sätt. Om ni lovar att inte pressa mig för mycket."
-    ],
-    [
-     "liv",
-     "(nicker långsamt) Vi lovar. Men det här är hemligt, August. Inges inte veta."
-    ],
-    [
-     "august",
-     "(suckar) Hemligt. Jag gillar inte hemligheter, men... okej. Jag är med."
-    ],
-    [
-     "liv",
-     "(tappar rösten igen) Tack, August. Det betyder mycket."
-    ]
-   ],
-   "sammanfattning": "August och Liv pratade.",
+   "sammanfattning": "Liv och Noor pratade.",
    "handlingar": [],
    "planandringar": []
   },
   {
-   "tid": "15:00",
-   "plats": "park",
+   "tid": "14:20",
+   "plats": "kafe",
    "deltagare": [
     "ines",
+    "august",
     "hanna"
    ],
    "repliker": [
     [
-     "hanna",
-     "(sätter sig bredvid Ines i parken, suckar lätt) Du ser ut att ha sovit på ett brygggolv, Ines."
-    ],
-    [
      "ines",
-     "(gnamar) Jag sov inte. Jag tänkte på Viktor. Och Noor. Hon är really i en knipa."
+     "(sätter ner kaffekoppen) Ni pratar om Viktor. Vad har ni på gång?"
     ],
     [
      "hanna",
-     "Jag vet. Mira gav mig hennes roman. Jag måste gömma den. Men jag är så uttömd, Ines. Jag orkar inte mer."
+     "(suckar) Jag orkar inte med fler konflikter. Mira, du är rädd?"
+    ],
+    [
+     "august",
+     "(mumlade) Jag vill bara ha lugn i min verkstad. Varför dras jag in i detta?"
     ],
     [
      "ines",
-     "Du gör redan så mycket. Men vi behöver stöd. Viktor och Elias... de trycker på alla."
+     "(noterar) Viktor hotar Omar. Det här är nytt. Jag måste skriva om det."
     ],
     [
      "hanna",
-     "(tittar bort) Jag vill bara ha tystnad. Men Mira litar på mig. Och Noor... hon är pank."
+     "(till Mira) Du behöver vila. Jag kan ta en extra shift för dig om du vill."
     ],
     [
-     "ines",
-     "Vi måste samla stöd. Kanske till stämman imorgon? Offentlig redovisning av kassan... det skulle pressa dem."
-    ],
-    [
-     "hanna",
-     "Jag är med. Men jag behöver vila. Kanske går jag hem efter stadshuset."
-    ],
-    [
-     "ines",
-     "Okej. Men vi ses på kaféet senare? Jag behöver prata mer med dig."
-    ],
-    [
-     "hanna",
-     "(nickar) Kanske. Jag får se hur jag mår."
-    ],
-    [
-     "ines",
-     "Ta det lugnt, Hanna. Du är viktigt här."
+     "august",
+     "(till Hanna) Tack. Men jag är trött. Kan vi bara… gå hem senare?"
     ]
    ],
-   "sammanfattning": "Ines och Hanna möts i parken, diskuterar hoten från Viktor och Elias, Noors ekonomiska svårigheter, och Mira's roman som Hanna måste skydda. Ines föreslår att samla stöd till stämman om offentlig kassaredovisning, medan Hanna är uttömd och ",
-   "handlingar": [
+   "sammanfattning": "Ines, Mira, Liv, Hanna och August möts på kaféet. De diskuterar Viktors hot mot Omar, och Ines vill skriva om det medan Mira och Liv planerar att använda Viktors hemlighet mot honom. Hanna erbjuder Mira stöd, och August vill undvika konflik",
+   "handlingar": [],
+   "planandringar": [
     {
-     "typ": "lova",
      "vem": "ines",
-     "till": "hanna",
-     "text": "Jag ska hjälpa dig att samla stöd till stämman."
+     "tid": "15:00",
+     "plats": "bibliotek",
+     "aktivitet": "Söka efter Viktors hemlighet"
     },
     {
-     "typ": "avsloja",
+     "vem": "august",
+     "tid": "17:00",
+     "plats": "stadshus",
+     "aktivitet": "Gå till stämman"
+    },
+    {
      "vem": "hanna",
-     "till": "ines",
-     "text": "Mira gav mig hennes roman att gömma."
+     "tid": "19:00",
+     "plats": "hem",
+     "aktivitet": "vila"
     }
-   ],
-   "planandringar": []
+   ]
   },
   {
-   "tid": "15:40",
-   "plats": "park",
+   "tid": "15:00",
+   "plats": "stadshus",
    "deltagare": [
-    "august",
-    "omar"
+    "viktor",
+    "liv"
    ],
    "repliker": [
     [
-     "august",
-     "(tittar ner i marken, rullar på en sten med foten) Jag vet att du vill att jag ska stötta Ines... men min rygg..."
+     "viktor",
+     "(tittar kring sig innan han närmar sig) Liv, har du sett Mira? Hon försvann från kaféet för några minuter sedan."
     ],
     [
-     "omar",
-     "(sätter sig bredvid, tyst) Jag förstår. Du är ju inte ung längre. Men Ines behöver dig. Vi behöver alla din praktiska kunskap."
+     "liv",
+     "(krymper ihop lite, röst låg) Jag vet inte. Jag... jag trodde hon var hos dig."
     ],
     [
-     "august",
-     "(sucker) Kunskap... Ja. Jag fixar lastbilar. Inte politiska konspirationer. Elias pressar mig också, vet du."
+     "viktor",
+     "(fnys) Jag har inget med henne att göra. Men jag undrar var hon tar vägen. Det vore... bra att veta."
     ],
     [
-     "omar",
-     "(nicker) Ja. Han lovar skydd. Men jag tror han vill ha dig som... verktyg. Som han har med mig."
+     "liv",
+     "(tvekar, tittar på golvet) Varför bryr du dig, Viktor? Du hotade henne ju precis."
     ],
     [
-     "august",
-     "(tittar upp, ögonen skarpa) Du menar att han manipulerar dig?"
+     "viktor",
+     "(logar snett) Hot? Jag sa inget hot. Jag sa bara... att vissa saker blir obekväma om de inte löses. Du vet hur det är."
     ],
     [
-     "omar",
-     "(tvekar, tittar bort) Jag... jag vet inte. Men han är farlig. Och Viktor... han vill veta vad Ines granskar."
+     "liv",
+     "(suckar) Jag vet. Men du måste sluta med detta. Mira och Omar... de kommer att göra något."
     ],
     [
-     "august",
-     "(sätter ner stenen, suckar) Ines granskar mörka affärer. Jag är rädd. Jag är så här trött."
+     "viktor",
+     "(vissnas) Något? Som? Du menar att de ska... klaga? Böcka sig för mig?"
     ],
     [
-     "omar",
-     "(lägger en hand på augusts axel, mjukt) Vi kan kanske... undvika dem ett tag? Du till verkstaden, jag till bageriet."
+     "liv",
+     "(tyst, med en varning i rösten) De har källor. Och de har... andra."
     ],
     [
-     "august",
-     "(nicker långsamt) Det låter... bra. Men Ines kommer att komma. Hon kommer alltid."
+     "viktor",
+     "(stirrar på Liv, tonen blir kall) Du pratar i gåtOR. Säg vad du menar, Liv. Eller så går jag vidare och finner mig själv en annan... partner."
     ],
     [
-     "omar",
-     "(smiler svagt) Ja. Hon är... envis. Som du."
+     "liv",
+     "(drar undan blicken) Jag menar inget. Bara... var försiktig. Elias är också på gång. Han vill veta allt."
     ],
     [
-     "august",
-     "(ler lite, tyst) Jag hatar att vara envis. Jag vill bara fixa saker."
+     "viktor",
+     "(lättsam, men med en spets) Elias? Den där nervösen? Han vet inget som jag inte redan vet. Men tack för varningen. Jag ska... ta en kopp kaffe på vägen hem."
     ],
     [
-     "omar",
-     "(står upp, sträcker på sig) Jag ska möta Saga. Hon behöver stöd. Kommer du till stämman ikväll?"
+     "liv",
+     "(säger inget, bara nickar svagt) Okay."
     ]
    ],
-   "sammanfattning": "August och Omar pratade.",
+   "sammanfattning": "Viktor och Liv pratade.",
    "handlingar": [],
    "planandringar": []
   },
   {
-   "tid": "16:00",
-   "plats": "park",
+   "tid": "15:20",
+   "plats": "bibliotek",
    "deltagare": [
     "ines",
     "mira"
@@ -2064,39 +1964,27 @@
    "repliker": [
     [
      "ines",
-     "Hanna sa att du är rädd. Vad händer, Mira?"
+     "Mira, jag såg Viktor vid kaféet. Han hotade Omar. Hur står det till?"
     ],
     [
      "mira",
-     "(tittar ner) Jag... har en roman. Viktor vet. Han hotar mig."
+     "(tittar nervöst around) Jag... jag är bara lite rädd. Det är inget nytt."
     ],
     [
      "ines",
-     "(satt ner sig bredvid) Jag vet. Hanna sa att du behöver skydd."
+     "Du måste berätta mer. Viktor har en hemlighet. Jag letar efter den, och du har en källa i stadshuset. Vi kan hjälpa varandra."
     ],
     [
      "mira",
-     "Jag tror inte på löften. Elias lovar allt, men..."
+     "(tvekar) Jag vet inte... Elias pressar mig också. Han vill ha information om Liv."
     ],
     [
      "ines",
-     "Elias är farlig. Men jag har en källa i stadshuset. Vi kan pressa dem på transparens."
+     "Elias är farlig. Men jag lovar att skydda din källa. Lita på mig, bara lite."
     ],
     [
      "mira",
-     "(tvekar) Jag vill bara att det ska bli tyst. Att Viktor släppa taget."
-    ],
-    [
-     "ines",
-     "Vi gör det tillsammans. Du och jag. Och Hanna."
-    ],
-    [
-     "mira",
-     "Tack... Jag vet inte om jag förtjänar det."
-    ],
-    [
-     "ines",
-     "Du förtjänar att känna dig säker. Lita på mig, bara lite."
+     "(suckar) OK. Men var försiktig. Viktor är överallt."
     ]
    ],
    "sammanfattning": "Ines och Mira pratade.",
@@ -2104,140 +1992,46 @@
    "planandringar": []
   },
   {
-   "tid": "16:20",
-   "plats": "park",
+   "tid": "16:00",
+   "plats": "stadshus",
    "deltagare": [
-    "hanna",
+    "liv",
+    "noor",
     "viktor"
    ],
    "repliker": [
     [
-     "hanna",
-     "(tittar nervöst runt) Viktor, vi behöver prata. Ines och jag planerar att ta upp kassatransparens på stämman."
+     "viktor",
+     "(sätter sig vid bordet, tittar misstänksamt runt) Ines, du verkar ha en del på gång. Vad är det du planerar?"
     ],
     [
      "viktor",
-     "(ler sarkastiskt) Ah, Ines. Hon är så... entusiastisk. Du vet att jag inte gillar när ni pratar ihop."
-    ],
-    [
-     "hanna",
-     "(sätter ner handen) Jag är trött, Viktor. Och jag oroar mig för Mira. Du hotar henne."
+     "( ler snett) De är naiva. Men jag ska se till att ingen får för mycket inflytande. Du vet hur det är."
     ],
     [
      "viktor",
-     "(rullar med ögonen) Hota? Jag bara... uppmuntrar. Du överdriver. Som always."
-    ],
-    [
-     "hanna",
-     "(sucker) Du borde vara försiktig. Ines granskar dina affärer."
+     "(slutar le, talar lågt) Problemet är att du pratar med Mira. Och Liv. De vet för mycket."
     ],
     [
      "viktor",
-     "(viskar) Hon hittar inget. Om hon gör det... så vet jag inte vad jag gör. Men du, Hanna, du är ju så... hjälpsam. Kanske borde du tänka på dig själv."
+     "(tittar intensivt på Ines) Varje samtal du har med dem är ett steg närmare mitt nederlag. Kom ihåg det."
+    ],
+    [
+     "viktor",
+     "(reser sig, viskar) Och Ines... om du vill ha kvar din rykte i staden, så håll dig till mitt side."
+    ],
+    [
+     "viktor",
+     "(går ut, tittar sig tillbaka) Bra."
     ]
    ],
-   "sammanfattning": "Hanna konfronterar Viktor om hans hot mot Mira och hans misstänksamma affärer, medan Viktor varnar Hanna att hon riskerar att slitas ner av att blanda sig i hans affärer.",
-   "handlingar": [
-    {
-     "typ": "lova",
-     "vem": "hanna",
-     "till": "viktor",
-     "text": "Jag kommer att fortsätta pressa på för transparens."
-    },
-    {
-     "typ": "ljuga",
-     "vem": "viktor",
-     "till": "hanna",
-     "text": "Jag hotar inte Mira, jag bara 'uppmuntrar'."
-    }
-   ],
-   "planandringar": [
-    {
-     "vem": "hanna",
-     "tid": "17:00",
-     "plats": "stadshus",
-     "aktivitet": "delta i stämman"
-    },
-    {
-     "vem": "viktor",
-     "tid": "17:00",
-     "plats": "stadshus",
-     "aktivitet": "delta i stämman"
-    }
-   ]
+   "sammanfattning": "Viktor möter Ines på kaféet och pressar henne för information om hennes kontakter med Mira och Liv, medan Ines försöker dölja sina planer och känslor av rädsla.",
+   "handlingar": [],
+   "planandringar": []
   },
   {
-   "tid": "16:40",
-   "plats": "kafe",
-   "deltagare": [
-    "august",
-    "saga"
-   ],
-   "repliker": [
-    [
-     "august",
-     "(sätter ner kaffekoppen, tittar på saga] Du ser inte bra ut, Saga. Allt okay?"
-    ],
-    [
-     "saga",
-     "(slår undan blicken) Ja, ja... bara trött. Viktor pressar mig igen."
-    ],
-    [
-     "august",
-     "Den där mannen får mig att vilja krossa hans bil. Varför hyr du inte ett litet kontor till?"
-    ],
-    [
-     "saga",
-     "(tyst, viskar) Jag har inga pengar, August. Du vet... det där med Viktor."
-    ],
-    [
-     "august",
-     "( suckar, rycken värker) Jag vet. Jag skulle vilja hjälpa, men min rygg..."
-    ],
-    [
-     "saga",
-     "Du behöver inte lösa allt. Jag ska prata med Elias imorgon. Kanske..."
-    ],
-    [
-     "august",
-     "Elias? Du litar på honom? Saga, var försiktig."
-    ],
-    [
-     "saga",
-     "(ler svagt) Jag måste. Annars är jag här forever."
-    ],
-    [
-     "august",
-     "(nicker, tyst) Om du behöver någonting... jag är här. Även om jag är trött."
-    ]
-   ],
-   "sammanfattning": "August och Saga möts på Kaféet Koppen. Saga erkänner sin ekonomiska sårbarhet och Viktors kontroll, medan August uttrycker oro och offererar stöd trots sin egen smärta.",
-   "handlingar": [
-    {
-     "typ": "avsloja",
-     "vem": "saga",
-     "till": "august",
-     "text": "Erkänner lånet av Viktor och sin förtvivlan"
-    }
-   ],
-   "planandringar": [
-    {
-     "vem": "saga",
-     "tid": "18:00",
-     "plats": "kafe",
-     "aktivitet": "Sitta och fundera på Elias"
-    },
-    {
-     "vem": "august",
-     "tid": "17:00",
-     "plats": "stadshus",
-     "aktivitet": "Gå till stämman om transparens"
-    }
-   ]
-  },
-  {
-   "tid": "17:40",
-   "plats": "stadshus",
+   "tid": "16:20",
+   "plats": "bibliotek",
    "deltagare": [
     "ines",
     "mira"
@@ -2245,125 +2039,173 @@
    "repliker": [
     [
      "ines",
-     "(sätter sig bredvid Mira på bänken, tittar orolig) Mira, du ser ut att ha haft en tuff dag. Är det Viktor som plågar dig igen?"
-    ],
-    [
-     "mira",
-     "(tvekar, sedan viskar) Jag... jag har en idé. Men du måste lova att inte avslöja källan. Min källa... det är någon inom stadshuset."
+     "(tittar nervöst på dörrn)"
     ],
     [
      "ines",
-     "(ögonvidden studsar, sedan nickar långsamt) Jag lovar. Men det här är stort, Mira. Om vi kan få fram något..."
+     "Viktor pressar mig… han vet att jag har kontakter."
     ],
     [
      "mira",
-     "(tittar upp, rädd men envis) Jag vill bara ha ro. Men om det här kan stoppa Viktor..."
+     "(viskar)"
+    ],
+    [
+     "mira",
+     "Han hotade Omar också. Vi måste vara försiktiga."
     ],
     [
      "ines",
-     "(sätter handen på Miras arm, mjukt) Vi ska klara det. Jag ska prata med Noor också. Hon är i knipa."
+     "Jag behöver veta mer om hans hemlighet. Kanske du vet något?"
+    ],
+    [
+     "mira",
+     "(tvekar)"
+    ],
+    [
+     "mira",
+     "Jag… jag har hört rykten. Men jag är rädd för att säga något."
+    ],
+    [
+     "ines",
+     "(sätter sig närmre)"
+    ],
+    [
+     "ines",
+     "Tillit är allt. Jag lovar skydda din källa, om du hjälper mig."
+    ],
+    [
+     "mira",
+     "(nickar långsamt)"
+    ],
+    [
+     "mira",
+     "Ok. Jag kan kanske få tag i några papper från stadshuset."
+    ],
+    [
+     "ines",
+     "Tack. Vi gör detta tillsammans."
     ]
    ],
-   "sammanfattning": "Ines och Mira diskuterar Viktors hot och Mira avslöjar att hon har en anonym källa i stadshuset, vilket Ines lovar att skydda.",
+   "sammanfattning": "Ines och Mira pratade.",
+   "handlingar": [],
+   "planandringar": []
+  },
+  {
+   "tid": "17:40",
+   "plats": "stadshus",
+   "deltagare": [
+    "mira",
+    "viktor"
+   ],
+   "repliker": [
+    [
+     "mira",
+     "(tittar nervöst på Viktor) Du är fortfarande här? Jag trodde du skulle ge upp."
+    ],
+    [
+     "viktor",
+     "(sätter sig bredvid henne, röst låg) Giva upp? Nej. Jag vill bara veta om Ines har berättat något."
+    ],
+    [
+     "mira",
+     "(skyndar sig att titta på klockan) Hon har inte. Jag lovar."
+    ],
+    [
+     "viktor",
+     "(ler kallt) Lova? Det är ett ord jag inte litar på. Men jag tror på pengarna."
+    ],
+    [
+     "mira",
+     "(drar undan sig) Pengarna... jag har inget mer att ge."
+    ],
+    [
+     "viktor",
+     "(tappar tonen lite, mer påträngande) Du har din roman. Jag vet var den är."
+    ],
+    [
+     "mira",
+     "(handflatorna blir fuktiga) Det... det är privat."
+    ],
+    [
+     "viktor",
+     "(läner sig fram) Privat? I denna stad är inget privat. Med mindre du betalar för tystnad."
+    ],
+    [
+     "mira",
+     "(viskar) Vad vill du ha?"
+    ],
+    [
+     "viktor",
+     "(sätter handen på hennes arm) Bara... lite mer information. Om Ines. Och kanske lite mer mynt."
+    ],
+    [
+     "mira",
+     "(tvekar, sedan nickar svagt) Jag... jag kan fråga."
+    ],
+    [
+     "viktor",
+     "(reser sig, nöjd) Bra. Kom ihåg, Mira. Jag övervakar dig."
+    ]
+   ],
+   "sammanfattning": "Viktor pressar Mira för information om Ines och hotar med hennes roman, vilket får Mira att tystnads Köpa sig fri med löften om spioneri.",
    "handlingar": [
     {
      "typ": "lova",
-     "vem": "ines",
-     "till": "mira",
-     "text": "Jag lovar att inte avslöja din källa."
-    },
-    {
-     "typ": "avsloja",
      "vem": "mira",
-     "till": "ines",
-     "text": "Jag har en källa inom stadshuset."
+     "till": "viktor",
+     "text": "Lover att fråga Ines om hennes planer."
     }
    ],
-   "planandringar": [
-    {
-     "vem": "ines",
-     "tid": "19:00",
-     "plats": "kafe",
-     "aktivitet": "prata med Noor om Viktor"
-    },
-    {
-     "vem": "mira",
-     "tid": "21:00",
-     "plats": "hem",
-     "aktivitet": "skriva i smyg roman"
-    }
-   ]
+   "planandringar": []
   },
   {
    "tid": "18:00",
    "plats": "stadshus",
    "deltagare": [
-    "viktor",
-    "liv",
+    "august",
     "hanna"
    ],
    "repliker": [
     [
      "hanna",
-     "(sätter sig, suckar) Viktor varnade mig igen. Han säger att jag slitas ner."
+     "(sätter sig bredvid august, tonen lugn men trött) Du ser ut som om du precis har dragit hela bageriet hemåt. Vill du ha ett kaffe?"
     ],
     [
-     "viktor",
-     "(kryper närmare, låg röst) Jag varnar dig för din egen skull, Hanna. Ines är farligare än du tror."
-    ],
-    [
-     "hanna",
-     "(tittar kallt på honom) Jag skyddar Mira. Det är mitt jobb. Du behöver inte blanda dig."
-    ],
-    [
-     "viktor",
-     "(ler snett) Mira har en källa. Du vet det. Och Ines vet det. Ni är alla i fara."
+     "august",
+     "(skruvar sig obehagligt, tittar på golvet) Tack... nej, jag har nog inte lust. Ryggen värker extra mycket idag."
     ],
     [
      "hanna",
-     "(reser sig, vilar händerna i höft) Du hotar mig inte. Jag har Liv på min sida."
+     "(sucker, ler svagt) Vi är alla lite slitna, August. Särskilt efter stämman. Men du klarade dig bra med vaktstugan."
     ],
     [
-     "viktor",
-     "(viskar) Liv är svag. Och du är uttömd. Jag vet hur du mår, Hanna."
+     "august",
+     "(kniper ihop ögonen, röst låg) Jag orkar inte med mer bråk. Elias lovar allt, men han håller inget. Jag vill bara ha min verkstad i fred."
+    ],
+    [
+     "hanna",
+     "(tittar around, sänker rösten) Jag förstår. Viktor är... påfremande. Mira är rädd. Vi måste vara försiktiga, August."
+    ],
+    [
+     "august",
+     "(gnuggar nacken) Försiktig. Ja. Jag borde kanske bara stänga av mig. Gå hem och sova."
+    ],
+    [
+     "hanna",
+     "(nickar) Kanske. Men om du behöver något... jag är här. Även om jag är uttömd."
+    ],
+    [
+     "august",
+     "(tittar på henne, tvekar) Tack, Hanna. Du är... bra. Trots allt."
     ]
    ],
-   "sammanfattning": "Hanna konfronterar Viktor om hans hot mot Mira, men Viktor varnar henne att hon slitas ner av att blanda sig i hans affärer och att Ines är farlig.",
-   "handlingar": [],
-   "planandringar": []
-  },
-  {
-   "tid": "18:00",
-   "plats": "kafe",
-   "deltagare": [
-    "elias",
-    "saga"
-   ],
-   "repliker": [
-    [
-     "elias",
-     "(sätter sig bredvid, ler lite för brett) Saga, du ser ut att behöva en kaffe. Eller kanske en hel kaffepause."
-    ],
-    [
-     "saga",
-     "(tittar bort, rör kanten på koppen) Behöver jag? Jag har nog inte råd med fler pauser."
-    ],
-    [
-     "elias",
-     "Jag bjuder. Som sagt... jag vill bara vara säker på att du mår bra. Mira-problemet löser sig, du får se."
-    ],
-    [
-     "saga",
-     "(suckar) Du lovar. Alltid lovar. Men vad gör du egentligen med Mira?"
-    ]
-   ],
-   "sammanfattning": "Elias försöker manipulera Saga genom att bjuda henne kaffe och lova lösning på Mira-problemet, medan Saga är skeptisk och oroad över hans löften.",
+   "sammanfattning": "Hanna och August pratar vid stämman; Hanna erbjuder stöd och kaffe, August klagar på smärta och vill undvika konflikter.",
    "handlingar": [
     {
-     "typ": "lova",
-     "vem": "elias",
-     "till": "saga",
-     "text": "Löser Mira-problemet"
+     "typ": "avsloja",
+     "vem": "august",
+     "till": "hanna",
+     "text": "Delar med sig av sin rädsla för Elias och Viktors påtryckningar"
     }
    ],
    "planandringar": []
@@ -2372,157 +2214,133 @@
    "tid": "18:20",
    "plats": "stadshus",
    "deltagare": [
-    "omar",
-    "august"
-   ],
-   "repliker": [
-    [
-     "omar",
-     "(sätter ner kaffekoppen, tittar nervöst på august) Jag vet att du är trött, August. Men jag behövde prata med dig om... om Ines."
-    ],
-    [
-     "august",
-     "(suckar, rör sig obehagligt i stolen) Ines. Hon pressar mig igen. Jag orkar inte, Omar. Ryggen värker och..."
-    ],
-    [
-     "omar",
-     "(slår lätta på augusts arm) Jag förstår. Men jag är också rädd. Viktor är överallt. Och Saga... hon är så sårbar."
-    ],
-    [
-     "august",
-     "(tittar bort, röst dämpad) Saga lånade 100 mynt av Elias. Elias lovar skydd, men jag vet vad han vill ha. Jag är bara ett verktyg."
-    ],
-    [
-     "omar",
-     "(nikkar långsamt) Jag vill hjälpa henne. Men jag måste vara försiktig. Ines och Noor behöver mitt stöd också."
-    ],
-    [
-     "august",
-     "(sätter ner huvudet) Jag är för svag. Folk förväntar sig för mycket av mig. Jag borde bara... bara fixa min lastbil."
-    ],
-    [
-     "omar",
-     "(tyst en stund) Jag vet. Men vi måste vara rädda tillsammans, eller? För Saga. Och Ines."
-    ],
-    [
-     "august",
-     "(suckar djupt) Ja. Jag ska... jag ska försöka. Men imorgon kanske. Ryggen..."
-    ]
-   ],
-   "sammanfattning": "Omar och August pratade.",
-   "handlingar": [],
-   "planandringar": []
-  },
-  {
-   "tid": "19:00",
-   "plats": "kafe",
-   "deltagare": [
-    "ines",
     "saga",
-    "elias"
+    "ines"
    ],
    "repliker": [
     [
      "ines",
-     "(sätter ner kaffekopian) Saga, du ser ut som om du just hört att kaféet brunnit ner."
+     "(tittar nervöst på Viktor som går förbi kaféet) Saga, du ser ut som om du har just fått ett hotbrev."
     ],
     [
      "saga",
-     "(tittar ner i kaffekoppen) Nästan. Känns så. Viktor håller mig i ett grepp, och Elias… han lovar mer än han kan hålla."
-    ],
-    [
-     "elias",
-     "(smiler lite för brett) Jag håller vad jag lovar. Du vet det. Mira-problemet löser sig, du bara måste lita på mig."
+     "(tappar kaffekoppen, handen skakar) Jag... jag har. Viktor säger att om jag inte ger honom mer information..."
     ],
     [
      "ines",
-     "(kallt) Lita på dig? Elias, du har lovat bort luften under fötterna på flera här already."
+     "Han pressar dig igen? Jag trodde vi var överens om att vi skulle samverka."
     ],
     [
      "saga",
-     "(tappar bort skeden) Ines, sluta. Jag behöver inte fler hotbrev i mitt liv."
-    ],
-    [
-     "elias",
-     "(lener sig närmare) Ines, du granskar alltid. Men ibland är det bättre att bara… samarbeta. För din egen skull."
+     "(sucker) Jag är så här nära att förlora kaféet. Han har mina lån. Jag är fångad, Ines."
     ],
     [
      "ines",
-     "(rullar med ögonen) Samarbeta? Med dig? Jag har en källa i stadshuset, Elias. Och jag ska använda den."
+     "(lättar på axlarna, tystare) Jag har en källa i stadshuset. Kanske kan vi använda det mot Viktor? Men du måste vara försiktig."
     ],
     [
      "saga",
-     "(viskar) Ines, vara försiktig. Viktor varnade Hanna om dig. Han är farlig."
-    ],
-    [
-     "elias",
-     "(tappar leendet) Viktor… ja. Han vill ha information. Om dig, kanske."
+     "(tvekar) Om han får veta... han skulle..."
     ],
     [
      "ines",
-     "(står upp) Jag ska hem. 21:30, som sagt. Saga, du behöver inte vara rädd. Men sluta lita på löften."
+     "Vi måste vara smarta. Jag ska försöka få fram budgeten från stadshuset. Om vi visar att pengarna försvinner..."
     ],
     [
      "saga",
-     "(tyst) Jag vet. Jag är så trött på att vara rädd."
+     "(något mer lugn) OK. Jag... jag kan ge dig de 50 mynt jag lovat, till research. Men var försiktig."
     ],
     [
-     "elias",
-     "(till Saga, mjukt) Jag hjälper dig. Lita på mig en gång till, bara en gång."
+     "ines",
+     "(nickar) Jag lovar. Vi gör detta tillsammans, men steg för steg."
+    ],
+    [
+     "saga",
+     "(tittar mot torget) Jag måste hem senare. Huvudvärken är tillbaka. Viktor håller mig i ett grepp."
     ]
    ],
-   "sammanfattning": "Ines och Saga pratade.",
-   "handlingar": [],
-   "planandringar": []
-  },
-  {
-   "tid": "19:20",
-   "plats": "stadshus",
-   "deltagare": [
-    "omar",
-    "viktor"
-   ],
-   "repliker": [
-    [
-     "omar",
-     "(tittar nervöst på Viktor) Du ser ut att ha bråttom, Viktor. Allt väl?"
-    ],
-    [
-     "viktor",
-     "(kyligt) Bara att se till att mina affärer går som de ska, Omar. Du har ju din marknad att tänka på."
-    ],
-    [
-     "omar",
-     "(sänker rösten) Marknadsplatsen byggs ju nu. Jag hoppas det blir bra för alla. Saga... hur står det till med henne?"
-    ],
-    [
-     "viktor",
-     "(shrugger) Saga är min个问题. Hon behöver lära sig att lyda. Du bör hålla dig ur det."
-    ],
-    [
-     "omar",
-     "(tvekar) Jag vill bara hjälpa. Hon är pressad. Elias har..."
-    ],
-    [
-     "viktor",
-     "(avbryter) Elias är ingen att lita på. Och du bör sluta prata om Saga med mig."
-    ],
-    [
-     "omar",
-     "(nervöst) Ja, ja. Jag ska gå hem nu. 21:00, som planerat."
-    ],
-    [
-     "viktor",
-     "(nickar) Bra. Håll tyst om vad vi pratat om."
-    ]
-   ],
-   "sammanfattning": "Omar och Viktor har ett spändt samtal där Viktor varnar Omar att hålla sig borta från Saga och deras affärer.",
+   "sammanfattning": "Ines och Saga diskuterar Viktors press och Sagan ekonomiska sårbarhet; Ines erbjuder hjälp genom sin stadshuskälla och Saga lovar 50 mynt till research.",
    "handlingar": [
     {
-     "typ": "ljuga",
+     "typ": "ge_mynt",
+     "vem": "saga",
+     "till": "ines",
+     "mynt": 50,
+     "text": "Ger Ines 50 mynt till research för att avslöja Viktor."
+    },
+    {
+     "typ": "lova",
+     "vem": "ines",
+     "till": "saga",
+     "text": "Lover att vara försiktig med sin källa i stadshuset."
+    }
+   ],
+   "planandringar": []
+  },
+  {
+   "tid": "18:40",
+   "plats": "stadshus",
+   "deltagare": [
+    "mira",
+    "viktor",
+    "omar"
+   ],
+   "repliker": [
+    [
+     "omar",
+     "(tittar nervöst på Viktor) Viktor, jag... jag vill bara ha lugn. Ines är min vän, men jag behöver inte veta mer."
+    ],
+    [
+     "viktor",
+     "(kyligt) Du behöver veta mer. Mira vet vad som händer. Hon ger mig information, och du... du är näst."
+    ],
+    [
+     "mira",
+     "(viskar) Omar, jag... jag är rädd. Men jag lovar att jag inte sviker dig. Viktor pressar mig..."
+    ],
+    [
+     "omar",
+     "(suckar) Mira, du behöver inte. Jag... jag lånar dig 50 mynt igen om du behöver. Men var försiktig."
+    ],
+    [
+     "viktor",
+     "(fniser) Låna mynt? Hur snäll. Mira, ge mig mer om Ines. Annars..."
+    ],
+    [
+     "mira",
+     "(tyst) Jag... jag ska försöka. Men jag vill inte ha fler problem."
+    ],
+    [
+     "viktor",
+     "(tittar på Ines) Du har allt att dölja, Ines. Mira vet det. Och jag vet det."
+    ],
+    [
+     "mira",
+     "(undviker ögonkontakt) Jag... jag gör mitt bästa, Ines. Men Viktor... han är farlig."
+    ],
+    [
+     "omar",
+     "(mumlade) Vi borde alla vara försiktiga. Kanske... kanske stämman kan hjälpa?"
+    ],
+    [
+     "viktor",
+     "( skrattar hårt) Stämman? Nej, Omar. Jag är stämman."
+    ]
+   ],
+   "sammanfattning": "Mira och Viktor pratade.",
+   "handlingar": [
+    {
+     "typ": "lana_ut",
      "vem": "omar",
+     "till": "mira",
+     "mynt": 50,
+     "text": "Lånar 50 mynt till Mira för att hon ska vara försiktig."
+    },
+    {
+     "typ": "lova",
+     "vem": "mira",
      "till": "viktor",
-     "text": "Löker att han bara vill hjälpa Saga utan att avslöja sin känslomässiga involvering"
+     "text": "Lovar att ge Viktor mer information om Ines."
     }
    ],
    "planandringar": []
@@ -2531,151 +2349,232 @@
    "tid": "19:40",
    "plats": "stadshus",
    "deltagare": [
-    "mira",
-    "liv"
+    "saga",
+    "omar"
    ],
    "repliker": [
     [
-     "mira",
-     "(tittar oroadt på liv) Viktor har hotat mig igen. Jag vet att han står bakom allt."
+     "saga",
+     "(tittar nervöst på klockan) Omar, stämman är över nu. Har du sett Viktor idag?"
     ],
     [
-     "liv",
-     "(sänker rösterna) Han varnade mig också. Säger att du är farlig. Att jag ska hålla mig borta."
+     "omar",
+     "(skruvar sig obehagligt) Jag undviker honom så gott jag kan. Han hotade mig igår... du vet väl om det?"
     ],
     [
-     "mira",
-     "(viskar) Jag har en källa i stadshuset. Men jag vågar inte avslöja vem än."
+     "saga",
+     "(viskar) Ja. Och han pressar mig. Jag är så här långt inne i hans grepp. Mina 50 mynt... jag behöver fler för att..."
     ],
     [
-     "liv",
-     "(tvingar fram ett leende) Vi måste sammanra. Elias manipulerar Saga, och Viktor... han är en råtta."
+     "omar",
+     "(sätter sig bredvid henne, mjukt) Saga, du behöver inte låna mer av honom. Jag har lite extra mynt om du..."
     ],
     [
-     "mira",
-     "(nibbar på läppen) Jag är så trött på att vara rädd. Men vad gör vi?"
+     "saga",
+     "(skriver snabbt av) Nej, det går inte. Han skulle misstänka mig. Men... tack. Jag kanske kan betala tillbaka sen. Om jag säljer något på marknadsplatsen när den blir klar."
     ],
     [
-     "liv",
-     "(tarmira på miras arm) Vi håller ihop. Jag lovar att stå dig bi. Även om det kostar."
+     "omar",
+     "(nickar, tveksamt) Ok. Men var försiktig. Jag har en känsla av att han inte släpper dig så lätt."
+    ],
+    [
+     "saga",
+     "(tappar leendet) Jag vet. Jag måste hitta ett sätt. Kanske... om du märker något med Ines eller Mira, kan du whispera till mig?"
+    ],
+    [
+     "omar",
+     "(tittar bort) Jag... jag vill inte vara spion. Men jag hör vad jag hör. Du vet hur det är."
     ]
    ],
-   "sammanfattning": "Mira och Liv möts på stadshuset för att diskutera Viktors hot och planera sitt nästa steg, där Liv lovar Mira stöd.",
+   "sammanfattning": "Saga och Omar diskuterar Viktors kontroll och Sagan ekonomiska sårbarhet; Omar erbjuder hjälpsamhet men Saga vägrar direkt penga_lån och ber istället om information.",
    "handlingar": [
     {
+     "typ": "ljuga",
+     "vem": "saga",
+     "till": "omar",
+     "text": "nekar penga_lån för att inte väcka Viktors misstanke"
+    },
+    {
      "typ": "lova",
-     "vem": "liv",
-     "till": "mira",
-     "text": "Jag lovar att stå dig bi mot Viktor."
+     "vem": "saga",
+     "till": "omar",
+     "text": "lovar att vara uppmärksam på Viktors aktivitet"
     }
    ],
+   "planandringar": []
+  },
+  {
+   "tid": "19:40",
+   "plats": "kafe",
+   "deltagare": [
+    "august",
+    "viktor"
+   ],
+   "repliker": [
+    [
+     "august",
+     "(sätter sig, suckar) Du. Jag trodde du var på väg hem."
+    ],
+    [
+     "viktor",
+     "(slår sig ner, tittar misstänksamt runt) Hem? Det finns inget hem att gå till när man har affärer att sköta."
+    ],
+    [
+     "august",
+     "Jag har ont i ryggen. Och jag vill inte ha några affärer med dig."
+    ],
+    [
+     "viktor",
+     "(ler snett) Du behöver inte vara så kallsinnig. Jag ville bara... kontrollera att du håller dig ur mitt sätt."
+    ],
+    [
+     "august",
+     "Du håller mig ur ditt sätt? Du är den som står i vägen, Viktor. Alltid."
+    ],
+    [
+     "viktor",
+     "Och du är den som vägrar att se verkligheten. Ines och Mira pratar. De planerar något."
+    ],
+    [
+     "august",
+     "(tittar bort) Jag bryr mig inte. Låt dem prata. Jag har min verkstad."
+    ],
+    [
+     "viktor",
+     "Det där är precis vad jag menar. Du är svag. Och svaga människor dras in i andra folks strider om de inte vaksamma."
+    ],
+    [
+     "august",
+     "Jag är vaksam. Jag vill bara vara i fred."
+    ],
+    [
+     "viktor",
+     "(läner sig fram) Fred kostar. Och du har inte råd att köpa det."
+    ]
+   ],
+   "sammanfattning": "August och Viktor pratade.",
+   "handlingar": [],
+   "planandringar": []
+  },
+  {
+   "tid": "20:40",
+   "plats": "kafe",
+   "deltagare": [
+    "ines",
+    "august"
+   ],
+   "repliker": [
+    [
+     "ines",
+     "(sätter sig, tittar på august) Du ser urkört ut, August."
+    ],
+    [
+     "august",
+     "(suckar, stryker över ryggen) Ryggen värker. Och huvudet."
+    ],
+    [
+     "ines",
+     "Jag vet. Men jag behöver veta mer om Viktor. Och stadskassan."
+    ],
+    [
+     "august",
+     "(tittar bort) Jag vet inget mer än vad du redan har. Elias... han lovar mycket."
+    ],
+    [
+     "ines",
+     "(trycker sig framåt) Du lovar också. Men du gör inte alltid vad du lovar."
+    ],
+    [
+     "august",
+     "(rör om kaffet) Jag är trött, Ines. Jag vill bara fixa min verkstad."
+    ],
+    [
+     "ines",
+     "(mjuknar lite) Jag vet. Men Noor... hon behöver hjälp. Och Saga."
+    ],
+    [
+     "august",
+     "(sätter ner koppen) Saga lånar pengar av Viktor. Det är farligt."
+    ],
+    [
+     "ines",
+     "Jag vet. Jag försöker hjälpa henne. Men jag behöver din insikt."
+    ],
+    [
+     "august",
+     "(skriver på en lapp, skjuvar den över bordbordet) Här. En ledtråd. Men pressa inte för much."
+    ],
+    [
+     "ines",
+     "(plockar upp lappen) Tack. Jag ska vårdar förtroendet."
+    ],
+    [
+     "august",
+     "(nickar) Det är bra. Nu låt mig vara."
+    ]
+   ],
+   "sammanfattning": "Ines och August pratade.",
+   "handlingar": [],
    "planandringar": []
   },
   {
    "tid": "20:40",
    "plats": "stadshus",
    "deltagare": [
-    "omar",
-    "liv",
-    "mira"
+    "saga",
+    "omar"
    ],
    "repliker": [
     [
-     "liv",
-     "(tittar orolig på mira) Vi måste vara försiktiga. Viktor har ögon överallt."
-    ],
-    [
-     "mira",
-     "(viskar) Jag vet. Men jag har en källa i stadshuset. Vi kan få grepp om hans affärer."
+     "saga",
+     "(tittar nervöst på Omar) Du var snäll att fråga, Omar. Men jag... jag har inga pengar att låna ut just nu."
     ],
     [
      "omar",
-     "(tvekar, tittar på marken) Jag... jag vill bara hjälpa. Men Viktor varnade mig."
+     "(skruvar sig obekvämt) Jag vet att du är i knipa. Viktor håller dig i ett grepp, jag ser det."
     ],
     [
-     "liv",
-     "(sätter sig ned, tungt) Omar, vi behöver din hjälp. Inte för dig, utan för alla."
-    ],
-    [
-     "mira",
-     "(närmar sig omar) Du lånade mig 50 mynt. Jag lånar dig min tystnad. Och min kunskap."
+     "saga",
+     "(viskar) Han vet om mitt lån. Om han får veta att jag försöker hitta alternativ..."
     ],
     [
      "omar",
-     "(tittar upp, tveksamt) Jag... jag är rädd. För Ines. För Saga."
+     "(sätter handen på sagas axel) Du behöver inte låna av mig. Jag vill bara att du ska veta att du har en vän här."
     ],
     [
-     "liv",
-     "(hårdare) Rädsla är vad Viktor vill ha. Vi ger honom inte det."
-    ],
-    [
-     "mira",
-     "(ler svagt) Vi planerar. Liv, du har kontakter. Omar, du har din marknad. Jag har bibliotekets arkiv."
+     "saga",
+     "(tvekar) Jag... jag är så trött på att vara rädd. Men vad ska jag göra? Kaféet är mitt allt."
     ],
     [
      "omar",
-     "(suckar) OK. Men jag vill inte bråka. Jag vill bara att alla ska kunna sälja sina grejer."
+     "(suger på läpparna) Kanske behöver vi inte lösa allt idag. Du kan komma och hjälpa till i odlingen? Luften där är bra."
     ],
     [
-     "liv",
-     "(nickar) Det är precis därför vi gör detta. För en tryggare stad."
+     "saga",
+     "(tittar upp, lite mer lugn) Det... det låter bra. Tack, Omar. Jag ska komma imorgon."
     ],
     [
-     "mira",
-     "(whisper) Och för att Viktor inte ska vinna."
-    ],
-    [
-     "liv",
-     "(tittar på klockan) Jag måste hem. Mira, håll dig säker."
+     "omar",
+     "(ler mjukt) Bra. Och saga? Försök att inte tänka på Viktor för mycket. Han är inte värd din oro."
     ]
    ],
-   "sammanfattning": "Mira, Liv och Omar möts på stadshuset efter stämman. De diskuterar hur de ska motverka Viktors hot och manipulationer, med Mira som delar sin källa, Liv som motiverar dem, och Omar som tvekar men lovar stöd.",
+   "sammanfattning": "Omar erbjuder Saga stöd och ett tillflikt i odlingen, medan Saga erkänner sin rädsla för Viktor och sitt ekonomiska beroende.",
    "handlingar": [
     {
-     "typ": "lova",
-     "vem": "liv",
-     "till": "mira",
-     "text": "Jag lovar dig stöd mot Viktor."
-    },
-    {
-     "typ": "lova",
-     "vem": "mira",
+     "typ": "avsloja",
+     "vem": "saga",
      "till": "omar",
-     "text": "Jag lånar dig min kunskap och tystnad."
-    },
-    {
-     "typ": "lova",
-     "vem": "omar",
-     "till": "liv",
-     "text": "Jag hjälper till, men jag vill inte bråka."
+     "text": "Berätta om Viktors kontroll och sitt lån"
     }
    ],
-   "planandringar": [
-    {
-     "vem": "liv",
-     "tid": "21:30",
-     "plats": "hem",
-     "aktivitet": "Gå hem"
-    },
-    {
-     "vem": "mira",
-     "tid": "21:00",
-     "plats": "hem",
-     "aktivitet": "Gå hem"
-    },
-    {
-     "vem": "omar",
-     "tid": "21:00",
-     "plats": "hem",
-     "aktivitet": "Gå hem"
-    }
-   ]
+   "planandringar": []
   }
  ],
  "stamma": {
   "tid": "17:00",
   "narvarande": [
    "mira",
+   "noor",
    "liv",
    "august",
    "viktor",
@@ -2686,345 +2585,365 @@
   "forslag": [
    {
     "typ": "bygg",
-    "titel": "Marknad för alla",
-    "beskrivning": "Låt alla invånare sälja sina produkter på en gemensam marknad.",
-    "bygg": "marknad",
+    "titel": "Vaktstuga",
+    "beskrivning": "Bygg en vaktstuga för att öka tryggheten i staden och skydda invånare från Viktors hot.",
+    "bygg": "vaktstuga",
     "skatt": 10,
     "kandidat": null,
-    "av": "omar",
-    "id": "f8-1",
+    "av": "hanna",
+    "id": "f9-1",
     "roster": {
      "mira": {
+      "rost": "ja",
+      "motivering": "Behöver skydd mot Viktors hot, känner mig rädd."
+     },
+     "noor": {
       "rost": "nej",
-      "motivering": "Marknaden kostar mycket och jag tror det blir kaos, inte ordning."
+      "motivering": "Vaktstuga kostar 400 mynt, stadskassan är redan tight. Viktor vill ha den, jag litar inte på hans motiv."
      },
      "liv": {
       "rost": "ja",
-      "motivering": "Marknaden kan ge barnen och familjerna möjlighet till extra inkomst och sociala kontakter."
+      "motivering": "Trygghet är avgörande efter Viktors hot, särskilt med min hälsa och barnens trygghet i focus."
      },
      "august": {
       "rost": "nej",
-      "motivering": "En marknad kostar pengar och jag tror det blir kaos. Jag vill inte betala för det."
+      "motivering": "Vaktstuga kostar pengar och är byråkrati. Viktor är inte värd en sådan lösning."
      },
      "viktor": {
       "rost": "nej",
-      "motivering": "En marknad för alla skulle ge min konkurrens fler säljare och hota min affär."
+      "motivering": "Vaktstuga kostar pengar och jag misstänker att den ska skydda mig från mig själv, vilket är ironiskt."
      },
      "hanna": {
       "rost": "ja",
-      "motivering": "En marknad främjar lokal handel och gemenskap, även om det kostar."
+      "motivering": "Jag är uttömd och oroad för Viktors hot. En vaktstuga kan ge en känsla av trygghet, även om det kostar."
      },
      "omar": {
       "rost": "ja",
-      "motivering": "Detta är min dröm om en marknad där alla kan sälja. Jag tror det stärker samhället."
+      "motivering": "Jag är rädd för Viktors hot och en vaktstuga skulle kunna ge oss trygghet, även om det är dyrt."
      },
      "ines": {
       "rost": "ja",
-      "motivering": "Stödjer en öppen marknad som gynnar alla invånare och stärker den lokala ekonomin."
+      "motivering": "Behövs för trygghet mot Viktors hot."
      }
     },
-    "pris": 450,
-    "ja": 4,
+    "pris": 400,
+    "ja": 5,
     "nej": 3,
     "resultat": "bifall – bygget startar"
+   },
+   {
+    "typ": "lag",
+    "titel": "Skydd mot förtal",
+    "beskrivning": "Införa en lag som straffar spridning av ogrundade rykten om invånare för att skydda mitt rykte.",
+    "bygg": null,
+    "skatt": 10,
+    "kandidat": null,
+    "av": "viktor",
+    "id": "f9-2",
+    "roster": {
+     "mira": {
+      "rost": "nej",
+      "motivering": "Viktor vill skydda sitt rykte, jag misstänker honom."
+     },
+     "noor": {
+      "rost": "nej",
+      "motivering": "Den här lagen skyddar bara Viktor och tystnar oss. Jag vägrar stödja förtalslag som skyddar hans rykte."
+     },
+     "liv": {
+      "rost": "nej",
+      "motivering": "Viktor vill skydda sitt rykte; detta är manipulativt och strider mot min princip om transparens och frihet."
+     },
+     "august": {
+      "rost": "nej",
+      "motivering": "Lag mot rykten? Det är Viktor som sprider hot. Jag vill inte stötta hans försök att tysta folk."
+     },
+     "viktor": {
+      "rost": "ja",
+      "motivering": "Rykten om mig sprids och skadar mitt rykte, jag vill stoppa det."
+     },
+     "hanna": {
+      "rost": "nej",
+      "motivering": "Viktor vill skydda sitt eget rykte. Jag tror inte på att straffa rykten, utan snarare att addressesa de verkliga hoten."
+     },
+     "omar": {
+      "rost": "nej",
+      "motivering": "Viktor vill skydda sitt eget rykte genom att tysta andra. Jag stöder inte lagar som begränsar friheten att prata om problem."
+     },
+     "ines": {
+      "rost": "nej",
+      "motivering": "Skyddar förtal – ett sätt att tysta kritiska röster som mig."
+     }
+    },
+    "ja": 1,
+    "nej": 7,
+    "resultat": "avslag"
+   },
+   {
+    "typ": "bygg",
+    "titel": "Vaktstuga på Torget",
+    "beskrivning": "Bygga en vaktstuga för att öka tryggheten och skydda mot trakasserier efter de nya lagarna.",
+    "bygg": "vaktstuga",
+    "skatt": 10,
+    "kandidat": null,
+    "av": "ines",
+    "id": "f9-3",
+    "roster": {
+     "mira": {
+      "rost": "ja",
+      "motivering": "Vaktstuga på torget ökar tryggheten för alla."
+     },
+     "noor": {
+      "rost": "ja",
+      "motivering": "En vaktstuga på torget kan hjälpa till att skydda mot trakasserier, särskilt efter Viktors hot. Jag stöder det om det inte kostar för mycket."
+     },
+     "liv": {
+      "rost": "ja",
+      "motivering": "Vaktstuga på torget stödjer jag för att skydda invånare, men jag är skeptisk till kostnaden."
+     },
+     "august": {
+      "rost": "nej",
+      "motivering": "Ännu en vaktstuga. Vi har redan för mycket byggande. Pengarna räcker inte, och det löser inte Viktors problem."
+     },
+     "viktor": {
+      "rost": "nej",
+      "motivering": "Samma som f9-1, onödig utgift."
+     },
+     "hanna": {
+      "rost": "ja",
+      "motivering": "En vaktstuga på torget stöder jag, det är en praktisk åtgärd för tryggheten efter de senaste händelserna."
+     },
+     "omar": {
+      "rost": "ja",
+      "motivering": "En vaktstuga på torget skulle kunna hjälpa till att skydda oss alla efter de senaste händelserna."
+     },
+     "ines": {
+      "rost": "ja",
+      "motivering": "Stödjer trygghetsåtgärder på torget."
+     }
+    },
+    "pris": 400,
+    "ja": 6,
+    "nej": 2,
+    "resultat": "bifall men pengarna räcker inte"
    },
    {
     "typ": "lag",
     "titel": "Kulturkvällar på Torget",
     "beskrivning": "Tillåt veckovisa fria musikframträdande på torget för att öka social samvaro.",
     "bygg": null,
-    "skatt": 0,
-    "kandidat": null,
-    "av": "noor",
-    "id": "f8-2",
-    "roster": {
-     "mira": {
-      "rost": "ja",
-      "motivering": "Musik på torget är fint, det känns tryggt och trevligt."
-     },
-     "liv": {
-      "rost": "ja",
-      "motivering": "Kulturkvällar främjar samvaro och trygghet, vilket är viktigt för barnen."
-     },
-     "august": {
-      "rost": "ja",
-      "motivering": "Musik på torget är inget jag bryr mig om, men det skadar inte heller. Jag röstar ja för att det är billigt."
-     },
-     "viktor": {
-      "rost": "nej",
-      "motivering": "Musik på torget drar folk men jag ser ingen vinst för mig, och det kan bli bråk."
-     },
-     "hanna": {
-      "rost": "ja",
-      "motivering": "Kulturkvällar stärker sociala band och trivseln i staden."
-     },
-     "omar": {
-      "rost": "ja",
-      "motivering": "Musik och samvaro är bra för staden, jag stöder Noors förslag."
-     },
-     "ines": {
-      "rost": "ja",
-      "motivering": "Kulturkvällar främjar social samvaro och gör torget till en levande mötesplats."
-     }
-    },
-    "ja": 6,
-    "nej": 1,
-    "resultat": "bifall – ny lag"
-   },
-   {
-    "typ": "lag",
-    "titel": "Offentlig redovisning",
-    "beskrivning": "Kräv att stadshuset publicerar månatlig budget och utgifter för ökad transparens.",
-    "bygg": null,
-    "skatt": 0,
-    "kandidat": null,
-    "av": "ines",
-    "id": "f8-3",
-    "roster": {
-     "mira": {
-      "rost": "ja",
-      "motivering": "Transparens är viktigt, jag vill veta var pengarna tar vägen."
-     },
-     "liv": {
-      "rost": "ja",
-      "motivering": "Transparens är grundläggande för förtroendet för staden och dess ledning."
-     },
-     "august": {
-      "rost": "nej",
-      "motivering": "Transparens? Jag misstänker att Ines har någon agenda. Jag vill inte blanda mig i deras bråk."
-     },
-     "viktor": {
-      "rost": "nej",
-      "motivering": "Offentlig redovisning avslöjar mina affärer – jag har inget att visa som är rent."
-     },
-     "hanna": {
-      "rost": "ja",
-      "motivering": "Transparens i kassan är viktigt för förtroendet, trots att det avvisades tidigare."
-     },
-     "omar": {
-      "rost": "ja",
-      "motivering": "Transparens är viktigt, jag vill veta hur pengarna används."
-     },
-     "ines": {
-      "rost": "ja",
-      "motivering": "Transparens i kassan är avgörande för demokratin och förtroendet för stadshuset."
-     }
-    },
-    "ja": 5,
-    "nej": 2,
-    "resultat": "bifall – ny lag"
-   },
-   {
-    "typ": "bygg",
-    "titel": "Vaktstuga",
-    "beskrivning": "Bygg en vaktstuga för ökad säkerhet efter den nya hotbrevslagen.",
-    "bygg": "vaktstuga",
     "skatt": 10,
     "kandidat": null,
-    "av": "viktor",
-    "id": "f8-4",
+    "av": "noor",
+    "id": "f9-4",
     "roster": {
      "mira": {
-      "rost": "nej",
-      "motivering": "Vaktstuga kostar pengar och jag tror inte den hjälper mot hotbrev."
+      "rost": "ja",
+      "motivering": "Kulturkvällar främjar social samvaro och bibliotekets mål."
+     },
+     "noor": {
+      "rost": "ja",
+      "motivering": "Kulturkvällar på torget är mitt hjärtebarn. Jag vill att staden ska leva med musik och samvaro."
      },
      "liv": {
-      "rost": "nej",
-      "motivering": "Vaktstugan känns som en reaktion på rädsla; jag tror på preventivt arbete och lagar snarare än övervakning."
+      "rost": "ja",
+      "motivering": "Kulturkvällar främjar social samvaro och är positivt för staden."
      },
      "august": {
-      "rost": "nej",
-      "motivering": "En vaktstuga? Vi har redan en lag mot hotbrev. Det här känns som att Viktor vill ha mer kontroll. Nej."
+      "rost": "ja",
+      "motivering": "Musik på torget är bra för stämningen. Det kostar inget och är något alla kan ta del av."
      },
      "viktor": {
-      "rost": "ja",
-      "motivering": "En vaktstuga ger mig kontroll och säkerhet, jag kan övervaka vad som händer."
+      "rost": "nej",
+      "motivering": "Musik på torget drar folk men jag vill inte skapa en miljö där folk pratar mer om mig."
      },
      "hanna": {
-      "rost": "nej",
-      "motivering": "Vaktstuga känns som en överreaktion och en onödig kostnad; vi har redan hotbrevslagen."
+      "rost": "ja",
+      "motivering": "Kulturkvällar främjar social samvaro och en positiv stämning i staden, vilket jag stöder."
      },
      "omar": {
-      "rost": "nej",
-      "motivering": "Vaktstuga kostar mycket och jag är rädd för att det ska kännas som övervakning. Viktor vill kanske kontrollera mer."
+      "rost": "ja",
+      "motivering": "Jag gillar idén om musik och samvaro på torget, det skulle kunna binda ihop staden."
      },
      "ines": {
-      "rost": "nej",
-      "motivering": "Vaktstugan känns som en överreaktion och ett sätt för Viktor att kontrollera säkerheten efter eget godtycke."
+      "rost": "ja",
+      "motivering": "Stödjer kultur och social samvaro."
      }
     },
-    "pris": 400,
-    "ja": 1,
-    "nej": 6,
-    "resultat": "avslag"
+    "ja": 7,
+    "nej": 1,
+    "resultat": "bifall – ny lag"
    }
   ],
   "beslutsfor": true,
   "inlagg": [
    [
     "mira",
-    "Jag röstar ja till kulturkvällar och transparens. Vi behöver inte fler byggprojekt som kostar pengar."
+    "Jag röstar ja på vaktstugan och kulturkvällarna. Viktor bör sluta hota oss."
+   ],
+   [
+    "noor",
+    "Jag röstar ja på kulturkvällar – låt torget bli en plats för liv och musik! Och ja på vaktstuga på torget, men nej på den dyra vaktstugan som Viktor vill ha. Förtalsgagen är ett skymd försök att tystna oss."
    ],
    [
     "liv",
-    "Jag anser att vi bör satsa på att bygga en community baserad på tillit och transparens, inte på rädsla. Därför ja till marknad, kulturkvällar och redovisning, men nej till vaktstugan."
+    "Jag stöder vaktstugan för tryggheten, men varför vill Viktor straffa rykten? Det här känns som censur. Och kulturkvällar på torget är en bra sak för oss alla."
    ],
    [
     "august",
-    "Jag tycker att vi ska fokusera på att få stadskassan att hålla ihop innan vi bygger nya grejer."
+    "Vi har inte råd med fler vaktstugor. Viktor skapar problem och vill sedan lösa dem med våra pengar. Jag röstar nej på alla vaktstuga-förslag. Men kulturkvällar? Det låter bra."
    ],
    [
     "viktor",
-    "Vi behöver ordning och reda efter alla hotbrev. En vaktstuga är det minsta vi kan göra för att skydda oss."
+    "Jag föreslår att vi straffar de som sprider ogrundade rykten, det är avgörande för stadens ordning."
    ],
    [
     "hanna",
-    "Jag röstar ja på marknad, kulturkvällar och transparens. Nej till vaktstuga – vi behöver inte mer bureaucracy, vi behöver förtroende."
+    "Vi behöver mer trygghet här. Viktors beteende har gjort oss alla räda. Jag föreslår att vi sätter fart med vaktstugan."
    ],
    [
     "omar",
-    "Jag hoppas att vi kan skapa en marknad där alla känner sig välkomna. Det är viktigt att vi lyssnar på varandra."
+    "Jag stöder vaktstugan för tryggheten, men jag är oroad över kostnaden. Viktor, ditt förslag om att straffa rykten känns som censur."
    ],
    [
     "ines",
-    "Jag röstar ja på alla förslag utom vaktstugan. Transparens och öppenhet är nyckeln till ett förtroendefullt samhälle, inte fler murar och vakter."
+    "Vi behöver inte lagar som tystar oss, utan lagar som skyddar oss alla."
    ]
   ]
  },
  "tidning": {
-  "rubrik": "Staden i förändring: Nya lagar och spänningar",
-  "ingress": "I dag beslutade stämman om tre viktiga lagar: Marknadsplatsen får byggas, Kulturkvällar på Torget tillåts, och Offentlig redovisning av stadskassan införs. Samtidigt eskalerar spänningarna kring hot och manipulationer bland invånarna.",
+  "rubrik": "Staden i Förändring: Ny Lag och Spänningar",
+  "ingress": "I dag biföll stämman en ny lag om kulturkvällar på torget, samtidigt som rykten om ekonomiska oregulariteter kring Viktor sprids. Spänningarna i kvarteret tycks öka.",
   "notiser": [
-   "Stämman biföll bygget av en ny Marknadsplats efter omröstning. Bygget startar snart.",
-   "Ny lag om Kulturkvällar på Torget antogs för att främja social samvaro med fri musik.",
-   "Offentlig redovisning av stadskassan blir nu krav – stadshuset måste publicera budget och utgifter månatligen."
+   "Stämman biföll lag förstem om kulturkvällar på torget med 7 ja-röster. Lag om skydd mot förtal avslogs med 1 ja-röst.",
+   "Vaktstugans bygge startar efter 5 ja-röster, medan förslaget om vaktstuga på torget bifölls men pengarna räcker inte.",
+   "Rykten sprids om att Viktor skulle ha stulit pengar från stadskassan. En okänd stranger sprider information på torget."
   ]
  },
  "omplaneringar": [
   {
    "vem": "elias",
-   "tid": "08:45",
+   "tid": "09:00",
    "plats": "hem",
-   "aktivitet": "Skicka meddelande till august",
+   "aktivitet": "Söka efter Saga",
    "beslut": "08:40"
   },
   {
    "vem": "viktor",
-   "tid": "09:00",
-   "plats": "stadshus",
-   "aktivitet": "Kolla läckan",
-   "beslut": "08:40"
-  },
-  {
-   "vem": "noor",
-   "tid": "09:00",
-   "plats": "torget",
-   "aktivitet": "Observera dimman",
-   "beslut": "08:40"
-  },
-  {
-   "vem": "viktor",
-   "tid": "10:15",
-   "plats": "stadshus",
-   "aktivitet": "Kolla läckan",
-   "beslut": "10:00"
-  },
-  {
-   "vem": "august",
    "tid": "10:30",
-   "plats": "park",
-   "aktivitet": "Vila och tänka",
+   "plats": "torget",
+   "aktivitet": "Spana på ryktesspridaren",
+   "beslut": "08:40"
+  },
+  {
+   "vem": "saga",
+   "tid": "10:00",
+   "plats": "hem",
+   "aktivitet": "Sörja ekonomisk sårbarhet",
+   "beslut": "08:40"
+  },
+  {
+   "vem": "elias",
+   "tid": "10:30",
+   "plats": "torget",
+   "aktivitet": "Lyssna på rykten",
    "beslut": "10:00"
   },
   {
-   "vem": "august",
+   "vem": "saga",
+   "tid": "10:30",
+   "plats": "torget",
+   "aktivitet": "Lyssna på rykten",
+   "beslut": "10:00"
+  },
+  {
+   "vem": "liv",
+   "tid": "10:30",
+   "plats": "torget",
+   "aktivitet": "Lyssna på rykten",
+   "beslut": "10:00"
+  },
+  {
+   "vem": "viktor",
+   "tid": "10:30",
+   "plats": "torget",
+   "aktivitet": "Spana på ryktesspridaren",
+   "beslut": "10:00"
+  },
+  {
+   "vem": "viktor",
+   "tid": "12:15",
+   "plats": "torget",
+   "aktivitet": "Spana på stranger",
+   "beslut": "12:00"
+  },
+  {
+   "vem": "elias",
    "tid": "12:30",
-   "plats": "hem",
-   "aktivitet": "Gå hem för vila",
+   "plats": "kafe",
+   "aktivitet": "Möta Mira och Liv",
    "beslut": "12:00"
   },
   {
    "vem": "saga",
    "tid": "12:30",
-   "plats": "hem",
-   "aktivitet": "Gå hem för att samla krafter",
-   "beslut": "12:00"
-  },
-  {
-   "vem": "omar",
-   "tid": "12:30",
-   "plats": "hem",
-   "aktivitet": "Gå hem och fundera",
-   "beslut": "12:00"
-  },
-  {
-   "vem": "viktor",
-   "tid": "14:15",
    "plats": "kafe",
-   "aktivitet": "Gå till kaféet",
+   "aktivitet": "Möta Elias",
+   "beslut": "12:00"
+  },
+  {
+   "vem": "mira",
+   "tid": "14:30",
+   "plats": "bibliotek",
+   "aktivitet": "gå hem för att skriva",
    "beslut": "14:00"
   },
   {
-   "vem": "saga",
+   "vem": "liv",
    "tid": "14:30",
    "plats": "hem",
-   "aktivitet": "Gå hem",
+   "aktivitet": "packa låda",
    "beslut": "14:00"
   },
   {
-   "vem": "august",
-   "tid": "14:20",
-   "plats": "park",
-   "aktivitet": "Söka sig till kafe",
-   "beslut": "14:00"
-  },
-  {
-   "vem": "hanna",
+   "vem": "viktor",
    "tid": "16:15",
-   "plats": "park",
-   "aktivitet": "söka ines",
+   "plats": "stadshus",
+   "aktivitet": "Smugna in till stämman",
    "beslut": "16:00"
-  },
-  {
-   "vem": "noor",
-   "tid": "16:30",
-   "plats": "torget",
-   "aktivitet": "prata med mira",
-   "beslut": "16:00"
-  },
-  {
-   "vem": "hanna",
-   "tid": "18:30",
-   "plats": "hem",
-   "aktivitet": "Gå hem direkt",
-   "beslut": "18:20"
-  },
-  {
-   "vem": "august",
-   "tid": "18:30",
-   "plats": "hem",
-   "aktivitet": "Gå hem",
-   "beslut": "18:20"
   },
   {
    "vem": "saga",
+   "tid": "16:20",
+   "plats": "park",
+   "aktivitet": "Sök stöd hos Omar",
+   "beslut": "16:00"
+  },
+  {
+   "vem": "viktor",
+   "tid": "18:30",
+   "plats": "stadshus",
+   "aktivitet": "Pressa Ines för info",
+   "beslut": "18:20"
+  },
+  {
+   "vem": "mira",
+   "tid": "18:30",
+   "plats": "stadshus",
+   "aktivitet": "Undvika Viktor",
+   "beslut": "18:20"
+  },
+  {
+   "vem": "viktor",
    "tid": "20:30",
    "plats": "hem",
-   "aktivitet": "Gå hem för att tänka ut",
+   "aktivitet": "Undvika Elias",
    "beslut": "20:00"
   },
   {
    "vem": "ines",
-   "tid": "20:30",
-   "plats": "hem",
-   "aktivitet": "Gå hem och skriva",
-   "beslut": "20:00"
-  },
-  {
-   "vem": "viktor",
-   "tid": "20:30",
-   "plats": "hem",
-   "aktivitet": "Sitta och fundera",
+   "tid": "20:15",
+   "plats": "kafe",
+   "aktivitet": "Möta August",
    "beslut": "20:00"
   }
  ],
@@ -3032,255 +2951,305 @@
   {
    "tid": "08:40",
    "vem": "elias",
-   "text": "Måste få august att stödja mig, han är skeptisk."
+   "text": "Huvudvärken smälter inte, måste hitta Saga innan hon gör something dumt."
   },
   {
    "tid": "08:40",
    "vem": "viktor",
-   "text": "Läckan är perfect, folk kommer att bråka om stadshuset."
+   "text": "Vem sprider dessa lögner? Måste kontrollera torget."
   },
   {
    "tid": "08:40",
+   "vem": "saga",
+   "text": "Elias lovar allt men håller inget. Jag är fast i detta."
+  },
+  {
+   "tid": "08:40",
+   "vem": "mira",
+   "text": "Viktor observerar oss, vi måste vara försiktiga."
+  },
+  {
+   "tid": "08:40",
+   "vem": "liv",
+   "text": "Viktor är farlig, vi behöver ett plan."
+  },
+  {
+   "tid": "10:00",
+   "vem": "mira",
+   "text": "Måste vara försiktig, Viktor observerar mig överallt."
+  },
+  {
+   "tid": "10:00",
+   "vem": "elias",
+   "text": "Rykten är vapen, jag kan använda dem mot Viktor."
+  },
+  {
+   "tid": "10:00",
    "vem": "noor",
-   "text": "Dimman gör torget mystiskt, kanske bra för konsertplanerna."
+   "text": "Kulturkvällar blir kul, men spänningarna är påtagliga."
+  },
+  {
+   "tid": "10:00",
+   "vem": "liv",
+   "text": "Viktor är farlig, vi måste vara smarta."
+  },
+  {
+   "tid": "10:00",
+   "vem": "august",
+   "text": "Allt detta snack är tråkigt, jag vill bara fixa min lastbil."
+  },
+  {
+   "tid": "10:00",
+   "vem": "saga",
+   "text": "Viktor måste stoppas, min framtid hänger i balansen."
   },
   {
    "tid": "10:00",
    "vem": "viktor",
-   "text": "Hoppas ingen ser hur jag manipulerar situationen."
+   "text": "Vem vågar anklaga mig? Jag kontrollrar läget."
   },
   {
    "tid": "10:00",
-   "vem": "august",
-   "text": "Vill bara ha lugn och ro, inte fler problem."
+   "vem": "hanna",
+   "text": "Måste skydda Mira och Noor, hoten är verkliga."
+  },
+  {
+   "tid": "10:00",
+   "vem": "omar",
+   "text": "Jag vill bara vara fri från konflikter."
+  },
+  {
+   "tid": "10:00",
+   "vem": "ines",
+   "text": "Viktor-målet är nästa stora artikel, måste få bevis."
   },
   {
    "tid": "12:00",
-   "vem": "mira",
-   "text": "Känns tungt att hålla ut med dessa spel."
+   "vem": "viktor",
+   "text": "Vem är den stranger? Sprider falska rykten."
   },
   {
    "tid": "12:00",
    "vem": "elias",
-   "text": "Måste hålla August med mig, han är nyckeln."
-  },
-  {
-   "tid": "12:00",
-   "vem": "noor",
-   "text": "Vilka bra idéer skulle kunna rädda staden?"
-  },
-  {
-   "tid": "12:00",
-   "vem": "liv",
-   "text": "Måtte alla finna trygghet här."
-  },
-  {
-   "tid": "12:00",
-   "vem": "august",
-   "text": "Jag orkar inte mer manipulation."
+   "text": "Mira och Liv är misstänksamma, måste hålla kontroll."
   },
   {
    "tid": "12:00",
    "vem": "saga",
-   "text": "Viktor håller mig i ett grepp, vad gör jag?"
-  },
-  {
-   "tid": "12:00",
-   "vem": "viktor",
-   "text": "August är lättpåverkad, bra."
-  },
-  {
-   "tid": "12:00",
-   "vem": "hanna",
-   "text": "Måtte jag hitta min frid."
-  },
-  {
-   "tid": "12:00",
-   "vem": "omar",
-   "text": "Saga behöver hjälp, jag måste göra något."
-  },
-  {
-   "tid": "12:00",
-   "vem": "ines",
-   "text": "Ryktet om Viktor och Elias måste granskas."
+   "text": "Elias kan vara användbar, men var försiktig."
   },
   {
    "tid": "14:00",
    "vem": "mira",
-   "text": "Känner mig tryggare med Hanna, men Viktor känns hotfullt nära."
-  },
-  {
-   "tid": "14:00",
-   "vem": "elias",
-   "text": "Dimman döljer min rädsla. Jag måste hålla control."
-  },
-  {
-   "tid": "14:00",
-   "vem": "noor",
-   "text": "Den frammande resanden har intressanta fråga. Kanske en ny kontakt?"
+   "text": "Måste få bort Viktors skugga. Biblioteket känns säkrare."
   },
   {
    "tid": "14:00",
    "vem": "liv",
-   "text": "Mira verkar rädd. Jag måste se till att hon är trygg."
-  },
-  {
-   "tid": "14:00",
-   "vem": "august",
-   "text": "Elias lovar vila, men jag vet att det är ett spel. Trött."
-  },
-  {
-   "tid": "14:00",
-   "vem": "saga",
-   "text": "Vatten på trappan... Stadshuset förfaller. Pengar behövs."
-  },
-  {
-   "tid": "14:00",
-   "vem": "viktor",
-   "text": "Noor pratar med främlingar. Jag måste höra vad de säger."
+   "text": "Är jag säker här? Kanske börjar jag packa."
   },
   {
    "tid": "14:00",
    "vem": "hanna",
-   "text": "Uttröttad. Behöver vila i parken innan stämman."
-  },
-  {
-   "tid": "14:00",
-   "vem": "omar",
-   "text": "Saga behöver stöd. Jag ska möta henne i parken."
-  },
-  {
-   "tid": "14:00",
-   "vem": "ines",
-   "text": "Rykten om Elias och Viktor blir starkare. Måste granska."
+   "text": "Jag orkar inte mer. Behöver vila innan nästa kris."
   },
   {
    "tid": "16:00",
-   "vem": "hanna",
-   "text": "Jag orkar inte mer. Ines måste veta hur det står till."
+   "vem": "mira",
+   "text": "Måste skriva klart kapitlet innan stämman..."
+  },
+  {
+   "tid": "16:00",
+   "vem": "elias",
+   "text": "Kulturkvällar på torget – mitt chance att vinna folk..."
   },
   {
    "tid": "16:00",
    "vem": "noor",
-   "text": "Mira är nyfiken, kanske hon vill hjälpa till med konserten."
+   "text": "Utarmad av alla möten, vill bara spela musik..."
+  },
+  {
+   "tid": "16:00",
+   "vem": "liv",
+   "text": "Viktors hot är realistiskt, måste skydda Mira..."
+  },
+  {
+   "tid": "16:00",
+   "vem": "august",
+   "text": "Varför alltid drama? Jag vill bara fixa verkstaden."
+  },
+  {
+   "tid": "16:00",
+   "vem": "saga",
+   "text": "Omar är min enda chans att bli fri från Viktor..."
+  },
+  {
+   "tid": "16:00",
+   "vem": "viktor",
+   "text": "Ines vet något, måste få ut det ur henne..."
+  },
+  {
+   "tid": "16:00",
+   "vem": "hanna",
+   "text": "Måste skydda Mira och Noor från Viktor och Elias..."
+  },
+  {
+   "tid": "16:00",
+   "vem": "omar",
+   "text": "Viktors hot gör mig oroad, men jag måste vara lugn..."
   },
   {
    "tid": "16:00",
    "vem": "ines",
-   "text": "Hanna ser så trött ut. Jag börjar fundera på om jag pressar för mycket."
+   "text": "Viktors hemlighet måste hittas, det är nyheten!"
+  },
+  {
+   "tid": "18:20",
+   "vem": "viktor",
+   "text": "Ines vet för mycket, måste få ut mer info innan stämman."
+  },
+  {
+   "tid": "18:20",
+   "vem": "mira",
+   "text": "Viktor pressar mig, jag måste vara försiktig och inte blöda ut för mycket."
+  },
+  {
+   "tid": "18:20",
+   "vem": "ines",
+   "text": "Jag är trött på att vara rädd, men måste hålla ihop fronten."
   },
   {
    "tid": "18:20",
    "vem": "hanna",
-   "text": "Jag orkar inte mer. Viktor är en giftig orm."
+   "text": "Stämman blir hård, jag hoppas ingen eskalerar konflikterna."
   },
   {
-   "tid": "18:20",
+   "tid": "20:00",
+   "vem": "mira",
+   "text": "Måtte Ines ha nyckeln till min säkerhet."
+  },
+  {
+   "tid": "20:00",
+   "vem": "elias",
+   "text": "Huvudvärken värre än jag trodde."
+  },
+  {
+   "tid": "20:00",
+   "vem": "noor",
+   "text": "Konserten måste bli perfekt."
+  },
+  {
+   "tid": "20:00",
+   "vem": "liv",
+   "text": "Flytt? Kanske är det bäst."
+  },
+  {
+   "tid": "20:00",
    "vem": "august",
-   "text": "Jag måste ta en paus. Viktor är farlig."
-  },
-  {
-   "tid": "18:20",
-   "vem": "ines",
-   "text": "Mira har en källa. Vi måste skydda henne."
-  },
-  {
-   "tid": "18:20",
-   "vem": "viktor",
-   "text": "Hanna är för ivrig. Jag måste varna henne igen."
+   "text": "Smärten gör mig trött."
   },
   {
    "tid": "20:00",
    "vem": "saga",
-   "text": "Elias löften är för bra för att vara sann..."
-  },
-  {
-   "tid": "20:00",
-   "vem": "ines",
-   "text": "Viktor hotar mig, men jag får inte ge upp."
+   "text": "Viktor måste släppa taget."
   },
   {
    "tid": "20:00",
    "vem": "viktor",
-   "text": "Hanna och Mira är farliga, de måste hållas borta."
+   "text": "Elias är svag, jag kan utnyttja det."
+  },
+  {
+   "tid": "20:00",
+   "vem": "hanna",
+   "text": "Måtte jag hitta ro."
+  },
+  {
+   "tid": "20:00",
+   "vem": "omar",
+   "text": "Stämman var stressig."
+  },
+  {
+   "tid": "20:00",
+   "vem": "ines",
+   "text": "Måtte August förstå mitt dilemma."
   }
  ],
  "smaprat": [
   {
-   "tid": "09:00",
-   "plats": "stadshus",
+   "tid": "10:30",
+   "plats": "torget",
    "repliker": [
     [
-     "viktor",
-     "Ah, vad tur att vi har den här läckan, ger oss något att diskutera."
+     "elias",
+     "Hör du, Viktor har stulit pengar, tror du på det?"
     ],
     [
-     "elias",
-     "Ja, det är väl inte så farligt, eller?"
+     "saga",
+     "Jag vet inte, men det känns hotfullt."
+    ],
+    [
+     "liv",
+     "Vi måste vara försiktiga, Viktor spanar överallt."
     ]
    ]
   },
   {
-   "tid": "12:15",
+   "tid": "10:30",
+   "plats": "torget",
+   "repliker": [
+    [
+     "viktor",
+     "Vem sprider dessa lögner? Jag ser dig där."
+    ],
+    [
+     "elias",
+     "Bara rykten, Viktor. Lugn nu."
+    ]
+   ]
+  },
+  {
+   "tid": "12:30",
    "plats": "kafe",
    "repliker": [
     [
      "elias",
-     "August, du behöver inte spänna dig så här. Vila finns det plats för."
+     "Hej Saga, har du hört något nytt om Viktor?"
     ],
     [
-     "august",
-     "Jag är trött, Elias. Låt mig bara ha kaffet i lugn och ro."
+     "saga",
+     "Bara rykten. Men Mira och Liv verkar oroliga."
     ],
     [
      "elias",
-     "Så简单. Vi pratas vid senare. Jag lovar dig vila."
+     "Vi måste hålla ögonen öppna. Självförsvar."
     ]
    ]
   },
   {
-   "tid": "14:15",
+   "tid": "14:10",
    "plats": "kafe",
    "repliker": [
     [
-     "noor",
-     "Vad frågar den här främlingen efter?"
+     "liv",
+     "Mira, vill du komma med hemåt? Jag känner mig osäker."
     ],
     [
-     "viktor",
-     "Bara nyfiket, tror jag. Eller smartare?"
+     "mira",
+     "Ja, biblioteket är bättre. Vi kan skriva där."
     ]
    ]
   },
   {
-   "tid": "15:00",
-   "plats": "park",
+   "tid": "14:20",
+   "plats": "kafe",
    "repliker": [
+    [
+     "hanna",
+     "August, hur mår du? Du ser ut som en ruskig rök."
+    ],
     [
      "august",
-     "Elias är påfar. Jag vill bara ha lugnt."
-    ],
-    [
-     "hanna",
-     "Lugnt? Här är det alltid kaos. Vill du ha kaffe?"
-    ]
-   ]
-  },
-  {
-   "tid": "16:20",
-   "plats": "park",
-   "repliker": [
-    [
-     "hanna",
-     "Ines, har du tid? Jag behöver prata om transparensen."
-    ],
-    [
-     "ines",
-     "Självklart. Sätt dig här. Hur mår Mira?"
-    ],
-    [
-     "hanna",
-     "Hon är rädd. Men jag lovar att skydda henne."
+     "Utmattad. Elias och Viktor dränerar mig."
     ]
    ]
   },
@@ -3289,37 +3258,55 @@
    "plats": "stadshus",
    "repliker": [
     [
+     "viktor",
+     "Ines, vi behöver prata. Vad vet du om Mira och Liv?"
+    ],
+    [
      "ines",
-     "Mira, har du hört något nytt från din källa?"
+     "Jag vet inget mer än du redan vet, Viktor."
     ],
     [
-     "mira",
-     "Inte idag. Men jag behåller öronen öppna."
-    ],
-    [
-     "liv",
-     "Vi måste få igenom trygghetslagen, ingen ska känna sig hotad."
+     "viktor",
+     "Säker på det? Jag gillar inte when people hide things."
     ]
    ]
   },
   {
    "tid": "18:45",
+   "plats": "stadshus",
+   "repliker": [
+    [
+     "mira",
+     "August, känner du dig trygg här med Viktor omkring?"
+    ],
+    [
+     "august",
+     "Mira, jag försöker undvika konflikter. Du borde göra det också."
+    ]
+   ]
+  },
+  {
+   "tid": "20:15",
    "plats": "kafe",
    "repliker": [
     [
-     "elias",
-     "Saga, hur känns det att sitta här ensam?"
+     "ines",
+     "Hej August, hur mår du?"
     ],
     [
-     "saga",
-     "Jag funderar på ditt nästa löfte, Elias."
+     "august",
+     "Trött, men bra. Tack för kaffet."
+    ],
+    [
+     "ines",
+     "Vi måste prata om Viktor."
     ]
    ]
   }
  ],
  "statistik": {
-  "anrop": 65,
-  "tokens": 29769,
-  "sekunder": 3022
+  "anrop": 64,
+  "tokens": 28688,
+  "sekunder": 2598
  }
 }
