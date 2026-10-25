@@ -24,6 +24,14 @@
   .news-tag{ font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--amber); }
   .news-src{ font-size:.82rem; color:var(--violet); text-decoration:none; }
   .news-src:hover{ text-decoration:underline; }
+  .news-player{ display:grid; grid-template-columns:minmax(0,420px) minmax(0,1fr); gap:clamp(20px,4vw,48px); align-items:center; margin-bottom:34px; }
+  .news-video{ position:relative; aspect-ratio:1/1; border-radius:22px; overflow:hidden; background:var(--dark); box-shadow:var(--glass-shadow); }
+  .news-video video{ width:100%; height:100%; object-fit:cover; display:block; }
+  .news-onair{ position:absolute; top:14px; left:14px; display:inline-flex; align-items:center; gap:.5em; font-family:var(--mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:#fff; background:rgba(0,0,0,.45); backdrop-filter:blur(8px); padding:6px 11px; border-radius:99px; pointer-events:none; }
+  .news-onair i{ width:7px; height:7px; border-radius:50%; background:#ff4d4d; }
+  .news-player h2{ margin:6px 0 12px; font-size:clamp(1.6rem,3vw,2.2rem); line-height:1.15; }
+  .news-player p{ margin:0; color:var(--muted,#777); line-height:1.6; max-width:46ch; }
+  @media (max-width:760px){ .news-player{ grid-template-columns:1fr; } }
   .news-note{ margin-top:22px; font-size:.85rem; color:var(--muted,#777); }
 </style>
 </head>
@@ -60,6 +68,16 @@
 <main>
   <section class="wrap news-ep" id="avsnitt-1">
     <div class="news-meta">AVSNITT 1 · 25 OKTOBER 2026</div>
+    <div class="news-player">
+      <div class="news-video">
+        <span class="news-onair"><i></i>Avsnitt 1 · 1:05</span>
+        <video controls playsinline preload="metadata" poster="assets/nyheter/avsnitt-001.jpg" src="assets/nyheter/avsnitt-001.mp4"></video>
+      </div>
+      <div>
+        <h2>AI-dygnet på en minut</h2>
+        <p>Kimi K3.1 Pro, Chroma och Replit går ihop, längre MCP-uppgifter i Claude Code, ny Nemotron, Cohere Model Vault och veckans modellsläpp. Uppläst av en AI-avatar (Simli) med ElevenLabs-röst.</p>
+      </div>
+    </div>
     <div class="news-grid">
     <article class="news-item">
       <span class="news-tag">Modeller</span>
