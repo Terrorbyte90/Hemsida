@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Projekt av Ted Svärd — ett självhostat AI-team, Eon v6, TedBots, Dystopia AI, Teds God View, Lunachat, Everlife och fler AI- och iOS-system.">
+<meta name="description" content="Projekt av Ted Svärd — ett självhostat AI-team, språkmodellen Luna, Eon v6, Sjukhusfeber, TedBots, Dystopia AI, Teds God View, Lunachat, Everlife och fler AI- och iOS-system.">
 <title>Projekt — Ted Svärd</title>
 <link rel="canonical" href="https://tedsvard.se/projekt.html">
 <meta property="og:type" content="website">
@@ -21,15 +21,13 @@
     <div class="nav-links">
       <a href="index.html">Hem</a>
       <a href="projekt.html" aria-current="page">Projekt</a>
-      <a href="simulering.html">Simulering</a>
       <a href="labb.html" class="nav-signal"><span class="pulse"></span>Labbet</a>
-      <a href="nyheter.html">Nyheter</a>
+      <a href="luna.html">Luna</a>
+      <a href="forskning.html">Forskning</a>
       <a href="telefoni.html">Telefoni</a>
       <a href="kurser.html">Kurser</a>
       <a href="poddar.html">Poddar</a>
-      <a href="rostlabb.html">Röst-labb</a>
-      <a href="forskning.html">Forskning</a>
-      <a href="bland/">Bland</a>
+      <a href="nyheter.html">Nyheter</a>
       <a href="om-mig.html">Om mig</a>
     </div>
   </div>
@@ -37,7 +35,7 @@
 
 <header class="page-head wrap">
   <div class="eyebrow">Utvalda system</div>
-  <h1>Tjugoen system, <em>en byggare</em>.</h1>
+  <h1>Tjugofem system, <em>en byggare</em>.</h1>
   <p class="lede">Från självhostad AI-infrastruktur och grundforskning i AI, till premiumdesignade iOS-appar, spel och röstdrivna agenter. Byggda från idé till fungerande produkt, av en person.</p>
 </header>
 
@@ -50,9 +48,9 @@
     </div>
     <div>
       <h3>Hermes <span style="opacity:.6;font-weight:400">/ mitt AI-team</span></h3>
-      <p>Ett självhostat AI-team på min egen server, byggt på agentplattformen Hermes. Jag pratar med dem i iMessage som med kollegor. <strong>Athena</strong> är huvudagenten. Hon tar egna utvecklingspass i mina appar (bygger, testar, fotograferar varje vy och sätter ett ärligt betyg), kör AI-experiment i flera steg och ringer samtal åt mig. <strong>Leia</strong> är en lokal 35B-modell som kostar noll kronor per fråga. Hon vaktar servern, svarar på hur systemet mår och berättar varje morgon vad hon lärt sig under natten. Det kan vara egna misstag, som när hon hävdade att något saknades utan att ha kollat konfigurationen först. Runt dem finns <strong>Sofia</strong> för snabba frågor, <strong>Luna</strong> för kod och <strong>Voicy</strong> som producerar poddavsnitt.</p>
-      <p>Under ytan finns delat minne, en kunskapsbas som byggs om varje natt och automatik som inte behöver någon modell: morgonrapport, AI-omvärldsbevakning, en servervakt som varnar innan något går sönder, en beroendevakt för kodens säkerhet och krypterade backuper varje natt. Gränsen är tydlig. Mejl, publicering och pengar kräver alltid mitt godkännande. <a href="labb.html" style="text-decoration:underline">Se Leias status live i Labbet →</a></p>
-      <div class="tags"><span>Python</span><span>Multi-agent</span><span>Lokal LLM</span><span>iMessage</span><span>Systemdrift</span></div>
+      <p>Ett självhostat AI-team på min egen server, byggt på agentplattformen Hermes. Jag pratar med dem i iMessage och i en egen app, som med kollegor. <strong>Athena</strong> är huvudassistenten som vet mest och samordnar. <strong>Luna</strong> är arbetshästen för kod och tunga jobb. <strong>MiMo</strong> är specialisten för svåra kodjobb och granskning, och används bara när jag ber om det. <strong>Leia</strong> är en lokal modell som kör på serverns egen processor, kostar noll kronor per fråga och sköter det privata.</p>
+      <p>De samarbetar i egna kanaler med en ledare som fördelar och följer upp, en arbetare och en granskare som själv kör testerna. Uppgifterna ligger på en tavla som tål omstarter, och kodjobb får egna git-grenar. På natten går <strong>Ascend</strong> igenom agenternas misstag, föreslår nya färdigheter och släpper bara in dem som klarar tester i en isolerad sandlåda. Nya modeller testas automatiskt mot samma prov, och kostnaden rapporteras exakt varje morgon. Gränsen är tydlig: mejl, publicering och pengar kräver alltid mitt godkännande, och alla nycklar ligger i ett krypterat valv. <a href="labb.html" style="text-decoration:underline">Se statusen live i Labbet →</a></p>
+      <div class="tags"><span>Python</span><span>Multi-agent</span><span>Lokal LLM</span><span>Självförbättring</span><span>Systemdrift</span></div>
     </div>
     <div class="shot-cluster" data-shot-cluster>
       <div class="shot" style="--r:-5deg; left:0"><img src="assets/screenshots/hermes/4.jpg" alt="Leia berättar vad hon lärt sig under natten" loading="lazy" decoding="async"><span>Leia: nattens lärdomar</span></div>
@@ -334,12 +332,48 @@
   <article class="case reveal">
     <div>
       <div class="meta">22 · Språkmodell</div>
-      <div class="status"><span class="d"></span>Tränas nu</div>
+      <div class="status"><span class="d"></span>Färdigtränad</div>
     </div>
     <div>
-      <h3><a href="luna.html">Luna</a></h3>
-      <p>En svensk Mixture-of-Experts-språkmodell som jag tränat helt från grunden: 1 miljard parametrar, 16 experter, egen svensk tokenizer och egen datapipeline. Byggd på tre dagar med min MacBook och elva dollar i molnberäkning. <a href="luna.html" style="text-decoration:underline">Läs om Luna →</a></p>
-      <div class="tags"><span>PyTorch</span><span>MoE</span><span>MLX</span><span>Svenska</span></div>
+      <h3><a href="luna.html">Luna 1BE87</a></h3>
+      <p>En svensk Mixture-of-Experts-språkmodell som jag tränat helt från grunden på min MacBook: en miljard parametrar men bara 87 miljoner aktiva per ord, 64 experter, egen svensk tokenizer och 2,4 miljarder tokens. Före den kom 39 mindre experiment för att se vad som faktiskt fungerar. Den skriver flytande svenska och är ungefär 20 gånger billigare att köra än Gemma 4 E2B, men slår den inte på kunskap. <a href="luna.html" style="text-decoration:underline">Läs om Luna →</a></p>
+      <div class="tags"><span>MLX</span><span>MoE</span><span>Muon</span><span>Svenska</span></div>
+    </div>
+  </article>
+
+  <article class="case reveal">
+    <div>
+      <div class="meta">23 · Spel</div>
+      <div class="status"><span class="d"></span>Spelbar</div>
+    </div>
+    <div>
+      <h3>Sjukhusfeber</h3>
+      <p>Klassiska Theme Hospital på iPhone, byggt på den öppna motorn CorsixTH. Egen pekstyrning (tryck, långtryck, nyp för att zooma), anpassning till skärmens säkra ytor och ett eget tillägg med över 30 nya sjukdomar med svensk humor, nya rum som triage och sömnklinik, och personal med egna personligheter och tankar. Ett automatiskt test bygger rum, anställer och botar patienter. Kräver originalspelets filer, som inte distribueras.</p>
+      <div class="tags"><span>C++</span><span>Lua</span><span>SDL3</span><span>iOS-port</span></div>
+    </div>
+  </article>
+
+  <article class="case reveal">
+    <div>
+      <div class="meta">24 · Spel</div>
+      <div class="status"><span class="d"></span>Spelbar</div>
+    </div>
+    <div>
+      <h3>KeeperFX för iPhone</h3>
+      <p>Dungeon Keeper på iPhone via den öppna motorn KeeperFX, med pekgester, en anpassningsbar datormotståndare som lär sig av hur du spelar och genererade "episka banor" helt utan pelare. Kräver originalspelets filer, som inte distribueras.</p>
+      <div class="tags"><span>C</span><span>C++</span><span>iOS-port</span><span>Spel-AI</span></div>
+    </div>
+  </article>
+
+  <article class="case reveal">
+    <div>
+      <div class="meta">25 · Hälsa</div>
+      <div class="status"><span class="d"></span>Aktiv utveckling</div>
+    </div>
+    <div>
+      <h3>Vana</h3>
+      <p>En svensk, gratis app för hållbar viktkontroll och bättre vanor. En lugn daglig loop: registrera det viktiga, se trenden och välj nästa lilla steg. Ingen reklam, ingen spårning och inget konto. Hälsodata läses bara efter uttryckligt samtycke, och allt fungerar utan HealthKit.</p>
+      <div class="tags"><span>SwiftUI</span><span>HealthKit</span><span>Integritet</span></div>
     </div>
   </article>
 
@@ -353,7 +387,7 @@
     <h2>Vill du se ett live-exempel?</h2>
   </section>
   <section class="about-grid reveal" style="margin-top:26px; grid-template-columns:1fr">
-    <p style="max-width:70ch">AI-teamet är inte bara en beskrivning på den här sidan. Det kör just nu, på riktigt, på min server, och Leia berättar själv vad hon gör. <a href="labb.html" style="text-decoration:underline">Öppna Labbet →</a></p>
+    <p style="max-width:70ch">AI-teamet är inte bara en beskrivning på den här sidan. Det kör just nu, på riktigt, på min server, och statusen syns live. <a href="labb.html" style="text-decoration:underline">Öppna Labbet →</a></p>
   </section>
 
 </main>

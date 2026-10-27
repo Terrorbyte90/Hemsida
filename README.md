@@ -10,9 +10,9 @@ Live: https://tedsvard.se/
 - Typsnitt: Instrument Serif + Instrument Sans (Google Fonts).
 - Native CSS scroll-driven animations (`animation-timeline: view()`) för scroll-reveals,
   med en JS/IntersectionObserver-fallback för webbläsare utan stöd.
-- Leias statusruta (`labb.html`, startsidan) läser `leia.json` från grenen `status` via
-  raw.githubusercontent.com. Leia (lokal modell) skriver texten själv, ett strikt filter på
-  servern stoppar allt känsligt, och servern pushar ut filen – den ta## Struktur
+- Statusrutan (`labb.html`, startsidan) läser `leia.json` från grenen `status` via
+  raw.githubusercontent.com. Ett vanligt skript på servern (`labb-status`, ingen AI) räknar fram några
+  publika siffror var 20:e minut och pushar ut filen – servern tar aldrig emot några anslutningar.
 
 ```
 index.html              Startsida (med Leias live-status)

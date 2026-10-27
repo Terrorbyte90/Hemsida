@@ -600,7 +600,7 @@
     $('#city-weather').textContent = `${VADER[D.vader] || D.vader} · ${D.temperatur}°`;
     const [k, t, c] = phase(m);
     $('#scene-day').textContent = `DAG ${D.dag} · ${k}`; $('#scene-title').textContent = t; $('#scene-copy').textContent = c;
-    $('#model-status').textContent = archived ? `Arkiv · ${D.datum}` : live ? 'Live · svensk tid' : `Uppspelning ${speed}×`;
+    $('#model-status').textContent = archived ? `Arkiv · ${D.datum}` : live ? 'Senaste dagen · i realtid' : `Uppspelning ${speed}×`;
     $('#model-dot').className = 'model-dot' + (live && !archived ? '' : ' off');
     const sl = $('#scrub'); if (document.activeElement !== sl) sl.value = Math.round(m);
     // invånare

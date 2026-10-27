@@ -110,8 +110,8 @@
 
   /* ======================================================
      LEIA STATUS
-     Leia (local model) writes a short public status every 20 min.
-     It is filtered server-side and pushed out to the `status` branch;
+     A plain script (labb-status, no AI) counts a few public facts every 20 min
+     and pushes them out to the `status` branch;
      the server itself accepts no inbound connections for this.
      ====================================================== */
   const LEIA_STATUS = 'https://raw.githubusercontent.com/Terrorbyte90/Hemsida/status/leia.json';
@@ -134,12 +134,13 @@
     if (card) {
       const line = card.querySelector('.line');
       const dot = card.querySelector('.pulse');
-      if (line) line.textContent = d && !stale ? d.nu : 'Leia vilar just nu.';
+      if (line) line.textContent = d && !stale ? d.nu : 'Labbet vilar just nu.';
       if (dot && stale) dot.style.background = 'var(--muted-on-ink)';
     }
     if (panel) {
-      const q = s => panel.querySelector(s);
-      q('[data-leia-now]').textContent = d ? d.nu : 'Leia går inte att nå just nu.';
+      // Tål att en ruta saknas (Labbet har ingen "tanke"-ruta längre).
+      const q = s => panel.querySelector(s) || document.createElement('div');
+      q('[data-leia-now]').textContent = d ? d.nu : 'Statusen går inte att hämta just nu.';
       q('[data-leia-updated]').textContent = d ? (stale ? 'senast ' : '') + sedan(d.uppdaterad) : '';
       q('[data-leia-recent]').innerHTML = (d && d.senaste || []).map(t =>
         `<li class="activity-item"><span class="d"></span><span class="txt">${esc(t)}</span><span class="tag"></span></li>`).join('');
@@ -309,12 +310,12 @@
   const draftEl = document.querySelector('[data-draft-text]');
   if (draftEl) {
     const LINES = [
-      'Leia har läst nattens AI-nyheter — tre nya modeller värda att testa i morgonrapporten.',
-      'Voicy mixar nästa avsnitt av Dystopia AI: röster klara, musiken duckas under dialogen.',
+      'Athena delar upp en fråga: Luna tar koden, MiMo granskar, och Athena följer upp tills allt är klart.',
+      'Ascend testar en ny färdighet i sandlådan. Klarar den inte testerna släpps den aldrig in.',
       'Servervakten ser att disken växer — räknar ut när den blir full innan det blir ett problem.',
       'Beroendevakten hittade en säkerhetsbrist i ett repo. Föreslår en uppdatering på egen branch.',
-      'Luna granskar en pull request medan Sofia svarar på en snabb fråga via iMessage.',
-      'Sammanställer veckans AI-forskning till ett kort underlag för nästa poddavsnitt.',
+      'Klockan fem testas nattens nya modeller mot samma prov som teamet.',
+      'Leia svarar lokalt på en privat fråga — inget lämnar servern, och det kostar noll kronor.',
       'Väntar på godkännande innan något skickas ut — vissa beslut ska alltid vara mänskliga.',
     ];
     const sleep = ms => new Promise(r => setTimeout(r, ms));

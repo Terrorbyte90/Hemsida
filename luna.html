@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Luna — en svensk Mixture-of-Experts-språkmodell som Ted Svärd tränat helt från grunden, med en MacBook och 11 dollar i molnberäkning.">
+<meta name="description" content="Luna — en svensk Mixture-of-Experts-språkmodell som Ted Svärd tränat helt från grunden på sin MacBook: Luna 1BE87, en miljard parametrar varav 87 miljoner aktiva.">
 <title>Luna — svensk AI från grunden · Ted Svärd</title>
 <link rel="canonical" href="https://tedsvard.se/luna.html">
 <meta property="og:type" content="website">
@@ -37,12 +37,13 @@
     <div class="nav-links">
       <a href="index.html">Hem</a>
       <a href="projekt.html">Projekt</a>
-      <a href="luna.html" aria-current="page">Luna</a>
-      <a href="simulering.html">Simulering</a>
       <a href="labb.html" class="nav-signal"><span class="pulse"></span>Labbet</a>
-      <a href="nyheter.html">Nyheter</a>
-      <a href="kurser.html">Kurser</a>
+      <a href="luna.html" aria-current="page">Luna</a>
       <a href="forskning.html">Forskning</a>
+      <a href="telefoni.html">Telefoni</a>
+      <a href="kurser.html">Kurser</a>
+      <a href="poddar.html">Poddar</a>
+      <a href="nyheter.html">Nyheter</a>
       <a href="om-mig.html">Om mig</a>
     </div>
   </div>
@@ -55,12 +56,11 @@
   </h1>
   <p class="lede" style="margin-top:18px;max-width:62ch;color:var(--ink-soft);font-size:1.08rem;line-height:1.6">
     Inte en finjusterad kopia av någon annans modell, utan en språkmodell som jag tränat helt från noll:
-    egen arkitektur, egen svensk tokenizer, egen datapipeline. Allt gjort med min MacBook
-    och elva dollar i molnberäkning, på tre dagar.
+    egen arkitektur, egen svensk tokenizer, egen datapipeline. Allt tränat på min egen MacBook.
   </p>
   <div class="status-line">
     <span class="dot"></span>
-    <span>Tränas just nu · oktober 2026</span>
+    <span>Luna 1BE87 · färdigtränad oktober 2026</span>
   </div>
 </header>
 
@@ -68,64 +68,51 @@
 
   <section class="about-grid reveal">
     <div>
-      <p>Luna är en <strong>Mixture-of-Experts-modell</strong>. I stället för att hela nätverket räknar på varje ord
-        finns 16 specialiserade "experter", och en router väljer de två som passar bäst för varje token.
-        Modellen har drygt en miljard parametrar totalt men använder bara cirka 173 miljoner åt gången.
-        Därför är den snabb nog att köras på en laptop eller till och med en telefon.</p>
-      <p>Målet var enkelt att formulera och svårt att nå: <strong>så bra svenska samtal som möjligt</strong>,
-        och därefter så mycket svensk och <strong>modern</strong> kunskap som möjligt. Därför är nästan allt Luna
-        läst svenska, och slutet av träningen viktas mot texter från 2023–2026 och mot samtal.</p>
-      <p>Jag ville se hur långt man kan komma som en enda person med vanlig hårdvara och en budget som
-        motsvarar en lunch. Svaret är Luna.</p>
+      <p>Den senaste versionen heter <strong>Luna 1BE87</strong>: en miljard parametrar totalt, men bara cirka 87 miljoner används för varje ord. Den är en <strong>Mixture-of-Experts-modell</strong> med 64 små experter, där en router väljer de två som passar bäst för varje token, plus en expert som alltid är med.</p>
+      <p>Målet var att slå Googles Gemma 4 E2B på svenska, med naturliga samtal först och modern svensk kunskap därefter, och att vara minst dubbelt så effektiv att köra. Därför är nästan allt Luna läst svenska.</p>
+      <p>Hela modellen tränades på min egen MacBook. Före den gjorde jag 39 mindre experiment för att ta reda på vad som faktiskt fungerar i liten skala, och bara det som höll gick vidare.</p>
     </div>
     <div class="about-facts">
       <dl>
         <dt>Arkitektur</dt><dd>Sparse Mixture-of-Experts, decoder-transformer</dd>
-        <dt>Parametrar</dt><dd>1,03 miljarder totalt · 173 M aktiva</dd>
-        <dt>Experter</dt><dd>16 st, 2 aktiva per token</dd>
-        <dt>Lager</dt><dd>16 · GQA · RoPE · QK-norm · SwiGLU</dd>
-        <dt>Tokenizer</dt><dd>Egen svensk BPE, 32 768 tokens (~1,6 per ord)</dd>
-        <dt>Kontext</dt><dd>2 048 tokens</dd>
-        <dt>Träningsdata</dt><dd>~1,6 miljarder tokens, i huvudsak svenska</dd>
+        <dt>Parametrar</dt><dd>1,0 miljarder totalt · ~87 M aktiva</dd>
+        <dt>Experter</dt><dd>64 st, 2 aktiva per token + 1 delad</dd>
+        <dt>Lager</dt><dd>12 · GQA · RoPE · QK-norm · SwiGLU</dd>
+        <dt>Extra</dt><dd>Uppslagsminne för vanliga ordföljder (nästan gratis vid körning)</dd>
+        <dt>Tokenizer</dt><dd>Egen svensk BPE, 32 768 tokens</dd>
+        <dt>Träningsdata</dt><dd>2,4 miljarder tokens, i huvudsak svenska</dd>
+        <dt>Hårdvara</dt><dd>MacBook Pro M4 Max, MLX</dd>
       </dl>
     </div>
   </section>
 
   <section class="rail-head reveal"><h2>Så byggde jag den</h2></section>
   <ol class="luna-steps reveal">
-    <li><div><h3>Svensk tokenizer</h3><p>Jag tränade en egen ordstyckare på svensk text. Den delar svenska meningar i ungefär 40 % färre bitar än engelska modeller gör, och det gör Luna både snabbare och smartare per beräkning.</p></div></li>
-    <li><div><h3>Data och kvalitetsfilter</h3><p>Svenska webbsidor (FineWeb-2), hela svenska Wikipedia från oktober 2026 utan botgenererade stubbar, och färska svenska sidor från Common Crawl september 2026. En egen klassificerare sorterar fram den bästa fjärdedelen av webben.</p></div></li>
-    <li><div><h3>Modellen</h3><p>Arkitekturen är skriven från grunden i PyTorch, med expert-routing och lastbalansering inspirerad av DeepSeek-V3 och optimeraren Muon.</p></div></li>
-    <li><div><h3>Förträning</h3><p>Ett dygn på en enda hyrd GPU (NVIDIA A40) läser Luna drygt en och en halv miljard tokens svenska. På slutet ligger fokus på modern text och dialoger.</p></div></li>
-    <li><div><h3>Samtalsträning</h3><p>Medan GPU:n tränade genererade min MacBook tiotusentals naturliga svenska dialoger med en öppen lärarmodell. Vardagsprat, råd, förklaringar och fakta från aktuella Wikipedia-artiklar lär Luna att föra ett samtal.</p></div></li>
-    <li><div><h3>Finslipning</h3><p>Preferensträning (DPO) där Luna lär sig föredra naturliga, varma och korrekta svar, följt av utvärdering i riktiga samtal.</p></div></li>
+    <li><div><h3>40 experiment</h3><p>Varje idé testades först i liten skala mot samma baslinje. Optimeraren Muon gav nästan dubbelt så mycket lärande per token och fick följa med; andra idéer, som att förutsäga två ord i taget, hjälpte inte i den här storleken och ströks.</p></div></li>
+    <li><div><h3>Svensk tokenizer</h3><p>En egen ordstyckare tränad på svensk text. Den delar svenska meningar i betydligt färre bitar än engelska modeller gör, och det gör Luna både snabbare och smartare per beräkning.</p></div></li>
+    <li><div><h3>Data</h3><p>Hela svenska Wikipedia, svenska webbsidor (FineWeb-2) och syntetisk svensk text, totalt 2,4 miljarder tokens.</p></div></li>
+    <li><div><h3>Förträning</h3><p>Ungefär fem dygn i sträck på MacBooken, med sparpunkter var trettionde minut så att den kunde pausas när jag behövde datorn.</p></div></li>
+    <li><div><h3>Samtalsträning</h3><p>Tiotusentals svenska dialoger, fakta, resonemang och skrivuppgifter, plus att Luna vet vem som byggt den. Den senaste versionen klarar att minnas namn och ort några repliker bak i ett samtal.</p></div></li>
   </ol>
 
-  <section class="rail-head reveal"><h2>Budgeten</h2></section>
-  <section class="luna-budget reveal">
-    <div class="about-facts"><div class="big">$11</div><p>Det var hela molnbudgeten. Den räckte till ungefär 17 timmar på en A40-GPU via RunPod.</p></div>
-    <div class="about-facts"><div class="big">1</div><p>MacBook Pro (M4 Max). Den skötte datarensning, tokenizer, generering av dialoger, finjustering och utvärdering.</p></div>
-    <div class="about-facts"><div class="big">3</div><p>dagar från idé till färdig modell. Allt planerat, kodat och tränat av mig.</p></div>
-  </section>
-
-  <section class="rail-head reveal"><h2>Ärligt talat</h2></section>
+  <section class="rail-head reveal"><h2>Resultatet</h2></section>
   <section class="luna-two reveal">
     <div class="about-facts">
       <h3>Det Luna är bra på</h3>
       <ul>
-        <li>Naturlig, flytande svenska</li>
-        <li>Vardagssamtal och enkla förklaringar</li>
-        <li>Vänlig, rak ton</li>
-        <li>Att vara snabb och liten nog för en laptop</li>
+        <li>Flytande svenska med bra ton, motfrågor och korta svar</li>
+        <li>Modellerar svensk text lika bra eller bättre än Gemma 4 E2B i sin egen domän</li>
+        <li>Ungefär 20 gånger billigare per ord att köra</li>
+        <li>Liten nog för en laptop</li>
       </ul>
     </div>
     <div class="about-facts">
       <h3>Det Luna inte är</h3>
       <ul>
+        <li>Den slår inte Gemma 4 E2B på kunskap och resonemang (50 % mot 68 % på bästa provet)</li>
+        <li>Räknar fel och hittar ibland på detaljer</li>
         <li>Inte i närheten av ChatGPT eller Claude</li>
-        <li>Hittar ibland på detaljer, så lita inte på fakta blint</li>
-        <li>Svag på matte, kod och långa resonemang</li>
-        <li>Ett första steg, inte ett slutmål</li>
+        <li>Ett steg på vägen, inte ett slutmål</li>
       </ul>
     </div>
   </section>
@@ -133,12 +120,12 @@
   <section class="rail-head reveal"><h2>Nästa steg</h2></section>
   <section class="about-grid reveal" style="margin-top:26px">
     <div>
-      <p>Allt är byggt för att kunna fortsätta. Med mer beräkningskraft kan Luna växa till flera miljarder parametrar, lära av större lärarmodeller och läsa i stort sett all god svensk text som finns. Målet på sikt är en öppen svensk modell som håller jämna steg med de bästa små modellerna på svenska, och som kan köras här i Sverige utan att data lämnar landet.</p>
+      <p>Allt är byggt för att kunna fortsätta därifrån det slutade. Med mer unik data och en större modell är målet fortfarande en öppen svensk modell som håller jämna steg med de bästa små modellerna på svenska, och som kan köras här i Sverige utan att data lämnar landet.</p>
     </div>
     <div class="about-facts">
       <dl>
-        <dt>Luna 2</dt><dd>~2 miljarder parametrar, längre träning</dd>
-        <dt>Destillation</dt><dd>Lär av större lärarmodeller</dd>
+        <dt>Större</dt><dd>~2–3 miljarder parametrar, längre träning</dd>
+        <dt>Mer data</dt><dd>Fler unika svenska texter och samtal</dd>
         <dt>Öppen</dt><dd>Planen är att släppa vikterna fritt</dd>
       </dl>
     </div>
@@ -152,7 +139,7 @@
     <div class="footer-links">
       <a href="https://github.com/Terrorbyte90" target="_blank" rel="noopener">GitHub</a>
       <a href="projekt.html">Projekt</a>
-      <a href="ornith.html">Ornith</a>
+      <a href="labb.html">Labbet</a>
     </div>
   </div>
 </footer>
