@@ -25,7 +25,6 @@ rostlabb.html           Visualisering av poddflödet
 kurser.html, kurser/    5 kurser, flera kapitel per sida
 simulering.html         Stadssimuleringen (pausad)
 om-mig.html             Om mig
-bland/                  Lösenordsskyddad demo
 fable.html, ornith.html Omdirigeringar till labb.html
 style.css / app.js      Delad design och interaktion
 ```
