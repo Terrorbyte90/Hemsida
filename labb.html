@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Labbet — Teds självhostade AI-team: fyra agenter, en lokal modell och automatik som arbetar dygnet runt på en egen server.">
+<meta name="description" content="Labbet — ett självhostat AI-team, lokal modell och automation som visar hur agenter kan arbeta säkert och uthålligt.">
+<meta name="author" content="Ted Svärd">
+<meta name="twitter:card" content="summary_large_image">
 <title>Labbet — Ted Svärd</title>
 <link rel="canonical" href="https://tedsvard.se/labb.html">
 <meta property="og:type" content="website">
@@ -39,7 +41,7 @@
 <header class="page-head wrap">
   <div class="eyebrow">Självhostat · Hermes · Dygnet runt</div>
   <h1>Ett AI-team som <em>aldrig går hem</em>.</h1>
-  <p class="lede">På en egen server kör fyra AI-agenter, en lokal språkmodell och ett lager automatik som inte behöver någon modell alls. De samarbetar i egna kanaler, sköter driften, testar nya modeller på natten och blir lite bättre av sig själva varje dygn. Jag når dem via iMessage och min egen app, och de når mig.</p>
+  <p class="lede">Här testar jag vad som händer när AI får verktyg, minne och tydliga skyddsräcken. Teamet består av flera roller, en lokal modell och vanlig automation som tillsammans sköter research, kod, drift, röst och nattliga rutiner.</p>
 </header>
 
 <main class="wrap">
@@ -73,7 +75,7 @@
     <article class="track">
       <div class="n">Athena</div>
       <h3>Huvudassistenten</h3>
-      <p>Vet mest och samordnar: research, omvärld, samtal och att fördela jobb till de andra. En snabb diffusionsmodell (Mercury 2.5) med GPT-5.6 Luna som reserv om den skulle falla bort.</p>
+      <p>Vet mest och samordnar: research, omvärld, samtal och att fördela jobb till de andra. En snabb diffusionsmodell (en snabb molnmodell) med en kod- och analysmodell som reserv om den skulle falla bort.</p>
     </article>
     <article class="track">
       <div class="n">Leia</div>
@@ -83,12 +85,12 @@
     <article class="track">
       <div class="n">Luna</div>
       <h3>Arbetshästen</h3>
-      <p>Kod, servern och långa, tunga jobb. Tar uppgifter från de andra, kör dem i egna arbetsmappar och verifierar resultatet innan hon svarar. Modell: GPT-5.6 Luna.</p>
+      <p>Kod, servern och långa, tunga jobb. Tar uppgifter från de andra, kör dem i egna arbetsmappar och verifierar resultatet innan hon svarar. Modell: en kod- och analysmodell.</p>
     </article>
     <article class="track">
       <div class="n">MiMo</div>
       <h3>Specialisten</h3>
-      <p>Svåra kodjobb och granskning. Dyr, så hon används bara när jag själv ber om det, men lär sig varje natt om alla mina projekt så att hon är redo. Modell: MiMo v2.6 Pro.</p>
+      <p>Svåra kodjobb och granskning. Dyr, så hon används bara när jag själv ber om det, men lär sig varje natt om alla mina projekt så att hon är redo. Modell: en extern specialistmodell.</p>
     </article>
   </section>
 
@@ -100,7 +102,7 @@
     </div>
     <div class="about-facts">
       <dl>
-        <dt>Lokal modell</dt><dd>SEA-LION v4.8 30B-A3B</dd>
+        <dt>Lokal modell</dt><dd>en lokal språkmodell</dd>
         <dt>Arkitektur</dt><dd>Mixture-of-Experts, ~3B aktiva</dd>
         <dt>Kvantisering</dt><dd>IQ4_XS (~18 GB)</dd>
         <dt>Runtime</dt><dd>llama.cpp, endast CPU</dd>
@@ -176,7 +178,7 @@
 
   <section class="method reveal" style="margin-top:96px">
     <h2>Skyddsräckena</h2>
-    <p>Agenterna får göra mycket själva, men några saker är alltid mänskliga beslut: att skicka mejl, publicera något, ändra i ett annat system eller spendera pengar. Alla nycklar ligger i ett krypterat valv där varje uthämtning loggas, och visas aldrig i en konversation. Ingenting i labbet exponeras publikt. Appar, statussidor och verktyg nås bara via ett privat nätverk.</p>
+    <p>Alla nycklar och privata anslutningar hålls utanför sajten. Appar, statussidor och verktyg nås bara med skyddad åtkomst.</p>
     <p>Och när en agent ger upp en idé sparas varför, så att nästa försök börjar där det förra slutade i stället för från noll.</p>
   </section>
 

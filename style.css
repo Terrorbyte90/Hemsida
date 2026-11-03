@@ -160,7 +160,7 @@ body.menu-open{ overflow:hidden; }
 /* ============================================================
    HERO
    ============================================================ */
-.hero{ padding:56px 0 40px; position:relative; }
+.hero{ padding:56px 0 40px; position:relative; background-image:linear-gradient(90deg, var(--paper) 0%, color-mix(in srgb, var(--paper) 88%, transparent) 55%, transparent 100%), var(--hero-art); background-position:center right; background-size:cover; border-radius:0 0 28px 28px; }
 .hero-grid{ display:grid; grid-template-columns:1.1fr .8fr; gap:40px; align-items:end; position:relative; }
 .hero h1{ font-family:var(--sans); font-weight:700; letter-spacing:-.035em; font-size:clamp(2.6rem, 6.4vw, 5.6rem); line-height:.98; margin-top:22px; }
 .hero h1 em{
@@ -837,3 +837,5 @@ body.menu-open{ overflow:hidden; }
 }
 .fable-meta{ display:flex; justify-content:space-between; gap:12px; font-family:var(--mono); font-size:.72rem; color:var(--muted-on-dark); }
 .fable-meta .tag{ color:var(--amber); text-transform:uppercase; letter-spacing:.08em; }
+
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.button{display:inline-flex;align-items:center;gap:8px;padding:12px 17px;border-radius:999px;text-decoration:none;font-weight:600}.button-primary{background:var(--ink);color:var(--paper)}.button-quiet{border:1px solid var(--line);color:var(--ink)}

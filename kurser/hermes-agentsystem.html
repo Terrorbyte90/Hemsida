@@ -2,6 +2,8 @@
 <html lang="sv">
 <head>
 <meta charset="utf-8">
+<meta name="author" content="Ted Svärd">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Kurs: Hermes och agentsystem — hur en autonom AI-agent faktiskt är uppbyggd, förklarat av Ted Svärd.">
 <title>Hermes &amp; agentsystem — Kurser · Ted Svärd</title>
@@ -81,7 +83,7 @@
         <thead><tr><th>Del</th><th>Roll</th></tr></thead>
         <tbody>
           <tr><td>Gateway</td><td>Tar emot meddelanden, håller sessioner, dirigerar till rätt modell och verktyg</td></tr>
-          <tr><td>Modell</td><td>Själva språkmodellen som resonerar — hos mig olika molnmodeller för olika roller, plus en egen lokal modell (SEA-LION v4.8 30B-A3B) för det privata</td></tr>
+          <tr><td>Modell</td><td>Själva språkmodellen som resonerar — hos mig olika molnmodeller för olika roller, plus en egen lokal modell (en lokal språkmodell) för det privata</td></tr>
           <tr><td>Plugins</td><td>Kopplingar utåt: meddelandeplattformar, webbsök, hemautomation</td></tr>
           <tr><td>Skills</td><td>Sparade arbetssätt — instruktioner agenten lär sig och återanvänder, istället för att uppfinna hjulet varje gång</td></tr>
           <tr><td>Cron / schemaläggare</td><td>Startar agent-jobb på tid ("varje morgon 09:00"), inte bara som svar på ett meddelande</td></tr>
@@ -90,7 +92,7 @@
       <p>Det viktiga är att ingen av delarna är hela agenten. Modellen är hjärnan, men gatewayen, minnet och verktygen är lika viktiga för att den ska kunna <em>göra</em> något användbart, inte bara <em>säga</em> något klokt.</p>
       <div class="callout">
         <div class="lbl">I praktiken</div>
-        <p>Min egen Hermes-instans är ett team av fyra profiler med olika modeller: en snabb huvudassistent som samordnar, en arbetshäst för kod och tunga jobb, en dyr specialist för granskning som bara används på begäran, och en lokal modell (SEA-LION v4.8 30B-A3B) som sköter det privata gratis på servern. Det är samma avvägning du möter i <a href="ai-landskapet.html">kurs 02</a> — moln kontra self-hosted.</p>
+        <p>Min egen Hermes-instans är ett team av fyra profiler med olika modeller: en snabb huvudassistent som samordnar, en arbetshäst för kod och tunga jobb, en dyr specialist för granskning som bara används på begäran, och en lokal modell (en lokal språkmodell) som sköter det privata gratis på servern. Det är samma avvägning du möter i <a href="ai-landskapet.html">kurs 02</a> — moln kontra self-hosted.</p>
       </div>
     </section>
 
