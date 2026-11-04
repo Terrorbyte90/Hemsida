@@ -29,7 +29,7 @@ fable.html, ornith.html Omdirigeringar till labb.html
 style.css / app.js      Delad design och interaktion
 ```
 
-e `valkompass-research.md`.
+Projektet är medvetet statiskt och utan hemligheter i repot. Intern drift, adresser, nycklar och privata data hör inte hemma här.
 
 ## Utveckla lokalt
 

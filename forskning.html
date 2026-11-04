@@ -2,6 +2,8 @@
 <html lang="sv">
 <head>
 <meta charset="utf-8">
+<meta name="author" content="Ted Svärd">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Forskning av Ted Svärd — Eon v6, en testbar kognitiv arkitektur på iPhone, energieffektiv AI med över 300 experiment, AI från grunden och agenter i drift.">
 <title>Forskning — Ted Svärd</title>
@@ -65,7 +67,7 @@
 
   <section class="essay reveal">
     <h2>Eon v6: idén</h2>
-    <p>De flesta AI-assistenter är en språkmodell med ett gränssnitt. Eon är byggd tvärtom. Språkmodellen (en liten Qwen3 på 1,7 miljarder parametrar som körs lokalt) är bara ett av många lager, och den får uttryckligen <em>inte</em> skriva i systemets tillstånd. Den formulerar sig om det som händer. Den bestämmer inte vad som händer.</p>
+    <p>De flesta AI-assistenter är en språkmodell med ett gränssnitt. Eon är byggd tvärtom. Språkmodellen (en liten en liten lokal språkmodell som körs lokalt) är bara ett av många lager, och den får uttryckligen <em>inte</em> skriva i systemets tillstånd. Den formulerar sig om det som händer. Den bestämmer inte vad som händer.</p>
     <p>Under språket körs en kontinuerlig kontrollslinga. Varje cykel går från signal till prediktion, uppmärksamhet, arbetsyta, återkoppling, självmodell, minne och handling, och mäts sedan. Ordningen är poängen: en signal kan skapa ett prediktionsfel, felet kan flytta uppmärksamheten, uppmärksamheten kan vinna plats i arbetsytan, och det som vinner kan ändra både självbild, minne och nästa handling. Allt samlas i ett gemensamt, typat tillstånd (<code>EonCoreStateV2</code>) som kan granskas i efterhand.</p>
 
     <h2>Teorierna, och vad de blir i koden</h2>

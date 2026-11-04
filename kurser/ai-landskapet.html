@@ -2,6 +2,8 @@
 <html lang="sv">
 <head>
 <meta charset="utf-8">
+<meta name="author" content="Ted Svärd">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Kurs: AI-landskapet — en klar guide till hur du jämför dagens modeller, kostnader, kapacitet och integritet.">
 <title>AI-landskapet — Kurser · Ted Svärd</title>
@@ -122,11 +124,11 @@
           <tr><td>DeepSeek V4-Pro</td><td>1,6T / ~49B</td><td>$0,435 / $0,87</td></tr>
           <tr><td>Mistral Large 4</td><td>1,05T / ~52B</td><td>$1,36 / $4,18</td></tr>
           <tr><td>GLM-5.3 (Z.ai)</td><td>MoE</td><td>~$1,40 in</td></tr>
-          <tr><td>Qwen3.8-Max (Alibaba)</td><td>MoE</td><td>~$2 in</td></tr>
+          <tr><td>en öppen modell (Alibaba)</td><td>MoE</td><td>~$2 in</td></tr>
           <tr><td>Kimi K3 (Moonshot)</td><td>~2,8T (MoE)</td><td>$3 / $15</td></tr>
         </tbody>
       </table>
-      <p><strong>Kimi K3</strong> (juli 2026) är den största öppna modellen, med runt 2,8 biljoner parametrar, 1M kontext och fokus på agenter och kodning. Den landade strax bakom Claudes flaggskepp på generella ledartavlor, till en bråkdel av priset. <strong>DeepSeek V4</strong> är fortfarande kostnadskungen: Flash-varianten är billig nog att använda i princip överallt. <strong>GLM-5.3</strong> är hårt tränad för kod och verktygsbruk, och <strong>Qwen</strong>-familjen har blivit den bas som flest andra bygger vidare på, från små modeller som går att köra på en laptop till flaggskeppet Qwen3.8-Max.</p>
+      <p><strong>Kimi K3</strong> (juli 2026) är den största öppna modellen, med runt 2,8 biljoner parametrar, 1M kontext och fokus på agenter och kodning. Den landade strax bakom Claudes flaggskepp på generella ledartavlor, till en bråkdel av priset. <strong>DeepSeek V4</strong> är fortfarande kostnadskungen: Flash-varianten är billig nog att använda i princip överallt. <strong>GLM-5.3</strong> är hårt tränad för kod och verktygsbruk, och <strong>Qwen</strong>-familjen har blivit den bas som flest andra bygger vidare på, från små modeller som går att köra på en laptop till flaggskeppet en öppen modell.</p>
       <p>Nykomlingen är <strong>Mistral Large 4</strong> (oktober 2026), en fransk MoE-modell med drygt en biljon parametrar som tränats helt i Europa. Den finns först som API-förhandsversion, och de öppna vikterna är utlovade under månaden. För europeiska verksamheter som vill ha kontroll över var data hamnar är den ett nytt, seriöst alternativ.</p>
       <div class="callout warn">
         <div class="lbl">Öppen är inte alltid öppen</div>
@@ -134,7 +136,7 @@
       </div>
       <div class="callout">
         <div class="lbl">I praktiken</div>
-        <p>Jag kör en egen lokal modell på min server (SEA-LION v4.8 30B-A3B, en MoE-modell där bara runt 3 miljarder parametrar arbetar per token, se <a href="../labb.html">Labbet</a>) av precis de skäl som gör öppna vikter attraktiva: ingen data lämnar min hårdvara, ingen kostnad per fråga hur mycket jag än använder den, och full kontroll över hur den körs. Den tar det privata och de enkla jobben, och molnmodellerna tar det som kräver mest.</p>
+        <p>Jag kör en egen lokal modell på min server (en lokal språkmodell, en MoE-modell där bara runt 3 miljarder parametrar arbetar per token, se <a href="../labb.html">Labbet</a>) av precis de skäl som gör öppna vikter attraktiva: ingen data lämnar min hårdvara, ingen kostnad per fråga hur mycket jag än använder den, och full kontroll över hur den körs. Den tar det privata och de enkla jobben, och molnmodellerna tar det som kräver mest.</p>
       </div>
     </section>
 
@@ -147,7 +149,7 @@
         <tbody>
           <tr><td>Ultrabilligt</td><td>Claude Haiku 5.5, GPT-6 Luna, DeepSeek V4-Flash</td><td>$0,10–0,14 / $0,28–0,50</td></tr>
           <tr><td>Billigt</td><td>DeepSeek V4-Pro, Mistral Large 4, GLM-5.3</td><td>$0,44–1,40 / $0,87–4,20</td></tr>
-          <tr><td>Mellan</td><td>Claude Sonnet 5.5, GPT-6 Sol, Qwen3.8-Max, Kimi K3</td><td>$2–3 / $10–15</td></tr>
+          <tr><td>Mellan</td><td>Claude Sonnet 5.5, GPT-6 Sol, en öppen modell, Kimi K3</td><td>$2–3 / $10–15</td></tr>
           <tr><td>Dyrt</td><td>Claude Opus 5.5</td><td>$4 / $20</td></tr>
           <tr><td>Dyrast (flaggskepp)</td><td>Claude Fable 5.1, GPT-6 Astra</td><td>$10 / $50</td></tr>
         </tbody>
