@@ -14,7 +14,7 @@
 <meta property="og:title" content="Ted Svärd — AI-arkitekt och systembyggare">
 <meta property="og:description" content="Jag bygger AI-agenter, iOS-appar och egen infrastruktur — från första idé till system som faktiskt körs.">
 <meta property="og:locale" content="sv_SE">
-<meta name="theme-color" content="#F3EEE6">
+<meta name="theme-color" content="#5865F2">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -50,77 +50,95 @@
   </div>
 </nav>
 
-<header class="hero wrap" style="--hero-art:url('assets/illustrations/agent-system.webp')">
-  <div class="eyebrow">Solo AI- &amp; iOS-arkitekt · Sverige</div>
-  <div class="hero-grid">
-    <div>
-      <h1 data-stagger>Jag bygger AI som arbetar när du sover.</h1>
-      <p class="lede">Jag hjälper till att göra AI användbar på riktigt: agenter som tar ansvar, automation som håller över tid, röst och video som blir färdiga produktioner — plus iOS-appar med känsla för detaljer.</p>
-      <div class="hero-actions"><a class="button button-primary" href="om-mig.html#kontakt">Prata om ett projekt <span aria-hidden="true">→</span></a><a class="button button-quiet" href="projekt.html">Se vad jag bygger</a></div>
-    </div>
-    <div class="hero-side">
-      <div class="draft-teaser" data-draft-teaser>
-        <div class="top"><span class="dot"></span>I labbet · ett AI-team</div>
-        <div class="draft" data-draft-text><span class="cursor"></span></div>
-      </div>
-      <a href="labb.html" class="signal-card" data-leia-teaser>
-        <div class="top"><span class="pulse"></span>Labbet · just nu</div>
-        <div class="line">Hämtar status …</div>
-        <div class="go">Öppna labbet
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </div>
-      </a>
-    </div>
+<header class="dc-hero">
+  <div class="wrap">
+    <div class="eyebrow">Solo AI- &amp; iOS-arkitekt · Sverige</div>
+    <h1 style="margin-top:20px">Jag bygger AI som arbetar när du sover</h1>
+    <p>Agenter som tar ansvar, automation som håller över tid, röst och video som blir färdiga produktioner — plus iOS-appar med känsla för detaljer. Från första idé till system som faktiskt körs.</p>
+    <div class="hero-actions"><a class="button button-primary" href="om-mig.html#kontakt">Prata om ett projekt</a><a class="button button-quiet" href="projekt.html">Se vad jag bygger</a></div>
   </div>
+  <span class="dc-blob" style="width:70px;height:70px;background:#FEE75C;left:6%;top:30%"></span>
+  <span class="dc-blob" style="width:44px;height:44px;background:#EB459E;right:8%;top:22%;animation-delay:-2s"></span>
+  <span class="dc-blob" style="width:28px;height:28px;background:#57F287;right:18%;top:62%;animation-delay:-4s"></span>
+  <div class="dc-scene" aria-hidden="true"><svg viewBox="0 0 1440 220" preserveAspectRatio="none">
+    <path d="M0 140 C 240 60 420 200 720 120 S 1200 40 1440 130 V220 H0Z" fill="#404EED"/>
+    <path d="M0 180 C 300 120 520 230 860 170 S 1260 120 1440 175 V220 H0Z" fill="#23272A" opacity=".35"/>
+    <path d="M0 205 C 360 175 700 235 1040 200 S 1340 190 1440 205 V220 H0Z" fill="#F6F6F6"/>
+  </svg></div>
 </header>
 
-<main class="wrap">
-  <section class="rail-head reveal">
-    <h2>Utvalt arbete</h2>
-    <a href="projekt.html">Alla projekt →</a>
+<main>
+  <section class="dc-row">
+    <div class="wrap">
+      <div class="dc-mock reveal">
+        <div class="bar"># <b>hermes-teamet</b> <span class="live" style="margin-left:auto">● online</span></div>
+        <div class="dc-msg"><div class="av" style="background:#5865F2">A</div><div><div class="who">Athena <small>idag 06:02</small></div><div class="txt">Morgonrapporten är klar. Luna tar kodjobbet, MiMo granskar.</div></div></div>
+        <div class="dc-msg"><div class="av" style="background:#EB459E">L</div><div><div class="who">Luna <small>idag 06:04</small></div><div class="txt">På det. Tester gröna om tio minuter 🚀</div></div></div>
+        <div class="dc-msg"><div class="av" style="background:#23A55A">Le</div><div><div class="who">Leia <small>idag 06:05</small></div><div class="txt">Jag sköter det privata lokalt — gratis.</div></div></div>
+      </div>
+      <div class="reveal">
+        <h2>Hermes — ett AI-team som aldrig går hem</h2>
+        <p class="body">Ett självhostat AI-team som jag pratar med i iMessage och i min egen app. Athena samordnar, Luna kodar, MiMo granskar och Leia, en lokal modell, sköter det privata gratis. Varje natt blir de lite bättre av sig själva.</p>
+        <div class="tags"><span>Python</span><span>Agent-arkitektur</span><span>Self-hosted AI</span></div>
+      </div>
+    </div>
   </section>
-  <section class="projects">
-    <article class="proj reveal">
-      <div class="num">01</div>
-      <h3>Hermes</h3>
-      <p>Ett självhostat AI-team som jag pratar med i iMessage och i min egen app. Athena samordnar, Luna kodar, MiMo granskar och Leia, en lokal modell, sköter det privata gratis. Varje natt blir de lite bättre av sig själva.</p>
-      <div class="tags"><span>Python</span><span>Agent-arkitektur</span><span>Self-hosted AI</span></div>
-    </article>
-    <article class="proj reveal">
-      <div class="num">02</div>
-      <h3>Lunachat</h3>
-      <p>En meddelandeapp som organiserar livet i färgkodade "sfärer" — med två AI-kontakter, Luna och Max, vävda in bland dina vanliga samtal.</p>
-      <div class="tags"><span>Swift 6</span><span>SwiftUI</span><span>AI companions</span></div>
-    </article>
-    <article class="proj reveal">
-      <div class="num">03</div>
-      <h3>Corefall</h3>
-      <p>Ett realtidsstrategispel byggt från grunden för iOS, där enheter, resurser och relationer bildar en värld med minne — inte bara ett slagfält.</p>
-      <div class="tags"><span>Swift</span><span>RTS</span><span>Simulation</span></div>
-    </article>
-    <article class="proj reveal">
-      <div class="num">04</div>
-      <h3>Luna 1BE87</h3>
-      <p>En svensk språkmodell som jag tränat helt från grunden på min MacBook: en miljard parametrar, men bara 87 miljoner aktiva per ord.</p>
-      <div class="tags"><span>MLX</span><span>Mixture-of-Experts</span><span>Svenska</span></div>
-    </article>
+
+  <section class="dc-row flip">
+    <div class="wrap">
+      <div class="dc-mock reveal">
+        <div class="bar">Sfärer <b style="margin-left:6px">Lunachat</b></div>
+        <div class="dc-msg"><div class="av" style="background:#FEE75C;color:#23272A">L</div><div><div class="who">Luna <small>AI-kontakt</small></div><div class="txt">Vill du att jag lägger fredagsmiddagen i Familj-sfären?</div></div></div>
+        <div class="dc-msg"><div class="av" style="background:#ED4245">M</div><div><div class="who">Max <small>AI-kontakt</small></div><div class="txt">Och jag påminner om gymmet kl 17 💪</div></div></div>
+      </div>
+      <div class="reveal">
+        <h2>Lunachat — livet i färgkodade sfärer</h2>
+        <p class="body">En meddelandeapp som organiserar livet i färgkodade "sfärer" — med två AI-kontakter, Luna och Max, vävda in bland dina vanliga samtal.</p>
+        <div class="tags"><span>Swift 6</span><span>SwiftUI</span><span>AI companions</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dc-row">
+    <div class="wrap">
+      <div class="dc-mock reveal">
+        <div class="bar"># <b>corefall-värld</b></div>
+        <div class="dc-msg"><div class="av" style="background:#404EED">⚔</div><div><div class="who">Corefall <small>systemlogg</small></div><div class="txt">Bosättning Norr minns att ni bröt alliansen. Relation: −12.</div></div></div>
+      </div>
+      <div class="reveal">
+        <h2>Corefall — strategi med minne</h2>
+        <p class="body">Ett realtidsstrategispel byggt från grunden för iOS, där enheter, resurser och relationer bildar en värld med minne — inte bara ett slagfält.</p>
+        <div class="tags"><span>Swift</span><span>RTS</span><span>Simulation</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dc-row flip">
+    <div class="wrap">
+      <div class="dc-mock reveal">
+        <div class="bar"># <b>luna-1be87</b> <span class="live" style="margin-left:auto">tränar</span></div>
+        <div class="dc-msg"><div class="av" style="background:#57F287;color:#23272A">87</div><div><div class="who">Luna 1BE87 <small>MLX</small></div><div class="txt">1 miljard parametrar. 87 miljoner aktiva per ord. Helt på svenska.</div></div></div>
+      </div>
+      <div class="reveal">
+        <h2>Luna 1BE87 — en svensk språkmodell från noll</h2>
+        <p class="body">En svensk språkmodell som jag tränat helt från grunden på min MacBook: en miljard parametrar, men bara 87 miljoner aktiva per ord.</p>
+        <div class="tags"><span>MLX</span><span>Mixture-of-Experts</span><span>Svenska</span></div>
+        <p style="margin-top:26px"><a href="projekt.html" style="color:var(--blurple);font-weight:700">Alla projekt →</a></p>
+      </div>
+    </div>
   </section>
 
   <section class="manifesto reveal">
-    <div class="wrap">
-      <div class="eyebrow">Arbetssätt</div>
-      <blockquote>Bygg systemet så att det fortsätter tänka utan dig i rummet.</blockquote>
-      <p class="sub">Jag bygger inte demos. Mina agenter skriver morgonrapporten, bevakar AI-världen, producerar poddavsnitt och vaktar servern dygnet runt, på hårdvara jag driftar själv. Samma disciplin jag lägger på ett gränssnitts sista pixel lägger jag på systemet ingen ser.</p>
-    </div>
+    <div class="eyebrow">Arbetssätt</div>
+    <blockquote>Bygg systemet så att det fortsätter tänka utan dig i rummet.</blockquote>
+    <p class="sub">Jag bygger inte demos. Mina agenter skriver morgonrapporten, bevakar AI-världen, producerar poddavsnitt och vaktar servern dygnet runt, på hårdvara jag driftar själv.</p>
   </section>
 
-  <section class="courses-strip reveal">
-    <div class="rail-head" style="margin-top:0">
-      <h2>Kurser</h2>
-      <a href="kurser.html">Alla kurser →</a>
-    </div>
-    <p style="max-width:60ch;color:var(--muted);margin-top:10px">Fem kurser om AI och Hermes — från agentarkitektur till hur du faktiskt pratar med en modell. Skrivna för att hjälpa dig som vill lära dig på ett enkelt sätt.</p>
+  <section class="dc-center wrap reveal">
+    <h2>Lär dig AI på riktigt</h2>
+    <p>Fem kurser om AI och Hermes — från agentarkitektur till hur du faktiskt pratar med en modell.</p>
     <div class="course-cards">
+
       <a class="course-card" href="kurser/hermes-agentsystem.html">
         <div>
           <div class="n">01</div>
@@ -162,6 +180,7 @@
         <div class="go">Börja →</div>
       </a>
     </div>
+    <div class="dc-cta"><h3>Redo att bygga något?</h3><a class="button button-primary" href="om-mig.html#kontakt">Prata om ett projekt</a></div>
   </section>
 </main>
 

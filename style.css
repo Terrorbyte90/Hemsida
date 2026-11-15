@@ -4,6 +4,7 @@
    visionOS-style frosted glass, Instrument Serif italic emphasis.
    ============================================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@700;800;900&family=Noto+Sans:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400..700&display=swap');
 
 :root{
@@ -839,3 +840,125 @@ body.menu-open{ overflow:hidden; }
 .fable-meta .tag{ color:var(--amber); text-transform:uppercase; letter-spacing:.08em; }
 
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.button{display:inline-flex;align-items:center;gap:8px;padding:12px 17px;border-radius:999px;text-decoration:none;font-weight:600}.button-primary{background:var(--ink);color:var(--paper)}.button-quiet{border:1px solid var(--line);color:var(--ink)}
+
+/* ============================================================
+   DISCORD-STIL (branch discord-design) — blurple, mörka ytor,
+   tunga versala rubriker, pill-knappar, rundade kort.
+   Lager ovanpå hela sajten: tokens + komponenter.
+   ============================================================ */
+:root{
+  --blurple:#5865F2; --blurple-dark:#404EED; --dc-dark:#23272A; --dc-darker:#1E1F22; --dc-grey:#F6F6F6;
+  --dc-not-quite:#2C2F33; --dc-green:#23A55A; --dc-text:#23272A;
+  --paper:#F6F6F6; --paper-dim:#EBEDEF; --ink:#23272A; --ink-soft:#4E5058; --muted:#5C5E66; --muted-on-dark:#C9CDFB;
+  --signal:#5865F2; --signal-dim:#404EED; --violet:#5865F2; --coral:#EB459E; --amber:#FEE75C; --alive:#23A55A;
+  --line:rgba(35,39,42,.1); --glass:#fff; --glass-strong:#fff; --glass-border:transparent;
+  --glass-shadow:0 8px 15px rgba(0,0,0,.12); --line-glass:transparent;
+  --serif:'Rubik', 'Noto Sans', sans-serif; --sans:'Noto Sans', -apple-system, Arial, sans-serif;
+  --display:'Rubik', 'Noto Sans', sans-serif; --max:1260px;
+}
+body{ background:var(--dc-grey); color:var(--ink); font-family:var(--sans); }
+.mesh,.grain{ display:none !important; }
+em,i{ font-family:inherit; font-style:normal; }
+::selection{ background:var(--blurple); color:#fff; }
+h1,h2,h3,h4{ font-family:var(--display) !important; }
+.hero h1 em,.page-head h1 em{ background:none !important; -webkit-background-clip:initial !important; color:inherit !important; font-style:normal; }
+
+/* nav: på blurple-banden */
+.site-nav{ position:relative; top:0; max-width:none; padding:0; background:var(--blurple); }
+.site-nav .row{ max-width:var(--max); margin:0 auto; height:80px; padding:0 var(--gutter); border-radius:0; background:transparent; backdrop-filter:none; -webkit-backdrop-filter:none; border:0; box-shadow:none; color:#fff; }
+.brand{ color:#fff; font-family:var(--display); font-weight:900; font-size:1.25rem; text-transform:uppercase; letter-spacing:0; }
+.brand .dot{ width:30px; height:30px; border-radius:50%; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='8.5' cy='12' r='2' fill='%235865F2'/%3E%3Ccircle cx='15.5' cy='12' r='2' fill='%235865F2'/%3E%3C/svg%3E") center/70% no-repeat; }
+.nav-links a{ color:#fff !important; opacity:1; font-weight:700; font-size:.95rem; }
+.nav-links a:hover{ text-decoration:underline; text-underline-offset:4px; }
+.nav-links a[aria-current="page"]::after,.nav-links a[aria-current="page"]::before{ display:none !important; }
+.nav-links a[aria-current="page"]{ background:#fff; color:var(--dc-text) !important; border-radius:40px; padding:7px 16px; }
+.menu-toggle span{ background:#fff !important; }
+
+/* knappar */
+.button{ border-radius:28px !important; padding:16px 32px !important; font-size:1.1rem !important; font-weight:500; border:0 !important; transition:box-shadow .2s, background .2s, color .2s !important; }
+.button-primary{ background:#fff !important; color:var(--dc-text) !important; box-shadow:none !important; }
+.button-primary:hover{ color:var(--blurple) !important; box-shadow:0 8px 15px rgba(0,0,0,.2) !important; transform:none !important; }
+.button-quiet{ background:var(--dc-darker) !important; color:#fff !important; }
+.button-quiet:hover{ background:#36393f !important; box-shadow:0 8px 15px rgba(0,0,0,.2) !important; }
+
+/* page heads (undersidor) får blurple-hero */
+.page-head{ background:var(--blurple); color:#fff; margin:0 calc(50% - 50vw); padding:70px calc(50vw - 50% + var(--gutter)) 110px; position:relative; overflow:hidden; text-align:center; }
+.page-head::after{ content:''; position:absolute; left:0; right:0; bottom:-1px; height:70px; background:var(--dc-grey); clip-path:ellipse(70% 100% at 50% 100%); }
+.page-head h1{ color:#fff; font-weight:900 !important; text-transform:uppercase; letter-spacing:0 !important; font-size:clamp(2.2rem,5.4vw,4.4rem) !important; line-height:1.1; }
+.page-head .lede{ color:#fff; margin-left:auto; margin-right:auto; opacity:.95; }
+.page-head .eyebrow{ color:#fff; }
+.eyebrow{ font-family:var(--sans); font-weight:700; letter-spacing:.08em; color:var(--blurple); }
+.eyebrow::before{ background:var(--dc-green); width:8px; height:8px; }
+.page-head .eyebrow::before{ background:#fff; }
+
+/* kort / glasytor -> platta vita kort */
+.glass,.proj,.course-card,.signal-card,.draft-teaser,[class*="card"]{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important; border-radius:16px !important; border:0 !important; }
+.glass,.proj,.course-card{ background:#fff !important; box-shadow:none !important; }
+.proj:hover,.course-card:hover{ transform:translateY(-4px); box-shadow:0 8px 15px rgba(0,0,0,.12) !important; }
+.proj .tags span{ background:var(--dc-grey) !important; border:0; color:var(--ink-soft); font-family:var(--sans); font-weight:600; }
+.rail-head h2{ font-weight:800 !important; text-transform:uppercase; letter-spacing:0 !important; }
+.rail-head a,.course-card .go,.signal-card .go{ color:var(--blurple) !important; font-weight:700; }
+
+/* manifest -> mörkt Discord-band */
+.manifesto{ background:var(--dc-dark) !important; border-radius:0; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw); text-align:center; padding:110px var(--gutter); }
+.manifesto::before{ display:none; }
+.manifesto blockquote{ font-family:var(--display) !important; font-style:normal; font-weight:900; text-transform:uppercase; background:none !important; color:#fff !important; -webkit-text-fill-color:#fff; max-width:22ch; margin-left:auto; margin-right:auto; line-height:1.15; }
+.manifesto .sub{ margin-left:auto; margin-right:auto; color:#B9BBBE; }
+.manifesto .eyebrow{ color:#fff; }
+
+/* footer: mörk som discord.com */
+.site-footer{ background:var(--dc-dark); color:#fff; margin-top:0; padding:80px 0 64px; }
+.site-footer .fmuted{ color:var(--blurple) !important; font-family:var(--display); font-weight:900; text-transform:uppercase; font-size:1.3rem; }
+.footer-links a{ color:#fff; opacity:1; }
+.footer-links a:hover{ text-decoration:underline; }
+main{ padding-bottom:120px; }
+
+/* ===== startsidans nya Discord-hero (index.html) ===== */
+.dc-hero{ background:var(--blurple); color:#fff; position:relative; overflow:hidden; padding:70px 0 230px; text-align:center; }
+.dc-hero h1{ font-weight:900; text-transform:uppercase; font-size:clamp(2.4rem,6vw,4.6rem); line-height:1.08; max-width:16ch; margin:0 auto; }
+.dc-hero p{ max-width:62ch; margin:28px auto 0; font-size:1.2rem; line-height:1.65; }
+.dc-hero .hero-actions{ justify-content:center; display:flex; gap:22px; flex-wrap:wrap; margin-top:34px; }
+.dc-hero .eyebrow{ color:#fff; }
+.dc-hero .eyebrow::before{ background:var(--dc-green); }
+.dc-scene{ position:absolute; left:0; right:0; bottom:0; height:220px; pointer-events:none; }
+.dc-scene svg{ width:100%; height:100%; display:block; }
+.dc-blob{ position:absolute; border-radius:50%; opacity:.9; animation:dc-float 6s ease-in-out infinite alternate; }
+@keyframes dc-float{ to{ transform:translateY(-18px) rotate(8deg); } }
+
+.dc-row{ padding:110px 0; }
+.dc-row:nth-child(even){ background:#fff; }
+.dc-row .wrap{ display:grid; grid-template-columns:1.25fr 1fr; gap:clamp(30px,6vw,90px); align-items:center; }
+.dc-row.flip .wrap > :first-child{ order:2; }
+.dc-row h2{ font-weight:800; font-size:clamp(1.8rem,3.6vw,3rem); line-height:1.2; color:var(--dc-text); }
+.dc-row p.body{ margin-top:22px; font-size:1.18rem; line-height:1.65; color:var(--ink-soft); }
+.dc-row .tags{ margin-top:22px; display:flex; gap:8px; flex-wrap:wrap; }
+.dc-row .tags span{ background:var(--dc-grey); color:var(--ink-soft); font-weight:600; font-size:.82rem; border-radius:99px; padding:6px 14px; }
+.dc-row:nth-child(odd) .tags span{ background:#fff; }
+.dc-mock{ border-radius:16px; background:var(--dc-darker); color:#DBDEE1; padding:18px; box-shadow:0 20px 40px -10px rgba(35,39,42,.35); font-size:.94rem; }
+.dc-mock .bar{ display:flex; gap:8px; align-items:center; color:#949BA4; font-weight:700; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; padding-bottom:12px; border-bottom:1px solid #2B2D31; }
+.dc-mock .bar b{ color:#fff; text-transform:none; letter-spacing:0; font-size:.95rem; }
+.dc-msg{ display:flex; gap:12px; margin-top:16px; text-align:left; }
+.dc-msg .av{ width:38px; height:38px; border-radius:50%; flex:none; display:grid; place-items:center; color:#fff; font-weight:800; font-family:var(--display); }
+.dc-msg .who{ color:#fff; font-weight:700; }
+.dc-msg .who small{ color:#949BA4; font-weight:500; margin-left:6px; font-size:.75rem; }
+.dc-msg .txt{ margin-top:2px; line-height:1.45; }
+.dc-mock .live{ color:var(--dc-green); }
+
+.dc-center{ text-align:center; padding:110px 0 30px; }
+.dc-center h2{ font-weight:900; text-transform:uppercase; font-size:clamp(2rem,4.6vw,3.4rem); line-height:1.1; max-width:20ch; margin:0 auto; }
+.dc-center p{ margin:22px auto 0; max-width:60ch; color:var(--ink-soft); font-size:1.15rem; line-height:1.6; }
+.dc-center .course-cards{ text-align:left; margin-top:50px; }
+.dc-center .button-primary{ background:var(--blurple) !important; color:#fff !important; }
+.dc-center .button-primary:hover{ background:#4752C4 !important; color:#fff !important; }
+.dc-cta{ margin-top:70px; }
+.dc-cta h3{ font-weight:800; font-size:1.8rem; margin-bottom:28px; }
+
+@media (max-width:860px){
+  .dc-row .wrap{ grid-template-columns:1fr; }
+  .dc-row.flip .wrap > :first-child{ order:0; }
+  .dc-hero{ padding-bottom:170px; }
+  .dc-scene{ height:150px; }
+}
+
+@media (max-width:760px){ .nav-links{ background:var(--blurple) !important; } .nav-links a[aria-current="page"]{ align-self:flex-start; } }
+.site-footer .row{ background:transparent !important; box-shadow:none !important; border:0 !important; backdrop-filter:none !important; }
